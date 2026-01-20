@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <!-- Markmap -->
   <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
   <style>
@@ -16,6 +17,7 @@
       --ink:#0b1020;
       --muted:rgba(11,16,32,.72);
       --glass:rgba(255,255,255,.66);
+      --glass2:rgba(255,255,255,.52);
       --stroke:rgba(11,16,32,.10);
       --shadow:0 18px 45px rgba(11,16,32,.16);
       --shadow-soft:0 10px 24px rgba(11,16,32,.12);
@@ -24,6 +26,7 @@
       --good: rgba(30, 160, 90, .20);
       --bad: rgba(210, 70, 100, .18);
       --focus: rgba(45, 160, 220, .28);
+      --focus2: rgba(255, 140, 200, .22);
     }
     *{ box-sizing:border-box; }
     body{
@@ -75,7 +78,7 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.45;
-      max-width: 70ch;
+      max-width: 75ch;
     }
     .nav{
       display:flex;
@@ -106,15 +109,10 @@
       background: linear-gradient(135deg, rgba(170,255,216,.90), rgba(170,226,255,.90), rgba(255,191,228,.82));
     }
 
-    .grid{
+    .stack{
       margin-top: 14px;
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
       gap: 14px;
-      align-items:start;
-    }
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
     }
 
     .card{
@@ -132,14 +130,28 @@
       font-size: 16px;
       letter-spacing:.2px;
     }
-    .theory{
+    .muted{ color: var(--muted); }
+
+    .twoCols{
       margin-top: 10px;
-      line-height: 1.55;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .twoCols{ grid-template-columns: 1fr; }
+    }
+
+    .theory{
+      line-height: 1.58;
       color: rgba(11,16,32,.90);
       font-size: 14px;
     }
-    .theory ul{ margin: 8px 0 0 18px; }
-    .theory li{ margin: 7px 0; }
+    .theory p{ margin: 10px 0 0; }
+    .theory ul{ margin: 10px 0 0 18px; }
+    .theory li{ margin: 8px 0; }
+
     .callout{
       margin-top: 12px;
       border-radius: 16px;
@@ -151,9 +163,10 @@
       line-height: 1.45;
     }
 
+    /* Map */
     .mapWrap{
       width:100%;
-      height: 460px;
+      height: 680px; /* más grande */
       margin-top: 10px;
       border: 1px solid rgba(11,16,32,.12);
       border-radius: 16px;
@@ -183,22 +196,67 @@
       color: rgba(11,16,32,.78);
     }
 
+    /* Fullscreen modal for map */
+    .modal{
+      position: fixed;
+      inset: 0;
+      background: rgba(11,16,32,.35);
+      backdrop-filter: blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      z-index: 1000;
+    }
+    .modal.open{ display:flex; }
+    .modalBox{
+      width: min(1200px, 96vw);
+      height: min(820px, 90vh);
+      border-radius: 18px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(11,16,32,.14);
+      box-shadow: 0 30px 80px rgba(11,16,32,.30);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .modalTop{
+      padding: 10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      border-bottom: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+    }
+    .modalTop strong{
+      font-family: Outfit, Inter, system-ui;
+      letter-spacing:.2px;
+    }
+    .modalMap{
+      flex:1;
+      background:
+        radial-gradient(circle at 1px 1px, rgba(11,16,32,.08) 1px, transparent 1px) 0 0 / 22px 22px,
+        rgba(255,255,255,.35);
+    }
+    .modalMap svg{ width:100%; height:100%; }
+
     /* Game */
-    .gameArea{
+    .gameGrid{
       margin-top: 12px;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-    @media (max-width: 620px){
-      .gameArea{ grid-template-columns: 1fr; }
+    @media (max-width: 760px){
+      .gameGrid{ grid-template-columns: 1fr; }
     }
     .bin{
       border-radius: 18px;
       border: 1px dashed rgba(11,16,32,.22);
       background: rgba(255,255,255,.45);
       padding: 12px;
-      min-height: 150px;
+      min-height: 160px;
     }
     .bin h3{
       margin: 0 0 8px;
@@ -210,22 +268,32 @@
       display:flex;
       gap:8px;
       flex-wrap:wrap;
-      min-height: 36px;
+      min-height: 40px;
     }
     .chip{
       padding: 9px 10px;
       border-radius: 999px;
       border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.78);
       font-weight: 800;
       font-size: 13px;
       cursor: grab;
       user-select:none;
+      transition: outline .08s ease, transform .08s ease;
     }
-    .chip:active{ cursor: grabbing; }
+    .chip:active{ cursor: grabbing; transform: translateY(1px); }
+    .chip.selected{
+      outline: 3px solid var(--focus2);
+    }
     .bin.dragover{
       outline: 3px solid var(--focus);
       background: rgba(255,255,255,.62);
+    }
+    .small{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+      margin-top: 8px;
     }
 
     .result{
@@ -240,6 +308,12 @@
     }
     .ok{ background: var(--good); border-color: rgba(30,160,90,.28); }
     .no{ background: var(--bad); border-color: rgba(210,70,100,.26); }
+
+    .divider{
+      border:none;
+      border-top: 1px solid rgba(11,16,32,.10);
+      margin: 14px 0;
+    }
   </style>
 </head>
 
@@ -249,39 +323,93 @@
       <div>
         <div class="kicker">Módulo 1 · Medio ambiente</div>
         <h1>1.1 Elementos que conforman el ambiente</h1>
-        <p class="subtitle">Teoría breve + mapa mental interactivo + mini-juego de clasificación.</p>
+        <p class="subtitle">
+          En este subtema distinguirás componentes <strong>abióticos</strong> (físico-químicos) y <strong>bióticos</strong> (organismos),
+          y explicarás cómo su interacción sostiene los ecosistemas, con ejemplos del contexto de <strong>Sololá</strong> y la cuenca del <strong>Lago de Atitlán</strong>.
+        </p>
       </div>
       <nav class="nav">
         <a class="btn" href="index.html">Inicio</a>
-        <a class="btn primary" href="#" onclick="alert('Luego hacemos 1-2.html. Por ahora trabajemos 1-1.html :)'); return false;">Siguiente</a>
+        <a class="btn primary" href="#" onclick="alert('Luego hacemos 1-2.html. Por ahora afinemos 1-1.html :)'); return false;">Siguiente</a>
       </nav>
     </header>
 
-    <div class="grid">
+    <main class="stack">
+      <!-- TEORÍA -->
       <section class="card">
-        <h2>Conceptualización teórica</h2>
-        <div class="theory">
-          <ul>
-            <li><strong>Ambiente:</strong> sistema compuesto por elementos que comparten un espacio e interactúan mediante flujos de materia y energía.</li>
-            <li><strong>Elementos abióticos:</strong> componentes físico-químicos (agua, aire, suelo, minerales, clima). Regulan condiciones para procesos biológicos.</li>
-            <li><strong>Elementos bióticos:</strong> organismos vivos (plantas, animales, hongos, bacterias y seres humanos). Dependen de variables abióticas para sobrevivir.</li>
-            <li><strong>Interdependencia:</strong> cambios en temperatura, humedad o disponibilidad de agua pueden modificar la distribución y abundancia de especies.</li>
-          </ul>
-          <div class="callout">
-            <strong>Para explicar en clase:</strong> el ambiente no es “lista de cosas”; es un sistema. Si un factor abiótico cambia, la comunidad biótica responde (adaptación, migración o disminución).
+        <h2>Conceptualización teórica (más completa)</h2>
+
+        <div class="twoCols">
+          <div class="theory">
+            <p>
+              <strong>Ambiente</strong> es un sistema formado por componentes que comparten un espacio y se relacionan mediante
+              <strong>flujos de materia</strong> (nutrientes, agua) y <strong>energía</strong> (radiación solar, calor).
+              No es una lista de “cosas”; es una red de interacciones donde un cambio en una parte puede afectar a las demás.
+            </p>
+
+            <ul>
+              <li>
+                <strong>Elementos abióticos</strong>: factores físicos y químicos que determinan las condiciones del medio
+                (por ejemplo: <em>temperatura, humedad, radiación solar, disponibilidad de agua, composición del suelo, minerales, pH</em>).
+              </li>
+              <li>
+                <strong>Elementos bióticos</strong>: organismos vivos (productores, consumidores y descomponedores) que utilizan
+                recursos del medio y transforman materia y energía (plantas, animales, hongos, bacterias y seres humanos).
+              </li>
+              <li>
+                <strong>Interdependencia</strong>: los seres vivos requieren condiciones abióticas adecuadas para sobrevivir
+                (por ejemplo, las plantas necesitan luz, agua y nutrientes del suelo).
+              </li>
+            </ul>
+
+            <div class="callout">
+              <strong>Clave para explicar:</strong> cuando cambia un factor abiótico (por ejemplo, baja el agua disponible o cambia la temperatura),
+              cambian procesos ecológicos como crecimiento, reproducción, distribución de especies e incluso la cadena alimenticia.
+            </div>
+          </div>
+
+          <div class="theory">
+            <p>
+              <strong>Contexto local (Sololá / cuenca del Lago de Atitlán):</strong> aquí los factores abióticos y bióticos se combinan de forma muy visible
+              por la variación de altitud y microclimas.
+            </p>
+
+            <ul>
+              <li>
+                <strong>Abióticos locales:</strong> altitud (zonas más frías), temperatura y humedad variables, radiación solar en época seca,
+                disponibilidad de agua superficial (ríos, nacimientos y lago), suelos de origen volcánico, vientos y pendiente del terreno.
+              </li>
+              <li>
+                <strong>Bióticos locales:</strong> vegetación de montaña (por ejemplo, bosques y matorrales), cultivos (milpa y huertos),
+                fauna (aves, insectos polinizadores), vida acuática del lago (plantas acuáticas, peces y microorganismos).
+              </li>
+              <li>
+                <strong>Ejemplo de relación:</strong> si aumenta el aporte de nutrientes al agua (por actividades humanas),
+                pueden cambiar las comunidades biológicas del lago (por ejemplo, proliferación de algas o cambios en plantas acuáticas),
+                lo que afecta a otros organismos y a las personas.
+              </li>
+            </ul>
+
+            <div class="callout">
+              <strong>Pregunta guía:</strong> ¿qué factor abiótico de tu comunidad (agua, temperatura, suelo, luz) influye más en la vida diaria y por qué?
+            </div>
           </div>
         </div>
+
         <div class="row">
-          <span class="badge">Meta</span>
-          <span class="muted">Distinguir biótico vs abiótico y explicar su relación.</span>
+          <span class="badge">Aprendizaje esperado</span>
+          <span class="muted">Clasificar biótico/abiótico y explicar relaciones con ejemplos del entorno local.</span>
         </div>
       </section>
 
+      <!-- MAPA MENTAL -->
       <section class="card">
         <h2>Mapa mental interactivo</h2>
-        <p class="muted" style="margin:8px 0 0;">Usa “Expandir/Colapsar” para explicar por secciones.</p>
+        <p class="muted" style="margin:8px 0 0;">
+          Puedes usarlo para exponer: abre/cierra ramas y haz zoom. También puedes verlo en pantalla completa.
+        </p>
 
-        <div class="mapWrap">
+        <div class="mapWrap" aria-label="Mapa mental">
           <svg id="mindmap" class="markmap"></svg>
         </div>
 
@@ -289,106 +417,180 @@
           <button class="btn" id="btnFit">Ajustar</button>
           <button class="btn" id="btnToggle">Expandir/Colapsar</button>
           <button class="btn" id="btnReset">Reiniciar</button>
+          <button class="btn primary" id="btnFullscreen">Pantalla completa</button>
         </div>
+      </section>
 
-        <hr style="border:none;border-top:1px solid rgba(11,16,32,.10); margin:14px 0;">
+      <!-- MINI-JUEGO -->
+      <section class="card">
+        <h2>Mini-juego / Evaluación: clasificación biótico–abiótico</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          En computadora: arrastra y suelta. En celular: toca un concepto para seleccionarlo y usa “Enviar”.
+        </p>
 
-        <h2>Mini-juego / Evaluación</h2>
-        <p class="muted" style="margin:8px 0 0;">Arrastra cada concepto a la categoría correcta.</p>
-
-        <div class="gameArea">
+        <div class="gameGrid">
           <div class="bin" id="bin-biotico" data-bin="biotico">
-            <h3>Biótico (seres vivos)</h3>
+            <h3>Biótico (organismos)</h3>
             <div class="chips" id="chips-biotico"></div>
+            <div class="small">Incluye productores, consumidores y descomponedores.</div>
           </div>
+
           <div class="bin" id="bin-abiotico" data-bin="abiotico">
             <h3>Abiótico (factores físico-químicos)</h3>
             <div class="chips" id="chips-abiotico"></div>
+            <div class="small">Condiciona la vida: agua, luz, clima, suelo, minerales, etc.</div>
           </div>
         </div>
 
-        <div class="card" style="margin-top:12px; background: rgba(255,255,255,.52); box-shadow: var(--shadow-soft);">
+        <hr class="divider">
+
+        <div class="card" style="background: rgba(255,255,255,.55); box-shadow: var(--shadow-soft);">
           <h2 style="margin-bottom:8px;">Banco de conceptos</h2>
           <div class="chips" id="bank"></div>
+
           <div class="row">
+            <button class="btn" id="btnToBiotico" title="Modo celular: asigna el concepto seleccionado">Enviar a Biótico</button>
+            <button class="btn" id="btnToAbiotico" title="Modo celular: asigna el concepto seleccionado">Enviar a Abiótico</button>
             <button class="btn primary" id="btnCheck">Evaluar</button>
-            <button class="btn" id="btnClear">Reiniciar juego</button>
-            <span class="badge" id="score">Resultado: 0/8</span>
+            <button class="btn" id="btnClear">Reiniciar</button>
+            <span class="badge" id="score">Resultado: 0/10</span>
           </div>
-          <div class="result" id="feedback">Arrastra y luego presiona <strong>Evaluar</strong>.</div>
+
+          <div class="result" id="feedback">
+            1) Clasifica todos los conceptos. 2) Presiona <strong>Evaluar</strong>. 3) Si fallas, corrige e intenta de nuevo.
+          </div>
         </div>
       </section>
+    </main>
+  </div>
+
+  <!-- Modal pantalla completa -->
+  <div class="modal" id="modal">
+    <div class="modalBox" role="dialog" aria-modal="true" aria-label="Mapa mental en pantalla completa">
+      <div class="modalTop">
+        <strong>Mapa mental · 1.1</strong>
+        <div class="row" style="margin:0;">
+          <button class="btn" id="modalFit">Ajustar</button>
+          <button class="btn" id="modalToggle">Expandir/Colapsar</button>
+          <button class="btn primary" id="modalClose">Cerrar</button>
+        </div>
+      </div>
+      <div class="modalMap">
+        <svg id="mindmapFull" class="markmap"></svg>
+      </div>
     </div>
   </div>
 
   <script>
     // -------------------------
-    // 1) MARKMAP
+    // MARKMAP (dos vistas: normal y fullscreen)
     // -------------------------
     const md = `
 # 1.1 Elementos que conforman el ambiente
-## Ambiente
-- Sistema de elementos que comparten un espacio
-- Interacción e interdependencia
-## Clasificación
-### Elementos abióticos
+## Ambiente (sistema)
+- Componentes que comparten un espacio
+- Flujos de materia y energía
+- Interacciones e interdependencia
+## Elementos abióticos (físico-químicos)
+- Agua (lago, ríos, nacimientos)
 - Aire
-- Agua
-- Minerales y rocas
-- Suelo
+- Suelo y minerales (origen volcánico en muchas zonas)
 - Clima
   - Temperatura
-  - Humedad
-  - Altitud
-  - Cantidad de luz (radiación)
-### Elementos bióticos
-- Plantas
-- Animales
-- Hongos
-- Bacterias
-- Seres humanos
+  - Humedad / precipitación
+  - Radiación solar
+  - Viento
+- Relieve / pendiente
+- Altitud (microclimas)
+## Elementos bióticos (organismos)
+- Productores
+  - Plantas terrestres (bosques, cultivos)
+  - Plantas acuáticas
+- Consumidores
+  - Insectos, aves, mamíferos
+  - Fauna acuática
+- Descomponedores
+  - Hongos y bacterias
+## Contexto Sololá / cuenca del Lago de Atitlán
+- Los microclimas cambian con la altitud y el relieve
+- La disponibilidad y calidad del agua condiciona la vida acuática
+- Actividades humanas pueden modificar condiciones abióticas (ej.: nutrientes en el agua)
 ## Relación biótico–abiótico
-- Dependencia de condiciones físico-químicas
-- Cambios abióticos alteran procesos ecológicos
+- Cambios abióticos alteran distribución y abundancia de especies
+- Respuestas: adaptación, migración, disminución
 `.trim();
 
     let mm = null;
+    let mmFull = null;
     let expanded = true;
+    let expandedFull = true;
 
-    function renderMarkmap(){
+    function buildMap(targetId) {
       const { Transformer, Markmap } = window.markmap;
       const transformer = new Transformer();
       const { root } = transformer.transform(md);
-
-      const svg = document.getElementById('mindmap');
+      const svg = document.getElementById(targetId);
       while (svg.firstChild) svg.removeChild(svg.firstChild);
+      return Markmap.create(svg, { autoFit: true, duration: 250 }, root);
+    }
 
-      mm = Markmap.create(svg, { autoFit: true, duration: 250 }, root);
+    function renderMaps(){
+      mm = buildMap('mindmap');
       expanded = true;
     }
 
+    function renderFull(){
+      mmFull = buildMap('mindmapFull');
+      expandedFull = true;
+    }
+
+    // Botones normal
     document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
     document.getElementById('btnToggle').addEventListener('click', () => {
       if (!mm) return;
       if (expanded) mm.foldAll(); else mm.unfoldAll();
       expanded = !expanded;
     });
-    document.getElementById('btnReset').addEventListener('click', renderMarkmap);
+    document.getElementById('btnReset').addEventListener('click', renderMaps);
 
-    renderMarkmap();
+    // Fullscreen modal
+    const modal = document.getElementById('modal');
+    document.getElementById('btnFullscreen').addEventListener('click', () => {
+      modal.classList.add('open');
+      // renderiza cuando se abre para que mida bien el tamaño
+      setTimeout(() => {
+        renderFull();
+        mmFull && mmFull.fit();
+      }, 0);
+    });
+    document.getElementById('modalClose').addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+
+    document.getElementById('modalFit').addEventListener('click', () => mmFull && mmFull.fit());
+    document.getElementById('modalToggle').addEventListener('click', () => {
+      if (!mmFull) return;
+      if (expandedFull) mmFull.foldAll(); else mmFull.unfoldAll();
+      expandedFull = !expandedFull;
+    });
+
+    renderMaps();
 
     // -------------------------
-    // 2) MINI-JUEGO (drag & drop)
+    // MINI-JUEGO: drag&drop + tap-to-assign
     // -------------------------
     const ITEMS = [
+      // Abióticos
       { id: "agua", label: "Agua", correct: "abiotico" },
       { id: "aire", label: "Aire", correct: "abiotico" },
-      { id: "rocas", label: "Rocas", correct: "abiotico" },
       { id: "suelo", label: "Suelo", correct: "abiotico" },
+      { id: "minerales", label: "Minerales", correct: "abiotico" },
+      { id: "temperatura", label: "Temperatura", correct: "abiotico" },
+      // Bióticos
       { id: "plantas", label: "Plantas", correct: "biotico" },
+      { id: "animales", label: "Animales", correct: "biotico" },
       { id: "hongos", label: "Hongos", correct: "biotico" },
       { id: "bacterias", label: "Bacterias", correct: "biotico" },
-      { id: "animales", label: "Animales", correct: "biotico" },
+      { id: "humanos", label: "Seres humanos", correct: "biotico" },
     ];
 
     const bank = document.getElementById('bank');
@@ -399,26 +601,44 @@
     const scoreEl = document.getElementById('score');
     const feedback = document.getElementById('feedback');
 
+    let selectedId = null;
+
     function makeChip(item){
       const el = document.createElement('div');
       el.className = 'chip';
       el.textContent = item.label;
-      el.draggable = true;
+      el.draggable = true; // PC
+
       el.dataset.id = item.id;
+
+      // Drag start (PC)
       el.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text/plain', item.id);
+        try {
+          e.dataTransfer.setData('text/plain', item.id);
+          e.dataTransfer.effectAllowed = 'move';
+        } catch (_) {}
       });
+
+      // Tap select (cel)
+      el.addEventListener('click', () => {
+        // limpia selección previa
+        document.querySelectorAll('.chip.selected').forEach(x => x.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedId = item.id;
+      });
+
       return el;
     }
 
     function resetGame(){
+      selectedId = null;
       bank.innerHTML = '';
       chipsA.innerHTML = '';
       chipsB.innerHTML = '';
       ITEMS.forEach(it => bank.appendChild(makeChip(it)));
       scoreEl.textContent = `Resultado: 0/${ITEMS.length}`;
       feedback.className = 'result';
-      feedback.textContent = 'Arrastra y luego presiona Evaluar.';
+      feedback.textContent = 'Clasifica todos los conceptos y presiona Evaluar.';
     }
 
     function allowDrop(bin){
@@ -433,10 +653,29 @@
         const id = e.dataTransfer.getData('text/plain');
         const chip = document.querySelector(`.chip[data-id="${id}"]`);
         if (!chip) return;
-        const target = bin.dataset.bin;
-        (target === 'biotico' ? chipsB : chipsA).appendChild(chip);
+        moveChipToBin(id, bin.dataset.bin);
+      });
+
+      // Tap-to-assign: si tocas la caja, también manda el seleccionado
+      bin.addEventListener('click', () => {
+        if (!selectedId) return;
+        moveChipToBin(selectedId, bin.dataset.bin);
       });
     }
+
+    function moveChipToBin(id, target){
+      const chip = document.querySelector(`.chip[data-id="${id}"]`);
+      if (!chip) return;
+
+      // quita selección visual
+      chip.classList.remove('selected');
+      selectedId = null;
+
+      if (target === 'biotico') chipsB.appendChild(chip);
+      if (target === 'abiotico') chipsA.appendChild(chip);
+      if (target === 'bank') bank.appendChild(chip);
+    }
+
     allowDrop(binA);
     allowDrop(binB);
 
@@ -447,8 +686,10 @@
       return 'bank';
     }
 
-    document.getElementById('btnCheck').addEventListener('click', () => {
-      let correct = 0, unplaced = 0;
+    function evaluate(){
+      let correct = 0;
+      let unplaced = 0;
+
       ITEMS.forEach(it => {
         const pos = whereIs(it.id);
         if (pos === 'bank') unplaced++;
@@ -465,14 +706,25 @@
 
       if (correct === ITEMS.length) {
         feedback.className = 'result ok';
-        feedback.innerHTML = `<strong>Excelente.</strong> Clasificación correcta. Explica: ¿cómo influye el clima en los seres vivos?`;
+        feedback.innerHTML = `<strong>Excelente.</strong> Ahora explica con un ejemplo de Sololá: ¿cómo el agua y el suelo influyen en las plantas y animales?`;
       } else {
         feedback.className = 'result no';
         feedback.innerHTML = `Vas bien: <strong>${correct}/${ITEMS.length}</strong>. Corrige los que no coinciden y vuelve a intentar.`;
       }
-    });
+    }
 
+    document.getElementById('btnCheck').addEventListener('click', evaluate);
     document.getElementById('btnClear').addEventListener('click', resetGame);
+
+    // Botones modo celular
+    document.getElementById('btnToBiotico').addEventListener('click', () => {
+      if (!selectedId) { alert('Primero toca un concepto para seleccionarlo.'); return; }
+      moveChipToBin(selectedId, 'biotico');
+    });
+    document.getElementById('btnToAbiotico').addEventListener('click', () => {
+      if (!selectedId) { alert('Primero toca un concepto para seleccionarlo.'); return; }
+      moveChipToBin(selectedId, 'abiotico');
+    });
 
     resetGame();
   </script>
