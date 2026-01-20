@@ -3,42 +3,47 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Taller de módulos — EPC AALA</title>
+  <title>Taller de Módulos · EPC AALA</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --ink: #0b1020;
-      --muted: rgba(11,16,32,.72);
-      --glass: rgba(255,255,255,.66);
-      --glass2: rgba(255,255,255,.52);
-      --stroke: rgba(11,16,32,.10);
-      --shadow: 0 18px 45px rgba(11,16,32,.16);
-      --shadow-soft: 0 10px 24px rgba(11,16,32,.12);
-      --radius: 24px;
-    }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      color: var(--ink);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(1100px 760px at 12% 12%, rgba(175, 255, 216, .88), transparent 58%),
-        radial-gradient(980px 760px at 82% 18%, rgba(170, 226, 255, .88), transparent 62%),
-        radial-gradient(1200px 920px at 48% 96%, rgba(255, 191, 228, .76), transparent 58%),
-        linear-gradient(135deg, #eafff4 0%, #e8f6ff 45%, #fff0f7 100%);
-      min-height:100vh;
-    }
-    .wrap{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 26px 18px 64px;
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --glass:rgba(255,255,255,.66);
+      --stroke:rgba(11,16,32,.10);
+      --shadow:0 18px 45px rgba(11,16,32,.16);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.12);
+      --radius:24px;
+
+      /* badges */
+      --ok: rgba(45, 160, 220, .18);
+      --warn: rgba(120, 190, 255, .18);
+      --info: rgba(160, 220, 255, .18);
     }
 
-    /* Header */
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      /* SOLO azules y celestes pasteles */
+      background:
+        radial-gradient(1100px 760px at 12% 12%, rgba(185, 235, 255, .92), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, rgba(160, 210, 255, .90), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(210, 245, 255, .88), transparent 58%),
+        linear-gradient(135deg, #ecf9ff 0%, #e7f6ff 45%, #effbff 100%);
+
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
     header{
       border: 1px solid var(--stroke);
       background: var(--glass);
@@ -46,188 +51,107 @@
       box-shadow: var(--shadow-soft);
       backdrop-filter: blur(12px);
       padding: 18px;
-      position: relative;
-      overflow:hidden;
-    }
-    header::after{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(520px 260px at 12% 15%, rgba(170, 255, 216,.52), transparent 62%),
-        radial-gradient(520px 280px at 86% 20%, rgba(170, 226, 255,.52), transparent 62%),
-        radial-gradient(680px 380px at 52% 110%, rgba(255, 191, 228,.45), transparent 62%);
-      pointer-events:none;
-    }
-    header > *{ position:relative; }
-
-    .topline{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap: 14px;
+      align-items:flex-start;
+      gap: 12px;
       flex-wrap:wrap;
     }
-    .brand{
-      display:flex;
-      gap: 12px;
-      align-items:center;
-      min-width: 0;
-    }
-    .logo{
-      width: 46px; height:46px;
-      border-radius: 18px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.96), rgba(255,255,255,.55)),
-        linear-gradient(135deg, rgba(160, 255, 210,.95), rgba(175, 220, 255,.95), rgba(255, 185, 230,.92));
-      border: 1px solid rgba(11,16,32,.08);
-      box-shadow: 0 10px 20px rgba(11,16,32,.10);
-      display:grid;
-      place-items:center;
-      font-family: Outfit, Inter, system-ui;
-      font-weight: 800;
-      letter-spacing: .5px;
-      user-select:none;
-    }
-    .brand h1{
+    .title{
       margin:0;
       font-family: Outfit, Inter, system-ui;
       font-weight: 800;
-      font-size: clamp(20px, 2.6vw, 30px);
-      line-height: 1.05;
-      letter-spacing: .2px;
+      font-size: clamp(22px, 2.7vw, 34px);
+      line-height: 1.12;
+      letter-spacing:.2px;
     }
-    .brand p{
-      margin: 6px 0 0;
+    .subtitle{
+      margin: 8px 0 0;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.5;
-      max-width: 70ch;
+      max-width: 90ch;
     }
-    .badge{
+
+    .pillRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .pill{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding: 9px 12px;
+      padding: 7px 10px;
       border-radius: 999px;
       border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.55);
+      background: rgba(255,255,255,.58);
+      font-weight: 800;
+      font-size: 12px;
       color: rgba(11,16,32,.78);
-      font-weight: 700;
-      font-size: 13px;
       white-space: nowrap;
     }
 
-    /* Section title */
-    .sectionTitle{
-      margin: 18px 2px 12px;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .sectionTitle h2{
-      margin:0;
-      font-family: Outfit, Inter, system-ui;
-      font-weight: 800;
-      letter-spacing:.2px;
-      font-size: 18px;
-    }
-    .sectionTitle p{
-      margin:0;
-      color: var(--muted);
-      font-size: 13px;
-    }
+    .stack{ margin-top: 14px; display:grid; gap: 14px; }
 
-    /* Cards */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 14px;
-    }
     .card{
-      border: 1px solid var(--stroke);
-      background: var(--glass2);
+      border:1px solid var(--stroke);
+      background: var(--glass);
       border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
       padding: 16px;
-      position: relative;
-      overflow:hidden;
-      transition: transform .13s ease, box-shadow .13s ease, border-color .13s ease;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      min-height: 178px;
     }
-    .card::after{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(420px 220px at 20% 10%, rgba(170,255,216,.35), transparent 62%),
-        radial-gradient(420px 220px at 80% 15%, rgba(170,226,255,.35), transparent 62%),
-        radial-gradient(520px 300px at 50% 120%, rgba(255,191,228,.28), transparent 62%);
-      opacity:.9;
-      pointer-events:none;
-    }
-    .card > *{ position:relative; }
-
-    .card:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 22px 60px rgba(11,16,32,.17);
-      border-color: rgba(11,16,32,.16);
-    }
-    .tagRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.58);
-      font-weight: 800;
-      font-size: 12px;
-      color: rgba(11,16,32,.78);
-    }
-    .status{
-      display:inline-flex;
-      align-items:center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.58);
-      font-weight: 800;
-      font-size: 12px;
-      color: rgba(11,16,32,.70);
-    }
-    .card h3{
-      margin: 2px 0 0;
+    .card h2{
+      margin:0;
       font-family: Outfit, Inter, system-ui;
       font-weight: 800;
       font-size: 16px;
-      letter-spacing: .2px;
+      letter-spacing:.2px;
     }
-    .card p{
+    .muted{ color: var(--muted); }
+
+    .moduleGrid{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .moduleHero{
+      border-radius: 22px;
+      border: 1px solid rgba(11,16,32,.10);
+
+      /* SOLO azules y celestes pasteles */
+      background: linear-gradient(135deg,
+        rgba(185,235,255,.62),
+        rgba(160,210,255,.58),
+        rgba(210,245,255,.56)
+      );
+
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .moduleHeroTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .moduleName{
       margin:0;
-      color: var(--muted);
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .moduleMeta{
+      margin: 6px 0 0;
+      color: rgba(11,16,32,.78);
       font-size: 13px;
       line-height: 1.45;
+      max-width: 90ch;
     }
-    .actions{
-      margin-top:auto;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    a.btn{
+
+    .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -244,27 +168,93 @@
       user-select:none;
       white-space: nowrap;
     }
-    a.btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
-    a.btn:active{ transform: translateY(1px); }
-    a.btn.primary{
-      background: linear-gradient(135deg, rgba(170,255,216,.90), rgba(170,226,255,.90), rgba(255,191,228,.82));
-      border-color: rgba(11,16,32,.12);
-    }
-    a.btn.primary:hover{
-      background: linear-gradient(135deg, rgba(170,255,216,.98), rgba(170,226,255,.98), rgba(255,191,228,.90));
+    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+
+    .btn.primary{
+      /* SOLO azules y celestes pasteles */
+      background: linear-gradient(135deg,
+        rgba(185,235,255,.92),
+        rgba(160,210,255,.90),
+        rgba(210,245,255,.90)
+      );
     }
 
-    .note{
-      margin-top: 14px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.55);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      color: rgba(11,16,32,.72);
-      font-size: 13px;
-      line-height: 1.45;
+    .subGrid{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1020px){ .subGrid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px){ .subGrid{ grid-template-columns: 1fr; } }
+
+    .subCard{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      padding: 12px;
       box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(12px);
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      min-height: 136px;
+    }
+    .subTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .subTitle{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing:.2px;
+      line-height: 1.2;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      background: rgba(255,255,255,.60);
+      white-space: nowrap;
+    }
+    .tag.ok{ background: var(--ok); }
+    .tag.todo{ background: var(--warn); }
+
+    .subDesc{
+      margin:0;
+      color: rgba(11,16,32,.72);
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .subActions{
+      margin-top:auto;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .ghost{
+      opacity: .62;
+      pointer-events:none;
+      filter: grayscale(.12);
+    }
+
+    footer{
+      margin-top: 14px;
+      color: rgba(11,16,32,.62);
+      font-size: 12px;
+      line-height: 1.4;
+      text-align:center;
     }
   </style>
 </head>
@@ -272,113 +262,213 @@
 <body>
   <div class="wrap">
     <header>
-      <div class="topline">
-        <div class="brand">
-          <div class="logo">EPC</div>
-          <div>
-            <h1>Taller de módulos</h1>
-            <p>Contenido por módulos con subtemas interactivos (teoría, mapa mental y evaluación).</p>
-          </div>
-        </div>
-        <div class="badge">EPC · AALA · 2026</div>
+      <div>
+        <h1 class="title">Taller de Módulos · EPC AALA</h1>
+        <p class="subtitle">
+          Portal interactivo para desarrollar los subtemas del Módulo 1 con teoría, mapas conceptuales/mentales y mini-juegos de evaluación.
+          (Los enlaces se activan automáticamente cuando subas cada archivo HTML.)
+        </p>
+      </div>
+
+      <div class="pillRow">
+        <span class="pill">GitHub Pages activo</span>
+        <span class="pill">Sololá / cuenca Lago de Atitlán</span>
+        <span class="pill">Módulo 1 en progreso</span>
       </div>
     </header>
 
-    <div class="sectionTitle">
-      <h2>Módulos</h2>
-      <p>Selecciona un módulo para comenzar.</p>
-    </div>
+    <main class="stack">
+      <section class="card">
+        <h2>Módulo 1 · Medio ambiente</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          Subtemas del módulo listos para irse activando. Cada subtema incluye: sustentación teórica + mapas/diagramas interactivos + mini-juego.
+        </p>
 
-    <section class="grid" aria-label="Tarjetas de módulos">
-      <article class="card">
-        <div class="tagRow">
-          <span class="tag">Módulo 1</span>
-          <span class="status">Activo</span>
-        </div>
-        <h3>Medio ambiente</h3>
-        <p>Subtemas 1.1 a 1.10 (mapa mental + mini-juego).</p>
-        <div class="actions">
-          <a class="btn primary" href="1-1.html">Entrar (1.1)</a>
-          <a class="btn" href="#" onclick="alert('Luego creamos la página del módulo con las 10 subtarjetas.'); return false;">Ver subtemas</a>
-        </div>
-      </article>
+        <div class="moduleGrid">
+          <div class="moduleHero">
+            <div class="moduleHeroTop">
+              <div>
+                <h3 class="moduleName">Acceso rápido</h3>
+                <p class="moduleMeta">
+                  Si ya subiste un subtema, entra directo desde aquí. Si aún no existe el archivo, se mostrará como “Próximamente”.
+                </p>
+              </div>
+              <a class="btn primary" href="#subtemas">Ver subtemas</a>
+            </div>
 
-      <article class="card">
-        <div class="tagRow">
-          <span class="tag">Módulo 2</span>
-          <span class="status">Próximamente</span>
-        </div>
-        <h3>El bosque</h3>
-        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
-        <div class="actions">
-          <a class="btn" href="#" onclick="alert('Módulo en construcción.'); return false;">Abrir</a>
-        </div>
-      </article>
+            <div class="subGrid" id="subtemas">
+              <div class="subCard">
+                <div class="subTop">
+                  <h4 class="subTitle">1.1 Elementos que conforman el ambiente</h4>
+                  <span class="tag ok" data-file="1-1.html">Disponible</span>
+                </div>
+                <p class="subDesc">Biótico vs abiótico, interdependencia y contexto local.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-1.html">Abrir</a>
+                </div>
+              </div>
 
-      <article class="card">
-        <div class="tagRow">
-          <span class="tag">Módulo 3</span>
-          <span class="status">Próximamente</span>
-        </div>
-        <h3>El agua y las cuencas hidrográficas</h3>
-        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
-        <div class="actions">
-          <a class="btn" href="#" onclick="alert('Módulo en construcción.'); return false;">Abrir</a>
-        </div>
-      </article>
+              <div class="subCard">
+                <div class="subTop">
+                  <h4 class="subTitle">1.2 Cadenas alimenticias o tróficas</h4>
+                  <span class="tag ok" data-file="1-2.html">Disponible</span>
+                </div>
+                <p class="subDesc">Niveles tróficos, flujo de energía y ejemplos terrestre/acuático.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-2.html">Abrir</a>
+                </div>
+              </div>
 
-      <article class="card">
-        <div class="tagRow">
-          <span class="tag">Módulo 4</span>
-          <span class="status">Próximamente</span>
-        </div>
-        <h3>El suelo</h3>
-        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
-        <div class="actions">
-          <a class="btn" href="#" onclick="alert('Módulo en construcción.'); return false;">Abrir</a>
-        </div>
-      </article>
+              <div class="subCard ghost">
+                <div class="subTop">
+                  <h4 class="subTitle">1.3 El ecosistema y su organización</h4>
+                  <span class="tag todo" data-file="1-3.html">Próximamente</span>
+                </div>
+                <p class="subDesc">Niveles de organización y relaciones dentro del ecosistema.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-3.html" aria-disabled="true">Abrir</a>
+                </div>
+              </div>
 
-      <article class="card">
-        <div class="tagRow">
-          <span class="tag">Módulo 5</span>
-          <span class="status">Próximamente</span>
-        </div>
-        <h3>Saneamiento ambiental</h3>
-        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
-        <div class="actions">
-          <a class="btn" href="#" onclick="alert('Módulo en construcción.'); return false;">Abrir</a>
-        </div>
-      </article>
+              <div class="subCard ghost">
+                <div class="subTop">
+                  <h4 class="subTitle">1.4 Ecosistemas en Sololá y cuenca del Lago de Atitlán</h4>
+                  <span class="tag todo" data-file="1-4.html">Próximamente</span>
+                </div>
+                <p class="subDesc">Ecosistemas locales y su relación con la conservación.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-4.html" aria-disabled="true">Abrir</a>
+                </div>
+              </div>
 
-      <article class="card">
-        <div class="tagRow">
-          <span class="tag">Módulo 6</span>
-          <span class="status">Próximamente</span>
-        </div>
-        <h3>Conservación de los bienes y servicios ambientales</h3>
-        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
-        <div class="actions">
-          <a class="btn" href="#" onclick="alert('Módulo en construcción.'); return false;">Abrir</a>
-        </div>
-      </article>
+              <div class="subCard ghost">
+                <div class="subTop">
+                  <h4 class="subTitle">1.5 Recursos naturales</h4>
+                  <span class="tag todo" data-file="1-5.html">Próximamente</span>
+                </div>
+                <p class="subDesc">Renovables/no renovables e implicaciones de uso.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-5.html" aria-disabled="true">Abrir</a>
+                </div>
+              </div>
 
-      <article class="card">
-        <div class="tagRow">
-          <span class="tag">Módulo 7</span>
-          <span class="status">Próximamente</span>
-        </div>
-        <h3>Valorando recursos naturales y culturales</h3>
-        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
-        <div class="actions">
-          <a class="btn" href="#" onclick="alert('Módulo en construcción.'); return false;">Abrir</a>
-        </div>
-      </article>
-    </section>
+              <div class="subCard ghost">
+                <div class="subTop">
+                  <h4 class="subTitle">1.6 Biodiversidad</h4>
+                  <span class="tag todo" data-file="1-6.html">Próximamente</span>
+                </div>
+                <p class="subDesc">Diversidad genética, de especies y ecosistemas.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-6.html" aria-disabled="true">Abrir</a>
+                </div>
+              </div>
 
-    <div class="note">
-      Este sitio está en evolución: vamos subiendo subtemas uno por uno para mantenerlo ordenado y bien explicado.
-    </div>
+              <div class="subCard ghost">
+                <div class="subTop">
+                  <h4 class="subTitle">1.7 Deterioro ambiental</h4>
+                  <span class="tag todo" data-file="1-7.html">Próximamente</span>
+                </div>
+                <p class="subDesc">Causas, consecuencias y análisis de impacto.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-7.html" aria-disabled="true">Abrir</a>
+                </div>
+              </div>
+
+              <div class="subCard ghost">
+                <div class="subTop">
+                  <h4 class="subTitle">1.8 Cambio climático</h4>
+                  <span class="tag todo" data-file="1-8.html">Próximamente</span>
+                </div>
+                <p class="subDesc">Causas, efectos, mitigación y adaptación.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-8.html" aria-disabled="true">Abrir</a>
+                </div>
+              </div>
+
+              <div class="subCard ghost">
+                <div class="subTop">
+                  <h4 class="subTitle">1.9 Huella ecológica</h4>
+                  <span class="tag todo" data-file="1-9.html">Próximamente</span>
+                </div>
+                <p class="subDesc">Impacto del consumo y hábitos cotidianos.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-9.html" aria-disabled="true">Abrir</a>
+                </div>
+              </div>
+
+              <div class="subCard ghost">
+                <div class="subTop">
+                  <h4 class="subTitle">1.10 Estrategias para contrarrestar problemas ambientales</h4>
+                  <span class="tag todo" data-file="1-10.html">Próximamente</span>
+                </div>
+                <p class="subDesc">Acciones individuales y comunitarias de conservación.</p>
+                <div class="subActions">
+                  <a class="btn" href="1-10.html" aria-disabled="true">Abrir</a>
+                </div>
+              </div>
+            </div>
+
+            <p class="muted" style="margin:12px 0 0; font-size:12px;">
+              Este index activa/desactiva tarjetas automáticamente según existan los archivos (así no lo editas cada rato).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Módulos 2–7</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          Los activaremos cuando avances en el índice. Por ahora, el enfoque es completar Módulo 1.
+        </p>
+      </section>
+
+      <footer>
+        EPC AALA · Sitio estático en GitHub Pages · Si no ves cambios, recarga con Ctrl+F5
+      </footer>
+    </main>
   </div>
+
+  <script>
+    // Activación automática de subtarjetas:
+    // Si el archivo existe en GitHub Pages => "Disponible"
+    // Si no existe => "Próximamente" y deshabilita el botón
+    (async () => {
+      const tags = [...document.querySelectorAll('[data-file]')];
+      const base = location.href.replace(/\/index\.html.*$/,'/').replace(/#.*$/,'');
+
+      await Promise.all(tags.map(async (tag) => {
+        const file = tag.getAttribute('data-file');
+        const url = new URL(file, base).toString();
+
+        try{
+          const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+          const ok = res.ok;
+
+          const card = tag.closest('.subCard');
+          const link = card.querySelector('a.btn');
+
+          if (ok){
+            tag.textContent = 'Disponible';
+            tag.classList.remove('todo');
+            tag.classList.add('ok');
+            card.classList.remove('ghost');
+            link.setAttribute('aria-disabled', 'false');
+            link.style.pointerEvents = 'auto';
+            link.style.opacity = '1';
+          } else {
+            tag.textContent = 'Próximamente';
+            tag.classList.remove('ok');
+            tag.classList.add('todo');
+            card.classList.add('ghost');
+            link.setAttribute('aria-disabled', 'true');
+            link.style.pointerEvents = 'none';
+            link.style.opacity = '.6';
+          }
+        }catch(_){
+          // no rompemos nada si el navegador no permite HEAD o hay error de red
+        }
+      }));
+    })();
+  </script>
 </body>
 </html>
