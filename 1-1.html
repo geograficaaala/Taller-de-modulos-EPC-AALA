@@ -9,18 +9,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Markmap (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
   <style>
     :root{
       --ink:#0b1020;
       --muted:rgba(11,16,32,.72);
-      --glass:rgba(255,255,255,.62);
+      --glass:rgba(255,255,255,.66);
       --stroke:rgba(11,16,32,.10);
       --shadow:0 18px 45px rgba(11,16,32,.16);
       --shadow-soft:0 10px 24px rgba(11,16,32,.12);
-      --radius:22px;
+      --radius:24px;
 
       --good: rgba(30, 160, 90, .20);
       --bad: rgba(210, 70, 100, .18);
@@ -32,44 +31,42 @@
       color:var(--ink);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(1000px 700px at 15% 10%, rgba(175, 255, 216, .85), transparent 55%),
-        radial-gradient(950px 740px at 80% 20%, rgba(170, 226, 255, .85), transparent 60%),
-        radial-gradient(1100px 900px at 45% 95%, rgba(255, 191, 228, .75), transparent 55%),
+        radial-gradient(1100px 760px at 12% 12%, rgba(175, 255, 216, .88), transparent 58%),
+        radial-gradient(980px 760px at 82% 18%, rgba(170, 226, 255, .88), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(255, 191, 228, .76), transparent 58%),
         linear-gradient(135deg, #eafff4 0%, #e8f6ff 45%, #fff0f7 100%);
       min-height:100vh;
     }
     .wrap{
-      max-width: 1150px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 22px 18px 60px;
+      padding: 26px 18px 64px;
     }
 
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      padding: 14px 16px;
-      border:1px solid var(--stroke);
+    header{
+      border: 1px solid var(--stroke);
       background: var(--glass);
       border-radius: var(--radius);
       box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(10px);
-    }
-    .title{
-      min-width:0;
+      backdrop-filter: blur(12px);
+      padding: 16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
     }
     .kicker{
       font-size: 12px;
       color: var(--muted);
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing:.3px;
     }
     h1{
-      margin: 4px 0 0;
+      margin: 6px 0 0;
       font-family: Outfit, Inter, system-ui;
       font-weight: 800;
-      font-size: clamp(18px, 2.4vw, 26px);
+      font-size: clamp(20px, 2.5vw, 28px);
       line-height: 1.15;
       letter-spacing:.2px;
     }
@@ -78,11 +75,13 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.45;
+      max-width: 70ch;
     }
     .nav{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
+      align-items:center;
     }
     .btn{
       display:inline-flex;
@@ -101,10 +100,10 @@
       user-select:none;
       white-space: nowrap;
     }
-    .btn:hover{ background: rgba(255,255,255,.78); border-color: rgba(11,16,32,.18); }
+    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
     .btn:active{ transform: translateY(1px); }
     .btn.primary{
-      background: linear-gradient(135deg, rgba(170,255,216,.85), rgba(170,226,255,.85), rgba(255,191,228,.78));
+      background: linear-gradient(135deg, rgba(170,255,216,.90), rgba(170,226,255,.90), rgba(255,191,228,.82));
     }
 
     .grid{
@@ -117,12 +116,13 @@
     @media (max-width: 980px){
       .grid{ grid-template-columns: 1fr; }
     }
+
     .card{
       border:1px solid var(--stroke);
       background: var(--glass);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       padding: 16px;
     }
     .card h2{
@@ -132,12 +132,10 @@
       font-size: 16px;
       letter-spacing:.2px;
     }
-    .muted{ color: var(--muted); }
-
     .theory{
       margin-top: 10px;
       line-height: 1.55;
-      color: rgba(11,16,32,.88);
+      color: rgba(11,16,32,.90);
       font-size: 14px;
     }
     .theory ul{ margin: 8px 0 0 18px; }
@@ -148,12 +146,11 @@
       padding: 12px;
       border: 1px solid rgba(11,16,32,.10);
       background: rgba(255,255,255,.55);
-      color: rgba(11,16,32,.85);
+      color: rgba(11,16,32,.86);
       font-size: 13px;
       line-height: 1.45;
     }
 
-    /* Map */
     .mapWrap{
       width:100%;
       height: 460px;
@@ -187,26 +184,6 @@
     }
 
     /* Game */
-    .tabs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .tab{
-      padding: 9px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.55);
-      font-weight: 800;
-      font-size: 13px;
-      cursor:pointer;
-    }
-    .tab.active{
-      outline: 3px solid var(--focus);
-      background: rgba(255,255,255,.72);
-    }
-
     .gameArea{
       margin-top: 12px;
       display:grid;
@@ -218,7 +195,7 @@
     }
     .bin{
       border-radius: 18px;
-      border: 1px dashed rgba(11,16,32,.20);
+      border: 1px dashed rgba(11,16,32,.22);
       background: rgba(255,255,255,.45);
       padding: 12px;
       min-height: 150px;
@@ -239,7 +216,7 @@
       padding: 9px 10px;
       border-radius: 999px;
       border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.72);
+      background: rgba(255,255,255,.75);
       font-weight: 800;
       font-size: 13px;
       cursor: grab;
@@ -248,7 +225,7 @@
     .chip:active{ cursor: grabbing; }
     .bin.dragover{
       outline: 3px solid var(--focus);
-      background: rgba(255,255,255,.60);
+      background: rgba(255,255,255,.62);
     }
 
     .result{
@@ -259,7 +236,7 @@
       padding: 12px;
       font-size: 13px;
       line-height: 1.45;
-      color: rgba(11,16,32,.85);
+      color: rgba(11,16,32,.86);
     }
     .ok{ background: var(--good); border-color: rgba(30,160,90,.28); }
     .no{ background: var(--bad); border-color: rgba(210,70,100,.26); }
@@ -268,48 +245,43 @@
 
 <body>
   <div class="wrap">
-    <header class="topbar">
-      <div class="title">
+    <header>
+      <div>
         <div class="kicker">Módulo 1 · Medio ambiente</div>
         <h1>1.1 Elementos que conforman el ambiente</h1>
-        <p class="subtitle">Teoría breve + mapa mental interactivo + mini-juego de clasificación para evaluar comprensión.</p>
+        <p class="subtitle">Teoría breve + mapa mental interactivo + mini-juego de clasificación.</p>
       </div>
       <nav class="nav">
-        <a class="btn" href="../../index.html">Inicio</a>
-        <a class="btn" href="./index.html">Módulo 1</a>
-        <a class="btn primary" href="./1-2.html" onclick="alert('Aún no existe 1-2.html. Primero trabajemos 1.1 :)'); return false;">Siguiente</a>
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn primary" href="#" onclick="alert('Luego hacemos 1-2.html. Por ahora trabajemos 1-1.html :)'); return false;">Siguiente</a>
       </nav>
     </header>
 
     <div class="grid">
-      <!-- TEORÍA -->
       <section class="card">
         <h2>Conceptualización teórica</h2>
         <div class="theory">
           <ul>
-            <li><strong>Ambiente:</strong> conjunto de elementos naturales que comparten un espacio e interactúan, generando relaciones de interdependencia.</li>
-            <li><strong>Elementos abióticos:</strong> componentes físicos y químicos del entorno (por ejemplo: agua, aire, suelo, minerales, clima). Condicionan los procesos biológicos.</li>
-            <li><strong>Elementos bióticos:</strong> seres vivos que forman parte del ambiente (plantas, animales, hongos, bacterias y seres humanos) y dependen de los abióticos para vivir.</li>
-            <li><strong>Relación clave:</strong> la vida se sostiene por interacciones biótico–abióticas (ej.: plantas necesitan luz, agua y suelo; animales dependen de plantas u otros animales).</li>
+            <li><strong>Ambiente:</strong> sistema compuesto por elementos que comparten un espacio e interactúan mediante flujos de materia y energía.</li>
+            <li><strong>Elementos abióticos:</strong> componentes físico-químicos (agua, aire, suelo, minerales, clima). Regulan condiciones para procesos biológicos.</li>
+            <li><strong>Elementos bióticos:</strong> organismos vivos (plantas, animales, hongos, bacterias y seres humanos). Dependen de variables abióticas para sobrevivir.</li>
+            <li><strong>Interdependencia:</strong> cambios en temperatura, humedad o disponibilidad de agua pueden modificar la distribución y abundancia de especies.</li>
           </ul>
-
           <div class="callout">
-            <strong>Idea central para explicar:</strong> el ambiente funciona como un <em>sistema</em>. Si cambia un factor abiótico (por ejemplo, temperatura o disponibilidad de agua), cambia también la distribución y supervivencia de los seres vivos.
+            <strong>Para explicar en clase:</strong> el ambiente no es “lista de cosas”; es un sistema. Si un factor abiótico cambia, la comunidad biótica responde (adaptación, migración o disminución).
           </div>
         </div>
-
         <div class="row">
-          <span class="badge">Aprendizaje esperado</span>
-          <span class="muted">Distinguir biótico vs abiótico y explicar su interdependencia.</span>
+          <span class="badge">Meta</span>
+          <span class="muted">Distinguir biótico vs abiótico y explicar su relación.</span>
         </div>
       </section>
 
-      <!-- MAPA + JUEGO -->
       <section class="card">
         <h2>Mapa mental interactivo</h2>
-        <p class="muted" style="margin:8px 0 0;">Tip: usa “Expandir/Colapsar” para explicar por partes.</p>
+        <p class="muted" style="margin:8px 0 0;">Usa “Expandir/Colapsar” para explicar por secciones.</p>
 
-        <div class="mapWrap" aria-label="Mapa mental">
+        <div class="mapWrap">
           <svg id="mindmap" class="markmap"></svg>
         </div>
 
@@ -335,7 +307,7 @@
           </div>
         </div>
 
-        <div class="card" style="margin-top:12px; background: rgba(255,255,255,.50);">
+        <div class="card" style="margin-top:12px; background: rgba(255,255,255,.52); box-shadow: var(--shadow-soft);">
           <h2 style="margin-bottom:8px;">Banco de conceptos</h2>
           <div class="chips" id="bank"></div>
           <div class="row">
@@ -351,39 +323,39 @@
 
   <script>
     // -------------------------
-    // 1) MARKMAP (render)
+    // 1) MARKMAP
     // -------------------------
     const md = `
 # 1.1 Elementos que conforman el ambiente
 ## Ambiente
-- Conjunto de elementos que comparten un espacio
-- Interdependencia e interacción
+- Sistema de elementos que comparten un espacio
+- Interacción e interdependencia
 ## Clasificación
 ### Elementos abióticos
 - Aire
 - Agua
 - Minerales y rocas
-- Suelo (tierra)
+- Suelo
 - Clima
   - Temperatura
   - Humedad
   - Altitud
-  - Cantidad de luz
+  - Cantidad de luz (radiación)
 ### Elementos bióticos
 - Plantas
 - Animales
 - Hongos
 - Bacterias
 - Seres humanos
-## Relación
-- Los bióticos dependen de los abióticos para vivir
-- Cambios abióticos afectan a los seres vivos
+## Relación biótico–abiótico
+- Dependencia de condiciones físico-químicas
+- Cambios abióticos alteran procesos ecológicos
 `.trim();
 
     let mm = null;
     let expanded = true;
 
-    async function renderMarkmap() {
+    function renderMarkmap(){
       const { Transformer, Markmap } = window.markmap;
       const transformer = new Transformer();
       const { root } = transformer.transform(md);
@@ -401,9 +373,7 @@
       if (expanded) mm.foldAll(); else mm.unfoldAll();
       expanded = !expanded;
     });
-    document.getElementById('btnReset').addEventListener('click', () => {
-      renderMarkmap();
-    });
+    document.getElementById('btnReset').addEventListener('click', renderMarkmap);
 
     renderMarkmap();
 
@@ -460,17 +430,13 @@
       bin.addEventListener('drop', (e) => {
         e.preventDefault();
         bin.classList.remove('dragover');
-
         const id = e.dataTransfer.getData('text/plain');
         const chip = document.querySelector(`.chip[data-id="${id}"]`);
         if (!chip) return;
-
         const target = bin.dataset.bin;
-        if (target === 'biotico') chipsB.appendChild(chip);
-        if (target === 'abiotico') chipsA.appendChild(chip);
+        (target === 'biotico' ? chipsB : chipsA).appendChild(chip);
       });
     }
-
     allowDrop(binA);
     allowDrop(binB);
 
@@ -482,9 +448,7 @@
     }
 
     document.getElementById('btnCheck').addEventListener('click', () => {
-      let correct = 0;
-      let unplaced = 0;
-
+      let correct = 0, unplaced = 0;
       ITEMS.forEach(it => {
         const pos = whereIs(it.id);
         if (pos === 'bank') unplaced++;
@@ -501,10 +465,10 @@
 
       if (correct === ITEMS.length) {
         feedback.className = 'result ok';
-        feedback.innerHTML = `<strong>Excelente.</strong> Clasificación correcta. Ahora explica: ¿por qué los bióticos dependen de los abióticos?`;
+        feedback.innerHTML = `<strong>Excelente.</strong> Clasificación correcta. Explica: ¿cómo influye el clima en los seres vivos?`;
       } else {
         feedback.className = 'result no';
-        feedback.innerHTML = `Vas bien: <strong>${correct}/${ITEMS.length}</strong>. Revisa los que no coinciden y vuelve a intentar.`;
+        feedback.innerHTML = `Vas bien: <strong>${correct}/${ITEMS.length}</strong>. Corrige los que no coinciden y vuelve a intentar.`;
       }
     });
 
