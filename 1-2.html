@@ -9,8 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Markmap -->
-  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+  <!-- Markmap (importación directa y estable para GitHub Pages) -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.16.1/dist/browser/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.16.1/dist/browser/index.min.js"></script>
 
   <style>
     :root{
@@ -23,21 +25,24 @@
       --shadow-soft:0 10px 24px rgba(11,16,32,.12);
       --radius:24px;
 
-      --good: rgba(30, 160, 90, .20);
+      --good: rgba(30, 160, 90, .18);
       --bad: rgba(210, 70, 100, .18);
-      --focus: rgba(45, 160, 220, .28);
-      --focus2: rgba(255, 140, 200, .22);
+      --focus: rgba(45, 160, 220, .30);
+      --focus2: rgba(120, 190, 255, .28);
     }
     *{ box-sizing:border-box; }
     body{
       margin:0;
       color:var(--ink);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      /* Fondo pastel azul/celeste */
       background:
-        radial-gradient(1100px 760px at 12% 12%, rgba(175, 255, 216, .88), transparent 58%),
-        radial-gradient(980px 760px at 82% 18%, rgba(170, 226, 255, .88), transparent 62%),
-        radial-gradient(1200px 920px at 48% 96%, rgba(255, 191, 228, .76), transparent 58%),
-        linear-gradient(135deg, #eafff4 0%, #e8f6ff 45%, #fff0f7 100%);
+        radial-gradient(1100px 760px at 12% 12%, rgba(185, 235, 255, .92), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, rgba(160, 210, 255, .90), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(210, 245, 255, .88), transparent 58%),
+        linear-gradient(135deg, #ecf9ff 0%, #e7f6ff 45%, #effbff 100%);
+
       min-height:100vh;
     }
     .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
@@ -55,7 +60,12 @@
       gap: 12px;
       flex-wrap:wrap;
     }
-    .kicker{ font-size: 12px; color: var(--muted); font-weight: 800; letter-spacing:.3px; }
+    .kicker{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      letter-spacing:.3px;
+    }
     h1{
       margin: 6px 0 0;
       font-family: Outfit, Inter, system-ui;
@@ -69,10 +79,9 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.45;
-      max-width: 88ch;
+      max-width: 92ch;
     }
     .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-
     .btn{
       display:inline-flex;
       align-items:center;
@@ -93,7 +102,11 @@
     .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
     .btn:active{ transform: translateY(1px); }
     .btn.primary{
-      background: linear-gradient(135deg, rgba(170,255,216,.90), rgba(170,226,255,.90), rgba(255,191,228,.82));
+      background: linear-gradient(135deg,
+        rgba(185,235,255,.92),
+        rgba(160,210,255,.90),
+        rgba(210,245,255,.90)
+      );
     }
 
     .stack{ margin-top: 14px; display:grid; gap: 14px; }
@@ -121,28 +134,22 @@
       gap: 12px;
       align-items:start;
     }
-    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
-
-    .theory{ line-height: 1.58; color: rgba(11,16,32,.90); font-size: 14px; }
+    @media (max-width: 980px){
+      .twoCols{ grid-template-columns: 1fr; }
+    }
+    .theory{
+      line-height: 1.6;
+      color: rgba(11,16,32,.90);
+      font-size: 14px;
+    }
     .theory p{ margin: 10px 0 0; }
     .theory ul{ margin: 10px 0 0 18px; }
     .theory li{ margin: 8px 0; }
 
-    .callout{
-      margin-top: 12px;
-      border-radius: 16px;
-      padding: 12px;
-      border: 1px solid rgba(11,16,32,.10);
-      background: rgba(255,255,255,.55);
-      color: rgba(11,16,32,.86);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    /* MAPA MARKMAP */
+    /* Markmap */
     .mapWrap{
       width:100%;
-      height: 640px;
+      height: 720px;
       margin-top: 10px;
       border: 1px solid rgba(11,16,32,.12);
       border-radius: 16px;
@@ -152,28 +159,23 @@
         rgba(255,255,255,.35);
       position: relative;
     }
-    .mapWrap.tall{ height: 720px; }
     svg.markmap{ width:100%; height:100%; }
-    .mapFallback{
-      position:absolute; inset: 0;
-      display:none; align-items:center; justify-content:center;
-      text-align:center; padding: 18px;
-      color: rgba(11,16,32,.75);
-      background: rgba(255,255,255,.55);
-    }
-    .mapFallback.show{ display:flex; }
-
     .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center; }
-    .badge{
-      display:inline-flex; align-items:center;
-      padding: 6px 10px; border-radius: 999px;
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.55);
-      font-weight: 800; font-size: 12px;
+      background: rgba(255,255,255,.58);
+      font-weight: 800;
+      font-size: 12px;
       color: rgba(11,16,32,.78);
+      white-space: nowrap;
     }
 
-    /* MODAL FULLSCREEN (para cada mapa) */
+    /* Modal fullscreen (mapa) */
     .modal{
       position: fixed;
       inset: 0;
@@ -188,7 +190,7 @@
     .modal.open{ display:flex; }
     .modalBox{
       width: min(1200px, 96vw);
-      height: min(840px, 92vh);
+      height: min(860px, 92vh);
       border-radius: 18px;
       background: rgba(255,255,255,.72);
       border: 1px solid rgba(11,16,32,.14);
@@ -218,7 +220,7 @@
     }
     .modalMap svg{ width:100%; height:100%; }
 
-    /* CADENA TRÓFICA (SVG) */
+    /* Cadenas SVG */
     .chainWrap{
       width:100%;
       margin-top: 10px;
@@ -229,15 +231,6 @@
       position: relative;
       padding: 12px;
     }
-    .chainHeader{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom: 10px;
-    }
-    .chainHeader .muted{ font-size: 12px; }
     .svgBox{
       width:100%;
       height: 330px;
@@ -249,12 +242,11 @@
       overflow:hidden;
     }
     @media (max-width: 720px){
-      .svgBox{ height: 430px; }
+      .svgBox{ height: 440px; }
     }
     .chainSvg{ width:100%; height:100%; }
-    .node{
-      cursor:pointer;
-    }
+
+    .node{ cursor:pointer; }
     .node rect{
       fill: rgba(255,255,255,.78);
       stroke: rgba(11,16,32,.18);
@@ -275,7 +267,6 @@
       stroke: rgba(11,16,32,.65);
       stroke-width: 2.2;
       fill: none;
-      marker-end: url(#arrowHead);
       opacity: .95;
     }
     .arrow.dim{ opacity: .25; }
@@ -284,7 +275,6 @@
       stroke-width: 2.5;
       stroke: rgba(45, 160, 220, .85);
     }
-    .node.active text{ fill: rgba(11,16,32,.96); }
 
     .infoBox{
       margin-top: 10px;
@@ -297,91 +287,100 @@
       color: rgba(11,16,32,.86);
     }
 
-    /* MINI-JUEGO: construir una cadena (drag/tap) */
-    .gameGrid{
-      margin-top: 12px;
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 12px;
-      align-items:start;
-    }
-    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
-
-    .bank{
-      border-radius: 18px;
-      border: 1px solid rgba(11,16,32,.10);
-      background: rgba(255,255,255,.55);
-      padding: 12px;
-      box-shadow: var(--shadow-soft);
-    }
-    .bank h3{
-      margin: 0 0 8px;
-      font-family: Outfit, Inter, system-ui;
-      font-weight: 800;
-      font-size: 14px;
-    }
-
-    .chips{
+    /* Juego nuevo: conectar nodos */
+    .tabs{
       display:flex;
-      gap:8px;
+      gap:10px;
       flex-wrap:wrap;
-      min-height: 40px;
+      margin-top: 10px;
     }
-    .chip{
-      padding: 9px 10px;
+    .tab{
       border-radius: 999px;
       border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.78);
-      font-weight: 800;
+      background: rgba(255,255,255,.60);
+      padding: 9px 12px;
+      font-weight: 900;
       font-size: 13px;
-      cursor: grab;
+      cursor:pointer;
       user-select:none;
-      transition: outline .08s ease, transform .08s ease;
     }
-    .chip:active{ cursor: grabbing; transform: translateY(1px); }
-    .chip.selected{ outline: 3px solid var(--focus2); }
+    .tab.active{
+      outline: 3px solid var(--focus);
+      background: rgba(255,255,255,.80);
+    }
 
-    .slots{
+    .gameArea{
+      margin-top: 12px;
       border-radius: 18px;
       border: 1px solid rgba(11,16,32,.10);
       background: rgba(255,255,255,.55);
       padding: 12px;
       box-shadow: var(--shadow-soft);
     }
-    .slot{
-      border-radius: 16px;
-      border: 1px dashed rgba(11,16,32,.22);
-      background: rgba(255,255,255,.45);
-      padding: 10px;
-      margin-top: 10px;
-      min-height: 64px;
-    }
-    .slot:first-child{ margin-top: 0; }
-    .slot.dragover{
-      outline: 3px solid var(--focus);
-      background: rgba(255,255,255,.62);
-    }
-    .slotHead{
+    .gameTop{
       display:flex;
-      align-items:baseline;
+      align-items:center;
       justify-content:space-between;
       gap: 10px;
-      margin-bottom: 8px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
     }
-    .slotHead strong{
-      font-family: Outfit, Inter, system-ui;
-      letter-spacing:.2px;
-      font-size: 13px;
-    }
-    .slotHead span{
-      color: var(--muted);
+    .score{
+      display:inline-flex;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
       font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .gameCanvas{
+      width:100%;
+      height: 420px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.10);
+      background:
+        radial-gradient(circle at 1px 1px, rgba(11,16,32,.07) 1px, transparent 1px) 0 0 / 22px 22px,
+        rgba(255,255,255,.35);
+      overflow:hidden;
+    }
+    @media (max-width: 720px){
+      .gameCanvas{ height: 520px; }
     }
 
-    .small{ font-size: 12px; color: var(--muted); line-height: 1.4; margin-top: 8px; }
-    .divider{ border:none; border-top: 1px solid rgba(11,16,32,.10); margin: 14px 0; }
+    .g-node circle{
+      fill: rgba(255,255,255,.85);
+      stroke: rgba(11,16,32,.20);
+      stroke-width: 1.2;
+    }
+    .g-node text{
+      font-family: Inter, system-ui;
+      font-size: 12px;
+      font-weight: 900;
+      fill: rgba(11,16,32,.92);
+    }
+    .g-node .sub{
+      font-size: 11px;
+      font-weight: 650;
+      fill: rgba(11,16,32,.72);
+    }
+    .g-node.selected circle{
+      stroke: rgba(45,160,220,.90);
+      stroke-width: 3.0;
+    }
+
+    .g-edge{
+      stroke: rgba(11,16,32,.62);
+      stroke-width: 2.5;
+      fill: none;
+      marker-end: url(#gArrowHead);
+      opacity: .92;
+    }
+
     .result{
-      margin-top: 12px;
+      margin-top: 10px;
       border-radius: 16px;
       border: 1px solid rgba(11,16,32,.12);
       background: rgba(255,255,255,.55);
@@ -392,21 +391,6 @@
     }
     .ok{ background: var(--good); border-color: rgba(30,160,90,.28); }
     .no{ background: var(--bad); border-color: rgba(210,70,100,.26); }
-
-    /* Helpers */
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.58);
-      font-weight: 800;
-      font-size: 12px;
-      color: rgba(11,16,32,.78);
-      white-space: nowrap;
-    }
   </style>
 </head>
 
@@ -417,112 +401,87 @@
         <div class="kicker">Módulo 1 · Medio ambiente</div>
         <h1>1.2 Las cadenas alimenticias o tróficas</h1>
         <p class="subtitle">
-          Una cadena alimenticia (o red trófica) representa cómo los <strong>elementos bióticos</strong> dependen unos de otros y permite comprender
-          el funcionamiento de la naturaleza para proteger la biodiversidad. :contentReference[oaicite:0]{index=0}
-          El libro distingue <strong>productores</strong> (plantas, algas, fitoplancton) :contentReference[oaicite:1]{index=1},
-          <strong>consumidores</strong> con niveles (primario → secundario → terciario → cuaternario) :contentReference[oaicite:2]{index=2}
-          y <strong>descomponedores</strong> que reciclan nutrientes :contentReference[oaicite:3]{index=3}.
-          En Sololá, esto se observa tanto en ecosistemas terrestres como en ambientes acuáticos (Lago de Atitlán). :contentReference[oaicite:4]{index=4}
+          Una cadena alimenticia (o red trófica) representa la dependencia entre organismos y la transferencia de energía y materia a través de niveles tróficos.
+          En ecosistemas reales, múltiples cadenas se interconectan formando redes tróficas.
         </p>
       </div>
       <nav class="nav">
         <a class="btn" href="index.html">Inicio</a>
         <a class="btn" href="1-1.html">Anterior (1.1)</a>
-        <a class="btn primary" href="#" onclick="alert('Luego hacemos 1-3.html.'); return false;">Siguiente (1.3)</a>
+        <a class="btn primary" href="#" onclick="alert('Pendiente: 1-3.html'); return false;">Siguiente (1.3)</a>
       </nav>
     </header>
 
     <main class="stack">
-
-      <!-- TEORÍA + CONTEXTO -->
+      <!-- TEORÍA -->
       <section class="card">
-        <h2>Conceptualización (técnica y contextualizada a Sololá)</h2>
-
+        <h2>Conceptualización técnica y contexto local</h2>
         <div class="twoCols">
           <div class="theory">
             <p>
-              Una <strong>cadena alimenticia</strong> describe la transferencia de <strong>energía</strong> y el movimiento de <strong>materia</strong>
-              a través de <strong>niveles tróficos</strong>. En realidad, los ecosistemas suelen funcionar como <strong>redes tróficas</strong>
-              (varias cadenas interconectadas). :contentReference[oaicite:5]{index=5}
+              Las cadenas alimenticias describen el flujo de energía (direccional) y el ciclado de materia (reciclaje de nutrientes) entre componentes bióticos.
+              Se estructuran en:
             </p>
             <ul>
-              <li><strong>Productores (autótrofos):</strong> plantas, algas y fitoplancton; elaboran alimento usando aire, suelo y energía solar. :contentReference[oaicite:6]{index=6}</li>
-              <li><strong>Consumidores (heterótrofos):</strong> se alimentan de otros seres vivos; se organizan como primarios, secundarios, terciarios y cuaternarios. :contentReference[oaicite:7]{index=7}</li>
-              <li><strong>Descomponedores:</strong> hongos, bacterias, lombrices y otros; reciclan materia orgánica y devuelven nutrientes, cerrando el ciclo. :contentReference[oaicite:8]{index=8}</li>
+              <li><strong>Productores (autótrofos):</strong> plantas, algas y fitoplancton; sintetizan biomasa usando energía solar y recursos abióticos.</li>
+              <li><strong>Consumidores (heterótrofos):</strong> se organizan por niveles: primarios, secundarios, terciarios y cuaternarios según su dieta y posición.</li>
+              <li><strong>Descomponedores:</strong> bacterias y hongos (entre otros) degradan materia orgánica y liberan nutrientes para sostener nuevamente a productores.</li>
             </ul>
-            <div class="callout">
-              <strong>Principio:</strong> la energía fluye en una dirección (del productor hacia niveles superiores) y se va reduciendo en cada transferencia;
-              por eso los depredadores superiores dependen de que existan niveles inferiores estables.
-            </div>
+            <p>
+              La energía disminuye entre niveles tróficos, por lo que la estabilidad de depredadores superiores depende del mantenimiento de productores y consumidores inferiores.
+            </p>
           </div>
 
           <div class="theory">
             <p>
-              <strong>Sololá / cuenca del Lago de Atitlán:</strong> el libro describe cadenas acuáticas en arroyos, ríos y lagos como el Lago de Atitlán,
-              donde productores (algas, plantas acuáticas, fitoplancton) sostienen consumidores (peces y otros organismos), y las bacterias descomponen. :contentReference[oaicite:9]{index=9}
+              En Sololá, el funcionamiento trófico puede interpretarse en dos grandes marcos:
             </p>
             <ul>
-              <li><strong>Terrestre (referencia del libro):</strong> orugas → sapos/ranas → serpientes → gavilanes. :contentReference[oaicite:10]{index=10}</li>
-              <li><strong>Acuático (referencia del libro):</strong> algas/fitoplancton → peces pequeños → peces grandes → aves; descomposición por bacterias. :contentReference[oaicite:11]{index=11}</li>
+              <li><strong>Terrestre:</strong> cadenas asociadas a agroecosistemas, bosques y matorrales donde insectos herbívoros, anfibios, reptiles y aves interactúan.</li>
+              <li><strong>Acuático (cuenca del Lago de Atitlán):</strong> productores acuáticos (algas/fitoplancton) sostienen consumidores (plancton, peces), con niveles superiores y reciclaje bacteriano.</li>
             </ul>
-            <div class="callout">
-              <strong>Lectura aplicada:</strong> cuando cambia la disponibilidad/calidad de agua o nutrientes, se altera la productividad primaria y, en cascada,
-              se afectan consumidores y servicios ecosistémicos locales.
-            </div>
+            <p>
+              Alteraciones en nutrientes, cobertura vegetal o calidad del agua pueden modificar la productividad primaria y generar efectos en cascada sobre toda la red trófica.
+            </p>
           </div>
         </div>
       </section>
 
-      <!-- MAPA 1: MAPA CONCEPTUAL (MARKMAP) -->
+      <!-- MAPA CONCEPTUAL (MARKMAP) -->
       <section class="card">
-        <h2>Mapa conceptual 1: conceptos clave (expandido)</h2>
-        <p class="muted" style="margin:8px 0 0;">Este mapa aparece expandido por defecto. Puedes ajustar, reiniciar o verlo en pantalla completa.</p>
+        <h2>Mapa conceptual interactivo (expandido)</h2>
+        <p class="muted" style="margin:8px 0 0;">Mapa expandido por defecto.</p>
 
-        <div class="mapWrap tall">
+        <div class="mapWrap">
           <svg id="mmConcept" class="markmap"></svg>
-          <div class="mapFallback" id="fbConcept">
-            <div>
-              <strong>No se pudo cargar el mapa conceptual.</strong><br>
-              Recarga (Ctrl+F5). Los otros diagramas y el mini-juego siguen funcionando.
-            </div>
-          </div>
         </div>
 
         <div class="row">
           <button class="btn" id="fitConcept">Ajustar</button>
           <button class="btn" id="resetConcept">Reiniciar</button>
           <button class="btn primary" id="fsConcept">Pantalla completa</button>
-          <span class="pill">Expandido por defecto</span>
+          <span class="pill">Expandido</span>
         </div>
       </section>
 
-      <!-- MAPA 2: CADENA TERRESTRE (SVG INTERACTIVO) -->
+      <!-- CADENA TERRESTRE -->
       <section class="card">
-        <h2>Diagrama 2: cadena trófica terrestre (flujo de energía)</h2>
-        <p class="muted" style="margin:8px 0 0;">
-          Haz clic en un nivel para resaltar el flujo de energía y leer su rol trófico. Basado en el ejemplo del libro. :contentReference[oaicite:12]{index=12}
-        </p>
+        <h2>Cadena trófica terrestre (flujo de energía)</h2>
+        <p class="muted" style="margin:8px 0 0;">Clic en un nodo para resaltar el flujo.</p>
 
         <div class="chainWrap">
-          <div class="chainHeader">
-            <span class="pill">Energía: productor → consumidores → depredador superior</span>
-            <span class="muted">Interacción: clic en nodos</span>
-          </div>
-
           <div class="svgBox">
             <svg class="chainSvg" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                <marker id="arrowHeadT" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
                   <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(11,16,32,.65)"></path>
                 </marker>
               </defs>
 
-              <!-- Arrows -->
-              <path id="tArrow1" class="arrow" d="M 150 160 L 330 160"></path>
-              <path id="tArrow2" class="arrow" d="M 390 160 L 570 160"></path>
-              <path id="tArrow3" class="arrow" d="M 630 160 L 810 160"></path>
+              <path id="tArrow1" class="arrow" d="M 150 160 L 330 160" marker-end="url(#arrowHeadT)"></path>
+              <path id="tArrow2" class="arrow" d="M 390 160 L 570 160" marker-end="url(#arrowHeadT)"></path>
+              <path id="tArrow3" class="arrow" d="M 630 160 L 810 160" marker-end="url(#arrowHeadT)"></path>
 
-              <!-- Nodes -->
               <g id="tNodeP" class="node" data-node="P" transform="translate(40,110)">
                 <rect rx="18" ry="18" width="190" height="100"></rect>
                 <text x="18" y="40">Productores</text>
@@ -543,47 +502,39 @@
 
               <g id="tNodeTop" class="node" data-node="TOP" transform="translate(760,110)">
                 <rect rx="18" ry="18" width="200" height="100"></rect>
-                <text x="18" y="40">Depredador superior</text>
-                <text class="sub" x="18" y="66">Serpientes / Gavilanes</text>
+                <text x="18" y="40">Depredadores</text>
+                <text class="sub" x="18" y="66">Serpientes / gavilanes</text>
               </g>
             </svg>
           </div>
 
           <div class="infoBox" id="tInfo">
-            Selecciona un nodo para resaltar su flujo de energía y ver una explicación breve.
+            Selecciona un nodo para resaltar el flujo de energía.
           </div>
-        </div>
 
-        <div class="row">
-          <button class="btn" id="tReset">Reiniciar resaltado</button>
+          <div class="row">
+            <button class="btn" id="tReset">Reiniciar resaltado</button>
+          </div>
         </div>
       </section>
 
-      <!-- MAPA 3: CADENA ACUÁTICA (SVG INTERACTIVO) -->
+      <!-- CADENA ACUÁTICA -->
       <section class="card">
-        <h2>Diagrama 3: cadena trófica acuática (Lago de Atitlán, flujo de energía)</h2>
-        <p class="muted" style="margin:8px 0 0;">
-          Basado en la descripción del libro para ambientes acuáticos (algas/fitoplancton → peces → peces grandes → aves) y descomposición por bacterias. :contentReference[oaicite:13]{index=13}
-        </p>
+        <h2>Cadena trófica acuática (cuenca del Lago de Atitlán)</h2>
+        <p class="muted" style="margin:8px 0 0;">Clic en un nodo para resaltar el flujo.</p>
 
         <div class="chainWrap">
-          <div class="chainHeader">
-            <span class="pill">Energía: productores acuáticos → consumidores → aves</span>
-            <span class="muted">Interacción: clic en nodos</span>
-          </div>
-
           <div class="svgBox">
             <svg class="chainSvg" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <marker id="arrowHead2" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                <marker id="arrowHeadA" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
                   <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(11,16,32,.65)"></path>
                 </marker>
               </defs>
 
-              <path id="aArrow1" class="arrow" d="M 165 160 L 330 160" marker-end="url(#arrowHead2)"></path>
-              <path id="aArrow2" class="arrow" d="M 405 160 L 570 160" marker-end="url(#arrowHead2)"></path>
-              <path id="aArrow3" class="arrow" d="M 645 160 L 810 160" marker-end="url(#arrowHead2)"></path>
-              <path id="aArrow4" class="arrow" d="M 890 210 C 760 300, 280 300, 120 210" marker-end="url(#arrowHead2)"></path>
+              <path id="aArrow1" class="arrow" d="M 165 160 L 330 160" marker-end="url(#arrowHeadA)"></path>
+              <path id="aArrow2" class="arrow" d="M 405 160 L 570 160" marker-end="url(#arrowHeadA)"></path>
+              <path id="aArrow3" class="arrow" d="M 645 160 L 810 160" marker-end="url(#arrowHeadA)"></path>
 
               <g id="aNodeP" class="node" data-node="P" transform="translate(40,110)">
                 <rect rx="18" ry="18" width="210" height="100"></rect>
@@ -594,7 +545,7 @@
               <g id="aNodeC1" class="node" data-node="C1" transform="translate(300,110)">
                 <rect rx="18" ry="18" width="210" height="100"></rect>
                 <text x="18" y="40">Consumidores</text>
-                <text class="sub" x="18" y="66">Organismos / peces pequeños</text>
+                <text class="sub" x="18" y="66">Plancton / peces pequeños</text>
               </g>
 
               <g id="aNodeC2" class="node" data-node="C2" transform="translate(560,110)">
@@ -606,110 +557,65 @@
               <g id="aNodeTop" class="node" data-node="TOP" transform="translate(820,110)">
                 <rect rx="18" ry="18" width="160" height="100"></rect>
                 <text x="18" y="40">Aves</text>
-                <text class="sub" x="18" y="66">Consumen biota acuática</text>
-              </g>
-
-              <g id="aNodeD" class="node" data-node="D" transform="translate(390,230)">
-                <rect rx="18" ry="18" width="240" height="70"></rect>
-                <text x="18" y="42">Descomposición</text>
-                <text class="sub" x="18" y="62">Bacterias reciclan nutrientes</text>
+                <text class="sub" x="18" y="66">Consumo de biota acuática</text>
               </g>
             </svg>
           </div>
 
           <div class="infoBox" id="aInfo">
-            Selecciona un nodo para resaltar el flujo de energía y ver una explicación breve.
+            Selecciona un nodo para resaltar el flujo de energía.
           </div>
-        </div>
 
-        <div class="row">
-          <button class="btn" id="aReset">Reiniciar resaltado</button>
+          <div class="row">
+            <button class="btn" id="aReset">Reiniciar resaltado</button>
+          </div>
         </div>
       </section>
 
-      <!-- MINI-JUEGO (acorde al tema) -->
+      <!-- JUEGO NUEVO -->
       <section class="card">
-        <h2>Mini-juego / Evaluación: construye una cadena trófica correcta</h2>
+        <h2>Mini-juego: construye el flujo de energía conectando nodos</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Arrastra (PC) o toca (celular) y coloca cada organismo en su <strong>nivel trófico</strong>. Incluye productores, consumidores y descomponedores. :contentReference[oaicite:14]{index=14} :contentReference[oaicite:15]{index=15} :contentReference[oaicite:16]{index=16}
+          Instrucción: clic en un nodo (origen) y luego clic en otro nodo (destino) para crear una flecha de flujo de energía.
         </p>
 
-        <div class="gameGrid">
-          <div class="bank">
-            <h3>Banco de conceptos</h3>
-            <div class="chips" id="bank"></div>
+        <div class="tabs">
+          <button class="tab active" id="tabTer">Modo terrestre</button>
+          <button class="tab" id="tabAcu">Modo acuático</button>
+        </div>
 
-            <div class="row">
-              <button class="btn primary" id="btnCheck">Evaluar</button>
+        <div class="gameArea">
+          <div class="gameTop">
+            <div class="row" style="margin:0;">
+              <button class="btn primary" id="btnEval">Evaluar</button>
+              <button class="btn" id="btnUndo">Deshacer</button>
               <button class="btn" id="btnClear">Reiniciar</button>
-              <span class="badge" id="score">Resultado: 0/9</span>
             </div>
-
-            <div class="result" id="feedback">
-              Coloca todos los conceptos en un nivel y luego presiona <strong>Evaluar</strong>.
-            </div>
-
-            <div class="small">
-              Modo celular: toca un chip para seleccionarlo y luego toca el nivel destino.
-            </div>
+            <span class="score" id="score">Conexiones: 0</span>
           </div>
 
-          <div class="slots" aria-label="Niveles tróficos">
-            <div class="slot" data-slot="productor">
-              <div class="slotHead">
-                <strong>Productor</strong>
-                <span>autótrofo</span>
-              </div>
-              <div class="chips" id="slot-productor"></div>
-            </div>
+          <div class="gameCanvas">
+            <svg id="gameSvg" viewBox="0 0 1000 420" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <marker id="gArrowHead" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(11,16,32,.62)"></path>
+                </marker>
+              </defs>
 
-            <div class="slot" data-slot="primario">
-              <div class="slotHead">
-                <strong>Consumidor primario</strong>
-                <span>se alimenta de productores</span>
-              </div>
-              <div class="chips" id="slot-primario"></div>
-            </div>
+              <g id="edgeLayer"></g>
+              <g id="nodeLayer"></g>
+            </svg>
+          </div>
 
-            <div class="slot" data-slot="secundario">
-              <div class="slotHead">
-                <strong>Consumidor secundario</strong>
-                <span>se alimenta del primario</span>
-              </div>
-              <div class="chips" id="slot-secundario"></div>
-            </div>
-
-            <div class="slot" data-slot="terciario">
-              <div class="slotHead">
-                <strong>Consumidor terciario</strong>
-                <span>se alimenta del secundario</span>
-              </div>
-              <div class="chips" id="slot-terciario"></div>
-            </div>
-
-            <div class="slot" data-slot="cuaternario">
-              <div class="slotHead">
-                <strong>Consumidor cuaternario</strong>
-                <span>depredador superior</span>
-              </div>
-              <div class="chips" id="slot-cuaternario"></div>
-            </div>
-
-            <div class="slot" data-slot="descomponedor">
-              <div class="slotHead">
-                <strong>Descomponedor</strong>
-                <span>reciclaje de nutrientes</span>
-              </div>
-              <div class="chips" id="slot-descomponedor"></div>
-            </div>
+          <div class="result" id="result">
+            Estado: sin evaluación.
           </div>
         </div>
       </section>
-
     </main>
   </div>
 
-  <!-- MODAL: CONCEPT MAP -->
+  <!-- MODAL MAPA -->
   <div class="modal" id="modalConcept">
     <div class="modalBox" role="dialog" aria-modal="true" aria-label="Mapa conceptual en pantalla completa">
       <div class="modalTop">
@@ -727,348 +633,370 @@
   </div>
 
   <script>
-    // =========================================================
-    // A) MINI-JUEGO (primero, robusto)
-    // =========================================================
-    const ITEMS = [
-      { id: "plantas", label: "Plantas (productor)", correct: "productor" },
-      { id: "algas", label: "Algas / fitoplancton (productor)", correct: "productor" },
-      { id: "orugas", label: "Orugas", correct: "primario" },
-      { id: "sapos", label: "Sapos y ranas", correct: "secundario" },
-      { id: "serpientes", label: "Serpientes", correct: "terciario" },
-      { id: "gavilanes", label: "Gavilanes", correct: "cuaternario" },
-      { id: "peces", label: "Peces (consumidores)", correct: "secundario" }, // simplificación didáctica
-      { id: "hongos", label: "Hongos", correct: "descomponedor" },
-      { id: "bacterias", label: "Bacterias", correct: "descomponedor" }
-    ];
-
-    const bank = document.getElementById('bank');
-    const scoreEl = document.getElementById('score');
-    const feedback = document.getElementById('feedback');
-
-    const slotEls = {
-      productor: document.getElementById('slot-productor'),
-      primario: document.getElementById('slot-primario'),
-      secundario: document.getElementById('slot-secundario'),
-      terciario: document.getElementById('slot-terciario'),
-      cuaternario: document.getElementById('slot-cuaternario'),
-      descomponedor: document.getElementById('slot-descomponedor')
-    };
-
-    let selectedId = null;
-
-    function makeChip(item){
-      const el = document.createElement('div');
-      el.className = 'chip';
-      el.textContent = item.label;
-      el.draggable = true;
-      el.dataset.id = item.id;
-
-      el.addEventListener('dragstart', (e) => {
-        try{
-          e.dataTransfer.setData('text/plain', item.id);
-          e.dataTransfer.effectAllowed = 'move';
-        }catch(_){}
-      });
-
-      el.addEventListener('click', () => {
-        document.querySelectorAll('.chip.selected').forEach(x => x.classList.remove('selected'));
-        el.classList.add('selected');
-        selectedId = item.id;
-      });
-
-      return el;
-    }
-
-    function moveChipTo(targetSlot, id){
-      const chip = document.querySelector(`.chip[data-id="${id}"]`);
-      if (!chip) return;
-      chip.classList.remove('selected');
-      selectedId = null;
-
-      if (targetSlot === 'bank') bank.appendChild(chip);
-      else slotEls[targetSlot].appendChild(chip);
-    }
-
-    function allowDropOnSlot(slotContainer, slotName){
-      const slotBox = slotContainer.closest('.slot');
-
-      slotBox.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        slotBox.classList.add('dragover');
-      });
-      slotBox.addEventListener('dragleave', () => slotBox.classList.remove('dragover'));
-      slotBox.addEventListener('drop', (e) => {
-        e.preventDefault();
-        slotBox.classList.remove('dragover');
-        const id = e.dataTransfer.getData('text/plain');
-        if (!id) return;
-        moveChipTo(slotName, id);
-      });
-
-      // modo celular: tocar el slot coloca el seleccionado
-      slotBox.addEventListener('click', () => {
-        if (!selectedId) return;
-        moveChipTo(slotName, selectedId);
-      });
-    }
-
-    Object.entries(slotEls).forEach(([name, el]) => allowDropOnSlot(el, name));
-
-    function whereIs(id){
-      for (const [slot, el] of Object.entries(slotEls)){
-        if (el.querySelector(`.chip[data-id="${id}"]`)) return slot;
-      }
-      if (bank.querySelector(`.chip[data-id="${id}"]`)) return 'bank';
-      return 'bank';
-    }
-
-    function resetGame(){
-      selectedId = null;
-      bank.innerHTML = '';
-      Object.values(slotEls).forEach(el => el.innerHTML = '');
-      ITEMS.forEach(it => bank.appendChild(makeChip(it)));
-      scoreEl.textContent = `Resultado: 0/${ITEMS.length}`;
-      feedback.className = 'result';
-      feedback.textContent = 'Coloca todos los conceptos en niveles y presiona Evaluar.';
-    }
-
-    function evaluate(){
-      let correct = 0, unplaced = 0;
-
-      ITEMS.forEach(it => {
-        const pos = whereIs(it.id);
-        if (pos === 'bank') unplaced++;
-        if (pos === it.correct) correct++;
-      });
-
-      scoreEl.textContent = `Resultado: ${correct}/${ITEMS.length}`;
-
-      if (unplaced > 0){
-        feedback.className = 'result no';
-        feedback.innerHTML = `Te faltan <strong>${unplaced}</strong> por colocar.`;
-        return;
-      }
-
-      if (correct === ITEMS.length){
-        feedback.className = 'result ok';
-        feedback.innerHTML =
-          `<strong>Excelente.</strong> Ahora explica: ¿por qué los descomponedores son indispensables para que continúe la cadena? :contentReference[oaicite:17]{index=17}`;
-      } else {
-        feedback.className = 'result no';
-        feedback.innerHTML =
-          `Vas bien: <strong>${correct}/${ITEMS.length}</strong>. Ajusta los niveles y vuelve a evaluar.`;
-      }
-    }
-
-    document.getElementById('btnClear').addEventListener('click', resetGame);
-    document.getElementById('btnCheck').addEventListener('click', evaluate);
-
-    resetGame();
-
-    // =========================================================
-    // B) MAPA CONCEPTUAL (MARKMAP) - SIEMPRE EXPANDIDO
-    // =========================================================
+    // =========================
+    // 1) MARKMAP (siempre expandido)
+    // =========================
     const mdConcept = `
 # 1.2 Cadenas alimenticias o tróficas
-## Definición
-- Representan cómo los elementos bióticos dependen entre sí
-- Ayudan a comprender la naturaleza y proteger biodiversidad
-- En la práctica: redes tróficas (varias cadenas conectadas)
-## Componentes
+## Propósito
+- Representar dependencia entre organismos
+- Describir flujo de energía y transferencia de materia
+- Integrar cadenas conectadas como redes tróficas
+## Niveles tróficos
 ### Productores (autótrofos)
 - Plantas, algas, fitoplancton
-- Elaboran alimento con aire, suelo y energía solar
+- Base energética: síntesis de biomasa (energía solar → materia orgánica)
 ### Consumidores (heterótrofos)
-- Organismos que se alimentan de otros seres vivos
-- Niveles:
-  - Primarios (ej.: orugas)
-  - Secundarios (ej.: sapos y ranas)
-  - Terciarios (ej.: serpientes)
-  - Cuaternarios (ej.: gavilanes)
+- Primarios: herbivoría / consumo de productores
+- Secundarios: depredación de primarios
+- Terciarios y cuaternarios: depredadores superiores
 ### Descomponedores
-- Hongos y bacterias (y otros)
-- Reciclan materia orgánica y devuelven nutrientes
-## Contexto Sololá / Lago de Atitlán
-- Terrestre: orugas → sapos/ranas → serpientes → gavilanes
-- Acuático: algas/fitoplancton → peces → peces grandes → aves
-- Bacterias descomponen y reinician el ciclo
+- Bacterias y hongos
+- Mineralización y reciclaje de nutrientes
+## Contexto Sololá / cuenca Lago de Atitlán
+- Terrestre: productores → insectos herbívoros → anfibios → reptiles/aves
+- Acuático: algas/fitoplancton → plancton/peces pequeños → peces grandes → aves
 `.trim();
 
-    let mmConcept = null;
-    let mmConceptFull = null;
+    let mm = null;
+    let mmFull = null;
 
-    function buildMap(targetId, md){
-      const { Transformer, Markmap } = window.markmap;
+    function renderMarkmap(svgId, md){
+      const { Transformer } = window.markmap;
       const transformer = new Transformer();
       const { root } = transformer.transform(md);
-      const svg = document.getElementById(targetId);
+
+      const svg = document.getElementById(svgId);
       while (svg.firstChild) svg.removeChild(svg.firstChild);
-      return Markmap.create(svg, { autoFit: true, duration: 250 }, root);
+
+      const m = window.markmap.Markmap.create(svg, { autoFit: true, duration: 240 }, root);
+      m.unfoldAll();
+      m.fit();
+      return m;
     }
 
-    function safeRenderConcept(){
-      const fallback = document.getElementById('fbConcept');
-      try{
-        if (!window.markmap || !window.markmap.Transformer || !window.markmap.Markmap) return false;
-        mmConcept = buildMap('mmConcept', mdConcept);
-        // SIEMPRE expandido:
-        mmConcept.unfoldAll();
-        mmConcept.fit();
-        fallback.classList.remove('show');
-        return true;
-      }catch(e){
-        fallback.classList.add('show');
-        return true;
-      }
+    function initMap(){
+      mm = renderMarkmap('mmConcept', mdConcept);
     }
-
-    // Render con reintentos por CDN lento
-    let tries = 0;
-    const timer = setInterval(() => {
-      tries++;
-      const done = safeRenderConcept();
-      if (done || tries >= 12){
-        clearInterval(timer);
-        if (!mmConcept) document.getElementById('fbConcept').classList.add('show');
-      }
-    }, 350);
-
-    document.getElementById('fitConcept').addEventListener('click', () => mmConcept && mmConcept.fit());
-    document.getElementById('resetConcept').addEventListener('click', () => {
-      mmConcept = null;
-      safeRenderConcept();
+    // render cuando todo está cargado (evita fallo CDN)
+    window.addEventListener('load', () => {
+      try{ initMap(); }catch(e){}
     });
 
-    // Fullscreen concept map
+    document.getElementById('fitConcept').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('resetConcept').addEventListener('click', () => {
+      try{ initMap(); }catch(e){}
+    });
+
     const modalConcept = document.getElementById('modalConcept');
     document.getElementById('fsConcept').addEventListener('click', () => {
       modalConcept.classList.add('open');
       setTimeout(() => {
-        try{
-          mmConceptFull = buildMap('mmConceptFull', mdConcept);
-          mmConceptFull.unfoldAll();
-          mmConceptFull.fit();
-        }catch(_){}
+        try{ mmFull = renderMarkmap('mmConceptFull', mdConcept); }catch(e){}
       }, 0);
     });
     document.getElementById('mCloseConcept').addEventListener('click', () => modalConcept.classList.remove('open'));
     modalConcept.addEventListener('click', (e) => { if (e.target === modalConcept) modalConcept.classList.remove('open'); });
-
-    document.getElementById('mFitConcept').addEventListener('click', () => mmConceptFull && mmConceptFull.fit());
+    document.getElementById('mFitConcept').addEventListener('click', () => mmFull && mmFull.fit());
     document.getElementById('mResetConcept').addEventListener('click', () => {
-      try{
-        mmConceptFull = buildMap('mmConceptFull', mdConcept);
-        mmConceptFull.unfoldAll();
-        mmConceptFull.fit();
-      }catch(_){}
+      try{ mmFull = renderMarkmap('mmConceptFull', mdConcept); }catch(e){}
     });
 
-    // =========================================================
-    // C) CADENAS TRÓFICAS INTERACTIVAS (SVG) - flujo de energía
-    // =========================================================
-    function setActiveTerrestrial(node){
-      const nodes = ['tNodeP','tNodeC1','tNodeC2','tNodeTop'].map(id => document.getElementById(id));
-      const arrows = ['tArrow1','tArrow2','tArrow3'].map(id => document.getElementById(id));
+    // =========================
+    // 2) RESALTADO DE CADENAS (terrestre / acuática)
+    // =========================
+    function setActiveChain(prefix, node){
+      const nodes = [
+        document.getElementById(prefix+'NodeP'),
+        document.getElementById(prefix+'NodeC1'),
+        document.getElementById(prefix+'NodeC2'),
+        document.getElementById(prefix+'NodeTop')
+      ].filter(Boolean);
 
-      nodes.forEach(n => n.classList.remove('active'));
-      arrows.forEach(a => a.classList.remove('active'));
-
-      // Dim all arrows
-      arrows.forEach(a => a.classList.add('dim'));
-
-      const info = document.getElementById('tInfo');
-      const explain = {
-        P: "Productores: base energética. Transforman energía solar en biomasa (materia orgánica).",
-        C1: "Consumidor primario: se alimenta de productores (ej.: orugas).",
-        C2: "Consumidor secundario: depreda o consume al consumidor primario (ej.: sapos y ranas).",
-        TOP:"Consumidores superiores: depredadores que se alimentan de niveles previos (ej.: serpientes y gavilanes)."
-      };
-
-      if (!node){
-        arrows.forEach(a => a.classList.remove('dim'));
-        info.textContent = "Selecciona un nodo para resaltar su flujo de energía y ver una explicación breve.";
-        return;
-      }
-
-      const mapNodeId = { P:'tNodeP', C1:'tNodeC1', C2:'tNodeC2', TOP:'tNodeTop' };
-      document.getElementById(mapNodeId[node]).classList.add('active');
-
-      // Highlight arrows up to that node
-      const order = ['P','C1','C2','TOP'];
-      const idx = order.indexOf(node);
-      arrows.forEach(a => a.classList.add('dim'));
-      for (let i=0;i<idx;i++){
-        arrows[i].classList.remove('dim');
-        arrows[i].classList.add('active');
-      }
-      info.innerHTML = `<strong>${explain[node]}</strong>`;
-
-      // If producer selected, show first arrow only as active? keep consistent:
-      if (node === 'P'){
-        arrows.forEach(a => a.classList.add('dim'));
-        arrows[0].classList.remove('dim');
-        arrows[0].classList.add('active');
-      }
-    }
-
-    document.getElementById('tNodeP').addEventListener('click', () => setActiveTerrestrial('P'));
-    document.getElementById('tNodeC1').addEventListener('click', () => setActiveTerrestrial('C1'));
-    document.getElementById('tNodeC2').addEventListener('click', () => setActiveTerrestrial('C2'));
-    document.getElementById('tNodeTop').addEventListener('click', () => setActiveTerrestrial('TOP'));
-    document.getElementById('tReset').addEventListener('click', () => setActiveTerrestrial(null));
-    setActiveTerrestrial(null);
-
-    function setActiveAquatic(node){
-      const nodes = ['aNodeP','aNodeC1','aNodeC2','aNodeTop','aNodeD'].map(id => document.getElementById(id));
-      const arrows = ['aArrow1','aArrow2','aArrow3','aArrow4'].map(id => document.getElementById(id));
+      const arrows = [
+        document.getElementById(prefix+'Arrow1'),
+        document.getElementById(prefix+'Arrow2'),
+        document.getElementById(prefix+'Arrow3')
+      ].filter(Boolean);
 
       nodes.forEach(n => n.classList.remove('active'));
       arrows.forEach(a => { a.classList.remove('active'); a.classList.add('dim'); });
 
-      const info = document.getElementById('aInfo');
-      const explain = {
-        P: "Productores acuáticos (algas/fitoplancton): convierten energía solar en biomasa; base del sistema acuático.",
-        C1: "Consumidores (organismos/peces pequeños): se alimentan de productores o de plancton.",
-        C2: "Peces más grandes: depredan consumidores menores, concentrando energía en niveles superiores.",
-        TOP:"Aves: pueden consumir organismos acuáticos; conectan el sistema acuático con el terrestre.",
-        D: "Descomposición (bacterias): recicla materia orgánica y libera nutrientes que sostienen nuevamente a los productores."
-      };
-
+      const info = document.getElementById(prefix.toLowerCase()+'Info');
       if (!node){
         arrows.forEach(a => a.classList.remove('dim'));
-        info.textContent = "Selecciona un nodo para resaltar el flujo de energía y ver una explicación breve.";
+        info.textContent = 'Selecciona un nodo para resaltar el flujo de energía.';
         return;
       }
 
-      const mapNodeId = { P:'aNodeP', C1:'aNodeC1', C2:'aNodeC2', TOP:'aNodeTop', D:'aNodeD' };
+      const mapNodeId = { P: prefix+'NodeP', C1: prefix+'NodeC1', C2: prefix+'NodeC2', TOP: prefix+'NodeTop' };
       document.getElementById(mapNodeId[node]).classList.add('active');
 
-      // highlight path; D highlights recycling arrow
-      if (node === 'D'){
-        arrows.forEach(a => a.classList.add('dim'));
-        arrows[3].classList.remove('dim');
-        arrows[3].classList.add('active');
-      } else {
-        const order = ['P','C1','C2','TOP'];
-        const idx = order.indexOf(node);
-        arrows.forEach(a => a.classList.add('dim'));
-        for (let i=0;i<idx;i++){
+      const explainT = {
+        P: 'Productores: convierten energía solar en biomasa.',
+        C1:'Consumidor primario: consume productores.',
+        C2:'Consumidor secundario: depreda consumidores primarios.',
+        TOP:'Depredadores superiores: depredación sobre niveles previos.'
+      };
+
+      const explainA = {
+        P: 'Productores acuáticos: algas/fitoplancton como base energética.',
+        C1:'Consumidores: plancton/peces pequeños.',
+        C2:'Peces más grandes: depredación y concentración de energía.',
+        TOP:'Aves: consumo de organismos acuáticos.'
+      };
+
+      const explain = (prefix === 't') ? explainT : explainA;
+      info.innerHTML = '<strong>' + explain[node] + '</strong>';
+
+      const order = ['P','C1','C2','TOP'];
+      const idx = order.indexOf(node);
+      for (let i=0;i<Math.max(1, idx);i++){
+        if (arrows[i]){
           arrows[i].classList.remove('dim');
           arrows[i].classList.add('active');
         }
       }
-
-      info.innerHTML = `<strong>${explain[node]}</strong>`;
+      if (node === 'P'){
+        arrows.forEach(a => a.classList.add('dim'));
+        if (arrows[0]){
+          arrows[0].classList.remove('dim');
+          arrows[0].classList.add('active');
+        }
+      }
     }
 
-    document.getElementById('aNodeP').addEventListener('click', () => setActiveAquatic('P'));
-    document.getElementById('aNodeC1').addEventListener('click', () => setActiveAquatic('C1'));
-    document.getElementById('aNodeC2').addEventListener('click', () => setActiveAquatic('C2'));
-    document.getElementById('aNodeTop').addEventListener('click', () => setActiveAquatic('TOP'));
-    document.getElementById('aNodeD').addEventListener('click', () => setActiveAquatic('D'));
-    document.getElementById('aReset').addEventListener('click', () => setActiveAquatic(null));
-    setActiveAquatic(null);
+    document.getElementById('tNodeP').addEventListener('click', () => setActiveChain('t','P'));
+    document.getElementById('tNodeC1').addEventListener('click', () => setActiveChain('t','C1'));
+    document.getElementById('tNodeC2').addEventListener('click', () => setActiveChain('t','C2'));
+    document.getElementById('tNodeTop').addEventListener('click', () => setActiveChain('t','TOP'));
+    document.getElementById('tReset').addEventListener('click', () => setActiveChain('t',null));
+    setActiveChain('t',null);
+
+    document.getElementById('aNodeP').addEventListener('click', () => setActiveChain('a','P'));
+    document.getElementById('aNodeC1').addEventListener('click', () => setActiveChain('a','C1'));
+    document.getElementById('aNodeC2').addEventListener('click', () => setActiveChain('a','C2'));
+    document.getElementById('aNodeTop').addEventListener('click', () => setActiveChain('a','TOP'));
+    document.getElementById('aReset').addEventListener('click', () => setActiveChain('a',null));
+    setActiveChain('a',null);
+
+    // =========================
+    // 3) JUEGO NUEVO: Conectar nodos (dos modos)
+    // =========================
+    const tabTer = document.getElementById('tabTer');
+    const tabAcu = document.getElementById('tabAcu');
+    const nodeLayer = document.getElementById('nodeLayer');
+    const edgeLayer = document.getElementById('edgeLayer');
+    const scoreEl = document.getElementById('score');
+    const resultEl = document.getElementById('result');
+
+    const MODES = {
+      terrestrial: {
+        name: 'Terrestre',
+        nodes: [
+          { id:'P',  x:140, y:120, label:'Productores', sub:'Plantas' },
+          { id:'C1', x:420, y:120, label:'Consumidor primario', sub:'Orugas' },
+          { id:'C2', x:700, y:120, label:'Consumidor secundario', sub:'Sapos/ranas' },
+          { id:'TOP',x:860, y:280, label:'Depredadores', sub:'Serpientes/aves' }
+        ],
+        requiredEdges: [
+          ['P','C1'],
+          ['C1','C2'],
+          ['C2','TOP']
+        ]
+      },
+      aquatic: {
+        name: 'Acuático',
+        nodes: [
+          { id:'P',  x:140, y:120, label:'Productores acuáticos', sub:'Algas/fitoplancton' },
+          { id:'C1', x:470, y:120, label:'Consumidores', sub:'Plancton/peces pequeños' },
+          { id:'C2', x:770, y:120, label:'Peces más grandes', sub:'Depredación' },
+          { id:'TOP',x:860, y:300, label:'Aves', sub:'Consumo de biota acuática' }
+        ],
+        requiredEdges: [
+          ['P','C1'],
+          ['C1','C2'],
+          ['C2','TOP']
+        ]
+      }
+    };
+
+    let mode = 'terrestrial';
+    let selected = null;            // id del nodo origen seleccionado
+    let edges = [];                 // lista de pares [from,to]
+    let edgeEls = [];               // elementos SVG
+    let nodeEls = new Map();        // id -> g
+
+    function setTabs(){
+      tabTer.classList.toggle('active', mode === 'terrestrial');
+      tabAcu.classList.toggle('active', mode === 'aquatic');
+    }
+
+    function clearLayers(){
+      while (nodeLayer.firstChild) nodeLayer.removeChild(nodeLayer.firstChild);
+      while (edgeLayer.firstChild) edgeLayer.removeChild(edgeLayer.firstChild);
+      nodeEls.clear();
+      edgeEls = [];
+    }
+
+    function edgeKey(a,b){ return a+'->'+b; }
+    function hasEdge(a,b){
+      const k = edgeKey(a,b);
+      return edges.some(e => edgeKey(e[0],e[1]) === k);
+    }
+
+    function drawEdge(a,b){
+      const nodes = MODES[mode].nodes;
+      const na = nodes.find(n => n.id === a);
+      const nb = nodes.find(n => n.id === b);
+      if (!na || !nb) return;
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+
+      // flecha con curva suave para evitar choque visual
+      const dx = nb.x - na.x;
+      const dy = nb.y - na.y;
+      const c1x = na.x + dx * 0.45;
+      const c1y = na.y + dy * 0.05;
+      const c2x = na.x + dx * 0.55;
+      const c2y = na.y + dy * 0.95;
+      const d = `M ${na.x} ${na.y} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${nb.x} ${nb.y}`;
+
+      path.setAttribute('d', d);
+      path.setAttribute('class','g-edge');
+      edgeLayer.appendChild(path);
+      edgeEls.push(path);
+    }
+
+    function updateScore(){
+      scoreEl.textContent = 'Conexiones: ' + edges.length;
+    }
+
+    function setResult(type, html){
+      resultEl.classList.remove('ok','no');
+      if (type) resultEl.classList.add(type);
+      resultEl.innerHTML = html;
+    }
+
+    function deselectAll(){
+      selected = null;
+      nodeEls.forEach(g => g.classList.remove('selected'));
+    }
+
+    function onNodeClick(id){
+      if (!selected){
+        selected = id;
+        deselectAll();
+        nodeEls.get(id).classList.add('selected');
+        return;
+      }
+      if (selected === id){
+        deselectAll();
+        return;
+      }
+      // crear arista selected -> id
+      if (!hasEdge(selected, id)){
+        edges.push([selected, id]);
+        drawEdge(selected, id);
+        updateScore();
+      }
+      deselectAll();
+    }
+
+    function renderNodes(){
+      const nodes = MODES[mode].nodes;
+
+      nodes.forEach(n => {
+        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+        g.setAttribute('class','g-node');
+        g.style.cursor = 'pointer';
+
+        const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        c.setAttribute('cx', n.x);
+        c.setAttribute('cy', n.y);
+        c.setAttribute('r', 52);
+
+        const t1 = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t1.setAttribute('x', n.x);
+        t1.setAttribute('y', n.y - 6);
+        t1.setAttribute('text-anchor','middle');
+        t1.textContent = n.label;
+
+        const t2 = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t2.setAttribute('x', n.x);
+        t2.setAttribute('y', n.y + 16);
+        t2.setAttribute('text-anchor','middle');
+        t2.setAttribute('class','sub');
+        t2.textContent = n.sub;
+
+        g.appendChild(c);
+        g.appendChild(t1);
+        g.appendChild(t2);
+
+        g.addEventListener('click', () => onNodeClick(n.id));
+
+        nodeLayer.appendChild(g);
+        nodeEls.set(n.id, g);
+      });
+    }
+
+    function initGame(newMode){
+      mode = newMode;
+      setTabs();
+      clearLayers();
+      edges = [];
+      selected = null;
+      updateScore();
+      setResult(null, 'Estado: sin evaluación.');
+      renderNodes();
+    }
+
+    function undo(){
+      if (edges.length === 0) return;
+      edges.pop();
+      const lastEl = edgeEls.pop();
+      if (lastEl && lastEl.parentNode) lastEl.parentNode.removeChild(lastEl);
+      updateScore();
+      setResult(null, 'Estado: sin evaluación.');
+    }
+
+    function clearAll(){
+      initGame(mode);
+    }
+
+    function evaluate(){
+      const required = MODES[mode].requiredEdges;
+      const reqKeys = required.map(e => edgeKey(e[0],e[1]));
+      const userKeys = edges.map(e => edgeKey(e[0],e[1]));
+
+      let correct = 0;
+      reqKeys.forEach(k => { if (userKeys.includes(k)) correct++; });
+
+      // penaliza aristas extra que no están en el modelo
+      const extras = userKeys.filter(k => !reqKeys.includes(k)).length;
+
+      if (correct === reqKeys.length && extras === 0){
+        setResult('ok',
+          '<strong>Evaluación:</strong> flujo correcto y sin conexiones extra. ' +
+          'Interpretación: la energía fluye desde productores hacia consumidores y niveles superiores.'
+        );
+      } else {
+        setResult('no',
+          '<strong>Evaluación:</strong> correctas: ' + correct + '/' + reqKeys.length +
+          ' · extras: ' + extras +
+          '<br>Requeridas: ' + required.map(e => e[0] + '→' + e[1]).join(', ')
+        );
+      }
+    }
+
+    tabTer.addEventListener('click', () => initGame('terrestrial'));
+    tabAcu.addEventListener('click', () => initGame('aquatic'));
+    document.getElementById('btnUndo').addEventListener('click', undo);
+    document.getElementById('btnClear').addEventListener('click', clearAll);
+    document.getElementById('btnEval').addEventListener('click', evaluate);
+
+    // inicia juego
+    initGame('terrestrial');
   </script>
 </body>
 </html>
