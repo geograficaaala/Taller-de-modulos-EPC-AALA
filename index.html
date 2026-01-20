@@ -19,12 +19,9 @@
       --shadow-soft:0 10px 24px rgba(11,16,32,.12);
       --radius:24px;
 
-      /* badges */
       --ok: rgba(45, 160, 220, .18);
       --warn: rgba(120, 190, 255, .18);
-      --info: rgba(160, 220, 255, .18);
     }
-
     *{ box-sizing:border-box; }
 
     body{
@@ -32,7 +29,6 @@
       color:var(--ink);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
-      /* SOLO azules y celestes pasteles */
       background:
         radial-gradient(1100px 760px at 12% 12%, rgba(185, 235, 255, .92), transparent 58%),
         radial-gradient(980px 760px at 84% 18%, rgba(160, 210, 255, .90), transparent 62%),
@@ -107,29 +103,20 @@
     }
     .muted{ color: var(--muted); }
 
-    .moduleGrid{
-      margin-top: 12px;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
     .moduleHero{
+      margin-top: 12px;
       border-radius: 22px;
       border: 1px solid rgba(11,16,32,.10);
-
-      /* SOLO azules y celestes pasteles */
       background: linear-gradient(135deg,
         rgba(185,235,255,.62),
         rgba(160,210,255,.58),
         rgba(210,245,255,.56)
       );
-
       padding: 14px;
       box-shadow: var(--shadow-soft);
     }
 
-    .moduleHeroTop{
+    .moduleTop{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
@@ -172,7 +159,6 @@
     .btn:active{ transform: translateY(1px); }
 
     .btn.primary{
-      /* SOLO azules y celestes pasteles */
       background: linear-gradient(135deg,
         rgba(185,235,255,.92),
         rgba(160,210,255,.90),
@@ -265,15 +251,14 @@
       <div>
         <h1 class="title">Taller de Módulos · EPC AALA</h1>
         <p class="subtitle">
-          Portal interactivo para desarrollar los subtemas del Módulo 1 con teoría, mapas conceptuales/mentales y mini-juegos de evaluación.
-          (Los enlaces se activan automáticamente cuando subas cada archivo HTML.)
+          Plataforma interactiva para desarrollar el Módulo 1 con teoría, mapas/diagramas y actividades evaluativas.
         </p>
       </div>
 
       <div class="pillRow">
-        <span class="pill">GitHub Pages activo</span>
-        <span class="pill">Sololá / cuenca Lago de Atitlán</span>
-        <span class="pill">Módulo 1 en progreso</span>
+        <span class="pill">EPC AALA</span>
+        <span class="pill">Sololá</span>
+        <span class="pill">Lago de Atitlán</span>
       </div>
     </header>
 
@@ -281,157 +266,144 @@
       <section class="card">
         <h2>Módulo 1 · Medio ambiente</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Subtemas del módulo listos para irse activando. Cada subtema incluye: sustentación teórica + mapas/diagramas interactivos + mini-juego.
+          Subtemas del módulo.
         </p>
 
-        <div class="moduleGrid">
-          <div class="moduleHero">
-            <div class="moduleHeroTop">
-              <div>
-                <h3 class="moduleName">Acceso rápido</h3>
-                <p class="moduleMeta">
-                  Si ya subiste un subtema, entra directo desde aquí. Si aún no existe el archivo, se mostrará como “Próximamente”.
-                </p>
-              </div>
-              <a class="btn primary" href="#subtemas">Ver subtemas</a>
+        <div class="moduleHero">
+          <div class="moduleTop">
+            <div>
+              <h3 class="moduleName">Subtemas</h3>
+              <p class="moduleMeta">Acceso directo a cada tema.</p>
             </div>
+            <a class="btn primary" href="#subtemas">Ver</a>
+          </div>
 
-            <div class="subGrid" id="subtemas">
-              <div class="subCard">
-                <div class="subTop">
-                  <h4 class="subTitle">1.1 Elementos que conforman el ambiente</h4>
-                  <span class="tag ok" data-file="1-1.html">Disponible</span>
-                </div>
-                <p class="subDesc">Biótico vs abiótico, interdependencia y contexto local.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-1.html">Abrir</a>
-                </div>
+          <div class="subGrid" id="subtemas">
+            <div class="subCard">
+              <div class="subTop">
+                <h4 class="subTitle">1.1 Elementos que conforman el ambiente</h4>
+                <span class="tag ok" data-file="1-1.html">Disponible</span>
               </div>
-
-              <div class="subCard">
-                <div class="subTop">
-                  <h4 class="subTitle">1.2 Cadenas alimenticias o tróficas</h4>
-                  <span class="tag ok" data-file="1-2.html">Disponible</span>
-                </div>
-                <p class="subDesc">Niveles tróficos, flujo de energía y ejemplos terrestre/acuático.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-2.html">Abrir</a>
-                </div>
-              </div>
-
-              <div class="subCard ghost">
-                <div class="subTop">
-                  <h4 class="subTitle">1.3 El ecosistema y su organización</h4>
-                  <span class="tag todo" data-file="1-3.html">Próximamente</span>
-                </div>
-                <p class="subDesc">Niveles de organización y relaciones dentro del ecosistema.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-3.html" aria-disabled="true">Abrir</a>
-                </div>
-              </div>
-
-              <div class="subCard ghost">
-                <div class="subTop">
-                  <h4 class="subTitle">1.4 Ecosistemas en Sololá y cuenca del Lago de Atitlán</h4>
-                  <span class="tag todo" data-file="1-4.html">Próximamente</span>
-                </div>
-                <p class="subDesc">Ecosistemas locales y su relación con la conservación.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-4.html" aria-disabled="true">Abrir</a>
-                </div>
-              </div>
-
-              <div class="subCard ghost">
-                <div class="subTop">
-                  <h4 class="subTitle">1.5 Recursos naturales</h4>
-                  <span class="tag todo" data-file="1-5.html">Próximamente</span>
-                </div>
-                <p class="subDesc">Renovables/no renovables e implicaciones de uso.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-5.html" aria-disabled="true">Abrir</a>
-                </div>
-              </div>
-
-              <div class="subCard ghost">
-                <div class="subTop">
-                  <h4 class="subTitle">1.6 Biodiversidad</h4>
-                  <span class="tag todo" data-file="1-6.html">Próximamente</span>
-                </div>
-                <p class="subDesc">Diversidad genética, de especies y ecosistemas.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-6.html" aria-disabled="true">Abrir</a>
-                </div>
-              </div>
-
-              <div class="subCard ghost">
-                <div class="subTop">
-                  <h4 class="subTitle">1.7 Deterioro ambiental</h4>
-                  <span class="tag todo" data-file="1-7.html">Próximamente</span>
-                </div>
-                <p class="subDesc">Causas, consecuencias y análisis de impacto.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-7.html" aria-disabled="true">Abrir</a>
-                </div>
-              </div>
-
-              <div class="subCard ghost">
-                <div class="subTop">
-                  <h4 class="subTitle">1.8 Cambio climático</h4>
-                  <span class="tag todo" data-file="1-8.html">Próximamente</span>
-                </div>
-                <p class="subDesc">Causas, efectos, mitigación y adaptación.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-8.html" aria-disabled="true">Abrir</a>
-                </div>
-              </div>
-
-              <div class="subCard ghost">
-                <div class="subTop">
-                  <h4 class="subTitle">1.9 Huella ecológica</h4>
-                  <span class="tag todo" data-file="1-9.html">Próximamente</span>
-                </div>
-                <p class="subDesc">Impacto del consumo y hábitos cotidianos.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-9.html" aria-disabled="true">Abrir</a>
-                </div>
-              </div>
-
-              <div class="subCard ghost">
-                <div class="subTop">
-                  <h4 class="subTitle">1.10 Estrategias para contrarrestar problemas ambientales</h4>
-                  <span class="tag todo" data-file="1-10.html">Próximamente</span>
-                </div>
-                <p class="subDesc">Acciones individuales y comunitarias de conservación.</p>
-                <div class="subActions">
-                  <a class="btn" href="1-10.html" aria-disabled="true">Abrir</a>
-                </div>
+              <p class="subDesc">Elementos bióticos y abióticos e interdependencia.</p>
+              <div class="subActions">
+                <a class="btn" href="1-1.html">Abrir</a>
               </div>
             </div>
 
-            <p class="muted" style="margin:12px 0 0; font-size:12px;">
-              Este index activa/desactiva tarjetas automáticamente según existan los archivos (así no lo editas cada rato).
-            </p>
+            <div class="subCard">
+              <div class="subTop">
+                <h4 class="subTitle">1.2 Cadenas alimenticias o tróficas</h4>
+                <span class="tag ok" data-file="1-2.html">Disponible</span>
+              </div>
+              <p class="subDesc">Niveles tróficos y flujo de energía (terrestre y acuático).</p>
+              <div class="subActions">
+                <a class="btn" href="1-2.html">Abrir</a>
+              </div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">1.3 El ecosistema y su organización</h4>
+                <span class="tag todo" data-file="1-3.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Organización biológica y relaciones ecosistémicas.</p>
+              <div class="subActions">
+                <a class="btn" href="1-3.html" aria-disabled="true">Abrir</a>
+              </div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">1.4 Ecosistemas en Sololá y cuenca del Lago de Atitlán</h4>
+                <span class="tag todo" data-file="1-4.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Ecosistemas locales y su relevancia ambiental.</p>
+              <div class="subActions">
+                <a class="btn" href="1-4.html" aria-disabled="true">Abrir</a>
+              </div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">1.5 Recursos naturales</h4>
+                <span class="tag todo" data-file="1-5.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Clasificación y uso sostenible.</p>
+              <div class="subActions">
+                <a class="btn" href="1-5.html" aria-disabled="true">Abrir</a>
+              </div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">1.6 Biodiversidad</h4>
+                <span class="tag todo" data-file="1-6.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Niveles de biodiversidad e importancia ecológica.</p>
+              <div class="subActions">
+                <a class="btn" href="1-6.html" aria-disabled="true">Abrir</a>
+              </div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">1.7 Deterioro ambiental</h4>
+                <span class="tag todo" data-file="1-7.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Causas y efectos sobre ecosistemas y sociedad.</p>
+              <div class="subActions">
+                <a class="btn" href="1-7.html" aria-disabled="true">Abrir</a>
+              </div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">1.8 Cambio climático</h4>
+                <span class="tag todo" data-file="1-8.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Causas, impactos y respuestas.</p>
+              <div class="subActions">
+                <a class="btn" href="1-8.html" aria-disabled="true">Abrir</a>
+              </div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">1.9 Huella ecológica</h4>
+                <span class="tag todo" data-file="1-9.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Indicadores de impacto ambiental del consumo.</p>
+              <div class="subActions">
+                <a class="btn" href="1-9.html" aria-disabled="true">Abrir</a>
+              </div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">1.10 Estrategias para contrarrestar problemas ambientales</h4>
+                <span class="tag todo" data-file="1-10.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Acciones individuales y colectivas para conservación.</p>
+              <div class="subActions">
+                <a class="btn" href="1-10.html" aria-disabled="true">Abrir</a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section class="card">
         <h2>Módulos 2–7</h2>
-        <p class="muted" style="margin:8px 0 0;">
-          Los activaremos cuando avances en el índice. Por ahora, el enfoque es completar Módulo 1.
-        </p>
+        <p class="muted" style="margin:8px 0 0;">Listado en preparación.</p>
       </section>
 
       <footer>
-        EPC AALA · Sitio estático en GitHub Pages · Si no ves cambios, recarga con Ctrl+F5
+        EPC AALA
       </footer>
     </main>
   </div>
 
   <script>
-    // Activación automática de subtarjetas:
-    // Si el archivo existe en GitHub Pages => "Disponible"
-    // Si no existe => "Próximamente" y deshabilita el botón
     (async () => {
       const tags = [...document.querySelectorAll('[data-file]')];
       const base = location.href.replace(/\/index\.html.*$/,'/').replace(/#.*$/,'');
@@ -465,7 +437,6 @@
             link.style.opacity = '.6';
           }
         }catch(_){
-          // no rompemos nada si el navegador no permite HEAD o hay error de red
         }
       }));
     })();
