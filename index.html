@@ -2,80 +2,469 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Taller de módulos - EPC AALA</title>
-  <link rel="stylesheet" href="assets/app.css" />
-  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Taller de módulos — EPC AALA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --ink: #0b1020;
+      --muted: rgba(11,16,32,.72);
+      --glass: rgba(255,255,255,.62);
+      --glass-2: rgba(255,255,255,.44);
+      --stroke: rgba(11,16,32,.10);
+      --shadow: 0 18px 45px rgba(11,16,32,.16);
+      --shadow-soft: 0 10px 24px rgba(11,16,32,.12);
+      --radius: 22px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 700px at 15% 10%, rgba(175, 255, 216, .85), transparent 55%),
+        radial-gradient(950px 740px at 80% 20%, rgba(170, 226, 255, .85), transparent 60%),
+        radial-gradient(1100px 900px at 45% 95%, rgba(255, 191, 228, .75), transparent 55%),
+        linear-gradient(135deg, #eafff4 0%, #e8f6ff 45%, #fff0f7 100%);
+      min-height:100vh;
+    }
+    .wrap{
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 26px 18px 60px;
+    }
+
+    /* top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding: 16px 18px;
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 0;
+    }
+    .logo{
+      width: 44px; height:44px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.55)),
+        linear-gradient(135deg, rgba(160, 255, 210,.95), rgba(175, 220, 255,.95), rgba(255, 185, 230,.92));
+      border: 1px solid rgba(11,16,32,.08);
+      box-shadow: 0 10px 20px rgba(11,16,32,.10);
+      display:grid;
+      place-items:center;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+    .brand h1{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: clamp(18px, 2.3vw, 26px);
+      line-height: 1.1;
+    }
+    .brand p{
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 62ch;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.78);
+      font-weight: 600;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    /* hero */
+    .hero{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .panel{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+      overflow:hidden;
+      position: relative;
+    }
+    .panel::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(420px 220px at 10% 10%, rgba(170, 255, 216,.55), transparent 60%),
+        radial-gradient(420px 240px at 90% 20%, rgba(170, 226, 255,.55), transparent 60%),
+        radial-gradient(520px 320px at 50% 110%, rgba(255, 191, 228,.45), transparent 60%);
+      pointer-events:none;
+      filter: blur(0px);
+      opacity:.9;
+    }
+    .panel > *{ position: relative; }
+    .panel h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .panel .meta{
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    .panel .chips{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.55);
+      font-size: 13px;
+      color: rgba(11,16,32,.82);
+      font-weight: 600;
+    }
+
+    .quick{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .quick .mini{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.52);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .mini h3{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 15px;
+    }
+    .mini p{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    /* cards */
+    .sectionTitle{
+      margin: 22px 0 10px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .sectionTitle h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      letter-spacing:.2px;
+      font-size: 18px;
+    }
+    .sectionTitle .hint{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.58);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+      position: relative;
+      overflow:hidden;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      min-height: 170px;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 20px 50px rgba(11,16,32,.16);
+      border-color: rgba(11,16,32,.16);
+    }
+    .tagRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.55);
+      font-weight: 700;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .status{
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(11,16,32,.72);
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(11,16,32,.10);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .card h3{
+      margin: 2px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: .2px;
+    }
+    .card p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .actions{
+      margin-top:auto;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      color: rgba(11,16,32,.92);
+      font-weight: 800;
+      text-decoration:none;
+      font-size: 13px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .btn:hover{ background: rgba(255,255,255,.78); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(170,255,216,.85), rgba(170,226,255,.85), rgba(255,191,228,.78));
+      border-color: rgba(11,16,32,.12);
+    }
+    .btn.primary:hover{
+      background: linear-gradient(135deg, rgba(170,255,216,.95), rgba(170,226,255,.95), rgba(255,191,228,.88));
+    }
+
+    .footer{
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.55);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 920px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="title">Taller de módulos - EPC AALA</div>
-      <div class="subtitle">Sitio interactivo por módulos con mapas mentales y mini-evaluaciones</div>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">EPC</div>
+        <div>
+          <h1>Taller de módulos — EPC AALA</h1>
+          <p>Explora los módulos como tarjetas. Cada módulo contiene subtemas con teoría, mapa mental interactivo y mini-juego de evaluación.</p>
+        </div>
+      </div>
+      <div class="pill" title="Sugerencia de uso">
+        Consejo: desarrolla Módulo 1 primero
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="panel">
+        <h2>¿Cómo usar este sitio?</h2>
+        <div class="meta">
+          1) Entra a un módulo. 2) Elige un subtema. 3) Revisa la teoría. 4) Interactúa con el mapa mental. 5) Resuelve el mini-juego para comprobar comprensión.
+        </div>
+        <div class="chips">
+          <span class="chip">Mapas mentales interactivos</span>
+          <span class="chip">Mini-juegos evaluables</span>
+          <span class="chip">Navegación por subtemas</span>
+          <span class="chip">Diseño pastel “glass”</span>
+        </div>
+      </div>
+
+      <div class="quick">
+        <div class="mini">
+          <h3>Estado actual</h3>
+          <p>Por ahora trabajaremos el <strong>Módulo 1</strong> y el subtema <strong>1.1</strong>. Los demás módulos quedan listos como tarjetas para desarrollar después.</p>
+        </div>
+        <div class="mini">
+          <h3>Tip GitHub Pages</h3>
+          <p>Asegúrate de que el archivo se llame <strong>index.html</strong> (minúsculas). Luego haz commit + push y abre tu enlace de GitHub Pages.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="sectionTitle">
+      <h2>Módulos</h2>
+      <p class="hint">Haz clic en “Abrir” para entrar. Los módulos “Próximamente” se activan cuando los creemos.</p>
     </div>
-    <nav class="nav">
-      <button id="btnHome" class="btn ghost">Inicio</button>
-    </nav>
-  </header>
 
-  <main class="container">
-    <section id="viewHome" class="view">
-      <h1>Módulos</h1>
-      <p class="muted">Selecciona un módulo para ver sus subtemas.</p>
-      <div id="modulesGrid" class="grid"></div>
+    <section class="grid" aria-label="Tarjetas de módulos">
+      <!-- MÓDULO 1 -->
+      <article class="card">
+        <div class="tagRow">
+          <span class="tag">Módulo 1</span>
+          <span class="status">Activo</span>
+        </div>
+        <h3>Medio ambiente</h3>
+        <p>Subtemas 1.1 a 1.10 (teoría + mapa mental + mini-juego).</p>
+        <div class="actions">
+          <a class="btn primary" href="modulos/modulo-1/index.html">Abrir módulo</a>
+          <a class="btn" href="modulos/modulo-1/1-1.html">Ir a 1.1</a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 2 -->
+      <article class="card">
+        <div class="tagRow">
+          <span class="tag">Módulo 2</span>
+          <span class="status">Próximamente</span>
+        </div>
+        <h3>El bosque</h3>
+        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="alert('Aún no está desarrollado.'); return false;">Abrir</a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 3 -->
+      <article class="card">
+        <div class="tagRow">
+          <span class="tag">Módulo 3</span>
+          <span class="status">Próximamente</span>
+        </div>
+        <h3>El agua y las cuencas hidrográficas</h3>
+        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="alert('Aún no está desarrollado.'); return false;">Abrir</a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 4 -->
+      <article class="card">
+        <div class="tagRow">
+          <span class="tag">Módulo 4</span>
+          <span class="status">Próximamente</span>
+        </div>
+        <h3>El suelo</h3>
+        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="alert('Aún no está desarrollado.'); return false;">Abrir</a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 5 -->
+      <article class="card">
+        <div class="tagRow">
+          <span class="tag">Módulo 5</span>
+          <span class="status">Próximamente</span>
+        </div>
+        <h3>Saneamiento ambiental</h3>
+        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="alert('Aún no está desarrollado.'); return false;">Abrir</a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 6 -->
+      <article class="card">
+        <div class="tagRow">
+          <span class="tag">Módulo 6</span>
+          <span class="status">Próximamente</span>
+        </div>
+        <h3>Conservación de los bienes y servicios ambientales</h3>
+        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="alert('Aún no está desarrollado.'); return false;">Abrir</a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 7 -->
+      <article class="card">
+        <div class="tagRow">
+          <span class="tag">Módulo 7</span>
+          <span class="status">Próximamente</span>
+        </div>
+        <h3>Valorando recursos naturales y culturales</h3>
+        <p>Tarjeta lista para desarrollar subtemas del módulo.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="alert('Aún no está desarrollado.'); return false;">Abrir</a>
+        </div>
+      </article>
     </section>
 
-    <section id="viewModule" class="view hidden">
-      <div class="viewHeader">
-        <div>
-          <h1 id="moduleTitle"></h1>
-          <p id="moduleDesc" class="muted"></p>
-        </div>
-        <div class="viewActions">
-          <button id="btnBackToHome" class="btn">Volver</button>
-        </div>
-      </div>
-      <div id="topicsGrid" class="grid"></div>
-    </section>
-
-    <section id="viewTopic" class="view hidden">
-      <div class="viewHeader">
-        <div>
-          <h1 id="topicTitle"></h1>
-          <p id="topicMeta" class="muted"></p>
-        </div>
-        <div class="viewActions">
-          <button id="btnBackToModule" class="btn">Volver al módulo</button>
-        </div>
-      </div>
-
-      <div class="twoCol">
-        <section class="card">
-          <h2>Mapa mental</h2>
-          <p class="muted">Interactúa: zoom, expandir/colapsar nodos.</p>
-          <div class="mapWrap">
-            <svg id="mindmap" class="markmap"></svg>
-          </div>
-          <div class="row">
-            <button id="btnFit" class="btn ghost">Ajustar</button>
-            <button id="btnToggle" class="btn ghost">Expandir/Colapsar</button>
-            <button id="btnReloadMap" class="btn ghost">Recargar</button>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2>Mini-juego / Evaluación</h2>
-          <div id="gameHost"></div>
-        </section>
-      </div>
-
-      <section class="card">
-        <h2>Contenido base</h2>
-        <div id="topicNotes" class="notes"></div>
-      </section>
-    </section>
-  </main>
-
-  <script src="assets/app.js"></script>
+    <footer class="footer">
+      <strong>Nota:</strong> En GitHub Pages, el archivo principal debe ser <code>index.html</code>.  
+      Para el subtema 1.1, crea la ruta <code>modulos/modulo-1/1-1.html</code> (te la dejo abajo).
+    </footer>
+  </div>
 </body>
 </html>
