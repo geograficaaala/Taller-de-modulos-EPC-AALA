@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2.1 Diferencia entre bosque, plantación forestal y reforestación · EPC AALA</title>
+  <meta name="description" content="Diferencia entre bosque, plantación forestal y reforestación. Mapa mental y juego de clasificación." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --muted2:rgba(11,16,32,.58);
+      --line:rgba(11,16,32,.14);
+      --shadow: 0 18px 55px rgba(11,16,32,.12);
+      --shadow2: 0 10px 28px rgba(11,16,32,.10);
+      --radius:22px;
+
+      --good: rgba(34,197,94,.12);
+      --bad: rgba(225,29,72,.10);
+      --warn: rgba(245,158,11,.12);
+      --info: rgba(45,160,220,.12);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 10% 0%, rgba(45,160,220,.18), transparent 60%),
+        radial-gradient(1100px 700px at 90% 10%, rgba(34,197,94,.16), transparent 55%),
+        radial-gradient(900px 700px at 40% 100%, rgba(245,158,11,.10), transparent 60%),
+        #f4f7fb;
+      min-height:100vh;
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 40px; }
+
+    header{
+      display:flex; gap:16px; align-items:flex-end; justify-content:space-between;
+      padding:18px 18px 0;
+    }
+    .kicker{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+      color:rgba(11,16,32,.62);
+    }
+    h1{ margin:8px 0 8px; font-size:30px; line-height:1.15; }
+    .subtitle{ margin:0 0 12px; max-width:90ch; color:var(--muted); line-height:1.5; }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding-bottom:14px; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.62);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+      font-size:13px;
+      font-weight:800;
+      color:rgba(11,16,32,.86);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.78); border-color:rgba(11,16,32,.18); }
+    .btn.primary{ background:rgba(45,160,220,.16); border-color:rgba(45,160,220,.30); }
+
+    main.stack{ margin-top:14px; display:flex; flex-direction:column; gap:16px; padding:0 18px; }
+    .card{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .card h2{ margin:0 0 10px; font-size:18px; }
+    .muted{ color: var(--muted2); font-size:13px; }
+
+    .twoCols{ display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; align-items:start; }
+    @media (max-width: 900px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.66);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    .box p{ margin:0 0 10px; line-height:1.6; color:rgba(11,16,32,.84); }
+    .box ul{ margin:8px 0 0 18px; padding:0; line-height:1.6; color:rgba(11,16,32,.82); }
+
+    /* MAPA */
+    .mapTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapStage{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 18px;
+      padding:10px;
+      overflow:hidden;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+      border-radius: 14px;
+    }
+    .mapFallback{
+      display:none;
+      margin-top:10px;
+      border-radius: 14px;
+      border:1px dashed rgba(11,16,32,.18);
+      padding:12px;
+      color:rgba(11,16,32,.72);
+      background: rgba(255,255,255,.55);
+    }
+    .mapFallback.show{ display:block; }
+
+    /* JUEGO */
+    .gameGrid{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    .panel h3{ margin:0 0 6px; font-size:14px; }
+    .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); font-size:13px; line-height:1.45; }
+
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+    .chip{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.72);
+      border-radius: 999px;
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:800;
+      cursor:grab;
+      user-select:none;
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+    }
+    .chip:active{ cursor:grabbing; }
+
+    .bin{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      border-radius: 16px;
+      padding:10px;
+      min-height: 140px;
+      position: relative;
+      overflow:hidden;
+    }
+    .binHead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px;
+    }
+    .binTitle{ font-weight:900; font-size:13px; }
+    .binHint{ color:rgba(11,16,32,.60); font-size:12px; }
+    .bin.targetable{ outline: 2px solid rgba(45,160,220,.25); }
+    .bin.good{ background: rgba(34,197,94,.10); }
+    .bin.bad{ background: rgba(225,29,72,.08); }
+
+    .result{
+      margin-top:10px;
+      border-radius: 14px;
+      border:1px solid rgba(11,16,32,.12);
+      padding:10px 12px;
+      background: rgba(255,255,255,.65);
+      color:rgba(11,16,32,.82);
+      font-size:13px;
+      line-height:1.45;
+      display:none;
+    }
+    .result.good{ background: var(--good); }
+    .result.bad{ background: var(--bad); }
+    .result.warn{ background: var(--warn); }
+    .result.info{ background: var(--info); }
+
+    .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
+    footer{ padding:10px 18px 0; color:rgba(11,16,32,.55); font-size:12px; text-align:center; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 2 · El bosque</div>
+        <h1>2.1 Diferencia entre bosque, plantación forestal y reforestación</h1>
+        <p class="subtitle">
+          No todos los espacios con árboles son bosques. Aquí comparamos qué es un bosque, qué es una plantación forestal
+          y qué es una reforestación (recuperar un área que perdió su bosque).
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="1-10.html">Anterior (1.10)</a>
+        <a class="btn primary" href="2-2.html">Siguiente (2.2)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <section class="card">
+        <h2>Ideas clave</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p><strong>Según el libro:</strong></p>
+            <ul>
+              <li><strong>Bosque:</strong> árboles que han crecido de manera natural.</li>
+              <li><strong>Plantación forestal:</strong> árboles sembrados por el ser humano para producir madera u otros productos.</li>
+              <li><strong>Reforestación:</strong> árboles sembrados por el ser humano para recuperar un área que perdió su bosque.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              También cambian la <strong>diversidad</strong> (muchas especies vs pocas), la <strong>edad</strong> de los árboles y la
+              presencia de otras plantas y fauna.
+            </p>
+          </div>
+          <div class="box">
+            <p><strong>Pregunta guía</strong>:</p>
+            <ul>
+              <li>¿Qué señales te ayudan a distinguir un bosque natural de una plantación (hileras, misma edad, pocas especies)?</li>
+              <li>¿Por qué la reforestación usa preferentemente especies nativas?</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2 style="margin:0;">Mapa mental</h2>
+            <div class="muted">Tip: en celular usa “Ajustar”.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Ajustar</button>
+            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="mapFallback" id="mapFallback">
+            <strong>No se pudo cargar el mapa mental.</strong> Recarga la página o revisa la conexión.
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego: clasifica las pistas</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          Arrastra (PC) o toca una tarjeta y luego toca el grupo (celular).
+        </p>
+
+        <div class="gameGrid" style="margin-top:12px;">
+          <div class="panel">
+            <h3>Tarjetas</h3>
+            <p>Coloca cada pista donde corresponda.</p>
+            <div class="chips" id="chips"></div>
+
+            <div class="gameBtns">
+              <button class="btn" type="button" id="btnMix">Mezclar</button>
+              <button class="btn" type="button" id="btnClear">Limpiar</button>
+            </div>
+
+            <div id="note" class="result info" style="display:none;"></div>
+          </div>
+
+          <div class="panel">
+            <div class="bin targetable" id="binBosque">
+              <div class="binHead">
+                <div class="binTitle">Bosque</div>
+                <div class="binHint">Natural</div>
+              </div>
+            </div>
+
+            <div class="result" id="resBosque"></div>
+          </div>
+
+          <div class="panel">
+            <div class="bin targetable" id="binPlant">
+              <div class="binHead">
+                <div class="binTitle">Plantación forestal</div>
+                <div class="binHint">Producción</div>
+              </div>
+            </div>
+
+            <div class="result" id="resPlant"></div>
+
+            <div style="height:10px;"></div>
+
+            <div class="bin targetable" id="binRefo">
+              <div class="binHead">
+                <div class="binTitle">Reforestación</div>
+                <div class="binHint">Recuperación</div>
+              </div>
+            </div>
+
+            <div class="result" id="resRefo"></div>
+
+            <div class="gameBtns" style="margin-top:12px;">
+              <button class="btn primary" type="button" id="btnCheck">Evaluar</button>
+              <button class="btn" type="button" id="btnResetGame">Reiniciar juego</button>
+            </div>
+
+            <div class="result" id="final" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // 1) MAPA MENTAL (Markmap)
+    // =========================
+    const md = `
+# 2.1 Bosque vs plantación vs reforestación
+## Bosque (natural)
+- Árboles crecen de forma natural
+- Muchas especies
+- Edades y tamaños variados
+- Hay musgos, lianas, orquídeas, arbustos y fauna
+## Plantación forestal
+- Árboles sembrados por el ser humano
+- Objetivo: producir madera u otros productos
+- Pocas especies (1 o 2)
+- Misma edad / tamaño, en hileras
+- Poca presencia de otras especies
+## Reforestación
+- Árboles sembrados para recuperar un área deforestada
+- Preferencia por especies nativas
+- Árboles jóvenes similares al inicio
+- Con el tiempo aumenta diversidad (plantas y fauna)
+## ¿Cómo reconocer?
+- Hileras y uniformidad → plantación
+- Diversidad y “capas” → bosque
+- Área en recuperación → reforestación
+    `.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function safeRenderMap(){
+      const fallback = document.getElementById('mapFallback');
+      try{
+        if (!window.markmap || !window.markmap.Transformer || !window.markmap.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        expanded = true;
+        fallback.classList.remove('show');
+        return true;
+      }catch(e){
+        fallback.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      const ok = safeRenderMap();
+      if (ok || tries >= 12){
+        clearInterval(t);
+        if (!mm) document.getElementById('mapFallback').classList.add('show');
+      }
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
+
+    // =========================
+    // 2) JUEGO: Clasificación (drag + tap)
+    // =========================
+    const DATA = [
+      { id:'c1', bin:'bosque', t:'Crecimiento natural', s:'Los árboles han crecido sin ser sembrados.' },
+      { id:'c2', bin:'plant',  t:'En hileras y misma edad', s:'Árboles uniformes y ordenados.' },
+      { id:'c3', bin:'bosque', t:'Muchas especies', s:'Diversidad alta de árboles y plantas.' },
+      { id:'c4', bin:'refo',   t:'Recupera un área', s:'Se siembra para restaurar un lugar sin bosque.' },
+      { id:'c5', bin:'plant',  t:'Producción', s:'Objetivo: madera u otros productos.' },
+      { id:'c6', bin:'refo',   t:'Preferencia nativas', s:'Se plantan especies locales para recuperar el ecosistema.' },
+      { id:'c7', bin:'bosque', t:'Hay musgos y lianas', s:'Más variedad de plantas asociadas.' },
+      { id:'c8', bin:'plant',  t:'Pocas especies (1-2)', s:'Baja diversidad, casi todo igual.' }
+    ];
+
+    const chipsEl = document.getElementById('chips');
+    const bins = {
+      bosque: document.getElementById('binBosque'),
+      plant: document.getElementById('binPlant'),
+      refo: document.getElementById('binRefo')
+    };
+    const noteEl = document.getElementById('note');
+    const finalEl = document.getElementById('final');
+
+    let selectedId = null;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function clearSelection(){
+      selectedId = null;
+      [...document.querySelectorAll('.chip')].forEach(x=>x.style.outline='none');
+      Object.values(bins).forEach(b=>b.classList.remove('targetable'));
+    }
+
+    function setTargetable(on){
+      Object.values(bins).forEach(b=>b.classList.toggle('targetable', on));
+    }
+
+    function makeChip(it){
+      const div = document.createElement('div');
+      div.className = 'chip';
+      div.draggable = true;
+      div.id = 'chip_' + it.id;
+      div.dataset.id = it.id;
+      div.dataset.bin = it.bin;
+      div.textContent = it.t;
+
+      div.addEventListener('dragstart', (e)=>{
+        e.dataTransfer.setData('text/plain', it.id);
+        e.dataTransfer.effectAllowed='move';
+        clearSelection();
+      });
+
+      div.addEventListener('click', ()=>{
+        const isSel = (selectedId === it.id);
+        clearSelection();
+        if (!isSel){
+          selectedId = it.id;
+          div.style.outline = '2px solid rgba(45,160,220,.40)';
+          setTargetable(true);
+          noteEl.className='result info';
+          noteEl.textContent='Tarjeta seleccionada. Toca un grupo para colocarla.';
+          noteEl.style.display='block';
+        } else {
+          noteEl.style.display='none';
+        }
+      });
+
+      return div;
+    }
+
+    function setup(){
+      chipsEl.innerHTML='';
+      Object.values(bins).forEach(b=>{
+        [...b.querySelectorAll('.chip')].forEach(x=>x.remove());
+        b.classList.remove('good','bad','targetable');
+      });
+      finalEl.style.display='none';
+      noteEl.style.display='none';
+      clearSelection();
+
+      shuffle(DATA).forEach(it => chipsEl.appendChild(makeChip(it)));
+    }
+
+    function place(chipId, binKey){
+      const chip = document.getElementById('chip_' + chipId);
+      if (!chip) return;
+
+      bins[binKey].appendChild(chip);
+      noteEl.style.display='none';
+      clearSelection();
+    }
+
+    // drop handlers
+    Object.entries(bins).forEach(([key, binEl])=>{
+      binEl.addEventListener('dragover', (e)=>{ e.preventDefault(); });
+      binEl.addEventListener('drop', (e)=>{
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        place(id, key);
+      });
+      binEl.addEventListener('click', ()=>{
+        if (!selectedId) return;
+        place(selectedId, key);
+      });
+    });
+
+    document.getElementById('btnMix').addEventListener('click', setup);
+    document.getElementById('btnResetGame').addEventListener('click', setup);
+    document.getElementById('btnClear').addEventListener('click', ()=>{
+      [...Object.values(bins)].forEach(b=>{
+        [...b.querySelectorAll('.chip')].forEach(x=>chipsEl.appendChild(x));
+      });
+      finalEl.style.display='none';
+      noteEl.style.display='none';
+      clearSelection();
+    });
+
+    document.getElementById('btnCheck').addEventListener('click', ()=>{
+      let total=0, ok=0;
+
+      Object.entries(bins).forEach(([key, binEl])=>{
+        const chips = [...binEl.querySelectorAll('.chip')];
+        chips.forEach(ch=>{
+          total++;
+          const correct = (ch.dataset.bin === key);
+          if (correct) ok++;
+        });
+      });
+
+      if (total < DATA.length){
+        finalEl.className='result warn';
+        finalEl.textContent='Aún faltan tarjetas por colocar. Completa los tres grupos y vuelve a evaluar.';
+        finalEl.style.display='block';
+        return;
+      }
+
+      const score = Math.round((ok/total)*100);
+      finalEl.className = 'result ' + (score>=80 ? 'good' : score>=50 ? 'warn' : 'bad');
+      finalEl.textContent = `Resultado: ${ok}/${total} correctas (${score}%). Reinicia si quieres intentarlo mejor.`;
+      finalEl.style.display='block';
+    });
+
+    setup();
+  </script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2.3 Funciones del bosque · EPC AALA</title>
+  <meta name="description" content="Funciones del bosque: protección, regulación, productiva y cultural. Mapa mental y juego de misión." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --muted2:rgba(11,16,32,.58);
+      --line:rgba(11,16,32,.14);
+      --shadow: 0 18px 55px rgba(11,16,32,.12);
+      --shadow2: 0 10px 28px rgba(11,16,32,.10);
+      --radius:22px;
+
+      --good: rgba(34,197,94,.12);
+      --bad: rgba(225,29,72,.10);
+      --warn: rgba(245,158,11,.12);
+      --info: rgba(45,160,220,.12);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 10% 0%, rgba(45,160,220,.18), transparent 60%),
+        radial-gradient(1100px 700px at 90% 10%, rgba(34,197,94,.16), transparent 55%),
+        radial-gradient(900px 700px at 40% 100%, rgba(245,158,11,.10), transparent 60%),
+        #f4f7fb;
+      min-height:100vh;
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 40px; }
+
+    header{
+      display:flex; gap:16px; align-items:flex-end; justify-content:space-between;
+      padding:18px 18px 0;
+    }
+    .kicker{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+      color:rgba(11,16,32,.62);
+    }
+    h1{ margin:8px 0 8px; font-size:30px; line-height:1.15; }
+    .subtitle{ margin:0 0 12px; max-width:92ch; color:var(--muted); line-height:1.5; }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding-bottom:14px; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.62);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+      font-size:13px;
+      font-weight:800;
+      color:rgba(11,16,32,.86);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.78); border-color:rgba(11,16,32,.18); }
+    .btn.primary{ background:rgba(45,160,220,.16); border-color:rgba(45,160,220,.30); }
+
+    main.stack{ margin-top:14px; display:flex; flex-direction:column; gap:16px; padding:0 18px; }
+    .card{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .card h2{ margin:0 0 10px; font-size:18px; }
+    .muted{ color: var(--muted2); font-size:13px; }
+
+    .twoCols{ display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; align-items:start; }
+    @media (max-width: 900px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.66);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    .box p{ margin:0 0 10px; line-height:1.6; color:rgba(11,16,32,.84); }
+    .box ul{ margin:8px 0 0 18px; padding:0; line-height:1.6; color:rgba(11,16,32,.82); }
+
+    /* MAPA */
+    .mapTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapStage{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 18px;
+      padding:10px;
+      overflow:hidden;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+      border-radius: 14px;
+    }
+    .mapFallback{
+      display:none;
+      margin-top:10px;
+      border-radius: 14px;
+      border:1px dashed rgba(11,16,32,.18);
+      padding:12px;
+      color:rgba(11,16,32,.72);
+      background: rgba(255,255,255,.55);
+    }
+    .mapFallback.show{ display:block; }
+
+    /* MISION (juego) */
+    .missionGrid{ display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; align-items:start; }
+    @media (max-width: 980px){ .missionGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    .panel h3{ margin:0 0 6px; font-size:14px; }
+    .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); font-size:13px; line-height:1.45; }
+
+    .meter{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      border-radius: 16px;
+      padding:10px;
+    }
+    .bar{
+      height: 14px;
+      border-radius: 999px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      overflow:hidden;
+    }
+    .fill{
+      height:100%;
+      width: 50%;
+      background: linear-gradient(90deg, rgba(225,29,72,.35), rgba(245,158,11,.35), rgba(34,197,94,.35));
+      transition: width .25s ease;
+    }
+    .meterRow{ display:flex; justify-content:space-between; gap:10px; margin-top:8px; font-size:12px; color:rgba(11,16,32,.72); }
+
+    .choices{ display:grid; gap:8px; margin-top:10px; }
+    .choice{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.72);
+      border-radius: 16px;
+      padding:10px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .10s ease, background .12s ease, border-color .12s ease;
+    }
+    .choice:hover{ transform: translateY(-1px); background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .choice .t{ font-weight:900; margin-bottom:4px; }
+    .choice .s{ color:rgba(11,16,32,.72); font-size:12px; line-height:1.4; }
+
+    .result{
+      margin-top:10px;
+      border-radius: 14px;
+      border:1px solid rgba(11,16,32,.12);
+      padding:10px 12px;
+      background: rgba(255,255,255,.65);
+      color:rgba(11,16,32,.82);
+      font-size:13px;
+      line-height:1.45;
+      display:none;
+    }
+    .result.good{ background: var(--good); }
+    .result.bad{ background: var(--bad); }
+    .result.warn{ background: var(--warn); }
+    .result.info{ background: var(--info); }
+
+    footer{ padding:10px 18px 0; color:rgba(11,16,32,.55); font-size:12px; text-align:center; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 2 · El bosque</div>
+        <h1>2.3 Funciones del bosque</h1>
+        <p class="subtitle">
+          El bosque protege vida, regula clima/agua/suelo, aporta bienes para las personas y también tiene valor cultural.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="2-2.html">Anterior (2.2)</a>
+        <a class="btn primary" href="2-4.html">Siguiente (2.4)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <section class="card">
+        <h2>Funciones principales</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p><strong>Según el libro</strong> el bosque:</p>
+            <ul>
+              <li><strong>Protege</strong> flora y fauna.</li>
+              <li>Cumple función <strong>reguladora</strong> del clima, agua y suelos.</li>
+              <li>Tiene importancia <strong>productiva</strong> para las personas.</li>
+              <li>Representa lugares importantes para la <strong>cultura</strong>.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Ejemplo rápido</strong>:</p>
+            <ul>
+              <li>Regulación: menos erosión y más agua constante.</li>
+              <li>Productiva: leña, madera, frutos, plantas medicinales.</li>
+              <li>Cultural: identidad, sitios sagrados, aprendizaje comunitario.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2 style="margin:0;">Mapa mental</h2>
+            <div class="muted">Protección · Regulación · Productiva · Cultural</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Ajustar</button>
+            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="mapFallback" id="mapFallback">
+            <strong>No se pudo cargar el mapa mental.</strong> Recarga la página o revisa la conexión.
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego nuevo: “Misión Guardabosques”</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          Elige la mejor acción para cuidar el bosque. Tu “nivel de bosque sano” sube o baja.
+        </p>
+
+        <div class="missionGrid" style="margin-top:12px;">
+          <div class="panel">
+            <h3>Estado del bosque</h3>
+            <div class="meter">
+              <div class="bar"><div class="fill" id="fill"></div></div>
+              <div class="meterRow">
+                <div>Nivel: <strong id="lvl">50</strong>/100</div>
+                <div>Ronda: <strong id="round">1</strong>/5</div>
+              </div>
+            </div>
+
+            <div id="prompt" class="result info" style="display:block; margin-top:10px;"></div>
+
+            <div class="choices" id="choices"></div>
+
+            <div class="result" id="feedback"></div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+              <button class="btn" type="button" id="btnRestart">Reiniciar misión</button>
+              <a class="btn primary" href="2-2.html">Repasar 2.2</a>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>¿Qué función estás cuidando?</h3>
+            <p>
+              Al final verás qué funciones fortaleciste:
+              <strong>Protección</strong>, <strong>Regulación</strong>, <strong>Productiva</strong> y <strong>Cultural</strong>.
+            </p>
+
+            <div class="box">
+              <p style="margin:0;"><strong>Marcador de funciones</strong></p>
+              <ul style="margin-top:8px;">
+                <li>Protección: <strong id="sProt">0</strong></li>
+                <li>Regulación: <strong id="sReg">0</strong></li>
+                <li>Productiva: <strong id="sProd">0</strong></li>
+                <li>Cultural: <strong id="sCult">0</strong></li>
+              </ul>
+            </div>
+
+            <div class="result" id="final" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // 1) MAPA MENTAL
+    // =========================
+    const md = `
+# 2.3 Funciones del bosque
+## Protección
+- Refugio y hábitat para flora y fauna
+- Mantiene biodiversidad
+## Regulación
+- Clima (más fresco, humedad)
+- Agua (retención, liberación lenta)
+- Suelo (menos erosión, estabilidad)
+## Productiva
+- Bienes para las personas
+- Madera, leña, frutos, plantas útiles
+## Cultural
+- Identidad y educación
+- Sitios importantes para comunidades
+- Valores y respeto a la naturaleza
+    `.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function safeRenderMap(){
+      const fallback = document.getElementById('mapFallback');
+      try{
+        if (!window.markmap || !window.markmap.Transformer || !window.markmap.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        expanded = true;
+        fallback.classList.remove('show');
+        return true;
+      }catch(e){
+        fallback.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      const ok = safeRenderMap();
+      if (ok || tries >= 12){
+        clearInterval(t);
+        if (!mm) document.getElementById('mapFallback').classList.add('show');
+      }
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
+
+    // =========================
+    // 2) JUEGO: Misión Guardabosques
+    // =========================
+    const ROUNDS = [
+      {
+        q: 'Hay tala ilegal cerca de una quebrada. ¿Qué haces primero?',
+        options: [
+          { t:'Avisar y coordinar con autoridades/comunidad + vigilar el área', s:'Detiene la pérdida de hábitat y protege especies.', d:+14, tag:'prot', ok:true },
+          { t:'Ignorar porque “son pocos árboles”', s:'Se abre la puerta a más pérdida de bosque.', d:-14, tag:'prot', ok:false },
+          { t:'Quemar residuos para “limpiar”', s:'Aumenta riesgo de incendios y contaminación.', d:-10, tag:'reg', ok:false },
+        ]
+      },
+      {
+        q: 'En una ladera, la lluvia está llevando suelo al río. ¿Qué decisión ayuda más?',
+        options: [
+          { t:'Mantener cobertura vegetal y barreras vivas', s:'Reduce erosión y mejora infiltración.', d:+14, tag:'reg', ok:true },
+          { t:'Dejar el suelo “pelado”', s:'Más erosión y sedimentos.', d:-12, tag:'reg', ok:false },
+          { t:'Hacer surcos a favor de la pendiente', s:'El agua baja más rápido y arrastra suelo.', d:-10, tag:'reg', ok:false },
+        ]
+      },
+      {
+        q: 'La comunidad quiere aprovechar el bosque sin destruirlo. ¿Qué propones?',
+        options: [
+          { t:'Aprovechamiento responsable + reforestación y cuidado', s:'Mantiene bienes/productos sin agotar el bosque.', d:+12, tag:'prod', ok:true },
+          { t:'Cortar todo para vender rápido', s:'Ganancia corta, pérdida grande.', d:-14, tag:'prod', ok:false },
+          { t:'Prohibir todo sin diálogo', s:'Puede generar conflicto y uso ilegal.', d:-6, tag:'cult', ok:false },
+        ]
+      },
+      {
+        q: 'Hay un sitio importante para la comunidad dentro del bosque. ¿Qué haces?',
+        options: [
+          { t:'Proteger el sitio y promover educación/respeto', s:'Fortalece la relación cultural y el cuidado.', d:+12, tag:'cult', ok:true },
+          { t:'Permitir basura y ruido en el lugar', s:'Se pierde valor cultural y se daña el entorno.', d:-12, tag:'cult', ok:false },
+          { t:'Cerrar el acceso sin explicación', s:'Se rompe el vínculo y se reduce aprendizaje.', d:-6, tag:'cult', ok:false },
+        ]
+      },
+      {
+        q: 'Se detecta incendio en época seca. ¿Qué medida es más útil?',
+        options: [
+          { t:'Prevención: rondas, limpieza controlada, acuerdos y respuesta rápida', s:'Disminuye riesgo y protege clima/agua/suelo.', d:+14, tag:'reg', ok:true },
+          { t:'Esperar a que la lluvia lo apague', s:'Puede expandirse y destruir hábitat.', d:-14, tag:'prot', ok:false },
+          { t:'Hacer fuego para “parar el fuego” sin plan', s:'Puede salirse de control.', d:-12, tag:'reg', ok:false },
+        ]
+      },
+    ];
+
+    const fill = document.getElementById('fill');
+    const lvlEl = document.getElementById('lvl');
+    const roundEl = document.getElementById('round');
+    const promptEl = document.getElementById('prompt');
+    const choicesEl = document.getElementById('choices');
+    const feedbackEl = document.getElementById('feedback');
+    const finalEl = document.getElementById('final');
+
+    const sProt = document.getElementById('sProt');
+    const sReg  = document.getElementById('sReg');
+    const sProd = document.getElementById('sProd');
+    const sCult = document.getElementById('sCult');
+
+    let level = 50;
+    let idx = 0;
+    let scores = { prot:0, reg:0, prod:0, cult:0 };
+
+    function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+    function renderMeter(){
+      level = clamp(level, 0, 100);
+      lvlEl.textContent = level;
+      fill.style.width = level + '%';
+      roundEl.textContent = (idx+1);
+      sProt.textContent = scores.prot;
+      sReg.textContent  = scores.reg;
+      sProd.textContent = scores.prod;
+      sCult.textContent = scores.cult;
+    }
+
+    function renderRound(){
+      feedbackEl.style.display='none';
+      finalEl.style.display='none';
+
+      const r = ROUNDS[idx];
+      promptEl.textContent = r.q;
+
+      choicesEl.innerHTML = '';
+      r.options.forEach(opt=>{
+        const div = document.createElement('div');
+        div.className='choice';
+        div.innerHTML = `<div class="t">${opt.t}</div><div class="s">${opt.s}</div>`;
+        div.addEventListener('click', ()=> pick(opt));
+        choicesEl.appendChild(div);
+      });
+
+      renderMeter();
+    }
+
+    function pick(opt){
+      level += opt.d;
+      scores[opt.tag] += (opt.ok ? 1 : 0);
+
+      feedbackEl.className = 'result ' + (opt.ok ? 'good' : 'warn');
+      feedbackEl.textContent = (opt.ok ? '✅ Buena decisión.' : '⚠️ Esa acción trae problemas.') + ` Impacto: ${opt.d>0?'+':''}${opt.d}.`;
+      feedbackEl.style.display='block';
+
+      renderMeter();
+
+      setTimeout(()=>{
+        idx++;
+        if (idx >= ROUNDS.length){
+          endGame();
+        } else {
+          renderRound();
+        }
+      }, 650);
+    }
+
+    function endGame(){
+      choicesEl.innerHTML = '';
+      promptEl.textContent = 'Misión completada. Revisa tu resultado y vuelve a intentar si quieres mejorar.';
+      const msg = level >= 80
+        ? '¡Excelente! Tu bosque quedó muy sano.'
+        : level >= 55
+        ? '¡Bien! Aún puedes fortalecer algunas decisiones.'
+        : 'Alerta: necesitas mejores decisiones para proteger el bosque.';
+
+      finalEl.className = 'result ' + (level>=80 ? 'good' : level>=55 ? 'warn' : 'bad');
+      finalEl.textContent = msg + ` (Nivel final: ${level}/100)`;
+      finalEl.style.display='block';
+      feedbackEl.style.display='none';
+      renderMeter();
+    }
+
+    document.getElementById('btnRestart').addEventListener('click', ()=>{
+      level = 50;
+      idx = 0;
+      scores = { prot:0, reg:0, prod:0, cult:0 };
+      renderRound();
+    });
+
+    renderRound();
+  </script>
+</body>
+</html>
