@@ -9,10 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Markmap -->
+  <!-- Markmap (mapa mental) -->
   <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
-  <!-- D3 + Sankey (para diagrama tipo libro: flujo editorial) -->
+  <!-- D3 + Sankey (diagrama editorial) -->
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
 
@@ -26,13 +26,13 @@
       --shadow-soft:0 10px 24px rgba(11,16,32,.12);
       --radius:24px;
 
-      --good: rgba(30, 160, 90, .20);
-      --bad: rgba(210, 70, 100, .18);
-      --focus: rgba(45, 160, 220, .28);
-      --focus2: rgba(255, 140, 200, .22);
+      --good: rgba(30, 160, 90, .18);
+      --bad: rgba(210, 70, 100, .16);
+      --focus: rgba(45, 160, 220, .22);
 
-      --blue: rgba(45,160,220,.88);
-      --pink: rgba(255, 140, 200, .82);
+      --aqua: rgba(45,160,220,.86);
+      --mint: rgba(50, 170, 120, .86);
+      --rose: rgba(240, 110, 170, .82);
     }
     *{ box-sizing:border-box; }
     body{
@@ -46,11 +46,7 @@
         linear-gradient(135deg, #eafff4 0%, #e8f6ff 45%, #fff0f7 100%);
       min-height:100vh;
     }
-    .wrap{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 26px 18px 64px;
-    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
 
     header{
       border: 1px solid var(--stroke);
@@ -65,12 +61,7 @@
       gap: 12px;
       flex-wrap:wrap;
     }
-    .kicker{
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 800;
-      letter-spacing:.3px;
-    }
+    .kicker{ font-size: 12px; color: var(--muted); font-weight: 800; letter-spacing:.3px; }
     h1{
       margin: 6px 0 0;
       font-family: Outfit, Inter, system-ui;
@@ -84,14 +75,10 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.45;
-      max-width: 86ch;
+      max-width: 92ch;
     }
-    .nav{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -104,22 +91,16 @@
       font-weight: 800;
       text-decoration:none;
       font-size: 13px;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
       cursor:pointer;
       user-select:none;
       white-space: nowrap;
     }
-    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
+    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); box-shadow: 0 10px 18px rgba(11,16,32,.10); }
     .btn:active{ transform: translateY(1px); }
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(170,255,216,.90), rgba(170,226,255,.90), rgba(255,191,228,.82));
-    }
+    .btn.primary{ background: linear-gradient(135deg, rgba(170,255,216,.90), rgba(170,226,255,.90), rgba(255,191,228,.82)); }
 
-    .stack{
-      margin-top: 14px;
-      display:grid;
-      gap: 14px;
-    }
+    .stack{ margin-top: 14px; display:grid; gap: 14px; }
     .card{
       border:1px solid var(--stroke);
       background: var(--glass);
@@ -144,18 +125,11 @@
       gap: 12px;
       align-items:start;
     }
-    @media (max-width: 980px){
-      .twoCols{ grid-template-columns: 1fr; }
-    }
-    .theory{
-      line-height: 1.58;
-      color: rgba(11,16,32,.90);
-      font-size: 14px;
-    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+    .theory{ line-height: 1.58; color: rgba(11,16,32,.90); font-size: 14px; }
     .theory p{ margin: 10px 0 0; }
     .theory ul{ margin: 10px 0 0 18px; }
     .theory li{ margin: 8px 0; }
-
     .callout{
       margin-top: 12px;
       border-radius: 16px;
@@ -167,13 +141,14 @@
       line-height: 1.45;
     }
 
-    /* ======= DIAGRAMA SANKEY (estilo editorial tipo libro) ======= */
+    /* =========================
+       DIAGRAMA SANKEY (arreglado)
+       ========================= */
     .diagramWrap{
       margin-top: 12px;
       border-radius: 16px;
       border: 1px solid rgba(11,16,32,.12);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.60), rgba(255,255,255,.45));
+      background: linear-gradient(180deg, rgba(255,255,255,.60), rgba(255,255,255,.45));
       box-shadow: var(--shadow-soft);
       overflow:hidden;
       position: relative;
@@ -188,12 +163,7 @@
       border-bottom: 1px solid rgba(11,16,32,.10);
       background: rgba(255,255,255,.55);
     }
-    .tabs{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .tab{
       padding: 9px 12px;
       border-radius: 999px;
@@ -207,9 +177,7 @@
     }
     .tab:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
     .tab:active{ transform: translateY(1px); }
-    .tab.active{
-      background: linear-gradient(135deg, rgba(170,255,216,.90), rgba(170,226,255,.90), rgba(255,191,228,.82));
-    }
+    .tab.active{ background: linear-gradient(135deg, rgba(170,255,216,.90), rgba(170,226,255,.90), rgba(255,191,228,.82)); }
 
     .badge{
       display:inline-flex;
@@ -224,13 +192,11 @@
     }
 
     .sankeyStage{
-      height: 540px;
+      height: 560px;
       width: 100%;
       position: relative;
     }
-    @media (max-width: 820px){
-      .sankeyStage{ height: 620px; }
-    }
+    @media (max-width: 820px){ .sankeyStage{ height: 660px; } }
 
     .legendBox{
       position:absolute;
@@ -242,6 +208,7 @@
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow-soft);
       padding: 10px 12px;
+      z-index: 3;
     }
     .legendBox h3{
       margin:0 0 8px;
@@ -258,6 +225,23 @@
       line-height: 1.35;
     }
 
+    .sErr{
+      position:absolute;
+      left: 14px;
+      bottom: 14px;
+      right: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.78);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 12px;
+      font-size: 12.5px;
+      color: rgba(11,16,32,.86);
+      display:none;
+      z-index: 3;
+    }
+    .sErr.show{ display:block; }
+
     .tooltip{
       position:absolute;
       pointer-events:none;
@@ -268,7 +252,7 @@
       max-width: 320px;
       border-radius: 14px;
       border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.86);
       box-shadow: var(--shadow);
       padding: 10px 12px;
       font-size: 12px;
@@ -288,7 +272,9 @@
       color: rgba(11,16,32,.86);
     }
 
-    /* ======= MAPA MENTAL GRANDE (igual que 1-1) ======= */
+    /* =========================
+       MAPA MENTAL (igual patrón)
+       ========================= */
     .mapWrap{
       width:100%;
       height: 720px;
@@ -314,15 +300,11 @@
       background: rgba(255,255,255,.55);
     }
     .mapFallback.show{ display:flex; }
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-      align-items:center;
-    }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center; }
 
-    /* ======= JUEGO NUEVO: Simulador de cascada trófica ======= */
+    /* =========================
+       JUEGO (más vistoso)
+       ========================= */
     .simGrid{
       margin-top: 12px;
       display:grid;
@@ -330,9 +312,8 @@
       gap: 12px;
       align-items:start;
     }
-    @media (max-width: 980px){
-      .simGrid{ grid-template-columns: 1fr; }
-    }
+    @media (max-width: 980px){ .simGrid{ grid-template-columns: 1fr; } }
+
     .panel{
       border-radius: 18px;
       border: 1px solid rgba(11,16,32,.12);
@@ -354,11 +335,7 @@
       align-items:center;
       margin: 10px 0;
     }
-    .ctrl label{
-      font-weight: 800;
-      font-size: 13px;
-      color: rgba(11,16,32,.86);
-    }
+    .ctrl label{ font-weight: 800; font-size: 13px; color: rgba(11,16,32,.86); }
     .ctrl .val{
       font-weight: 900;
       font-size: 13px;
@@ -370,10 +347,8 @@
       min-width: 64px;
       text-align:center;
     }
-    input[type="range"]{
-      width: 100%;
-      accent-color: rgba(45,160,220,.75);
-    }
+    input[type="range"]{ width: 100%; accent-color: rgba(45,160,220,.75); }
+
     .simBtns{
       display:flex;
       gap:10px;
@@ -381,20 +356,64 @@
       margin-top: 10px;
       align-items:center;
     }
+
+    .statRow{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .statRow{ grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px){ .statRow{ grid-template-columns: 1fr; } }
+
+    .stat{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      padding: 10px;
+    }
+    .stat .k{
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      margin: 0 0 6px;
+    }
+    .stat .v{
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 18px;
+      color: rgba(11,16,32,.92);
+      margin: 0 0 8px;
+      letter-spacing:.2px;
+    }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(11,16,32,.10);
+      overflow:hidden;
+      border: 1px solid rgba(11,16,32,.10);
+    }
+    .bar > i{
+      display:block;
+      height:100%;
+      width: 50%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(45,160,220,.80), rgba(50,170,120,.80), rgba(240,110,170,.72));
+    }
+
     .canvasWrap{
       border-radius: 16px;
       border: 1px dashed rgba(11,16,32,.22);
       background:
         radial-gradient(circle at 1px 1px, rgba(11,16,32,.08) 1px, transparent 1px) 0 0 / 22px 22px,
-        rgba(255,255,255,.40);
+        linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,.40));
       overflow:hidden;
       padding: 10px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
     }
-    canvas{
-      width: 100%;
-      height: 320px;
-      display:block;
-    }
+    canvas{ width: 100%; height: 320px; display:block; }
+
     .result{
       margin-top: 12px;
       border-radius: 16px;
@@ -405,15 +424,10 @@
       line-height: 1.45;
       color: rgba(11,16,32,.86);
     }
-    .ok{ background: var(--good); border-color: rgba(30,160,90,.28); }
-    .no{ background: var(--bad); border-color: rgba(210,70,100,.26); }
-    footer{
-      margin-top: 14px;
-      color: rgba(11,16,32,.62);
-      font-size: 12px;
-      line-height: 1.4;
-      text-align:center;
-    }
+    .ok{ background: var(--good); border-color: rgba(30,160,90,.26); }
+    .no{ background: var(--bad); border-color: rgba(210,70,100,.24); }
+
+    footer{ margin-top: 14px; color: rgba(11,16,32,.62); font-size: 12px; line-height: 1.4; text-align:center; }
   </style>
 </head>
 
@@ -424,57 +438,52 @@
         <div class="kicker">Módulo 1 · Medio ambiente</div>
         <h1>1.2 Las cadenas alimenticias o tróficas</h1>
         <p class="subtitle">
-          Comprende el flujo de energía y nutrientes en una cadena trófica. Abajo tienes un diagrama editorial
-          tipo libro (interactivo), un mapa mental y un mini-juego nuevo: simulador de cascada trófica.
+          Diagrama editorial interactivo de cadena trófica y ciclos (C, N, P), mapa mental, y un simulador de cascada trófica para evaluar comprensión.
         </p>
       </div>
       <nav class="nav">
         <a class="btn" href="index.html">Inicio</a>
         <a class="btn" href="1-1.html">Anterior (1.1)</a>
-        <a class="btn primary" href="#" onclick="alert('Luego hacemos 1-3.html.'); return false;">Siguiente</a>
+        <a class="btn primary" href="#" onclick="alert('Se agregará la siguiente sección.'); return false;">Siguiente</a>
       </nav>
     </header>
 
     <main class="stack">
-      <!-- TEORÍA -->
       <section class="card">
-        <h2>Contexto teórico (ampliado y técnico)</h2>
-
+        <h2>Contexto teórico</h2>
         <div class="twoCols">
           <div class="theory">
             <p>
-              Una <strong>cadena alimenticia</strong> (o trófica) describe <strong>quién se alimenta de quién</strong> y cómo fluye la
-              <strong>energía</strong> desde los <strong>productores</strong> hacia los consumidores y depredadores.
-              A la vez, la <strong>materia</strong> (C, N, P) se transforma y se recicla mediante suelo y microbiota.
+              Una <strong>cadena alimenticia</strong> (o trófica) describe quién se alimenta de quién y cómo fluye la <strong>energía</strong>
+              desde los <strong>productores</strong> hacia consumidores y depredadores. La <strong>materia</strong> (C, N, P) se transforma
+              y puede reciclarse por suelo y microbiota.
             </p>
             <ul>
-              <li><strong>Productores:</strong> plantas/algas (capturan energía, generan biomasa).</li>
-              <li><strong>Consumidores:</strong> primarios (herbívoros) y secundarios/terciarios (carnívoros).</li>
-              <li><strong>Descomponedores y simbiontes:</strong> hongos/bacterias y mutualismos que sostienen la fertilidad y la absorción.</li>
+              <li><strong>Productores:</strong> plantas/algas (energía solar a biomasa).</li>
+              <li><strong>Consumidores:</strong> primarios (herbívoros), secundarios/terciarios (carnívoros).</li>
+              <li><strong>Descomponedores:</strong> hongos y bacterias (retorno de nutrientes).</li>
             </ul>
             <div class="callout">
-              <strong>Idea clave:</strong> en cada transferencia se pierde energía; por eso los niveles superiores suelen tener menor biomasa.
+              La energía disponible disminuye en cada transferencia; los niveles superiores suelen tener menor biomasa.
             </div>
           </div>
 
           <div class="theory">
             <p>
-              En agroecosistemas (por ejemplo, café bajo sombra) la cadena trófica se integra con procesos de
-              <strong>ciclos biogeoquímicos</strong> de C, N y P: fotosíntesis/respiración, mineralización, nitrificación,
-              lixiviación y escorrentía, entre otros.
+              En sistemas agrícolas (por ejemplo, café bajo sombra) la cadena trófica se integra con procesos de ciclos biogeoquímicos:
+              fotosíntesis/respiración, mineralización, nitrificación, asimilación radicular, lixiviación y escorrentía.
             </p>
             <div class="callout">
-              <strong>Pregunta guía:</strong> ¿qué procesos aumentan o reducen la disponibilidad de N y P para las plantas?
+              Pregunta guía: ¿qué ocurre con la cadena si disminuye la producción primaria o se pierden depredadores?
             </div>
           </div>
         </div>
       </section>
 
-      <!-- DIAGRAMA EDITORIAL TIPO LIBRO (SANKEY) -->
       <section class="card">
-        <h2>Cadena trófica y ciclos de C, N y P (diagrama conceptual editorial)</h2>
+        <h2>Diagrama conceptual editorial (interactivo)</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Interacción: pasa el cursor o toca una banda/nodo para resaltar. Clic fija el resaltado; clic en fondo lo quita.
+          Interacción: pasar el cursor o tocar resalta; clic fija el resaltado; clic en fondo lo quita.
         </p>
 
         <div class="diagramWrap">
@@ -491,79 +500,77 @@
 
           <div class="sankeyStage" id="sankeyStage">
             <div class="legendBox">
-              <h3>Leyenda (lectura rápida)</h3>
+              <h3>Leyenda</h3>
               <ul class="legendList">
-                <li><strong>Reservorios:</strong> atmósfera (CO2, N2), agua (N, P disueltos).</li>
-                <li><strong>Vegetación:</strong> productores primarios (cafeto y sombra).</li>
-                <li><strong>Fauna:</strong> herbívoros y depredadores (control poblacional).</li>
-                <li><strong>Microbiota:</strong> descomposición y simbiosis (mejora absorción).</li>
-                <li><strong>Suelo:</strong> materia orgánica (MO) y formas minerales (NH4+, NO3-, PO4---).</li>
-                <li><strong>Bandas:</strong> representan flujos (energía/materia). El grosor indica intensidad relativa.</li>
+                <li>Reservorios: atmósfera y agua.</li>
+                <li>Vegetación: productores primarios.</li>
+                <li>Fauna: herbívoros y depredadores.</li>
+                <li>Microbiota: descomposición y simbiosis.</li>
+                <li>Suelo: MO y formas minerales (N y P).</li>
+                <li>El grosor de bandas indica intensidad relativa del flujo.</li>
               </ul>
             </div>
             <div class="tooltip" id="tip"></div>
+            <div class="sErr" id="sErr"></div>
           </div>
 
           <div class="hint" id="sHint">
-            Sugerencia de estudio: identifica primero los productores, luego la ruta herbívoros-depredadores, y finalmente cómo suelo y microbiota cierran el ciclo.
+            Sugerencia: identifica productores, ruta herbívoros-depredadores y cómo suelo y microbiota cierran el ciclo.
           </div>
         </div>
       </section>
 
-      <!-- MAPA -->
       <section class="card">
         <h2>Mapa mental interactivo</h2>
-        <p class="muted" style="margin:8px 0 0;">Si no carga, revisa tu conexión o recarga la página. El simulador funciona aunque el mapa falle.</p>
+        <p class="muted" style="margin:8px 0 0;">Si no carga, recarga la página. El simulador funciona aunque el mapa falle.</p>
 
         <div class="mapWrap">
           <svg id="mindmap" class="markmap"></svg>
           <div class="mapFallback" id="mapFallback">
             <div>
               <strong>No se pudo cargar el mapa mental.</strong><br>
-              Recarga la página (Ctrl+F5). El simulador de abajo sigue funcionando.
+              Recarga la página. El simulador sigue funcionando.
             </div>
           </div>
         </div>
 
         <div class="row">
-          <button class="btn" id="btnFit">Ajustar</button>
-          <button class="btn" id="btnToggle">Expandir/Colapsar</button>
-          <button class="btn" id="btnReset">Reiniciar mapa</button>
+          <button class="btn" id="btnFit" type="button">Ajustar</button>
+          <button class="btn" id="btnToggle" type="button">Expandir/Colapsar</button>
+          <button class="btn" id="btnReset" type="button">Reiniciar mapa</button>
         </div>
       </section>
 
-      <!-- JUEGO NUEVO: Simulador -->
       <section class="card">
-        <h2>Mini-juego / Evaluación: simulador de cascada trófica</h2>
+        <h2>Simulador de cascada trófica (evaluación)</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Ajusta parámetros y busca un equilibrio razonable. El objetivo es lograr una cadena estable:
-          productores sostienen herbívoros, y depredadores controlan herbívoros sin colapsar el sistema.
+          Ajusta parámetros para mantener un sistema estable. Prueba eventos y recupera el equilibrio.
         </p>
 
         <div class="simGrid">
           <div class="panel">
-            <h3>Controles del sistema</h3>
+            <h3>Controles</h3>
 
             <div class="ctrl">
-              <label for="kProd">Producción primaria (crecimiento de productores)</label>
+              <label for="kProd">Producción primaria (productores)</label>
               <span class="val" id="vProd">0.70</span>
             </div>
             <input id="kProd" type="range" min="0.20" max="1.20" step="0.01" value="0.70">
 
             <div class="ctrl">
-              <label for="kHerb">Consumo herbívoro (presión sobre productores)</label>
+              <label for="kHerb">Consumo herbívoro (presión)</label>
               <span class="val" id="vHerb">0.60</span>
             </div>
             <input id="kHerb" type="range" min="0.20" max="1.20" step="0.01" value="0.60">
 
             <div class="ctrl">
-              <label for="kPred">Depredación (control sobre herbívoros)</label>
+              <label for="kPred">Depredación (control)</label>
               <span class="val" id="vPred">0.55</span>
             </div>
             <input id="kPred" type="range" min="0.20" max="1.20" step="0.01" value="0.55">
 
             <div class="ctrl">
-              <label for="kRecycle">Reciclaje (descomposición y retorno de nutrientes)</label>
+              <label for="kRecycle">Reciclaje (retorno de nutrientes)</label>
               <span class="val" id="vRec">0.45</span>
             </div>
             <input id="kRecycle" type="range" min="0.10" max="1.10" step="0.01" value="0.45">
@@ -577,39 +584,68 @@
               <span class="badge" id="simScore">Estado: detenido</span>
             </div>
 
+            <div class="statRow">
+              <div class="stat">
+                <div class="k">Productores</div>
+                <div class="v" id="svP">0.00</div>
+                <div class="bar"><i id="sbP"></i></div>
+              </div>
+              <div class="stat">
+                <div class="k">Herbívoros</div>
+                <div class="v" id="svH">0.00</div>
+                <div class="bar"><i id="sbH"></i></div>
+              </div>
+              <div class="stat">
+                <div class="k">Depredadores</div>
+                <div class="v" id="svD">0.00</div>
+                <div class="bar"><i id="sbD"></i></div>
+              </div>
+              <div class="stat">
+                <div class="k">Nutrientes</div>
+                <div class="v" id="svN">0.00</div>
+                <div class="bar"><i id="sbN"></i></div>
+              </div>
+            </div>
+
             <div class="result" id="simFeedback">
-              Instrucción: presiona Iniciar y observa. Luego aplica un evento y ajusta controles para recuperar estabilidad.
+              Presiona Iniciar. Luego aplica un evento y ajusta controles para recuperar estabilidad.
             </div>
           </div>
 
           <div class="panel">
-            <h3>Gráfica (poblaciones relativas)</h3>
+            <h3>Gráfica</h3>
             <div class="canvasWrap">
               <canvas id="chart" width="900" height="360"></canvas>
             </div>
             <div class="hint">
-              Cómo leer: si productores caen a cero, todo colapsa. Si herbívoros explotan, bajan productores. Si depredadores son muy altos, herbívoros caen demasiado.
+              Lectura rápida: si productores caen demasiado, todo colapsa. Si herbívoros suben mucho, productores bajan. Si depredadores desaparecen, herbívoros tienden a explotar.
             </div>
           </div>
         </div>
       </section>
 
-      <footer>
-        EPC AALA · Módulo 1 · 1.2 Cadenas tróficas
-      </footer>
+      <footer>EPC AALA · Módulo 1 · 1.2 Cadenas tróficas</footer>
     </main>
   </div>
 
   <script>
-    // =========================================================
-    // A) SANKEY (diagrama tipo libro)
-    // =========================================================
+    /* =========================================================
+       A) SANKEY (robusto + arreglado)
+       - Reintenta si CDN tarda
+       - Usa ResizeObserver
+       - Si contenedor reporta 0, usa altura CSS como respaldo
+       ========================================================= */
     const sankeyStage = document.getElementById('sankeyStage');
     const tip = document.getElementById('tip');
     const sBadge = document.getElementById('sBadge');
+    const sErr = document.getElementById('sErr');
 
     let sLocked = false;
     let sLockKey = null;
+    let sMode = 'cafe';
+    let ro = null;
+
+    function badge(text){ sBadge.textContent = 'Resaltado: ' + text; }
 
     function setTip(html, x, y){
       tip.innerHTML = html;
@@ -622,7 +658,6 @@
       tip.style.opacity = 0;
       tip.style.transform = 'translateY(6px)';
     }
-    function badge(text){ sBadge.textContent = 'Resaltado: ' + text; }
 
     function sankeyData(mode){
       if(mode === 'simple'){
@@ -644,12 +679,9 @@
             {source:'Soil', target:'Deco', value: 3.2, label:'Sustrato'},
             {source:'Deco', target:'Soil', value: 2.6, label:'Mineralización'},
             {source:'Soil', target:'Water', value: 1.2, label:'Lixiviación'}
-          ],
-          title: 'Cadena trófica simple (flujo conceptual)'
+          ]
         };
       }
-
-      // Sistema café conceptual, inspirado en el diagrama que mostraste (sin copiar texto literal)
       return {
         nodes: [
           {id:'Atm',   name:'Atmósfera (CO2, N2)', group:'Atmósfera'},
@@ -666,22 +698,21 @@
         links: [
           {source:'Atm',  target:'Veg',   value: 6.2, label:'Fotosíntesis (C)'},
           {source:'Veg',  target:'Atm',   value: 2.6, label:'Respiración (CO2)'},
-          {source:'Veg',  target:'MO',    value: 3.1, label:'Hojarasca / restos (C, N, P)'},
-          {source:'MO',   target:'Micro', value: 2.4, label:'Sustrato para descomposición'},
+          {source:'Veg',  target:'MO',    value: 3.1, label:'Restos (C, N, P)'},
+          {source:'MO',   target:'Micro', value: 2.4, label:'Sustrato'},
           {source:'Micro',target:'NH4',   value: 1.6, label:'Mineralización (N)'},
           {source:'NH4',  target:'NO3',   value: 1.2, label:'Nitrificación'},
-          {source:'NO3',  target:'Veg',   value: 1.1, label:'Asimilación radicular (N)'},
-          {source:'PO4',  target:'Veg',   value: 0.9, label:'Asimilación radicular (P)'},
-          {source:'Veg',  target:'Herb',  value: 2.2, label:'Consumo (energía)'},
+          {source:'NO3',  target:'Veg',   value: 1.1, label:'Asimilación (N)'},
+          {source:'PO4',  target:'Veg',   value: 0.9, label:'Asimilación (P)'},
+          {source:'Veg',  target:'Herb',  value: 2.2, label:'Consumo'},
           {source:'Herb', target:'Pred',  value: 1.6, label:'Depredación'},
-          {source:'Herb', target:'MO',    value: 0.9, label:'Excretas / restos'},
+          {source:'Herb', target:'MO',    value: 0.9, label:'Excretas'},
           {source:'Pred', target:'MO',    value: 0.6, label:'Restos'},
-          {source:'NO3',  target:'Water', value: 0.8, label:'Lixiviación / escorrentía'},
+          {source:'NO3',  target:'Water', value: 0.8, label:'Lixiviación'},
           {source:'PO4',  target:'Water', value: 0.6, label:'Arrastre de P'},
           {source:'MO',   target:'PO4',   value: 0.7, label:'Liberación (P)'},
-          {source:'Atm',  target:'Water', value: 0.4, label:'Depósito / intercambio (N)'}
-        ],
-        title: 'Sistema café y ciclos de C, N y P (conceptual)'
+          {source:'Atm',  target:'Water', value: 0.4, label:'Intercambio (N)'}
+        ]
       };
     }
 
@@ -697,42 +728,65 @@
       return map[group] || 'rgba(11,16,32,.55)';
     }
 
+    function stageSize(){
+      const rect = sankeyStage.getBoundingClientRect();
+      let W = Math.floor(rect.width);
+      let H = Math.floor(rect.height);
+
+      if(W < 10) W = Math.floor(sankeyStage.clientWidth || 900);
+      if(H < 10){
+        const cs = getComputedStyle(sankeyStage);
+        const h = parseFloat(cs.height || '0');
+        H = (h && h > 10) ? Math.floor(h) : 560;
+      }
+      return {W, H};
+    }
+
+    function pointerXY(evt, W, H){
+      const r = sankeyStage.getBoundingClientRect();
+      const cx = (evt && evt.clientX) || (evt && evt.touches && evt.touches[0] && evt.touches[0].clientX) || 0;
+      const cy = (evt && evt.clientY) || (evt && evt.touches && evt.touches[0] && evt.touches[0].clientY) || 0;
+      const x = cx - r.left;
+      const y = cy - r.top;
+      return {
+        x: Math.max(10, Math.min(W - 340, x + 12)),
+        y: Math.max(10, Math.min(H - 120, y + 12))
+      };
+    }
+
+    function showSankeyError(msg){
+      sErr.textContent = msg;
+      sErr.classList.add('show');
+    }
+    function clearSankeyError(){
+      sErr.classList.remove('show');
+      sErr.textContent = '';
+    }
+
     function renderSankey(mode){
-      // Limpieza
-      const prev = sankeyStage.querySelector('svg');
+      if(!window.d3 || !d3.sankey || !d3.sankeyLinkHorizontal){
+        showSankeyError('No se pudo cargar la librería del diagrama (D3 Sankey). Revisa conexión o recarga la página.');
+        return;
+      }
+      clearSankeyError();
+
+      const prev = sankeyStage.querySelector('svg.__sankey');
       if(prev) prev.remove();
 
-      const title = sankeyData(mode).title;
-      document.getElementById('sHint').textContent =
-        (mode === 'simple')
-          ? 'Sugerencia de estudio: explica el rol de productores, herbívoros, depredadores y cómo los descomponedores retornan nutrientes al suelo.'
-          : 'Sugerencia de estudio: ubica atmósfera, vegetación, fauna, microbiota y suelo; describe cómo se conectan por C, N y P.';
+      const {W, H} = stageSize();
+      if(W < 50 || H < 50){
+        showSankeyError('El contenedor del diagrama no tiene tamaño. Intenta recargar la página.');
+        return;
+      }
 
-      // Dimensiones
-      const W = sankeyStage.clientWidth;
-      const H = sankeyStage.clientHeight;
-
-      const svg = d3.select(sankeyStage)
-        .append('svg')
-        .attr('width', W)
-        .attr('height', H)
-        .style('display','block');
-
-      // Fondo clickeable para quitar lock
-      svg.append('rect')
-        .attr('x',0).attr('y',0).attr('width',W).attr('height',H)
-        .attr('fill','transparent')
-        .on('click', () => {
-          sLocked = false;
-          sLockKey = null;
-          badge('ninguno');
-          dimNone();
-          hideTip();
-        });
+      // Estado inicial
+      sLocked = false;
+      sLockKey = null;
+      badge('ninguno');
+      hideTip();
 
       const data = sankeyData(mode);
 
-      // Copia para sankey
       const nodes = data.nodes.map(d => ({...d}));
       const indexById = new Map(nodes.map((d,i)=>[d.id, i]));
       const links = data.links.map(d => ({
@@ -741,20 +795,35 @@
         target: indexById.get(d.target)
       }));
 
-      // Sankey layout
+      const svg = d3.select(sankeyStage)
+        .append('svg')
+        .attr('class','__sankey')
+        .attr('width', W)
+        .attr('height', H)
+        .attr('viewBox', `0 0 ${W} ${H}`)
+        .attr('preserveAspectRatio','xMidYMid meet')
+        .style('display','block');
+
+      svg.append('rect')
+        .attr('x',0).attr('y',0).attr('width',W).attr('height',H)
+        .attr('fill','transparent')
+        .on('click', () => {
+          sLocked = false;
+          sLockKey = null;
+          dimNone();
+          badge('ninguno');
+          hideTip();
+        });
+
       const sk = d3.sankey()
-        .nodeId(d => d.id)
         .nodeWidth(16)
         .nodePadding(18)
         .extent([[24, 22], [W - 24, H - 24]]);
 
-      const graph = sk({
-        nodes: nodes,
-        links: links
-      });
+      const graph = sk({ nodes, links });
 
-      // Bands (link paths)
-      const linkG = svg.append('g');
+      const linkG = svg.append('g').attr('class','links');
+      const nodeG = svg.append('g').attr('class','nodes');
 
       const linkPath = linkG.selectAll('path')
         .data(graph.links)
@@ -763,18 +832,14 @@
         .attr('d', d3.sankeyLinkHorizontal())
         .attr('fill','none')
         .attr('stroke', d => {
-          const g1 = graph.nodes[d.source.index].group;
-          const g2 = graph.nodes[d.target.index].group;
-          // Mezcla ligera por destino
+          const g1 = d.source.group;
+          const g2 = d.target.group;
           return (g1 === g2) ? sankeyColors(g1) : 'rgba(11,16,32,.38)';
         })
         .attr('stroke-opacity', 0.45)
         .attr('stroke-linecap','round')
         .attr('stroke-width', d => Math.max(2.5, d.width))
         .style('cursor','pointer');
-
-      // Nodes
-      const nodeG = svg.append('g');
 
       const node = nodeG.selectAll('g')
         .data(graph.nodes)
@@ -792,7 +857,6 @@
         .attr('fill-opacity', 0.92)
         .attr('stroke', 'rgba(11,16,32,.18)');
 
-      // Labels (name)
       node.append('text')
         .attr('x', d => d.x0 < W/2 ? d.x1 + 10 : d.x0 - 10)
         .attr('y', d => (d.y0 + d.y1) / 2)
@@ -804,18 +868,18 @@
         .attr('fill', 'rgba(11,16,32,.86)')
         .text(d => d.name);
 
-      // Layer strips (optional): subtle banded background by group columns
-      const groupY = d3.group(graph.nodes, d => d.group);
-
-      // Interacciones
       function dimNone(){
-        node.selectAll('rect').attr('fill-opacity', 0.92).attr('stroke','rgba(11,16,32,.18)');
-        linkPath.attr('stroke-opacity', 0.45);
-        linkPath.attr('stroke', d => {
-          const g1 = graph.nodes[d.source.index].group;
-          const g2 = graph.nodes[d.target.index].group;
-          return (g1 === g2) ? sankeyColors(g1) : 'rgba(11,16,32,.38)';
-        });
+        node.selectAll('rect')
+          .attr('fill-opacity', 0.92)
+          .attr('stroke', 'rgba(11,16,32,.18)');
+
+        linkPath
+          .attr('stroke-opacity', 0.45)
+          .attr('stroke', d => {
+            const g1 = d.source.group;
+            const g2 = d.target.group;
+            return (g1 === g2) ? sankeyColors(g1) : 'rgba(11,16,32,.38)';
+          });
       }
 
       function highlightNode(n){
@@ -826,7 +890,6 @@
           .attr('fill-opacity', d => d.id === n.id ? 0.98 : 0.18)
           .attr('stroke', d => d.id === n.id ? 'rgba(45,160,220,.55)' : 'rgba(11,16,32,.10)');
 
-        // Links incidentes
         linkPath
           .attr('stroke-opacity', d => (d.source.id === n.id || d.target.id === n.id) ? 0.86 : 0.12)
           .attr('stroke', d => (d.source.id === n.id || d.target.id === n.id) ? 'rgba(45,160,220,.80)' : 'rgba(11,16,32,.28)');
@@ -849,29 +912,19 @@
         badge(l.label || 'flujo');
       }
 
-      function pointerXY(evt){
-        const r = sankeyStage.getBoundingClientRect();
-        const x = (evt.clientX || (evt.touches && evt.touches[0].clientX) || 0) - r.left;
-        const y = (evt.clientY || (evt.touches && evt.touches[0].clientY) || 0) - r.top;
-        return {x: Math.max(10, Math.min(W - 340, x + 12)), y: Math.max(10, Math.min(H - 110, y + 12))};
-      }
-
       node
         .on('mousemove touchmove', (event, d) => {
           if(sLocked && sLockKey && sLockKey !== ('node:' + d.id)) return;
-          const p = pointerXY(event);
+          const p = pointerXY(event, W, H);
           setTip(
-            `<strong>${d.name}</strong><br><span style="color:rgba(11,16,32,.72)">Grupo:</span> ${d.group}<br>` +
-            `<span style="color:rgba(11,16,32,.72)">Entradas/Salidas:</span> ${Math.round(d.value*10)/10}`,
+            `<strong>${d.name}</strong><br>` +
+            `<span style="color:rgba(11,16,32,.72)">Grupo:</span> ${d.group}<br>` +
+            `<span style="color:rgba(11,16,32,.72)">Magnitud:</span> ${Math.round(d.value*10)/10}`,
             p.x, p.y
           );
         })
-        .on('mouseenter touchstart', (event, d) => {
-          highlightNode(d);
-        })
-        .on('mouseleave', () => {
-          if(!sLocked){ dimNone(); badge('ninguno'); hideTip(); }
-        })
+        .on('mouseenter touchstart', (event, d) => { highlightNode(d); })
+        .on('mouseleave', () => { if(!sLocked){ dimNone(); badge('ninguno'); hideTip(); } })
         .on('click', (event, d) => {
           event.stopPropagation();
           const key = 'node:' + d.id;
@@ -885,21 +938,17 @@
       linkPath
         .on('mousemove touchmove', (event, d) => {
           if(sLocked && sLockKey && sLockKey !== ('link:' + d.source.id + '->' + d.target.id)) return;
-          const p = pointerXY(event);
+          const p = pointerXY(event, W, H);
           setTip(
             `<strong>${d.label || 'Flujo'}</strong><br>` +
             `<span style="color:rgba(11,16,32,.72)">Desde:</span> ${d.source.name}<br>` +
             `<span style="color:rgba(11,16,32,.72)">Hacia:</span> ${d.target.name}<br>` +
-            `<span style="color:rgba(11,16,32,.72)">Intensidad relativa:</span> ${Math.round(d.value*10)/10}`,
+            `<span style="color:rgba(11,16,32,.72)">Intensidad:</span> ${Math.round(d.value*10)/10}`,
             p.x, p.y
           );
         })
-        .on('mouseenter touchstart', (event, d) => {
-          highlightLink(d);
-        })
-        .on('mouseleave', () => {
-          if(!sLocked){ dimNone(); badge('ninguno'); hideTip(); }
-        })
+        .on('mouseenter touchstart', (event, d) => { highlightLink(d); })
+        .on('mouseleave', () => { if(!sLocked){ dimNone(); badge('ninguno'); hideTip(); } })
         .on('click', (event, d) => {
           event.stopPropagation();
           const key = 'link:' + d.source.id + '->' + d.target.id;
@@ -910,65 +959,73 @@
           }
         });
 
-      // Título invisible (para lectores)
-      svg.append('title').text(title);
-
-      // Estado inicial
       dimNone();
-      badge('ninguno');
-      hideTip();
     }
 
-    let sMode = 'cafe';
     function redrawSankey(){
-      try { renderSankey(sMode === 'cafe' ? 'cafe' : 'simple'); }
-      catch(e){
-        // fallback mínimo: sin romper la página
-        const hint = document.getElementById('sHint');
-        hint.textContent = 'No se pudo renderizar el diagrama en este navegador. Revisa tu conexión o vuelve a cargar.';
+      try{
+        renderSankey(sMode === 'simple' ? 'simple' : 'cafe');
+      }catch(e){
+        showSankeyError('Ocurrió un error al dibujar el diagrama. Recarga la página.');
       }
     }
 
-    const sTabCafe = document.getElementById('sTabCafe');
-    const sTabSimple = document.getElementById('sTabSimple');
+    function initSankeyWithRetries(){
+      let tries = 0;
+      const maxTries = 14;
 
-    sTabCafe.addEventListener('click', () => {
+      const tick = () => {
+        tries++;
+        const ok = (window.d3 && d3.sankey && d3.sankeyLinkHorizontal);
+        if(ok){
+          // defer un frame para asegurar layout
+          requestAnimationFrame(() => {
+            redrawSankey();
+            if(!ro){
+              ro = new ResizeObserver(() => {
+                clearTimeout(window.__skT);
+                window.__skT = setTimeout(redrawSankey, 100);
+              });
+              ro.observe(sankeyStage);
+            }
+          });
+          return;
+        }
+        if(tries >= maxTries){
+          showSankeyError('No se pudo cargar D3 Sankey. Revisa conexión o recarga.');
+          return;
+        }
+        setTimeout(tick, 250);
+      };
+      tick();
+    }
+
+    document.getElementById('sTabCafe').addEventListener('click', () => {
       sMode = 'cafe';
-      sTabCafe.classList.add('active');
-      sTabSimple.classList.remove('active');
-      sLocked = false; sLockKey = null;
+      document.getElementById('sTabCafe').classList.add('active');
+      document.getElementById('sTabSimple').classList.remove('active');
       redrawSankey();
     });
-    sTabSimple.addEventListener('click', () => {
+    document.getElementById('sTabSimple').addEventListener('click', () => {
       sMode = 'simple';
-      sTabSimple.classList.add('active');
-      sTabCafe.classList.remove('active');
-      sLocked = false; sLockKey = null;
+      document.getElementById('sTabSimple').classList.add('active');
+      document.getElementById('sTabCafe').classList.remove('active');
       redrawSankey();
     });
-    document.getElementById('sReset').addEventListener('click', () => {
-      sLocked = false; sLockKey = null;
-      redrawSankey();
-    });
+    document.getElementById('sReset').addEventListener('click', () => redrawSankey());
 
-    // Render inicial + responsive
-    window.addEventListener('load', redrawSankey);
-    window.addEventListener('resize', () => {
-      // throttling simple
-      clearTimeout(window.__sankeyT);
-      window.__sankeyT = setTimeout(redrawSankey, 120);
-    });
+    window.addEventListener('load', initSankeyWithRetries);
 
-    // =========================================================
-    // B) MAPA MENTAL (Markmap) - mismo patrón que 1-1.html
-    // =========================================================
+    /* =========================================================
+       B) MAPA MENTAL (Markmap)
+       ========================================================= */
     const md = `
 # 1.2 Cadenas alimenticias o tróficas
 ## Ideas clave
 - Flujo de energía (direccional)
 - Transformación y reciclaje de materia (C, N, P)
 ## Niveles tróficos
-- Productores (autótrofos)
+- Productores
   - Plantas, algas, fitoplancton
 - Consumidor primario
   - Herbívoros
@@ -978,16 +1035,16 @@
   - Control poblacional
 - Descomponedores y simbiontes
   - Hongos y bacterias
-  - Mutualismos (mejoran absorción)
-## Procesos (ejemplos)
-- Fotosíntesis y respiración (C)
-- Mineralización (liberación de nutrientes)
-- Nitrificación (NH4+ a NO3-)
-- Asimilación (raíces)
-- Lixiviación y escorrentía (pérdidas)
+  - Mutualismos
+## Procesos
+- Fotosíntesis y respiración
+- Mineralización
+- Nitrificación
+- Asimilación radicular
+- Lixiviación y escorrentía
 ## Interpretación
 - Efecto en cascada si baja un nivel
-- Manejo del suelo y cobertura influyen en ciclos
+- Manejo del suelo influye en ciclos
     `.trim();
 
     let mm = null;
@@ -1030,9 +1087,9 @@
     });
     document.getElementById('btnReset').addEventListener('click', () => safeRender());
 
-    // =========================================================
-    // C) JUEGO NUEVO: Simulador de cascada trófica (canvas)
-    // =========================================================
+    /* =========================================================
+       C) SIMULADOR (mismo juego, más vistoso)
+       ========================================================= */
     const kProd = document.getElementById('kProd');
     const kHerb = document.getElementById('kHerb');
     const kPred = document.getElementById('kPred');
@@ -1046,10 +1103,21 @@
     const simScore = document.getElementById('simScore');
     const simFeedback = document.getElementById('simFeedback');
 
+    const svP = document.getElementById('svP');
+    const svH = document.getElementById('svH');
+    const svD = document.getElementById('svD');
+    const svN = document.getElementById('svN');
+    const sbP = document.getElementById('sbP');
+    const sbH = document.getElementById('sbH');
+    const sbD = document.getElementById('sbD');
+    const sbN = document.getElementById('sbN');
+
     const canvas = document.getElementById('chart');
     const ctx = canvas.getContext('2d');
 
     function fmt(x){ return (Math.round(x*100)/100).toFixed(2); }
+    function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+
     function syncVals(){
       vProd.textContent = fmt(parseFloat(kProd.value));
       vHerb.textContent = fmt(parseFloat(kHerb.value));
@@ -1059,9 +1127,6 @@
     [kProd,kHerb,kPred,kRecycle].forEach(el => el.addEventListener('input', syncVals));
     syncVals();
 
-    // Modelo simple (discreto) para aprendizaje:
-    // P: productores, H: herbívoros, D: depredadores, N: nutrientes
-    // Crece P con N y kProd; H consume P con kHerb; D consume H con kPred; N se recupera por reciclaje.
     let running = false;
     let t = 0;
 
@@ -1072,6 +1137,18 @@
 
     let P=0.70, H=0.42, D=0.26, N=0.55;
 
+    function setStat(elV, elB, value){
+      elV.textContent = fmt(value);
+      const w = clamp((value/1.2)*100, 0, 100);
+      elB.style.width = w.toFixed(1) + '%';
+    }
+    function refreshStats(){
+      setStat(svP, sbP, P);
+      setStat(svH, sbH, H);
+      setStat(svD, sbD, D);
+      setStat(svN, sbN, N);
+    }
+
     function resetSim(){
       running = false;
       t = 0;
@@ -1079,27 +1156,26 @@
       seriesP = [];
       seriesH = [];
       seriesD = [];
-      for(let i=0;i<60;i++) stepSim(false); // precalienta para que arranque con curvas suaves
+      for(let i=0;i<60;i++) stepSim(false);
       draw();
+      refreshStats();
       simScore.textContent = 'Estado: detenido';
       simFeedback.className = 'result';
-      simFeedback.textContent = 'Instrucción: presiona Iniciar y observa. Luego aplica un evento y ajusta controles para recuperar estabilidad.';
+      simFeedback.textContent = 'Presiona Iniciar. Luego aplica un evento y ajusta controles para recuperar estabilidad.';
     }
 
     function shockDrought(){
-      // sequía reduce N y P
       N = Math.max(0.02, N * 0.55);
       P = Math.max(0.02, P * 0.78);
       simFeedback.className = 'result no';
-      simFeedback.textContent = 'Evento aplicado: sequía. Bajó la producción primaria y nutrientes disponibles. Ajusta parámetros para recuperar estabilidad.';
-      draw();
+      simFeedback.textContent = 'Evento aplicado: sequía. Bajó producción primaria y nutrientes. Ajusta parámetros para recuperar estabilidad.';
+      draw(); refreshStats();
     }
     function shockPredLoss(){
-      // pérdida de depredadores
       D = Math.max(0.01, D * 0.35);
       simFeedback.className = 'result no';
-      simFeedback.textContent = 'Evento aplicado: pérdida de depredadores. Observa si suben herbívoros y cae la vegetación.';
-      draw();
+      simFeedback.textContent = 'Evento aplicado: pérdida de depredadores. Observa si suben herbívoros y cae vegetación.';
+      draw(); refreshStats();
     }
 
     function stepSim(push=true){
@@ -1108,24 +1184,19 @@
       const kd = parseFloat(kPred.value);
       const kr = parseFloat(kRecycle.value);
 
-      // Dinámica (estable y entendible, no científica exacta)
-      // Nutrientes: suben por reciclaje desde biomasa total y bajan por uso de productores
       const recycle = kr * (0.30*P + 0.22*H + 0.18*D);
       const uptake  = 0.55 * kp * P;
       N = clamp(N + recycle - uptake, 0.00, 1.20);
 
-      // Productores: crecen con N y kp, bajan por consumo herbívoro
       const growP = kp * (0.55 + 0.75*N) * P * (1.05 - P);
       const eatP  = kh * (0.68) * H * P;
       P = clamp(P + growP - eatP, 0.00, 1.20);
 
-      // Herbívoros: suben si hay P, bajan por depredación y por falta de alimento
       const growH = kh * (0.58) * H * P;
       const predH = kd * (0.70) * D * H;
-      const starv = 0.18 * H * (0.45 - P); // si P bajo, cae H
+      const starv = 0.18 * H * (0.45 - P);
       H = clamp(H + growH - predH - Math.max(0, starv), 0.00, 1.20);
 
-      // Depredadores: suben si hay H, bajan por costo metabólico
       const growD = kd * (0.50) * D * H;
       const costD = 0.22 * D;
       D = clamp(D + growD - costD, 0.00, 1.20);
@@ -1141,10 +1212,7 @@
       t++;
     }
 
-    function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
-
     function assess(){
-      // criterio simple de "estabilidad razonable"
       const okP = P > 0.25 && P < 1.05;
       const okH = H > 0.12 && H < 0.95;
       const okD = D > 0.06 && D < 0.80;
@@ -1153,13 +1221,13 @@
         simScore.textContent = 'Estado: estable';
         simFeedback.className = 'result ok';
         simFeedback.textContent =
-          'Estado estable. Explicación esperada: productores sostienen herbívoros; depredadores controlan herbívoros; reciclaje mantiene nutrientes.';
+          'Estado estable. Productores sostienen herbívoros; depredadores controlan herbívoros; reciclaje mantiene nutrientes.';
       }else{
         simScore.textContent = 'Estado: inestable';
         simFeedback.className = 'result no';
         let msg = 'Estado inestable. ';
         if(P <= 0.08) msg += 'Productores casi colapsan. ';
-        if(H >= 1.05) msg += 'Herbívoros están demasiado altos. ';
+        if(H >= 1.05) msg += 'Herbívoros demasiado altos. ';
         if(D <= 0.03) msg += 'Depredadores casi ausentes. ';
         if(D >= 0.95) msg += 'Depredadores demasiado altos. ';
         msg += 'Ajusta parámetros y observa la gráfica.';
@@ -1171,15 +1239,18 @@
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0,0,w,h);
 
-      // Fondo suave
-      ctx.fillStyle = 'rgba(255,255,255,.65)';
+      // Fondo
+      const bg = ctx.createLinearGradient(0,0,0,h);
+      bg.addColorStop(0, 'rgba(255,255,255,.70)');
+      bg.addColorStop(1, 'rgba(255,255,255,.50)');
+      ctx.fillStyle = bg;
       ctx.fillRect(0,0,w,h);
 
-      // Ejes
       const padL = 42, padR = 14, padT = 14, padB = 28;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
+      // Ejes + grid
       ctx.strokeStyle = 'rgba(11,16,32,.18)';
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -1188,7 +1259,6 @@
       ctx.lineTo(padL + plotW, padT + plotH);
       ctx.stroke();
 
-      // marcas 0..1.2
       ctx.fillStyle = 'rgba(11,16,32,.68)';
       ctx.font = '12px Inter, system-ui';
       for(let i=0;i<=6;i++){
@@ -1202,20 +1272,39 @@
         ctx.fillText(v.toFixed(1), 8, y+4);
       }
 
-      // Leyenda
+      // Título / leyenda
       ctx.fillStyle = 'rgba(11,16,32,.86)';
       ctx.font = '13px Outfit, Inter, system-ui';
       ctx.fillText('Productores', padL + 6, padT + 14);
       ctx.fillText('Herbívoros',  padL + 150, padT + 14);
       ctx.fillText('Depredadores',padL + 278, padT + 14);
 
-      // Colores (sin fijar "tema"; aquí sí fijamos porque es UI del juego)
-      const colP = 'rgba(90,160,110,.88)';
-      const colH = 'rgba(200,150,80,.88)';
-      const colD = 'rgba(140,140,140,.92)';
+      // Colores
+      const colP = 'rgba(50,170,120,.90)';
+      const colH = 'rgba(210,150,80,.90)';
+      const colD = 'rgba(120,120,120,.95)';
 
-      function plot(series, color, x0){
+      function plotWithFill(series, color){
         if(series.length < 2) return;
+        // fill
+        ctx.beginPath();
+        for(let i=0;i<series.length;i++){
+          const x = padL + (i/(MAX_POINTS-1))*plotW;
+          const y = padT + plotH - (series[i]/1.2)*plotH;
+          if(i===0) ctx.moveTo(x,y);
+          else ctx.lineTo(x,y);
+        }
+        ctx.lineTo(padL + plotW, padT + plotH);
+        ctx.lineTo(padL, padT + plotH);
+        ctx.closePath();
+
+        const g = ctx.createLinearGradient(0,padT,0,padT+plotH);
+        g.addColorStop(0, color.replace('0.90','0.18').replace('0.95','0.16'));
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g;
+        ctx.fill();
+
+        // stroke
         ctx.strokeStyle = color;
         ctx.lineWidth = 2.5;
         ctx.beginPath();
@@ -1228,11 +1317,11 @@
         ctx.stroke();
       }
 
-      plot(seriesP, colP);
-      plot(seriesH, colH);
-      plot(seriesD, colD);
+      plotWithFill(seriesP, colP);
+      plotWithFill(seriesH, colH);
+      plotWithFill(seriesD, colD);
 
-      // Estado actual (valores)
+      // valores
       ctx.fillStyle = 'rgba(11,16,32,.86)';
       ctx.font = '12px Inter, system-ui';
       ctx.fillText('P=' + fmt(P) + '   H=' + fmt(H) + '   D=' + fmt(D) + '   N=' + fmt(N), padL, padT + plotH + 20);
@@ -1242,10 +1331,8 @@
       if(!running) return;
       stepSim(true);
       draw();
-
-      // Evaluación periódica
+      refreshStats();
       if(t % 18 === 0) assess();
-
       requestAnimationFrame(tick);
     }
 
@@ -1264,7 +1351,6 @@
     document.getElementById('btnShock2').addEventListener('click', shockPredLoss);
     document.getElementById('btnSimReset').addEventListener('click', resetSim);
 
-    // estado inicial
     resetSim();
   </script>
 </body>
