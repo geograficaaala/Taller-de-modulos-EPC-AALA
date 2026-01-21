@@ -1,0 +1,633 @@
+<!-- =========================
+     1-6.html
+     MÓDULO 1 · MEDIO AMBIENTE
+     1.6 Biodiversidad
+     Juego: Ahorcado (3 palabras)
+========================= -->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>1.6 Biodiversidad · EPC AALA</title>
+  <meta name="description" content="Biodiversidad: niveles, importancia, amenazas y conservación. Mapa mental interactivo y juego de ahorcado." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020; --muted:rgba(11,16,32,.72); --muted2:rgba(11,16,32,.58);
+      --line:rgba(11,16,32,.14);
+      --shadow: 0 18px 55px rgba(11,16,32,.12);
+      --shadow2: 0 10px 28px rgba(11,16,32,.10);
+      --radius:22px;
+      --good: rgba(34,197,94,.12);
+      --bad: rgba(225,29,72,.10);
+      --warn: rgba(245,158,11,.12);
+      --info: rgba(45,160,220,.12);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 10% 0%, rgba(45,160,220,.18), transparent 60%),
+        radial-gradient(1100px 700px at 90% 10%, rgba(34,197,94,.16), transparent 55%),
+        radial-gradient(900px 700px at 40% 100%, rgba(245,158,11,.10), transparent 60%),
+        #f4f7fb;
+    }
+    .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 40px; }
+    header{ display:flex; gap:16px; align-items:flex-end; justify-content:space-between; padding:18px 18px 0; }
+    .kicker{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(11,16,32,.62); }
+    h1{ margin:8px 0 8px; font-size:30px; line-height:1.15; }
+    .subtitle{ margin:0 0 12px; max-width:80ch; color:rgba(11,16,32,.72); line-height:1.5; }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding-bottom:14px; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.62);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+      font-size:13px; color:rgba(11,16,32,.86);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none; cursor:pointer; text-decoration:none;
+    }
+    .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.78); border-color:rgba(11,16,32,.18); }
+    .btn.primary{ background:rgba(45,160,220,.16); border-color:rgba(45,160,220,.30); }
+    main.stack{ margin-top:14px; display:flex; flex-direction:column; gap:16px; padding:0 18px; }
+
+    .card{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .card h2{ margin:0 0 10px; font-size:18px; }
+    .muted{ color: var(--muted2); font-size:13px; }
+
+    .twoCols{ display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; align-items:start; }
+    @media (max-width: 900px){ .twoCols{ grid-template-columns: 1fr; } }
+    .box{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.66);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    .box p{ margin:0 0 10px; line-height:1.6; color:rgba(11,16,32,.84); }
+    .box ul{ margin:8px 0 0 18px; padding:0; line-height:1.6; color:rgba(11,16,32,.82); }
+
+    .grid3{ display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:10px; margin-top:10px; }
+    @media (max-width: 900px){ .grid3{ grid-template-columns: 1fr; } }
+    .pill{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+    }
+    .pill .t{ font-weight:800; margin-bottom:6px; }
+    .pill .s{ color:rgba(11,16,32,.74); font-size:13px; line-height:1.5; }
+
+    .mapTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapStage{ border:1px solid rgba(11,16,32,.12); background: rgba(255,255,255,.62); border-radius: 18px; padding:10px; overflow:hidden; }
+    svg#mindmap{
+      width:100%; height:520px; display:block;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+      border-radius: 14px;
+    }
+    .mapFallback{ margin-top:10px; display:none; padding:10px 12px; border-radius: 14px; border:1px dashed rgba(11,16,32,.25); background: rgba(255,255,255,.55); color: rgba(11,16,32,.75); font-size: 13px; line-height: 1.5; }
+    .mapFallback.show{ display:block; }
+
+    /* GAME: Hangman */
+    .gameGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; align-items:start; }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+    .panel{ border:1px solid rgba(11,16,32,.12); background: rgba(255,255,255,.62); border-radius: 18px; padding:12px; box-shadow: var(--shadow2); }
+    .panel h3{ margin:0 0 8px; font-size:15px; }
+    .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); line-height:1.5; font-size:13px; }
+
+    .status{ border:1px solid rgba(11,16,32,.12); background: rgba(255,255,255,.60); border-radius: 16px; padding:12px; }
+    .clueTitle{ font-weight:850; margin-bottom:6px; }
+    .clue{ color:rgba(11,16,32,.78); line-height:1.55; font-size:13px; }
+    .word{
+      margin-top:10px;
+      font-weight:850;
+      letter-spacing:.18em;
+      font-size:22px;
+      padding:12px 10px;
+      border-radius: 16px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      text-align:center;
+    }
+
+    .kbd{ display:grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap:8px; margin-top:10px; }
+    @media (max-width: 520px){ .kbd{ grid-template-columns: repeat(6, minmax(0,1fr)); } }
+    .key{
+      border:1px solid rgba(11,16,32,.14);
+      background: rgba(255,255,255,.76);
+      border-radius: 14px;
+      padding:10px 0;
+      font-weight:850;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      text-align:center;
+      font-size:13px;
+    }
+    .key:hover{ transform: translateY(-1px); border-color: rgba(45,160,220,.32); background: rgba(255,255,255,.84); }
+    .key.disabled{ opacity:.45; cursor:default; transform:none; }
+    .hud{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .chipHud{
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      font-size:12px;
+      color: rgba(11,16,32,.80);
+      font-weight:700;
+    }
+
+    .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .result{
+      margin-top:10px;
+      border-radius:16px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding:12px;
+      font-size:13px;
+      line-height:1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
+
+    .art{
+      width:100%;
+      border-radius: 18px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      padding:12px;
+      overflow:hidden;
+    }
+    pre#hangArt{
+      margin:0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;
+      line-height:1.25;
+      color: rgba(11,16,32,.78);
+      white-space:pre;
+    }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 1 · Medio ambiente</div>
+        <h1>1.6 Biodiversidad</h1>
+        <p class="subtitle">
+          La biodiversidad es la variedad de vida en todas sus formas. Se estudia en distintos niveles: diversidad genética,
+          diversidad de especies y diversidad de ecosistemas. Comprenderla ayuda a valorar servicios como alimento, agua y suelos sanos.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="1-5.html">Anterior (1.5)</a>
+        <a class="btn primary" href="1-7.html">Siguiente (1.7)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              La <strong>biodiversidad</strong> incluye la variedad de organismos, sus genes y los ecosistemas donde viven.
+              Esta diversidad sostiene el funcionamiento de los ecosistemas y su capacidad para recuperarse ante cambios.
+            </p>
+            <ul>
+              <li><strong>Genética:</strong> variación dentro de una especie (permite adaptación y resistencia).</li>
+              <li><strong>Especies:</strong> número de especies presentes en un lugar y su abundancia relativa.</li>
+              <li><strong>Ecosistemas:</strong> variedad de ambientes (terrestres y acuáticos) y su distribución.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              Cuando se pierde biodiversidad, se afectan cadenas alimenticias, polinización, control natural de plagas y calidad de agua.
+            </p>
+          </div>
+
+          <div class="box">
+            <p><strong>¿Por qué es importante?</strong></p>
+            <ul>
+              <li><strong>Servicios ecosistémicos:</strong> alimentos, agua, regulación del clima local, suelos fértiles.</li>
+              <li><strong>Salud:</strong> plantas medicinales y control de enfermedades.</li>
+              <li><strong>Economía:</strong> turismo, agricultura y actividades sostenibles.</li>
+              <li><strong>Cultura:</strong> identidad y conocimiento local.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              Conservar biodiversidad implica proteger hábitats, reducir contaminación y mantener conectividad entre ecosistemas.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Equilibrio ecológico</div>
+            <div class="s">Más diversidad suele significar mayor estabilidad ante sequías, plagas o cambios de temperatura.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Conectividad</div>
+            <div class="s">Corredores y áreas con vegetación facilitan el movimiento de especies y el intercambio genético.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Amenazas</div>
+            <div class="s">Cambio de uso del suelo, contaminación, sobreexplotación, especies invasoras y clima.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Ideas clave</h2>
+        <div class="twoCols">
+          <div class="box">
+            <ul>
+              <li>La biodiversidad no es solo “cantidad de animales”: incluye genes, especies y ecosistemas.</li>
+              <li>La diversidad genética ayuda a una especie a adaptarse y resistir enfermedades.</li>
+              <li>La diversidad de ecosistemas mantiene funciones como infiltración de agua y formación de suelo.</li>
+              <li>Conservar biodiversidad requiere acciones locales: manejo de residuos, protección de riberas y bosques.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Preguntas guía</strong>:</p>
+            <ul>
+              <li>¿Qué ecosistemas existen en la zona y cómo se conectan?</li>
+              <li>¿Qué especies cumplen roles clave (polinizadores, depredadores, descomponedores)?</li>
+              <li>¿Qué prácticas humanas aumentan o reducen la biodiversidad?</li>
+              <li>¿Qué acciones de conservación serían más urgentes en la cuenca?</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2 style="margin:0;">Mapa mental</h2>
+            <div class="muted">Incluye niveles de biodiversidad, importancia y amenazas.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Ajustar</button>
+            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="mapFallback" id="mapFallback">
+            <div><strong>No se pudo cargar el mapa mental.</strong><br>Recarga la página o revisa la conexión.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego: ahorcado (tipos de biodiversidad)</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          Resuelve las 3 palabras: <strong>genética</strong>, <strong>especies</strong>, <strong>ecosistemas</strong>.
+          Funciona en celular y computadora.
+        </p>
+
+        <div class="gameGrid" style="margin-top:12px;">
+          <div class="panel">
+            <h3>Reto</h3>
+
+            <div class="status">
+              <div class="clueTitle" id="clueTitle">Pista</div>
+              <div class="clue" id="clue"></div>
+
+              <div class="word" id="word"></div>
+
+              <div class="hud">
+                <div class="chipHud">Palabra: <span id="idx">1</span> / 3</div>
+                <div class="chipHud">Intentos: <span id="lives">6</span></div>
+                <div class="chipHud">Usadas: <span id="used">—</span></div>
+              </div>
+
+              <div class="kbd" id="kbd" aria-label="Teclado de letras"></div>
+
+              <div class="gameBtns">
+                <button class="btn" type="button" id="btnHint">Recordar pista</button>
+                <button class="btn" type="button" id="btnReset">Reiniciar juego</button>
+              </div>
+
+              <div id="result" class="result" style="display:none;"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Figura</h3>
+            <p>Los intentos se reflejan en el diagrama. Ganas si completas las 3 palabras.</p>
+            <div class="art">
+              <pre id="hangArt"></pre>
+            </div>
+            <div class="result info" style="margin-top:10px;">
+              Sugerencia: si te equivocas, revisa la pista y piensa en el nivel de biodiversidad que describe.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // ==========
+    // MAPA MENTAL (robusto)
+    // ==========
+    const md = `
+# 1.6 Biodiversidad
+## Niveles
+- Diversidad genética
+  - Variación dentro de una especie
+  - Adaptación y resistencia
+- Diversidad de especies
+  - Número de especies
+  - Abundancia relativa
+- Diversidad de ecosistemas
+  - Variedad de ambientes
+  - Distribución espacial
+## Importancia
+- Servicios ecosistémicos
+  - Agua, alimentos, suelos
+  - Polinización y control natural
+- Salud y cultura
+- Economía y turismo
+## Amenazas
+- Cambio de uso del suelo
+- Contaminación
+- Sobreexplotación
+- Especies invasoras
+- Cambio climático
+## Conservación
+- Proteger hábitats
+- Manejo de residuos y agua
+- Restauración y reforestación
+- Educación ambiental
+`.trim();
+
+    let mm=null, expanded=true;
+    function safeRenderMap(){
+      const fallback=document.getElementById('mapFallback');
+      try{
+        if(!window.markmap||!window.markmap.Transformer||!window.markmap.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const transformer=new Transformer();
+        const {root}=transformer.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        expanded=true;
+        fallback.classList.remove('show');
+        return true;
+      }catch(e){
+        fallback.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const t=setInterval(()=>{
+      tries++;
+      const ok=safeRenderMap();
+      if(ok||tries>=12){
+        clearInterval(t);
+        if(!mm) document.getElementById('mapFallback').classList.add('show');
+      }
+    },300);
+
+    document.getElementById('btnFit').addEventListener('click',()=>mm&&mm.fit());
+    document.getElementById('btnToggle').addEventListener('click',()=>{
+      if(!mm) return;
+      if(expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded=!expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click',()=>{ mm=null; expanded=true; safeRenderMap(); });
+
+    // ==========
+    // GAME: Ahorcado 3 palabras (según especificación)
+    // ==========
+    const WORDS = [
+      { word: "genética", clue: "Características físicas y químicas de descendencia." },
+      { word: "especies", clue: "Número de diferentes organismos presentes en un lugar." },
+      { word: "ecosistemas", clue: "Distribución espacial, variedad de ambientes terrestres y acuáticos." },
+    ];
+
+    const ALPHA = "abcdefghijklmnñopqrstuvwxyz".split("");
+    const artFrames = [
+`  +---+
+  |   |
+      |
+      |
+      |
+      |
+========`,
+`  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+========`,
+`  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+========`,
+`  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+========`,
+`  +---+
+  |   |
+  O   |
+ /|\\  |
+      |
+      |
+========`,
+`  +---+
+  |   |
+  O   |
+ /|\\  |
+ /    |
+      |
+========`,
+`  +---+
+  |   |
+  O   |
+ /|\\  |
+ / \\  |
+      |
+========`
+    ];
+
+    const elClue = document.getElementById('clue');
+    const elWord = document.getElementById('word');
+    const elIdx  = document.getElementById('idx');
+    const elLives= document.getElementById('lives');
+    const elUsed = document.getElementById('used');
+    const elKbd  = document.getElementById('kbd');
+    const elArt  = document.getElementById('hangArt');
+    const elRes  = document.getElementById('result');
+
+    let i = 0;
+    let target = "";
+    let normTarget = "";
+    let lives = 6;
+    let used = new Set();
+    let revealed = new Set();
+
+    function normalize(s){
+      // para comparar: quitar acentos
+      return s
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"");
+    }
+
+    function renderKeyboard(disableAll=false){
+      elKbd.innerHTML = "";
+      ALPHA.forEach(ch=>{
+        const b = document.createElement('button');
+        b.type="button";
+        b.className="key";
+        b.textContent = ch.toUpperCase();
+        const disabled = disableAll || used.has(ch);
+        if(disabled) b.classList.add('disabled');
+        b.disabled = disabled;
+        b.addEventListener('click', ()=> guess(ch));
+        elKbd.appendChild(b);
+      });
+    }
+
+    function maskedWord(){
+      const out = [];
+      for(const ch of target){
+        if(ch === " "){ out.push(" "); continue; }
+        const n = normalize(ch);
+        if(revealed.has(n)) out.push(ch.toUpperCase());
+        else out.push("_");
+      }
+      return out.join(" ");
+    }
+
+    function updateUI(){
+      elIdx.textContent = String(i+1);
+      elClue.textContent = WORDS[i].clue;
+      elWord.textContent = maskedWord();
+      elLives.textContent = String(lives);
+      elUsed.textContent = used.size ? [...used].map(x=>x.toUpperCase()).join(", ") : "—";
+      const frameIndex = 6 - lives; // 0..6
+      elArt.textContent = artFrames[Math.min(frameIndex, 6)];
+    }
+
+    function setResult(type, html){
+      elRes.style.display="block";
+      elRes.className = "result " + type;
+      elRes.innerHTML = html;
+    }
+
+    function clearResult(){
+      elRes.style.display="none";
+      elRes.className="result";
+      elRes.innerHTML="";
+    }
+
+    function startWord(idx){
+      i = idx;
+      target = WORDS[i].word.toLowerCase();
+      normTarget = normalize(target);
+      lives = 6;
+      used = new Set();
+      revealed = new Set();
+      clearResult();
+      renderKeyboard(false);
+      updateUI();
+    }
+
+    function isSolved(){
+      for(const ch of normTarget){
+        if(ch === " ") continue;
+        if(!revealed.has(ch)) return false;
+      }
+      return true;
+    }
+
+    function guess(letter){
+      if(lives<=0) return;
+      if(used.has(letter)) return;
+      used.add(letter);
+
+      const ok = normTarget.includes(letter);
+      if(ok){
+        revealed.add(letter);
+      }else{
+        lives -= 1;
+      }
+
+      renderKeyboard(false);
+      updateUI();
+
+      if(isSolved()){
+        if(i < WORDS.length - 1){
+          setResult("ok", `<strong>Correcto.</strong> Respuesta: <strong>${WORDS[i].word}</strong>. Continúa con la siguiente palabra.`);
+          // avanzar automático con un pequeño retraso
+          setTimeout(()=> startWord(i+1), 700);
+        }else{
+          setResult("ok", `<strong>Excelente.</strong> Completaste las 3 palabras de los tipos de biodiversidad.`);
+          renderKeyboard(true);
+        }
+        return;
+      }
+
+      if(lives<=0){
+        setResult("no", `Se acabaron los intentos. La palabra era: <strong>${WORDS[i].word}</strong>. Presiona “Reiniciar juego”.`);
+        renderKeyboard(true);
+      }
+    }
+
+    document.getElementById('btnReset').addEventListener('click', ()=> startWord(0));
+    document.getElementById('btnHint').addEventListener('click', ()=>{
+      setResult("info", `<strong>Pista:</strong> ${WORDS[i].clue}`);
+      setTimeout(()=>{ if(elRes.className.includes("info")) clearResult(); }, 1400);
+    });
+
+    // soporte teclado físico
+    window.addEventListener('keydown', (e)=>{
+      const k = e.key.toLowerCase();
+      if(ALPHA.includes(k)) guess(k);
+    });
+
+    startWord(0);
+  </script>
+</body>
+</html>
