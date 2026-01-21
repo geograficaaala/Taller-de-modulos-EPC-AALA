@@ -9,17 +9,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>1.3 El ecosistema y su organización · EPC AALA</title>
-  <meta name="description" content="Ecosistema, niveles de organización y relaciones: organismo, población, comunidad, ecosistema y biosfera. Incluye mapa mental interactivo y juego." />
+  <meta name="description" content="Ecosistema, niveles de organización, hábitat, nicho ecológico e interacciones. Mapa mental interactivo y juego táctil." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Markmap (mismo enfoque que 1-1) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
   <style>
     :root{
-      --bg0:#f4f7fb;
-      --bg1:#ffffffcc;
       --ink:#0b1020;
       --muted:rgba(11,16,32,.72);
       --muted2:rgba(11,16,32,.58);
+      --glass:rgba(255,255,255,.66);
+      --glass2:rgba(255,255,255,.58);
       --line:rgba(11,16,32,.14);
-      --card:#ffffffb8;
       --shadow: 0 18px 55px rgba(11,16,32,.12);
       --shadow2: 0 10px 28px rgba(11,16,32,.10);
       --radius:22px;
@@ -33,17 +38,17 @@
       --bad: rgba(225,29,72,.10);
       --warn: rgba(245,158,11,.12);
     }
-
     *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
       color:var(--ink);
       background:
         radial-gradient(1200px 800px at 10% 0%, rgba(45,160,220,.18), transparent 60%),
         radial-gradient(1100px 700px at 90% 10%, rgba(34,197,94,.16), transparent 55%),
         radial-gradient(900px 700px at 40% 100%, rgba(245,158,11,.10), transparent 60%),
-        var(--bg0);
+        #f4f7fb;
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 40px; }
@@ -60,7 +65,7 @@
     h1{ margin:8px 0 8px; font-size:30px; line-height:1.15; }
     .subtitle{
       margin:0 0 12px;
-      max-width:70ch;
+      max-width:78ch;
       color:rgba(11,16,32,.72);
       line-height:1.5;
     }
@@ -70,25 +75,23 @@
       display:inline-flex; align-items:center; justify-content:center;
       padding:10px 12px;
       border-radius:14px;
-      border:1px solid rgba(11,16,32,.14);
+      border:1px solid var(--line);
       background:rgba(255,255,255,.62);
       box-shadow: 0 8px 18px rgba(11,16,32,.06);
       font-size:13px;
       color:rgba(11,16,32,.86);
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
       user-select:none;
+      cursor:pointer;
     }
     .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.78); border-color:rgba(11,16,32,.18); }
-    .btn.primary{
-      background:rgba(45,160,220,.16);
-      border-color:rgba(45,160,220,.30);
-    }
+    .btn.primary{ background:rgba(45,160,220,.16); border-color:rgba(45,160,220,.30); }
 
-    main.stack{ display:flex; flex-direction:column; gap:16px; padding:14px 18px 0; }
+    main.stack{ margin-top:14px; display:flex; flex-direction:column; gap:16px; padding:0 18px; }
 
     .card{
       border:1px solid rgba(11,16,32,.12);
-      background: var(--card);
+      background: rgba(255,255,255,.70);
       backdrop-filter: blur(8px);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -105,38 +108,40 @@
     }
     @media (max-width: 900px){ .twoCols{ grid-template-columns: 1fr; } }
 
-    .theory{
+    .box{
       border:1px solid rgba(11,16,32,.10);
       background: rgba(255,255,255,.66);
       border-radius: 18px;
       padding:12px;
       box-shadow: var(--shadow2);
     }
-    .theory p{ margin:0 0 10px; line-height:1.55; color:rgba(11,16,32,.82); }
-    .theory ul{ margin:8px 0 0 18px; padding:0; color:rgba(11,16,32,.80); line-height:1.55; }
-    .pillRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:12px; color:rgba(11,16,32,.78);
-      border:1px solid rgba(11,16,32,.14);
-      background: rgba(255,255,255,.62);
-      padding:8px 10px;
-      border-radius: 999px;
+    .box p{ margin:0 0 10px; line-height:1.6; color:rgba(11,16,32,.84); }
+    .box ul{ margin:8px 0 0 18px; padding:0; line-height:1.6; color:rgba(11,16,32,.82); }
+    .callouts{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
     }
-    .dot{ width:9px; height:9px; border-radius:50%; background: rgba(11,16,32,.25); }
-    .dot.a{ background: rgba(45,160,220,.9); }
-    .dot.b{ background: rgba(34,197,94,.9); }
-    .dot.c{ background: rgba(245,158,11,.92); }
-    .dot.d{ background: rgba(225,29,72,.86); }
+    @media (max-width: 900px){ .callouts{ grid-template-columns: 1fr; } }
+    .pill{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+    }
+    .pill .t{ font-weight:800; margin-bottom:6px; }
+    .pill .s{ color:rgba(11,16,32,.74); font-size:13px; line-height:1.5; }
 
-    /* ===== MINDMAP ===== */
-    .mmTop{
+    /* ===== MAPA MENTAL ===== */
+    .mapTop{
       display:flex; align-items:center; justify-content:space-between;
       gap:10px; flex-wrap:wrap;
       margin-bottom:10px;
     }
-    .mmBtns{ display:flex; gap:10px; flex-wrap:wrap; }
-    .mmStage{
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapStage{
       border:1px solid rgba(11,16,32,.12);
       background: rgba(255,255,255,.62);
       border-radius: 18px;
@@ -147,11 +152,12 @@
       width:100%;
       height:520px;
       display:block;
-      background: radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
-                  radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
       border-radius: 14px;
     }
-    .fallback{
+    .mapFallback{
       margin-top:10px;
       display:none;
       padding:10px 12px;
@@ -162,30 +168,30 @@
       font-size: 13px;
       line-height: 1.5;
     }
-    .fallback.show{ display:block; }
+    .mapFallback.show{ display:block; }
 
-    /* ===== GAME: NIVELES DE ORGANIZACIÓN ===== */
-    .gameWrap{
+    /* ===== JUEGO (táctil + drag&drop) ===== */
+    .gameGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:14px;
       align-items:start;
     }
-    @media (max-width: 980px){ .gameWrap{ grid-template-columns: 1fr; } }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
 
-    .board{
+    .panel{
       border:1px solid rgba(11,16,32,.12);
       background: rgba(255,255,255,.62);
       border-radius: 18px;
       padding:12px;
       box-shadow: var(--shadow2);
     }
-    .board h3{ margin:0 0 8px; font-size:15px; }
-    .board p{ margin:0 0 10px; color:rgba(11,16,32,.74); line-height:1.5; font-size:13px; }
+    .panel h3{ margin:0 0 8px; font-size:15px; }
+    .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); line-height:1.5; font-size:13px; }
 
     .cards{
       display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0,1fr));
       gap:10px;
     }
     @media (max-width: 520px){ .cards{ grid-template-columns: 1fr; } }
@@ -202,24 +208,25 @@
     }
     .cardItem:active{ cursor:grabbing; transform: scale(.99); }
     .cardItem:hover{ border-color: rgba(45,160,220,.34); transform: translateY(-1px); }
-    .cardItem .t{ font-weight:720; font-size:13px; margin-bottom:6px; }
+    .cardItem.selected{
+      outline: 2px solid rgba(45,160,220,.55);
+      background: rgba(45,160,220,.10);
+    }
+    .cardItem .t{ font-weight:800; font-size:13px; margin-bottom:6px; }
     .cardItem .s{ font-size:12px; color: rgba(11,16,32,.72); line-height:1.35; }
 
-    .slots{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .slots{ display:flex; flex-direction:column; gap:10px; }
     .slot{
       border:1px dashed rgba(11,16,32,.24);
       background: rgba(255,255,255,.55);
       border-radius: 16px;
       padding:10px;
-      min-height:68px;
+      min-height:70px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
+      cursor:pointer;
     }
     .slot strong{ font-size:13px; }
     .slot .hint{ font-size:12px; color: rgba(11,16,32,.62); }
@@ -233,8 +240,13 @@
       border-color: rgba(225,29,72,.30);
       background: rgba(225,29,72,.08);
     }
+    .slot.targetable{
+      outline:2px solid rgba(245,158,11,.40);
+      background: rgba(245,158,11,.08);
+    }
 
     .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
     .result{
       margin-top:10px;
       border-radius:16px;
@@ -242,7 +254,7 @@
       background: rgba(255,255,255,.55);
       padding:12px;
       font-size:13px;
-      line-height:1.5;
+      line-height:1.55;
       color: rgba(11,16,32,.82);
     }
     .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
@@ -256,9 +268,6 @@
       font-size: 13px;
     }
   </style>
-
-  <!-- Markmap (CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.3"></script>
 </head>
 
 <body>
@@ -268,7 +277,8 @@
         <div class="kicker">Módulo 1 · Medio ambiente</div>
         <h1>1.3 El ecosistema y su organización</h1>
         <p class="subtitle">
-          Un ecosistema se entiende como un sistema donde los seres vivos se relacionan entre sí y con factores abióticos, organizándose en distintos niveles (organismo, población, comunidad, ecosistema, biosfera).
+          Un ecosistema integra seres vivos y factores no vivos en un mismo espacio. Para entenderlo mejor se usan niveles de organización
+          y conceptos como hábitat y nicho ecológico.
         </p>
       </div>
       <nav class="nav">
@@ -279,90 +289,125 @@
     </header>
 
     <main class="stack">
-      <!-- TEORÍA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              Un <strong>ecosistema</strong> es un sistema dinámico donde:
+            </p>
+            <ul>
+              <li>Los <strong>factores bióticos</strong> (plantas, animales, microorganismos) se relacionan entre sí.</li>
+              <li>Los <strong>factores abióticos</strong> (agua, aire, luz, temperatura, suelo, minerales) condicionan la vida.</li>
+              <li>La <strong>energía</strong> fluye (principalmente desde el Sol) y la <strong>materia</strong> se recicla (agua, carbono, nitrógeno, fósforo).</li>
+            </ul>
+            <p style="margin-top:10px;">
+              En cualquier ecosistema ocurren interacciones: <strong>competencia</strong> (por luz, alimento, espacio),
+              <strong>depredación</strong>, <strong>mutualismo</strong> (ambos ganan) y <strong>comensalismo</strong> (uno gana sin dañar al otro).
+            </p>
+          </div>
+
+          <div class="box">
+            <p>
+              Para describir la vida en “capas” se usan <strong>niveles de organización</strong>:
+            </p>
+            <ul>
+              <li><strong>Organismo</strong>: un individuo.</li>
+              <li><strong>Población</strong>: individuos de la misma especie en un lugar y tiempo.</li>
+              <li><strong>Comunidad</strong>: conjunto de poblaciones de distintas especies.</li>
+              <li><strong>Ecosistema</strong>: comunidad + factores abióticos e interacciones.</li>
+              <li><strong>Biosfera</strong>: todos los ecosistemas del planeta.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              Además: <strong>hábitat</strong> es “dónde vive” una especie y <strong>nicho</strong> es “qué hace”: su función, alimento,
+              horarios de actividad y relaciones con otras especies.
+            </p>
+          </div>
+        </div>
+
+        <div class="callouts">
+          <div class="pill">
+            <div class="t">Ejemplo local</div>
+            <div class="s">En un cafetal con sombra hay productores (plantas), consumidores (insectos/aves) y descomponedores (hongos/bacterias).</div>
+          </div>
+          <div class="pill">
+            <div class="t">Hábitat vs. nicho</div>
+            <div class="s">Dos aves pueden vivir en el mismo bosque (hábitat), pero alimentarse de cosas distintas (nicho).</div>
+          </div>
+          <div class="pill">
+            <div class="t">Equilibrio</div>
+            <div class="s">Cambios en una población pueden afectar a otras: el ecosistema responde como un sistema conectado.</div>
+          </div>
+        </div>
+      </section>
+
       <section class="card">
         <h2>Ideas clave</h2>
         <div class="twoCols">
-          <div class="theory">
-            <p>
-              Para describir la organización de la vida se usan niveles que van de lo pequeño a lo grande:
-            </p>
+          <div class="box">
             <ul>
-              <li><strong>Organismo:</strong> un ser vivo individual.</li>
-              <li><strong>Población:</strong> individuos de la misma especie en un lugar y tiempo.</li>
-              <li><strong>Comunidad:</strong> conjunto de poblaciones (varias especies) que comparten un hábitat.</li>
-              <li><strong>Ecosistema:</strong> comunidad + factores abióticos (agua, suelo, clima) y sus interacciones.</li>
-              <li><strong>Biosfera:</strong> suma de todos los ecosistemas del planeta.</li>
+              <li>Un ecosistema funciona por <strong>interacciones</strong> entre componentes bióticos y abióticos.</li>
+              <li>La energía entra (Sol), pasa por organismos y se disipa como calor; la materia se <strong>recicla</strong>.</li>
+              <li>El <strong>nicho ecológico</strong> explica por qué especies diferentes pueden coexistir sin “chocar” siempre.</li>
+              <li>Las <strong>especies introducidas</strong> pueden alterar relaciones y desplazar especies locales.</li>
             </ul>
-
-            <div class="pillRow">
-              <span class="pill"><span class="dot a"></span> Hábitat</span>
-              <span class="pill"><span class="dot b"></span> Nicho ecológico</span>
-              <span class="pill"><span class="dot c"></span> Especies nativas</span>
-              <span class="pill"><span class="dot d"></span> Especies exóticas</span>
-            </div>
           </div>
-
-          <div class="theory">
-            <p>
-              En una misma comunidad, muchas especies comparten <strong>hábitat</strong>, pero pueden tener distinto <strong>nicho ecológico</strong> (cómo usan recursos y se relacionan con elementos bióticos y abióticos).
-            </p>
-            <p>
-              Cuando se introducen especies <strong>exóticas</strong>, pueden alterar las cadenas alimenticias y el equilibrio del ecosistema, afectando poblaciones y relaciones.
-            </p>
-            <p class="muted">
-              En la cuenca del Lago de Atitlán, comprender “hábitat” y “nicho” ayuda a explicar por qué distintas especies pueden vivir en el lago pero alimentarse de cosas distintas y ocupar roles diferentes.
-            </p>
+          <div class="box">
+            <p><strong>Preguntas guía</strong> para estudiar:</p>
+            <ul>
+              <li>¿Qué recursos usa una especie (alimento, refugio, agua)?</li>
+              <li>¿Con quién compite o coopera?</li>
+              <li>¿Qué pasa si aumenta o disminuye una población?</li>
+              <li>¿Qué factores abióticos limitan la vida (temperatura, luz, oxígeno, nutrientes)?</li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <!-- MAPA MENTAL -->
       <section class="card">
-        <div class="mmTop">
+        <div class="mapTop">
           <div>
             <h2 style="margin:0;">Mapa mental</h2>
-            <div class="muted">Usa “Expandir/Contraer” para estudiar por partes.</div>
+            <div class="muted">Si estás en celular: usa “Ajustar” para centrar el mapa.</div>
           </div>
-          <div class="mmBtns">
+          <div class="mapBtns">
             <button class="btn" id="btnFit" type="button">Ajustar</button>
             <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
-            <button class="btn" id="btnReset" type="button">Reiniciar</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
           </div>
         </div>
 
-        <div class="mmStage">
-          <svg id="mindmap" aria-label="Mapa mental interactivo"></svg>
-          <div id="mapFallback" class="fallback">
-            Si no se carga el mapa mental, revisa tu conexión o vuelve a abrir la página. El contenido sigue disponible en las secciones de teoría y juego.
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="mapFallback" id="mapFallback">
+            <div><strong>No se pudo cargar el mapa mental.</strong><br>Recarga la página o revisa la conexión.</div>
           </div>
         </div>
       </section>
 
-      <!-- JUEGO -->
       <section class="card">
         <h2>Juego: ordena los niveles de organización</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Arrastra cada tarjeta al nivel correcto. Objetivo: construir una escalera lógica de organización ecológica.
+          Funciona en computadora (arrastrar) y en celular (tocar para seleccionar tarjeta, luego tocar el nivel).
         </p>
 
-        <div class="gameWrap" style="margin-top:12px;">
-          <div class="board">
+        <div class="gameGrid" style="margin-top:12px;">
+          <div class="panel">
             <h3>Tarjetas</h3>
-            <p>Arrastra una tarjeta y suéltala en el espacio que corresponda.</p>
+            <p>Coloca cada tarjeta en el nivel correcto (de menor a mayor).</p>
             <div class="cards" id="cards"></div>
 
             <div class="gameBtns">
               <button class="btn" type="button" id="btnShuffle">Mezclar</button>
-              <button class="btn" type="button" id="btnClear">Limpiar tablero</button>
+              <button class="btn" type="button" id="btnClear">Limpiar</button>
             </div>
 
-            <div id="gameNote" class="result warn" style="display:none;"></div>
+            <div id="note" class="result warn" style="display:none;"></div>
           </div>
 
-          <div class="board">
-            <h3>Escalera (de menor a mayor)</h3>
-            <p>Completa la escalera y luego presiona “Evaluar”.</p>
+          <div class="panel">
+            <h3>Escalera</h3>
+            <p>Si usas celular: toca una tarjeta y luego toca el espacio donde va.</p>
 
             <div class="slots" id="slots"></div>
 
@@ -371,7 +416,7 @@
               <button class="btn" type="button" id="btnResetGame">Reiniciar juego</button>
             </div>
 
-            <div id="result" class="result" aria-live="polite" style="display:none;"></div>
+            <div id="result" class="result" style="display:none;"></div>
           </div>
         </div>
       </section>
@@ -381,40 +426,44 @@
   </div>
 
   <script>
-    // =========================
-    // 1) MAPA MENTAL (Markmap)
-    // =========================
+    // ==========
+    // 1) MAPA MENTAL (robusto como 1-1)
+    // ==========
     const md = `
 # 1.3 El ecosistema y su organización
+## ¿Qué es un ecosistema?
+- Sistema vivo y no vivo en interacción
+- Factores bióticos
+  - Plantas, animales, microorganismos
+- Factores abióticos
+  - Agua, aire, luz, temperatura, suelo, minerales
+- Interacciones
+  - Competencia
+  - Depredación
+  - Mutualismo
+  - Comensalismo
 ## Niveles de organización
 - Organismo
-  - Un ser vivo individual
+  - Un individuo
 - Población
-  - Individuos de la misma especie
-  - En un lugar y tiempo
+  - Misma especie, lugar y tiempo
 - Comunidad
   - Varias poblaciones (varias especies)
-  - Comparten un hábitat
 - Ecosistema
-  - Comunidad + factores abióticos
-  - Intercambio de materia y energía
+  - Comunidad + abióticos + procesos
 - Biosfera
-  - Suma de todos los ecosistemas
+  - Todos los ecosistemas del planeta
 ## Conceptos clave
 - Hábitat
-  - Lugar donde vive una especie
+  - Dónde vive
 - Nicho ecológico
-  - Rol y relaciones con el entorno
-  - Uso de recursos (alimentación, refugio)
-- Especies nativas
-  - Habitan naturalmente un lugar
-- Especies exóticas
-  - Introducidas (directa o accidentalmente)
-  - Pueden alterar cadenas alimenticias
-## Aplicación local
-- Cuenca del Lago de Atitlán
-  - Diferentes hábitats (acuático, ribera, bosque)
-  - Nichos distintos dentro del mismo lago
+  - Qué hace y cómo usa recursos
+- Equilibrio
+  - Cambios en una población afectan a otras
+## Ejemplos locales
+- Lago / ríos: ecosistema acuático
+- Bosques y cerros: ecosistema terrestre
+- Cafetal con sombra: agroecosistema
 `.trim();
 
     let mm = null;
@@ -431,7 +480,7 @@
         const svg = document.getElementById('mindmap');
         while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-        mm = Markmap.create(svg, { autoFit:true, duration:250 }, root);
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
         expanded = true;
         fallback.classList.remove('show');
         return true;
@@ -442,14 +491,14 @@
     }
 
     let tries = 0;
-    const timer = setInterval(() => {
+    const t = setInterval(() => {
       tries++;
-      const done = safeRenderMap();
-      if (done || tries >= 12){
-        clearInterval(timer);
+      const ok = safeRenderMap();
+      if (ok || tries >= 12){
+        clearInterval(t);
         if (!mm) document.getElementById('mapFallback').classList.add('show');
       }
-    }, 350);
+    }, 300);
 
     document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
     document.getElementById('btnToggle').addEventListener('click', () => {
@@ -457,27 +506,26 @@
       if (expanded) mm.foldAll(); else mm.unfoldAll();
       expanded = !expanded;
     });
-    document.getElementById('btnReset').addEventListener('click', () => {
-      mm = null; expanded = true; safeRenderMap();
-    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
 
-    // =========================
-    // 2) JUEGO: ORDENAR NIVELES
-    // =========================
+    // ==========
+    // 2) JUEGO (drag&drop + táctil)
+    // ==========
     const DATA = [
-      { id:'org',   title:'Organismo',  desc:'Un ser vivo individual (un árbol, un pez, una rana).' },
-      { id:'pob',   title:'Población',  desc:'Individuos de la misma especie en un lugar y tiempo.' },
-      { id:'com',   title:'Comunidad',  desc:'Conjunto de poblaciones de distintas especies.' },
-      { id:'eco',   title:'Ecosistema', desc:'Comunidad + factores abióticos e interacciones.' },
-      { id:'bio',   title:'Biosfera',   desc:'Suma de todos los ecosistemas del planeta.' },
+      { id:'org', title:'Organismo', desc:'Un ser vivo individual.' },
+      { id:'pob', title:'Población', desc:'Misma especie en un lugar y tiempo.' },
+      { id:'com', title:'Comunidad', desc:'Conjunto de poblaciones de distintas especies.' },
+      { id:'eco', title:'Ecosistema', desc:'Comunidad + factores abióticos e interacciones.' },
+      { id:'bio', title:'Biosfera', desc:'Todos los ecosistemas del planeta.' },
     ];
-
     const ORDER = ['org','pob','com','eco','bio'];
 
     const cardsEl = document.getElementById('cards');
     const slotsEl = document.getElementById('slots');
+    const noteEl = document.getElementById('note');
     const resultEl = document.getElementById('result');
-    const noteEl = document.getElementById('gameNote');
+
+    let selectedCardId = null;
 
     function shuffle(arr){
       const a = arr.slice();
@@ -488,6 +536,16 @@
       return a;
     }
 
+    function clearSelection(){
+      selectedCardId = null;
+      [...document.querySelectorAll('.cardItem')].forEach(c => c.classList.remove('selected'));
+      [...document.querySelectorAll('.slot')].forEach(s => s.classList.remove('targetable'));
+    }
+
+    function setTargetable(on){
+      [...document.querySelectorAll('.slot')].forEach(s => s.classList.toggle('targetable', on));
+    }
+
     function makeCard(item){
       const div = document.createElement('div');
       div.className = 'cardItem';
@@ -496,26 +554,46 @@
       div.dataset.cardId = item.id;
       div.innerHTML = `<div class="t">${item.title}</div><div class="s">${item.desc}</div>`;
 
+      // Drag (PC)
       div.addEventListener('dragstart', (e)=>{
         e.dataTransfer.setData('text/plain', item.id);
         e.dataTransfer.effectAllowed = 'move';
+        clearSelection();
       });
+
+      // Táctil / click (móvil)
+      div.addEventListener('click', ()=>{
+        const isSelected = (selectedCardId === item.id);
+        clearSelection();
+        if (!isSelected){
+          selectedCardId = item.id;
+          div.classList.add('selected');
+          setTargetable(true);
+          noteEl.className = 'result warn';
+          noteEl.textContent = 'Tarjeta seleccionada. Ahora toca el nivel donde quieres colocarla.';
+          noteEl.style.display = 'block';
+        } else {
+          noteEl.style.display = 'none';
+        }
+      });
+
       return div;
     }
 
-    function makeSlot(stepIndex){
+    function makeSlot(i){
       const slot = document.createElement('div');
       slot.className = 'slot';
-      slot.dataset.step = String(stepIndex);
-      slot.dataset.accept = ORDER[stepIndex];
+      slot.dataset.accept = ORDER[i];
+      slot.dataset.pos = String(i);
       slot.innerHTML = `
         <div>
-          <strong>${stepIndex+1}. ${labelStep(stepIndex)}</strong>
-          <div class="hint">Suelta aquí la tarjeta correcta</div>
+          <strong>${i+1}. Nivel ${i+1}</strong>
+          <div class="hint">Toca o suelta aquí</div>
         </div>
         <div class="hint" data-fill>Vacío</div>
       `;
 
+      // Drag (PC)
       slot.addEventListener('dragover', (e)=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; });
       slot.addEventListener('drop', (e)=>{
         e.preventDefault();
@@ -524,20 +602,20 @@
         placeCardInSlot(cardId, slot);
       });
 
+      // Táctil / click
+      slot.addEventListener('click', ()=>{
+        if (!selectedCardId) return;
+        placeCardInSlot(selectedCardId, slot);
+        clearSelection();
+        noteEl.style.display = 'none';
+      });
+
       return slot;
     }
 
-    function labelStep(i){
-      const names = ['Nivel 1','Nivel 2','Nivel 3','Nivel 4','Nivel 5'];
-      return names[i] || `Nivel ${i+1}`;
-    }
-
     function placeCardInSlot(cardId, slot){
-      // si había algo, lo regresamos a tarjetas
       const current = slot.querySelector('.cardItem');
-      if (current){
-        cardsEl.appendChild(current);
-      }
+      if (current) cardsEl.appendChild(current);
 
       const card = document.getElementById('card_' + cardId);
       if (!card) return;
@@ -546,7 +624,7 @@
       slot.classList.add('filled');
       slot.classList.remove('bad');
       slot.querySelector('[data-fill]').textContent = '';
-      noteEl.style.display='none';
+      resultEl.style.display='none';
     }
 
     function clearSlots(){
@@ -556,6 +634,7 @@
         slot.classList.remove('filled','bad');
         slot.querySelector('[data-fill]').textContent = 'Vacío';
       });
+      clearSelection();
     }
 
     function setup(){
@@ -563,22 +642,17 @@
       slotsEl.innerHTML = '';
       resultEl.style.display='none';
       noteEl.style.display='none';
-      const mixed = shuffle(DATA);
+      clearSelection();
 
-      mixed.forEach(item => cardsEl.appendChild(makeCard(item)));
-      for (let i=0;i<ORDER.length;i++){
-        slotsEl.appendChild(makeSlot(i));
-      }
+      shuffle(DATA).forEach(item => cardsEl.appendChild(makeCard(item)));
+      for (let i=0;i<ORDER.length;i++) slotsEl.appendChild(makeSlot(i));
     }
 
     document.getElementById('btnShuffle').addEventListener('click', ()=>{
-      // si hay tarjetas dentro de slots, las devolvemos antes de mezclar
       clearSlots();
-      const all = [...cardsEl.querySelectorAll('.cardItem')];
-      const ids = all.map(c=>c.dataset.cardId);
-      const mixed = shuffle(ids);
+      const ids = [...cardsEl.querySelectorAll('.cardItem')].map(c=>c.dataset.cardId);
       cardsEl.innerHTML='';
-      mixed.forEach(id => {
+      shuffle(ids).forEach(id=>{
         const item = DATA.find(x=>x.id===id);
         cardsEl.appendChild(makeCard(item));
       });
@@ -589,7 +663,6 @@
 
     document.getElementById('btnClear').addEventListener('click', ()=>{
       clearSlots();
-      resultEl.style.display='none';
       noteEl.className='result warn';
       noteEl.textContent='Tablero limpiado.';
       noteEl.style.display='block';
@@ -607,8 +680,7 @@
         if (card){
           filled++;
           const got = card.dataset.cardId;
-          const good = (got === accept);
-          if (good){
+          if (got === accept){
             okCount++;
             slot.classList.add('filled');
             slot.classList.remove('bad');
@@ -622,17 +694,17 @@
 
       resultEl.style.display='block';
       if (filled < ORDER.length){
-        resultEl.className = 'result warn';
-        resultEl.innerHTML = `Te faltan <strong>${ORDER.length - filled}</strong> niveles por colocar. Completa la escalera y vuelve a evaluar.`;
+        resultEl.className='result warn';
+        resultEl.innerHTML = `Te faltan <strong>${ORDER.length - filled}</strong> nivel(es). Completa la escalera y vuelve a evaluar.`;
         return;
       }
 
       if (okCount === ORDER.length){
-        resultEl.className = 'result ok';
-        resultEl.innerHTML = `<strong>Excelente.</strong> Orden correcto: Organismo → Población → Comunidad → Ecosistema → Biosfera.`;
+        resultEl.className='result ok';
+        resultEl.innerHTML = `<strong>Correcto.</strong> Orden: Organismo → Población → Comunidad → Ecosistema → Biosfera.`;
       } else {
-        resultEl.className = 'result no';
-        resultEl.innerHTML = `Vas bien, pero hay <strong>${ORDER.length - okCount}</strong> nivel(es) incorrecto(s). Ajusta y vuelve a evaluar.`;
+        resultEl.className='result no';
+        resultEl.innerHTML = `Hay <strong>${ORDER.length - okCount}</strong> nivel(es) incorrecto(s). Ajusta y vuelve a evaluar.`;
       }
     });
 

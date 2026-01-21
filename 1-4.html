@@ -9,43 +9,41 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>1.4 Ecosistemas en Sololá y la cuenca del Lago de Atitlán · EPC AALA</title>
-  <meta name="description" content="Ecosistemas acuáticos y terrestres en Sololá y la cuenca del Lago de Atitlán. Incluye mapa mental y juego interactivo de exploración." />
+  <meta name="description" content="Ecosistemas acuáticos y terrestres: funciones, servicios ecosistémicos, amenazas y conservación. Mapa mental interactivo y juego explorador." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
   <style>
     :root{
-      --bg0:#f4f7fb;
       --ink:#0b1020;
       --muted:rgba(11,16,32,.72);
       --muted2:rgba(11,16,32,.58);
-      --card:#ffffffb8;
+      --glass:rgba(255,255,255,.66);
+      --glass2:rgba(255,255,255,.58);
       --line:rgba(11,16,32,.14);
       --shadow: 0 18px 55px rgba(11,16,32,.12);
       --shadow2: 0 10px 28px rgba(11,16,32,.10);
       --radius:22px;
 
-      --a:#2da0dc;
-      --b:#22c55e;
-      --c:#f59e0b;
-      --d:#e11d48;
-
       --good: rgba(34,197,94,.12);
       --bad: rgba(225,29,72,.10);
       --warn: rgba(245,158,11,.12);
     }
-
     *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
       color:var(--ink);
       background:
         radial-gradient(1200px 800px at 10% 0%, rgba(45,160,220,.18), transparent 60%),
         radial-gradient(1100px 700px at 90% 10%, rgba(34,197,94,.16), transparent 55%),
         radial-gradient(900px 700px at 40% 100%, rgba(245,158,11,.10), transparent 60%),
-        var(--bg0);
+        #f4f7fb;
     }
     .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 40px; }
-
     header{
       display:flex; gap:16px; align-items:flex-end; justify-content:space-between;
       padding:18px 18px 0;
@@ -56,33 +54,28 @@
       color:rgba(11,16,32,.62);
     }
     h1{ margin:8px 0 8px; font-size:30px; line-height:1.15; }
-    .subtitle{
-      margin:0 0 12px;
-      max-width:76ch;
-      color:rgba(11,16,32,.72);
-      line-height:1.5;
-    }
+    .subtitle{ margin:0 0 12px; max-width:80ch; color:rgba(11,16,32,.72); line-height:1.5; }
     .nav{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding-bottom:14px; }
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
       padding:10px 12px;
       border-radius:14px;
-      border:1px solid rgba(11,16,32,.14);
+      border:1px solid var(--line);
       background:rgba(255,255,255,.62);
       box-shadow: 0 8px 18px rgba(11,16,32,.06);
       font-size:13px;
       color:rgba(11,16,32,.86);
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
       user-select:none;
+      cursor:pointer;
     }
     .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.78); border-color:rgba(11,16,32,.18); }
     .btn.primary{ background:rgba(45,160,220,.16); border-color:rgba(45,160,220,.30); }
-
-    main.stack{ display:flex; flex-direction:column; gap:16px; padding:14px 18px 0; }
+    main.stack{ margin-top:14px; display:flex; flex-direction:column; gap:16px; padding:0 18px; }
 
     .card{
       border:1px solid rgba(11,16,32,.12);
-      background: var(--card);
+      background: rgba(255,255,255,.70);
       backdrop-filter: blur(8px);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -98,39 +91,37 @@
       align-items:start;
     }
     @media (max-width: 900px){ .twoCols{ grid-template-columns: 1fr; } }
-
-    .theory{
+    .box{
       border:1px solid rgba(11,16,32,.10);
       background: rgba(255,255,255,.66);
       border-radius: 18px;
       padding:12px;
       box-shadow: var(--shadow2);
     }
-    .theory p{ margin:0 0 10px; line-height:1.55; color:rgba(11,16,32,.82); }
-    .theory ul{ margin:8px 0 0 18px; padding:0; color:rgba(11,16,32,.80); line-height:1.55; }
+    .box p{ margin:0 0 10px; line-height:1.6; color:rgba(11,16,32,.84); }
+    .box ul{ margin:8px 0 0 18px; padding:0; line-height:1.6; color:rgba(11,16,32,.82); }
 
-    .pillRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width: 900px){ .grid3{ grid-template-columns: 1fr; } }
     .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:12px; color:rgba(11,16,32,.78);
-      border:1px solid rgba(11,16,32,.14);
-      background: rgba(255,255,255,.62);
-      padding:8px 10px;
-      border-radius: 999px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
     }
-    .dot{ width:9px; height:9px; border-radius:50%; background: rgba(11,16,32,.25); }
-    .dot.a{ background: rgba(45,160,220,.9); }
-    .dot.b{ background: rgba(34,197,94,.9); }
-    .dot.c{ background: rgba(245,158,11,.92); }
+    .pill .t{ font-weight:800; margin-bottom:6px; }
+    .pill .s{ color:rgba(11,16,32,.74); font-size:13px; line-height:1.5; }
 
-    /* ===== MINDMAP ===== */
-    .mmTop{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .mmBtns{ display:flex; gap:10px; flex-wrap:wrap; }
-    .mmStage{
+    /* map */
+    .mapTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapStage{
       border:1px solid rgba(11,16,32,.12);
       background: rgba(255,255,255,.62);
       border-radius: 18px;
@@ -141,11 +132,12 @@
       width:100%;
       height:520px;
       display:block;
-      background: radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
-                  radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
       border-radius: 14px;
     }
-    .fallback{
+    .mapFallback{
       margin-top:10px;
       display:none;
       padding:10px 12px;
@@ -156,12 +148,12 @@
       font-size: 13px;
       line-height: 1.5;
     }
-    .fallback.show{ display:block; }
+    .mapFallback.show{ display:block; }
 
-    /* ===== GAME: EXPLORADOR DE ECOSISTEMAS ===== */
+    /* game */
     .gameGrid{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
+      grid-template-columns: 1.15fr .85fr;
       gap:14px;
       align-items:start;
     }
@@ -177,13 +169,6 @@
     .panel h3{ margin:0 0 8px; font-size:15px; }
     .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); line-height:1.5; font-size:13px; }
 
-    .mapStage{
-      border:1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.60);
-      border-radius: 18px;
-      padding:10px;
-      overflow:hidden;
-    }
     .mapSvg{
       width:100%;
       height:420px;
@@ -192,38 +177,21 @@
       background:
         radial-gradient(900px 420px at 30% 10%, rgba(45,160,220,.14), transparent 55%),
         radial-gradient(700px 420px at 70% 0%, rgba(34,197,94,.12), transparent 60%);
+      border:1px solid rgba(11,16,32,.10);
     }
-
-    .hotspot{
-      cursor:pointer;
-      transition: transform .12s ease, opacity .12s ease;
-      transform-origin:center;
-    }
+    .hotspot{ cursor:pointer; transition: transform .12s ease, opacity .12s ease; transform-origin:center; }
     .hotspot:hover{ transform: scale(1.03); opacity:.96; }
-    .hsLabel{
-      font-size: 12px;
-      fill: rgba(11,16,32,.88);
-      font-weight: 720;
-    }
-    .hsSub{
-      font-size: 11px;
-      fill: rgba(11,16,32,.66);
-      font-weight: 600;
-    }
+    .hsLabel{ font-size: 12px; fill: rgba(11,16,32,.88); font-weight: 800; }
+    .hsSub{ font-size: 11px; fill: rgba(11,16,32,.66); font-weight: 600; }
 
-    .qa{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
     .qBox{
       border:1px solid rgba(11,16,32,.12);
       background: rgba(255,255,255,.70);
       border-radius: 16px;
       padding:12px;
     }
-    .qTitle{ font-weight:820; margin-bottom:6px; }
-    .choices{ display:grid; gap:8px; margin-top:8px; }
+    .qTitle{ font-weight:850; margin-bottom:6px; }
+    .choices{ display:grid; gap:8px; margin-top:10px; }
     .choiceBtn{
       text-align:left;
       border:1px solid rgba(11,16,32,.14);
@@ -239,6 +207,7 @@
     .choiceBtn.correct{ border-color: rgba(34,197,94,.35); background: rgba(34,197,94,.10); }
     .choiceBtn.wrong{ border-color: rgba(225,29,72,.30); background: rgba(225,29,72,.08); }
 
+    .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
     .result{
       margin-top:10px;
       border-radius:16px;
@@ -246,22 +215,15 @@
       background: rgba(255,255,255,.55);
       padding:12px;
       font-size:13px;
-      line-height:1.5;
+      line-height:1.55;
       color: rgba(11,16,32,.82);
     }
     .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
     .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
     .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
 
-    footer{
-      text-align:center;
-      padding:18px 0 4px;
-      color: rgba(11,16,32,.58);
-      font-size: 13px;
-    }
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
   </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.3"></script>
 </head>
 
 <body>
@@ -269,9 +231,10 @@
     <header>
       <div>
         <div class="kicker">Módulo 1 · Medio ambiente</div>
-        <h1>1.4 Ecosistemas en el departamento de Sololá y la cuenca del Lago de Atitlán</h1>
+        <h1>1.4 Ecosistemas en Sololá y la cuenca del Lago de Atitlán</h1>
         <p class="subtitle">
-          En la región existen ecosistemas acuáticos (lago, ríos, arroyos) y ecosistemas terrestres (volcanes, cerros, bosques y sistemas agroforestales). La variedad de climas y relieve explica la diversidad de ecosistemas.
+          La cuenca combina ecosistemas acuáticos y terrestres. La altitud, el relieve volcánico y la disponibilidad de agua explican su diversidad.
+          Conocerlos ayuda a comprender servicios ecosistémicos y decisiones de conservación.
         </p>
       </div>
       <nav class="nav">
@@ -282,150 +245,182 @@
     </header>
 
     <main class="stack">
-      <!-- TEORÍA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              En la región se distinguen <strong>ecosistemas acuáticos</strong> (lago, ríos, arroyos) y <strong>ecosistemas terrestres</strong>
+              (bosques, cerros, volcanes, zonas agrícolas y agroforestales).
+            </p>
+            <p>
+              Un ecosistema no es solo “el lugar”: también incluye procesos como infiltración y escorrentía, erosión del suelo, ciclos de nutrientes,
+              reproducción de especies y relaciones alimenticias.
+            </p>
+            <ul>
+              <li><strong>Acuáticos:</strong> dependen de calidad del agua, oxígeno y nutrientes disueltos.</li>
+              <li><strong>Terrestres:</strong> dependen de suelo, cobertura vegetal, clima y manejo humano.</li>
+            </ul>
+          </div>
+
+          <div class="box">
+            <p><strong>Servicios ecosistémicos</strong> (beneficios que recibimos):</p>
+            <ul>
+              <li><strong>Provisión:</strong> agua, alimentos, madera, medicinas.</li>
+              <li><strong>Regulación:</strong> control de erosión, regulación del clima local, calidad del agua.</li>
+              <li><strong>Soporte:</strong> formación de suelo, ciclo de nutrientes, hábitat.</li>
+              <li><strong>Culturales:</strong> paisajes, turismo, identidad y educación.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              Cuando un ecosistema se degrada (deforestación, contaminación), suelen disminuir varios servicios al mismo tiempo.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Cuenca</div>
+            <div class="s">Todo lo que ocurre “arriba” (suelo, basura, fertilizantes) puede llegar al lago por escorrentía o ríos.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Cobertura vegetal</div>
+            <div class="s">Bosques y sistemas con árboles ayudan a retener suelo y regular el agua.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Calidad del agua</div>
+            <div class="s">Exceso de nutrientes y contaminación alteran el equilibrio del ecosistema acuático.</div>
+          </div>
+        </div>
+      </section>
+
       <section class="card">
         <h2>Ideas clave</h2>
         <div class="twoCols">
-          <div class="theory">
-            <p>
-              En Sololá y la cuenca del Lago de Atitlán se reconocen dos grandes grupos:
-            </p>
+          <div class="box">
             <ul>
-              <li><strong>Ecosistemas acuáticos:</strong> océanos/mares, lagos (como Atitlán), lagunas, ríos, arroyos.</li>
-              <li><strong>Ecosistemas terrestres:</strong> volcanes, cerros (como Cerro de Oro o el Paquisis), montañas, selvas, bosques (por ejemplo pino-encino), pastizales y sistemas agroforestales.</li>
+              <li>La diversidad de ecosistemas se explica por <strong>clima</strong>, <strong>altitud</strong>, <strong>suelo</strong> y <strong>agua</strong>.</li>
+              <li>Los ecosistemas se conectan: río–lago–ribera–bosque forman un sistema.</li>
+              <li>La conservación de la cuenca apoya: agua limpia, suelos estables y biodiversidad.</li>
+              <li>El manejo humano puede mejorar o empeorar: agroforestería y reforestación ayudan; quema y contaminación afectan.</li>
             </ul>
-            <div class="pillRow">
-              <span class="pill"><span class="dot a"></span> Acuático</span>
-              <span class="pill"><span class="dot b"></span> Terrestre</span>
-              <span class="pill"><span class="dot c"></span> Agroforestal</span>
-            </div>
           </div>
-
-          <div class="theory">
-            <p>
-              Los ecosistemas varían según sus componentes y ubicación: no es lo mismo un ecosistema en costa que uno en zona volcánica.
-              La cuenca presenta muchos climas y características, lo que contribuye a una gran diversidad.
-            </p>
-            <p class="muted">
-              Puedes usar esta diversidad para relacionar “ecosistema” con servicios: agua, suelos, alimentos, hábitat y regulación del clima local.
-            </p>
+          <div class="box">
+            <p><strong>Amenazas frecuentes</strong> (para analizar en clase):</p>
+            <ul>
+              <li>Basura y aguas residuales sin tratamiento.</li>
+              <li>Deforestación y erosión del suelo.</li>
+              <li>Uso inadecuado de fertilizantes y agroquímicos.</li>
+              <li>Extracción excesiva de recursos (madera, pesca) y cambio de uso del suelo.</li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <!-- MAPA MENTAL -->
       <section class="card">
-        <div class="mmTop">
+        <div class="mapTop">
           <div>
             <h2 style="margin:0;">Mapa mental</h2>
-            <div class="muted">Explora por categorías (acuático, terrestre y usos humanos).</div>
+            <div class="muted">Incluye tipos, servicios y amenazas para relacionar ideas.</div>
           </div>
-          <div class="mmBtns">
+          <div class="mapBtns">
             <button class="btn" id="btnFit" type="button">Ajustar</button>
             <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
-            <button class="btn" id="btnReset" type="button">Reiniciar</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
           </div>
         </div>
 
-        <div class="mmStage">
-          <svg id="mindmap" aria-label="Mapa mental interactivo"></svg>
-          <div id="mapFallback" class="fallback">
-            Si no se carga el mapa mental, revisa tu conexión o vuelve a abrir la página.
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="mapFallback" id="mapFallback">
+            <div><strong>No se pudo cargar el mapa mental.</strong><br>Recarga la página o revisa la conexión.</div>
           </div>
         </div>
       </section>
 
-      <!-- JUEGO -->
       <section class="card">
         <h2>Juego: explorador de ecosistemas</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Haz clic en un punto del “mapa” para ver una descripción. Luego responde la pregunta para ganar puntos.
+          Toca una zona del mapa para leer su descripción y responder una pregunta. El juego funciona igual en celular y computadora.
         </p>
 
         <div class="gameGrid" style="margin-top:12px;">
           <div class="panel">
             <h3>Mapa interactivo</h3>
-            <p>Selecciona una zona para estudiar su tipo de ecosistema.</p>
+            <p>Selecciona una zona y observa sus características.</p>
 
-            <div class="mapStage">
-              <svg class="mapSvg" viewBox="0 0 1000 520" role="img" aria-label="Mapa conceptual interactivo de ecosistemas">
-                <!-- base -->
-                <defs>
-                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(11,16,32,.18)"/>
-                  </filter>
-                </defs>
+            <svg class="mapSvg" viewBox="0 0 1000 520" role="img" aria-label="Mapa conceptual interactivo de ecosistemas">
+              <defs>
+                <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(11,16,32,.18)"/>
+                </filter>
+              </defs>
 
-                <!-- Lago -->
-                <path d="M460,140 C560,120 660,160 700,220 C740,280 700,360 610,390 C520,420 420,400 360,340 C300,280 320,170 460,140 Z"
-                      fill="rgba(45,160,220,.28)" stroke="rgba(45,160,220,.55)" stroke-width="3" filter="url(#softShadow)"/>
-                <text x="520" y="265" text-anchor="middle" class="hsLabel">Lago</text>
-                <text x="520" y="285" text-anchor="middle" class="hsSub">ecosistema acuático</text>
+              <!-- Lago -->
+              <path id="lake" d="M460,140 C560,120 660,160 700,220 C740,280 700,360 610,390 C520,420 420,400 360,340 C300,280 320,170 460,140 Z"
+                    fill="rgba(45,160,220,.28)" stroke="rgba(45,160,220,.55)" stroke-width="3" filter="url(#softShadow)"/>
+              <text x="520" y="265" text-anchor="middle" class="hsLabel">Lago</text>
+              <text x="520" y="285" text-anchor="middle" class="hsSub">ecosistema acuático</text>
 
-                <!-- Volcanes / montañas -->
-                <g class="hotspot" data-id="volcan" transform="translate(90,220)">
-                  <path d="M20,220 L170,20 L320,220 Z" fill="rgba(34,197,94,.20)" stroke="rgba(34,197,94,.45)" stroke-width="3" filter="url(#softShadow)"/>
-                  <path d="M170,20 L210,80 L130,80 Z" fill="rgba(255,255,255,.45)"/>
-                  <text x="170" y="250" text-anchor="middle" class="hsLabel">Volcanes y montañas</text>
-                  <text x="170" y="270" text-anchor="middle" class="hsSub">ecosistema terrestre</text>
-                </g>
+              <!-- Volcanes / montañas -->
+              <g class="hotspot" data-id="volcan" transform="translate(90,220)">
+                <path d="M20,220 L170,20 L320,220 Z" fill="rgba(34,197,94,.20)" stroke="rgba(34,197,94,.45)" stroke-width="3" filter="url(#softShadow)"/>
+                <path d="M170,20 L210,80 L130,80 Z" fill="rgba(255,255,255,.45)"/>
+                <text x="170" y="250" text-anchor="middle" class="hsLabel">Volcanes y montañas</text>
+                <text x="170" y="270" text-anchor="middle" class="hsSub">terrestre</text>
+              </g>
 
-                <!-- Bosque -->
-                <g class="hotspot" data-id="bosque" transform="translate(690,70)">
-                  <rect x="0" y="0" rx="20" ry="20" width="280" height="160"
-                        fill="rgba(34,197,94,.18)" stroke="rgba(34,197,94,.45)" stroke-width="3" filter="url(#softShadow)"/>
-                  <circle cx="70" cy="70" r="26" fill="rgba(34,197,94,.35)"/>
-                  <circle cx="120" cy="60" r="22" fill="rgba(34,197,94,.32)"/>
-                  <circle cx="160" cy="78" r="24" fill="rgba(34,197,94,.33)"/>
-                  <rect x="66" y="86" width="10" height="38" fill="rgba(11,16,32,.22)"/>
-                  <rect x="116" y="82" width="10" height="42" fill="rgba(11,16,32,.22)"/>
-                  <rect x="156" y="92" width="10" height="32" fill="rgba(11,16,32,.22)"/>
-                  <text x="140" y="128" text-anchor="middle" class="hsLabel">Zonas boscosas</text>
-                  <text x="140" y="148" text-anchor="middle" class="hsSub">coníferas / mixto</text>
-                </g>
+              <!-- Bosque -->
+              <g class="hotspot" data-id="bosque" transform="translate(690,70)">
+                <rect x="0" y="0" rx="20" ry="20" width="280" height="160"
+                      fill="rgba(34,197,94,.18)" stroke="rgba(34,197,94,.45)" stroke-width="3" filter="url(#softShadow)"/>
+                <circle cx="70" cy="70" r="26" fill="rgba(34,197,94,.35)"/>
+                <circle cx="120" cy="60" r="22" fill="rgba(34,197,94,.32)"/>
+                <circle cx="160" cy="78" r="24" fill="rgba(34,197,94,.33)"/>
+                <rect x="66" y="86" width="10" height="38" fill="rgba(11,16,32,.22)"/>
+                <rect x="116" y="82" width="10" height="42" fill="rgba(11,16,32,.22)"/>
+                <rect x="156" y="92" width="10" height="32" fill="rgba(11,16,32,.22)"/>
+                <text x="140" y="128" text-anchor="middle" class="hsLabel">Zonas boscosas</text>
+                <text x="140" y="148" text-anchor="middle" class="hsSub">cobertura</text>
+              </g>
 
-                <!-- Agroforestal -->
-                <g class="hotspot" data-id="agro" transform="translate(670,360)">
-                  <rect x="0" y="0" rx="20" ry="20" width="300" height="140"
-                        fill="rgba(245,158,11,.16)" stroke="rgba(245,158,11,.45)" stroke-width="3" filter="url(#softShadow)"/>
-                  <path d="M30,95 L270,95" stroke="rgba(11,16,32,.18)" stroke-width="2"/>
-                  <path d="M30,70 L270,70" stroke="rgba(11,16,32,.14)" stroke-width="2"/>
-                  <path d="M60,30 L60,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
-                  <path d="M120,30 L120,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
-                  <path d="M180,30 L180,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
-                  <path d="M240,30 L240,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
-                  <text x="150" y="44" text-anchor="middle" class="hsLabel">Sistemas agroforestales</text>
-                  <text x="150" y="64" text-anchor="middle" class="hsSub">uso humano + biodiversidad</text>
-                </g>
+              <!-- Agroforestal -->
+              <g class="hotspot" data-id="agro" transform="translate(670,360)">
+                <rect x="0" y="0" rx="20" ry="20" width="300" height="140"
+                      fill="rgba(245,158,11,.16)" stroke="rgba(245,158,11,.45)" stroke-width="3" filter="url(#softShadow)"/>
+                <path d="M30,95 L270,95" stroke="rgba(11,16,32,.18)" stroke-width="2"/>
+                <path d="M30,70 L270,70" stroke="rgba(11,16,32,.14)" stroke-width="2"/>
+                <path d="M60,30 L60,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
+                <path d="M120,30 L120,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
+                <path d="M180,30 L180,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
+                <path d="M240,30 L240,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
+                <text x="150" y="44" text-anchor="middle" class="hsLabel">Agroforestales</text>
+                <text x="150" y="64" text-anchor="middle" class="hsSub">uso humano</text>
+              </g>
 
-                <!-- Ríos -->
-                <g class="hotspot" data-id="rios" transform="translate(350,430)">
-                  <path d="M0,40 C120,0 260,80 400,30" fill="none" stroke="rgba(45,160,220,.60)" stroke-width="10" stroke-linecap="round"/>
-                  <path d="M0,40 C120,0 260,80 400,30" fill="none" stroke="rgba(45,160,220,.25)" stroke-width="18" stroke-linecap="round"/>
-                  <text x="210" y="20" text-anchor="middle" class="hsLabel">Ríos y arroyos</text>
-                  <text x="210" y="40" text-anchor="middle" class="hsSub">conectan la cuenca</text>
-                </g>
-              </svg>
-            </div>
+              <!-- Ríos -->
+              <g class="hotspot" data-id="rios" transform="translate(350,430)">
+                <path d="M0,40 C120,0 260,80 400,30" fill="none" stroke="rgba(45,160,220,.60)" stroke-width="10" stroke-linecap="round"/>
+                <path d="M0,40 C120,0 260,80 400,30" fill="none" stroke="rgba(45,160,220,.25)" stroke-width="18" stroke-linecap="round"/>
+                <text x="210" y="20" text-anchor="middle" class="hsLabel">Ríos y arroyos</text>
+                <text x="210" y="40" text-anchor="middle" class="hsSub">conectan cuenca</text>
+              </g>
+            </svg>
 
-            <div id="info" class="result warn" style="display:none; margin-top:10px;"></div>
+            <div id="info" class="result warn" style="display:none;"></div>
           </div>
 
           <div class="panel">
             <h3>Reto</h3>
-            <p>Responde según la zona seleccionada. Puntaje: <strong id="score">0</strong></p>
+            <p>Puntaje: <strong id="score">0</strong></p>
 
-            <div class="qa">
-              <div class="qBox">
-                <div class="qTitle" id="qTitle">Selecciona una zona para iniciar.</div>
-                <div class="muted" id="qText">Primero haz clic en una zona del mapa.</div>
-                <div class="choices" id="choices"></div>
-              </div>
-
+            <div class="qBox">
+              <div class="qTitle" id="qTitle">Selecciona una zona para iniciar.</div>
+              <div class="muted" id="qText">Toca una zona del mapa.</div>
+              <div class="choices" id="choices"></div>
               <div id="final" class="result" style="display:none;"></div>
 
-              <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <button class="btn" type="button" id="btnResetGame">Reiniciar juego</button>
+              <div class="gameBtns">
+                <button class="btn" type="button" id="btnResetGame">Reiniciar</button>
                 <button class="btn primary" type="button" id="btnNext">Siguiente reto</button>
               </div>
             </div>
@@ -438,31 +433,46 @@
   </div>
 
   <script>
-    // =========================
-    // 1) MAPA MENTAL (Markmap)
-    // =========================
+    // ==========
+    // 1) MAPA MENTAL
+    // ==========
     const md = `
 # 1.4 Ecosistemas en Sololá y la cuenca del Lago de Atitlán
-## ¿Por qué hay muchos ecosistemas?
-- Variedad de climas
-- Relieve volcánico y altitud
+## ¿Por qué hay diversidad?
+- Altitud y relieve volcánico
+- Variación de clima
+- Diferentes suelos
 - Disponibilidad de agua
-## Tipos generales
-- Ecosistemas acuáticos
-  - Lago de Atitlán
+## Tipos de ecosistemas
+- Acuáticos
+  - Lago
   - Ríos y arroyos
-- Ecosistemas terrestres
-  - Volcanes y cerros
-  - Bosques (pino-encino, mixtos)
-  - Pastizales
-- Sistemas con uso humano
+- Terrestres
+  - Bosques
+  - Cerros y volcanes
+- Sistemas de uso humano
   - Agroforestales
   - Zonas agrícolas
-## Importancia
-- Hábitat para especies
-- Regulación del agua (cuenca)
-- Producción de alimentos
-- Conservación del suelo y cobertura
+## Servicios ecosistémicos
+- Provisión
+  - Agua, alimentos, madera
+- Regulación
+  - Control de erosión
+  - Calidad del agua
+- Soporte
+  - Ciclos de nutrientes
+  - Hábitat
+- Culturales
+  - Paisaje, turismo, identidad
+## Amenazas
+- Contaminación (basura, aguas residuales)
+- Deforestación y erosión
+- Exceso de nutrientes
+- Cambio de uso del suelo
+## Conservación
+- Manejo de cuenca
+- Reforestación / cobertura
+- Buen manejo de residuos y agua
 `.trim();
 
     let mm = null;
@@ -479,7 +489,7 @@
         const svg = document.getElementById('mindmap');
         while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-        mm = Markmap.create(svg, { autoFit:true, duration:250 }, root);
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
         expanded = true;
         fallback.classList.remove('show');
         return true;
@@ -490,14 +500,14 @@
     }
 
     let tries = 0;
-    const timer = setInterval(() => {
+    const t = setInterval(() => {
       tries++;
-      const done = safeRenderMap();
-      if (done || tries >= 12){
-        clearInterval(timer);
+      const ok = safeRenderMap();
+      if (ok || tries >= 12){
+        clearInterval(t);
         if (!mm) document.getElementById('mapFallback').classList.add('show');
       }
-    }, 350);
+    }, 300);
 
     document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
     document.getElementById('btnToggle').addEventListener('click', () => {
@@ -505,67 +515,65 @@
       if (expanded) mm.foldAll(); else mm.unfoldAll();
       expanded = !expanded;
     });
-    document.getElementById('btnReset').addEventListener('click', () => {
-      mm = null; expanded = true; safeRenderMap();
-    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
 
-    // =========================
-    // 2) JUEGO: EXPLORADOR
-    // =========================
+    // ==========
+    // 2) JUEGO EXPLORADOR
+    // ==========
     const ZONES = [
       {
         id:'volcan',
         name:'Volcanes y montañas',
-        info:'Ecosistema terrestre asociado a relieve volcánico y altitud. Puede sostener bosques, matorrales y suelos que regulan agua y microclimas.',
-        question:'¿A qué tipo pertenece principalmente esta zona?',
+        info:'Zona terrestre asociada a altitud, pendientes y suelos volcánicos. La cobertura vegetal ayuda a retener suelo y regular el agua.',
+        question:'¿Qué servicio ecosistémico se relaciona más con una buena cobertura vegetal en laderas?',
         options:[
-          { t:'Ecosistema acuático', ok:false },
-          { t:'Ecosistema terrestre', ok:true },
-          { t:'Ambiente artificial sin vida', ok:false },
+          { t:'Control de erosión e infiltración', ok:true },
+          { t:'Aumentar basura en ríos', ok:false },
+          { t:'Eliminar toda la vegetación', ok:false },
         ],
       },
       {
         id:'bosque',
         name:'Zonas boscosas',
-        info:'Bosques con especies como coníferas (pino, ciprés) y combinaciones mixtas; funcionan como hábitat y protección del suelo.',
-        question:'¿Qué función es típica de una zona boscosa bien conservada?',
+        info:'Bosques y cobertura arbórea sostienen biodiversidad, protegen suelo, capturan agua y ayudan a regular microclimas.',
+        question:'¿Cuál es una función típica de un bosque bien conservado?',
         options:[
           { t:'Proveer hábitat y proteger el suelo', ok:true },
-          { t:'Reducir a cero la biodiversidad', ok:false },
-          { t:'Eliminar el ciclo del agua', ok:false },
+          { t:'Reducir la diversidad a cero', ok:false },
+          { t:'Evitar el ciclo del agua', ok:false },
         ],
       },
       {
         id:'agro',
         name:'Sistemas agroforestales',
-        info:'Sistemas de uso humano que mezclan cultivos con árboles; pueden mantener parte de la biodiversidad y ayudar a conservar suelo si se manejan bien.',
-        question:'¿Cuál describe mejor un sistema agroforestal?',
+        info:'Uso humano que combina cultivos con árboles. Puede mantener parte de la biodiversidad y apoyar la conservación del suelo si se maneja bien.',
+        question:'¿Qué describe mejor un agroecosistema con árboles?',
         options:[
-          { t:'Solo cemento y edificios', ok:false },
           { t:'Cultivos combinados con árboles', ok:true },
+          { t:'Solo cemento', ok:false },
           { t:'Solo agua salada', ok:false },
         ],
       },
       {
         id:'rios',
         name:'Ríos y arroyos',
-        info:'Ecosistemas acuáticos que conectan la cuenca, transportan agua y nutrientes; su calidad depende del manejo del suelo y residuos.',
-        question:'¿Qué amenaza afecta más directamente a ríos y arroyos?',
+        info:'Ecosistemas acuáticos que conectan la cuenca. Su calidad depende del manejo de residuos, suelo y escorrentía.',
+        question:'¿Qué afecta más directamente a ríos y arroyos?',
         options:[
           { t:'Contaminación y sedimentos por mal manejo', ok:true },
-          { t:'Que el agua no se mueva nunca', ok:false },
-          { t:'Que los bosques produzcan oxígeno', ok:false },
+          { t:'Que el agua no se mueva', ok:false },
+          { t:'Que los bosques existan', ok:false },
         ],
       },
       {
         id:'lago',
         name:'Lago',
-        info:'Ecosistema acuático: el Lago de Atitlán. Su equilibrio depende de la calidad del agua, aportes de nutrientes y protección de la cuenca.',
-        question:'El lago es un ejemplo de:',
+        info:'Ecosistema acuático. Cambios en nutrientes y contaminación pueden alterar el equilibrio y afectar especies.',
+        question:'El lago se clasifica como:',
         options:[
           { t:'Ecosistema acuático', ok:true },
-          { t:'Glaciar', ok:false },
           { t:'Desierto', ok:false },
+          { t:'Glaciar', ok:false },
         ],
       }
     ];
@@ -599,7 +607,6 @@
         btn.className = 'choiceBtn';
         btn.textContent = opt.t;
         btn.addEventListener('click', ()=>{
-          // bloquear y marcar
           [...choicesEl.querySelectorAll('.choiceBtn')].forEach(b=>b.disabled=true);
           if (opt.ok){
             btn.classList.add('correct');
@@ -620,40 +627,30 @@
       });
     }
 
-    // click handlers for hotspots
+    function pickById(id){
+      const zone = ZONES.find(z=>z.id===id);
+      if (!zone) return;
+      setInfo(zone);
+      setQuestion(zone);
+    }
+
     document.querySelectorAll('.hotspot').forEach(hs=>{
-      hs.addEventListener('click', ()=>{
-        const id = hs.getAttribute('data-id');
-        const zone = ZONES.find(z=>z.id===id);
-        if (!zone) return;
-        setInfo(zone);
-        setQuestion(zone);
-      });
+      hs.addEventListener('click', ()=> pickById(hs.getAttribute('data-id')));
     });
 
-    // lago clickable: path itself
-    const lakePath = document.querySelector('path[fill*="45,160,220"]');
-    if (lakePath){
-      lakePath.style.cursor = 'pointer';
-      lakePath.addEventListener('click', ()=>{
-        const zone = ZONES.find(z=>z.id==='lago');
-        setInfo(zone);
-        setQuestion(zone);
-      });
+    const lake = document.getElementById('lake');
+    if (lake){
+      lake.style.cursor='pointer';
+      lake.addEventListener('click', ()=> pickById('lago'));
     }
 
     function nextRandom(){
-      const pool = ZONES.slice();
-      const pick = pool[Math.floor(Math.random()*pool.length)];
+      const pick = ZONES[Math.floor(Math.random()*ZONES.length)];
       setInfo(pick);
       setQuestion(pick);
     }
 
     document.getElementById('btnNext').addEventListener('click', ()=>{
-      if (!current){
-        nextRandom();
-        return;
-      }
       nextRandom();
     });
 
@@ -663,7 +660,7 @@
       scoreEl.textContent = '0';
       infoEl.style.display = 'none';
       qTitle.textContent = 'Selecciona una zona para iniciar.';
-      qText.textContent = 'Primero haz clic en una zona del mapa.';
+      qText.textContent = 'Toca una zona del mapa.';
       choicesEl.innerHTML = '';
       finalEl.style.display = 'none';
     });
