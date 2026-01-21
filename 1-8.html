@@ -1,0 +1,671 @@
+<!-- =========================
+     1-8.html
+     MÓDULO 1 · MEDIO AMBIENTE
+     1.8 Amenazas a la biodiversidad y la cuenca
+========================= -->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>1.8 Amenazas a la biodiversidad y la cuenca · EPC AALA</title>
+  <meta name="description" content="Amenazas a la biodiversidad: contaminación, pérdida de hábitat, especies invasoras, sobreexplotación y cambio climático. Mapa mental y juego de clasificación." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --muted2:rgba(11,16,32,.58);
+      --line:rgba(11,16,32,.14);
+      --shadow: 0 18px 55px rgba(11,16,32,.12);
+      --shadow2: 0 10px 28px rgba(11,16,32,.10);
+      --radius:22px;
+
+      --good: rgba(34,197,94,.12);
+      --bad: rgba(225,29,72,.10);
+      --warn: rgba(245,158,11,.12);
+      --info: rgba(45,160,220,.12);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 10% 0%, rgba(45,160,220,.18), transparent 60%),
+        radial-gradient(1100px 700px at 90% 10%, rgba(34,197,94,.16), transparent 55%),
+        radial-gradient(900px 700px at 40% 100%, rgba(245,158,11,.10), transparent 60%),
+        #f4f7fb;
+    }
+    .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 40px; }
+    header{
+      display:flex; gap:16px; align-items:flex-end; justify-content:space-between;
+      padding:18px 18px 0;
+    }
+    .kicker{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+      color:rgba(11,16,32,.62);
+    }
+    h1{ margin:8px 0 8px; font-size:30px; line-height:1.15; }
+    .subtitle{ margin:0 0 12px; max-width:82ch; color:rgba(11,16,32,.72); line-height:1.5; }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding-bottom:14px; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.62);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+      font-size:13px;
+      color:rgba(11,16,32,.86);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+      cursor:pointer;
+    }
+    .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.78); border-color:rgba(11,16,32,.18); }
+    .btn.primary{ background:rgba(45,160,220,.16); border-color:rgba(45,160,220,.30); }
+
+    main.stack{ margin-top:14px; display:flex; flex-direction:column; gap:16px; padding:0 18px; }
+    .card{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .card h2{ margin:0 0 10px; font-size:18px; }
+    .muted{ color: var(--muted2); font-size:13px; }
+
+    .twoCols{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width: 900px){ .twoCols{ grid-template-columns: 1fr; } }
+    .box{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.66);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    .box p{ margin:0 0 10px; line-height:1.6; color:rgba(11,16,32,.84); }
+    .box ul{ margin:8px 0 0 18px; padding:0; line-height:1.6; color:rgba(11,16,32,.82); }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width: 900px){ .grid3{ grid-template-columns: 1fr; } }
+    .pill{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+    }
+    .pill .t{ font-weight:800; margin-bottom:6px; }
+    .pill .s{ color:rgba(11,16,32,.74); font-size:13px; line-height:1.5; }
+
+    /* Map */
+    .mapTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapStage{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 18px;
+      padding:10px;
+      overflow:hidden;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+      border-radius: 14px;
+    }
+    .mapFallback{
+      margin-top:10px;
+      display:none;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px dashed rgba(11,16,32,.25);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.75);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .mapFallback.show{ display:block; }
+
+    /* Game */
+    .gameGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    .panel h3{ margin:0 0 8px; font-size:15px; }
+    .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); line-height:1.5; font-size:13px; }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 520px){ .cards{ grid-template-columns: 1fr; } }
+
+    .cardItem{
+      border:1px solid rgba(11,16,32,.14);
+      background: rgba(255,255,255,.78);
+      border-radius: 16px;
+      padding:10px;
+      cursor:grab;
+      user-select:none;
+      transition: transform .12s ease, border-color .12s ease;
+      box-shadow: 0 10px 22px rgba(11,16,32,.08);
+    }
+    .cardItem:active{ cursor:grabbing; transform: scale(.99); }
+    .cardItem:hover{ border-color: rgba(45,160,220,.34); transform: translateY(-1px); }
+    .cardItem.selected{
+      outline: 2px solid rgba(45,160,220,.55);
+      background: rgba(45,160,220,.10);
+    }
+    .cardItem .t{ font-weight:850; font-size:13px; margin-bottom:6px; }
+    .cardItem .s{ font-size:12px; color: rgba(11,16,32,.72); line-height:1.35; }
+
+    .bins{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 520px){ .bins{ grid-template-columns: 1fr; } }
+
+    .bin{
+      border:1px dashed rgba(11,16,32,.24);
+      background: rgba(255,255,255,.55);
+      border-radius: 16px;
+      padding:10px;
+      min-height:130px;
+      cursor:pointer;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .binHead{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .binHead strong{ font-size:13px; }
+    .binHead .hint{ font-size:12px; color: rgba(11,16,32,.62); }
+    .bin.targetable{
+      outline:2px solid rgba(245,158,11,.40);
+      background: rgba(245,158,11,.08);
+    }
+    .bin.good{ border-style:solid; border-color: rgba(34,197,94,.28); background: rgba(34,197,94,.08); }
+    .bin.bad{ border-style:solid; border-color: rgba(225,29,72,.28); background: rgba(225,29,72,.08); }
+
+    .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .result{
+      margin-top:10px;
+      border-radius:16px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding:12px;
+      font-size:13px;
+      line-height:1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 1 · Medio ambiente</div>
+        <h1>1.8 Amenazas a la biodiversidad y la cuenca</h1>
+        <p class="subtitle">
+          La biodiversidad se afecta cuando se degradan hábitats, se contamina el agua y el suelo, o se extraen recursos más rápido de lo que se regeneran.
+          Identificar amenazas y soluciones ayuda a priorizar acciones en la cuenca.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="1-7.html">Anterior (1.7)</a>
+        <a class="btn primary" href="1-9.html">Siguiente (1.9)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              Una <strong>amenaza</strong> es un factor que reduce poblaciones, rompe relaciones ecológicas o deteriora servicios ecosistémicos.
+              En cuencas como la del Lago de Atitlán, los impactos suelen conectarse: lo que ocurre en el suelo puede llegar al agua por escorrentía.
+            </p>
+            <ul>
+              <li><strong>Pérdida de hábitat:</strong> cambio de uso del suelo, fragmentación, deforestación.</li>
+              <li><strong>Contaminación:</strong> basura, aguas residuales, sedimentos, exceso de nutrientes.</li>
+              <li><strong>Sobreexplotación:</strong> tala, extracción o pesca sin control.</li>
+              <li><strong>Especies invasoras:</strong> compiten y alteran redes ecológicas.</li>
+              <li><strong>Cambio climático:</strong> modifica lluvias, temperaturas y disponibilidad de agua.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p>
+              Las soluciones efectivas se basan en <strong>prevención</strong> y <strong>manejo de cuenca</strong>.
+              También ayudan prácticas locales: reforestación, protección de riberas, separación de residuos, ahorro de agua y agricultura con buenas prácticas.
+            </p>
+            <p><strong>Relación causa → efecto</strong> (ejemplo):</p>
+            <ul>
+              <li>Deforestación → más erosión → más sedimentos en ríos → menor calidad del agua.</li>
+              <li>Exceso de nutrientes → cambios en el ecosistema acuático → afectación a especies y usos del lago.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Señales de alerta</div>
+            <div class="s">Agua turbia, malos olores, disminución de especies, erosión visible y acumulación de basura.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Prevención</div>
+            <div class="s">Es más fácil evitar la degradación que restaurar un ecosistema ya dañado.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Acción comunitaria</div>
+            <div class="s">Las mejoras sostenibles requieren acuerdos y prácticas constantes, no acciones aisladas.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Ideas clave</h2>
+        <div class="twoCols">
+          <div class="box">
+            <ul>
+              <li>Las amenazas suelen actuar juntas: contaminación + pérdida de hábitat se potencian.</li>
+              <li>La cuenca conecta el territorio: lo que pasa “arriba” afecta “abajo”.</li>
+              <li>Soluciones: reducir contaminantes, conservar cobertura vegetal y manejar recursos con límites.</li>
+              <li>La biodiversidad sostiene servicios: agua limpia, suelo estable, alimentos y bienestar.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Preguntas guía</strong>:</p>
+            <ul>
+              <li>¿Cuál es la amenaza principal en tu comunidad?</li>
+              <li>¿Qué evidencia la muestra (suelo, agua, vegetación)?</li>
+              <li>¿Qué acción es inmediata y cuál es de largo plazo?</li>
+              <li>¿Quiénes deben participar (familias, escuela, municipalidad)?</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2 style="margin:0;">Mapa mental</h2>
+            <div class="muted">Amenazas principales, causas, efectos y respuestas.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Ajustar</button>
+            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="mapFallback" id="mapFallback">
+            <div><strong>No se pudo cargar el mapa mental.</strong><br>Recarga la página o revisa la conexión.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego: clasifica problema y solución</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          Mueve cada tarjeta al grupo correcto. Funciona en PC (arrastrar) y en celular (tocar tarjeta → tocar grupo).
+        </p>
+
+        <div class="gameGrid" style="margin-top:12px;">
+          <div class="panel">
+            <h3>Tarjetas</h3>
+            <p>Coloca cada tarjeta donde corresponda.</p>
+            <div class="cards" id="cards"></div>
+
+            <div class="gameBtns">
+              <button class="btn" type="button" id="btnShuffle">Mezclar</button>
+              <button class="btn" type="button" id="btnClear">Limpiar</button>
+            </div>
+
+            <div id="note" class="result info" style="display:none;"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Grupos</h3>
+            <p>Cuando termines, presiona “Evaluar”.</p>
+
+            <div class="bins">
+              <div class="bin" id="binThreat" data-bin="threat">
+                <div class="binHead">
+                  <strong>Amenazas</strong>
+                  <span class="hint">Toca o suelta aquí</span>
+                </div>
+                <div class="hint">Ejemplos: contaminación, deforestación.</div>
+              </div>
+
+              <div class="bin" id="binAction" data-bin="action">
+                <div class="binHead">
+                  <strong>Acciones</strong>
+                  <span class="hint">Toca o suelta aquí</span>
+                </div>
+                <div class="hint">Ejemplos: reforestación, manejo de residuos.</div>
+              </div>
+            </div>
+
+            <div class="gameBtns">
+              <button class="btn primary" type="button" id="btnCheck">Evaluar</button>
+              <button class="btn" type="button" id="btnResetGame">Reiniciar juego</button>
+            </div>
+
+            <div id="result" class="result" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // ==========
+    // MAPA MENTAL
+    // ==========
+    const md = `
+# 1.8 Amenazas a la biodiversidad y la cuenca
+## Amenazas principales
+- Pérdida de hábitat
+  - Deforestación
+  - Fragmentación
+- Contaminación
+  - Basura
+  - Aguas residuales
+  - Sedimentos
+  - Exceso de nutrientes
+- Sobreexplotación
+  - Tala
+  - Extracción sin control
+- Especies invasoras
+  - Competencia y alteración de redes
+- Cambio climático
+  - Cambios en lluvia y temperatura
+## Efectos
+- Disminución de poblaciones
+- Menor calidad del agua
+- Erosión y pérdida de suelo
+- Pérdida de servicios ecosistémicos
+## Respuestas
+- Manejo de cuenca
+- Reforestación y protección de riberas
+- Reducción de residuos y tratamiento de aguas
+- Buenas prácticas agrícolas
+- Educación y acuerdos comunitarios
+`.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function safeRenderMap(){
+      const fallback = document.getElementById('mapFallback');
+      try{
+        if (!window.markmap || !window.markmap.Transformer || !window.markmap.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        expanded = true;
+        fallback.classList.remove('show');
+        return true;
+      }catch(e){
+        fallback.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      const ok = safeRenderMap();
+      if (ok || tries >= 12){
+        clearInterval(t);
+        if (!mm) document.getElementById('mapFallback').classList.add('show');
+      }
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
+
+    // ==========
+    // JUEGO: Clasificación Amenaza vs Acción (drag + tap)
+    // ==========
+    const DATA = [
+      { id:'t1', kind:'threat', title:'Deforestación', desc:'Reduce hábitat y aumenta erosión.' },
+      { id:'t2', kind:'threat', title:'Basura en ríos', desc:'Contamina y afecta fauna acuática.' },
+      { id:'t3', kind:'threat', title:'Aguas residuales', desc:'Deterioran calidad del agua.' },
+      { id:'t4', kind:'threat', title:'Sobreexplotación', desc:'Uso de recursos sin límites.' },
+
+      { id:'a1', kind:'action', title:'Reforestación', desc:'Recupera cobertura y protege suelo.' },
+      { id:'a2', kind:'action', title:'Separación de residuos', desc:'Reduce basura y contaminación.' },
+      { id:'a3', kind:'action', title:'Protección de riberas', desc:'Filtra sedimentos y estabiliza márgenes.' },
+      { id:'a4', kind:'action', title:'Tratamiento de aguas', desc:'Disminuye contaminantes al lago.' },
+    ];
+
+    const cardsEl = document.getElementById('cards');
+    const binThreat = document.getElementById('binThreat');
+    const binAction = document.getElementById('binAction');
+    const noteEl = document.getElementById('note');
+    const resultEl = document.getElementById('result');
+
+    let selectedId = null;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function clearSelection(){
+      selectedId = null;
+      [...document.querySelectorAll('.cardItem')].forEach(c=>c.classList.remove('selected'));
+      [binThreat, binAction].forEach(b=>b.classList.remove('targetable'));
+    }
+
+    function setTargetable(on){
+      [binThreat, binAction].forEach(b=>b.classList.toggle('targetable', on));
+    }
+
+    function makeCard(item){
+      const div = document.createElement('div');
+      div.className = 'cardItem';
+      div.draggable = true;
+      div.id = 'card_' + item.id;
+      div.dataset.id = item.id;
+      div.dataset.kind = item.kind;
+      div.innerHTML = `<div class="t">${item.title}</div><div class="s">${item.desc}</div>`;
+
+      div.addEventListener('dragstart', (e)=>{
+        e.dataTransfer.setData('text/plain', item.id);
+        e.dataTransfer.effectAllowed='move';
+        clearSelection();
+      });
+
+      div.addEventListener('click', ()=>{
+        const isSel = (selectedId === item.id);
+        clearSelection();
+        if (!isSel){
+          selectedId = item.id;
+          div.classList.add('selected');
+          setTargetable(true);
+          noteEl.className='result info';
+          noteEl.textContent='Tarjeta seleccionada. Toca un grupo para colocarla.';
+          noteEl.style.display='block';
+        } else {
+          noteEl.style.display='none';
+        }
+      });
+
+      return div;
+    }
+
+    function setup(){
+      cardsEl.innerHTML='';
+      [binThreat, binAction].forEach(b=>{
+        // mantener encabezados y texto base: remover solo tarjetas
+        [...b.querySelectorAll('.cardItem')].forEach(x=>x.remove());
+        b.classList.remove('good','bad','targetable');
+      });
+      resultEl.style.display='none';
+      noteEl.style.display='none';
+      clearSelection();
+
+      shuffle(DATA).forEach(it => cardsEl.appendChild(makeCard(it)));
+    }
+
+    function place(cardId, bin){
+      const card = document.getElementById('card_' + cardId);
+      if (!card) return;
+      bin.appendChild(card);
+      resultEl.style.display='none';
+    }
+
+    function binDropHandlers(bin){
+      bin.addEventListener('dragover', (e)=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; });
+      bin.addEventListener('drop', (e)=>{
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        if (!id) return;
+        place(id, bin);
+      });
+      bin.addEventListener('click', ()=>{
+        if (!selectedId) return;
+        place(selectedId, bin);
+        clearSelection();
+        noteEl.style.display='none';
+      });
+    }
+
+    binDropHandlers(binThreat);
+    binDropHandlers(binAction);
+
+    document.getElementById('btnShuffle').addEventListener('click', ()=>{
+      setup();
+      noteEl.className='result info';
+      noteEl.textContent='Tarjetas mezcladas.';
+      noteEl.style.display='block';
+    });
+
+    document.getElementById('btnClear').addEventListener('click', ()=>{
+      // devolver todo a tarjetas
+      [binThreat, binAction].forEach(b=>{
+        [...b.querySelectorAll('.cardItem')].forEach(x=>cardsEl.appendChild(x));
+        b.classList.remove('good','bad');
+      });
+      clearSelection();
+      resultEl.style.display='none';
+      noteEl.className='result info';
+      noteEl.textContent='Tablero limpiado.';
+      noteEl.style.display='block';
+    });
+
+    document.getElementById('btnResetGame').addEventListener('click', setup);
+
+    document.getElementById('btnCheck').addEventListener('click', ()=>{
+      // evaluar
+      let totalPlaced = 0;
+      let correct = 0;
+
+      [binThreat, binAction].forEach(b=>b.classList.remove('good','bad'));
+
+      const evalBin = (bin, expected)=>{
+        const cards = [...bin.querySelectorAll('.cardItem')];
+        if (cards.length === 0) return { placed:0, ok:0, allGood:false };
+        let ok = 0;
+        cards.forEach(c=>{
+          totalPlaced++;
+          if (c.dataset.kind === expected) ok++;
+        });
+        return { placed: cards.length, ok, allGood: ok === cards.length };
+      };
+
+      const rT = evalBin(binThreat, 'threat');
+      const rA = evalBin(binAction, 'action');
+
+      correct = rT.ok + rA.ok;
+
+      if (rT.placed > 0) binThreat.classList.add(rT.allGood ? 'good' : 'bad');
+      if (rA.placed > 0) binAction.classList.add(rA.allGood ? 'good' : 'bad');
+
+      resultEl.style.display='block';
+      const need = DATA.length - totalPlaced;
+      if (need > 0){
+        resultEl.className='result warn';
+        resultEl.innerHTML = `Te faltan <strong>${need}</strong> tarjeta(s) por colocar. Completa y vuelve a evaluar.`;
+        return;
+      }
+
+      if (correct === DATA.length){
+        resultEl.className='result ok';
+        resultEl.innerHTML = `<strong>Correcto.</strong> Identificaste amenazas y acciones de respuesta.`;
+      } else {
+        resultEl.className='result no';
+        resultEl.innerHTML = `Hay <strong>${DATA.length - correct}</strong> tarjeta(s) en grupo incorrecto. Ajusta y reintenta.`;
+      }
+    });
+
+    setup();
+  </script>
+</body>
+</html>
