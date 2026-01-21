@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2.6 Manejo forestal sostenible y silvicultura · EPC AALA</title>
+  <meta name="description" content="Manejo forestal sostenible: silvicultura, regeneración, planes de manejo y reforestación. Mapa mental + simulador + juego CONAP/INAB." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020; --muted:rgba(11,16,32,.72);
+      --glass:rgba(255,255,255,.66); --stroke:rgba(11,16,32,.10);
+      --shadow:0 18px 45px rgba(11,16,32,.16); --shadow-soft:0 10px 24px rgba(11,16,32,.12);
+      --radius:24px;
+
+      --good: rgba(34,197,94,.14);
+      --warn: rgba(245,158,11,.14);
+      --bad: rgba(225,29,72,.12);
+      --info: rgba(45,160,220,.14);
+
+      --chip-bg: rgba(255,255,255,.74);
+      --chip-stroke: rgba(11,16,32,.14);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0; color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, rgba(185, 235, 255, .92), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, rgba(160, 210, 255, .90), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(210, 245, 255, .88), transparent 58%),
+        linear-gradient(135deg, #ecf9ff 0%, #e7f6ff 45%, #effbff 100%);
+      min-height:100vh;
+    }
+    .wrap{ max-width:1200px; margin:0 auto; padding:26px 18px 64px; }
+
+    header{
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .title{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: clamp(22px, 2.7vw, 34px);
+      line-height: 1.12;
+    }
+    .subtitle{ margin:8px 0 0; color:var(--muted); font-size:14px; line-height:1.5; max-width:92ch; }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.62);
+      color:rgba(11,16,32,.92);
+      font-weight:800; text-decoration:none; font-size:13px;
+      cursor:pointer; user-select:none; white-space:nowrap;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .btn:hover{ background:rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(185,235,255,.92), rgba(160,210,255,.90), rgba(210,245,255,.90));
+    }
+
+    main{ margin-top:14px; display:grid; gap:14px; }
+    .card{
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(12px);
+      padding:16px;
+    }
+    .card h2{ margin:0; font-family:Outfit,Inter,system-ui; font-weight:800; font-size:16px; }
+    .muted{ color: var(--muted); }
+
+    .twoCols{ display:grid; grid-template-columns:1.1fr .9fr; gap:12px; align-items:start; margin-top:10px; }
+    @media (max-width: 900px){ .twoCols{ grid-template-columns:1fr; } }
+
+    .box{
+      border-radius:18px;
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      padding:12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin:0 0 10px; line-height:1.6; color:rgba(11,16,32,.84); }
+    .box ul{ margin:8px 0 0 18px; padding:0; line-height:1.6; color:rgba(11,16,32,.82); }
+
+    .pillGrid{ margin-top:12px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    @media (max-width: 1020px){ .pillGrid{ grid-template-columns:repeat(2,1fr); } }
+    @media (max-width: 560px){ .pillGrid{ grid-template-columns:1fr; } }
+    .pill{
+      border-radius:18px; border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58); padding:12px; box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight:900; font-size:13px; margin-bottom:6px; }
+    .pill .s{ font-size:12.5px; line-height:1.45; color:rgba(11,16,32,.74); }
+
+    .mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .mapStage{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius:18px;
+      padding:10px;
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      border-radius:14px;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.72);
+    }
+    .fallback.show{ display:block; }
+
+    /* ====== SIMULADOR ====== */
+    .simGrid{ margin-top:12px; display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start; }
+    @media (max-width: 980px){ .simGrid{ grid-template-columns:1fr; } }
+
+    .meterBox{
+      border-radius:18px; border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58); padding:12px; box-shadow: var(--shadow-soft);
+    }
+    .meters{ display:grid; gap:10px; margin-top:10px; }
+    .mRow{ display:grid; grid-template-columns: 160px 1fr 56px; gap:10px; align-items:center; }
+    @media (max-width:560px){ .mRow{ grid-template-columns: 1fr; } }
+    .mLabel{ font-weight:900; font-size:13px; }
+    .bar{
+      height:14px; border-radius:999px;
+      background: rgba(11,16,32,.10);
+      border: 1px solid rgba(11,16,32,.10);
+      overflow:hidden;
+    }
+    .fill{
+      height:100%;
+      width:70%;
+      background: linear-gradient(90deg, rgba(45,160,220,.65), rgba(34,197,94,.55));
+    }
+    .mVal{ font-weight:900; font-size:12px; color: rgba(11,16,32,.72); text-align:right; }
+
+    .scenario{
+      border-radius:18px; border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58); padding:12px; box-shadow: var(--shadow-soft);
+    }
+    .scenario h3{ margin:0 0 6px; font-family:Outfit,Inter,system-ui; font-size:14px; }
+    .scenario p{ margin:0 0 10px; color:rgba(11,16,32,.72); font-size:13px; line-height:1.45; }
+    .choices{ display:grid; gap:10px; }
+    .choiceBtn{
+      text-align:left;
+      border-radius:16px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      padding:10px 12px;
+      font-weight:800;
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .choiceBtn:hover{ background: rgba(255,255,255,.86); border-color: rgba(11,16,32,.18); }
+    .choiceBtn:active{ transform: translateY(1px); }
+    .result{
+      margin-top:10px;
+      border-radius:14px;
+      border:1px solid rgba(11,16,32,.12);
+      padding:10px 12px;
+      background: rgba(255,255,255,.62);
+      display:none;
+      font-size:13px;
+      line-height:1.5;
+      color:rgba(11,16,32,.82);
+    }
+    .result.good{ background: var(--good); }
+    .result.warn{ background: var(--warn); }
+    .result.bad{ background: var(--bad); }
+    .result.info{ background: var(--info); }
+
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
+    /* ====== JUEGO CONAP / INAB ====== */
+    .instGrid{ margin-top:12px; display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start; }
+    @media (max-width: 980px){ .instGrid{ grid-template-columns: 1fr; } }
+
+    .instHeader{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px; border-radius:999px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      font-weight:900; font-size:12px; color: rgba(11,16,32,.78);
+      white-space:nowrap;
+    }
+    .instBank{
+      display:flex; flex-wrap:wrap; gap:8px;
+      min-height:64px;
+      padding:10px;
+      border-radius:16px;
+      border:1px dashed rgba(11,16,32,.22);
+      background: rgba(255,255,255,.52);
+    }
+    .instChip{
+      border-radius:999px;
+      border:1px solid var(--chip-stroke);
+      background: var(--chip-bg);
+      padding:8px 10px;
+      font-weight:900;
+      font-size:12px;
+      cursor:grab;
+      user-select:none;
+      box-shadow: 0 10px 22px rgba(11,16,32,.08);
+      transition: transform .08s ease, box-shadow .12s ease, outline-color .12s ease;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .instChip:active{ cursor:grabbing; transform: translateY(1px); }
+    .instChip small{ font-weight:800; opacity:.70; }
+
+    .instZone{
+      border-radius:18px;
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      padding:12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .instZoneTop{
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:flex-start;
+      margin-bottom:8px;
+    }
+    .instZone h3{
+      margin:0;
+      font-family:Outfit,Inter,system-ui;
+      font-weight:900;
+      font-size:14px;
+    }
+    .instZone p{ margin:6px 0 0; color:rgba(11,16,32,.72); font-size:13px; line-height:1.45; }
+    .instDrop{
+      margin-top:10px;
+      display:flex; flex-wrap:wrap; gap:8px;
+      min-height:56px;
+      padding:10px;
+      border-radius:16px;
+      border:1px dashed rgba(11,16,32,.22);
+      background: rgba(255,255,255,.52);
+      transition: border-color .12s ease, background .12s ease;
+    }
+    .instDrop.active{
+      border-color: rgba(45,160,220,.40);
+      background: rgba(45,160,220,.08);
+    }
+
+    .instChip.right{
+      outline: 2px solid rgba(34,197,94,.40);
+      box-shadow: 0 16px 28px rgba(34,197,94,.10);
+    }
+    .instChip.wrong{
+      outline: 2px solid rgba(225,29,72,.30);
+      box-shadow: 0 16px 28px rgba(225,29,72,.08);
+      animation: shake .18s ease-in-out 0s 2;
+    }
+    @keyframes shake{
+      0%{transform: translateX(0)}
+      25%{transform: translateX(-2px)}
+      50%{transform: translateX(2px)}
+      75%{transform: translateX(-2px)}
+      100%{transform: translateX(0)}
+    }
+
+    footer{ text-align:center; color: rgba(11,16,32,.62); font-size:12px; margin-top:4px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1 class="title">2.6 Manejo forestal sostenible y silvicultura</h1>
+        <p class="subtitle">
+          Cuidar el bosque no es solo “no cortar”: es manejarlo con responsabilidad, permitir la regeneración,
+          planificar el aprovechamiento y reforestar a tiempo para mantener bienes y servicios del bosque.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="2-5.html">Anterior (2.5)</a>
+        <a class="btn primary" href="2-7.html">Siguiente (2.7)</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p><strong>¿Qué es el manejo forestal sostenible?</strong></p>
+            <p>
+              Es el cuidado y aprovechamiento del bosque de manera que se obtengan beneficios (leña, madera, postes u otros)
+              sin agotar el bosque, manteniendo su capacidad de regenerarse y seguir brindando servicios.
+            </p>
+            <ul>
+              <li><strong>Plan de manejo:</strong> para definir cuántos árboles cortar y cuántos dejar según tamaño, estado y crecimiento del bosque.</li>
+              <li><strong>Regeneración y reforestación:</strong> después del aprovechamiento, el área debe recuperarse con plantas de vivero o regeneración natural.</li>
+              <li><strong>Protección del bosque:</strong> reducir riesgos por incendios, plagas y enfermedades.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Silvicultura (según el libro)</strong></p>
+            <p>
+              La silvicultura se basa en observar cómo crecen los bosques naturales y aplicar esas ideas para mejorar plantaciones
+              o regeneración. Ayuda a proteger bosques de animales, incendios, plagas y enfermedades, y también dirige el crecimiento.
+            </p>
+            <ul>
+              <li><strong>Raleos / aclareos selectivos:</strong> dan espacio y luz a árboles dominantes y ayudan a reducir propagación de incendios y plagas.</li>
+              <li><strong>Cuidados a la reforestación:</strong> preferiblemente en época lluviosa inmediata y usando las mismas especies aprovechadas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pillGrid">
+          <div class="pill">
+            <div class="t">Estados del bosque</div>
+            <div class="s">Regeneración (brinzales) · Joven (latizales) · Mediano · Maduro · Viejo/sobremaduro.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Reforestación</div>
+            <div class="s">Mejor hacerla en la estación lluviosa más inmediata tras el aprovechamiento y dar cuidados a las plantas.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Zonas que conviene dejar intactas</div>
+            <div class="s">Nacimientos de agua, áreas de recarga hídrica y otras zonas de conservación.</div>
+          </div>
+          <div class="pill">
+            <div class="t">Ejemplos locales (libro)</div>
+            <div class="s">Se mencionan experiencias de silvicultura en San Andrés Semetabaj y Finca Santa Victoria (Panajachel).</div>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top:12px;">
+          <p><strong>Nota local importante (según el libro):</strong></p>
+          <p style="margin:0; color:rgba(11,16,32,.82); line-height:1.6;">
+            En la RUMCLA se mencionan actividades forestales enfocadas en leña y madera con aprovechamientos selectivos.
+            Especies comunes: <strong>pino</strong> (Pinus sp.), <strong>aliso</strong> (Alnus jorullensis),
+            <strong>ciprés</strong> (Cupressus lusitanica) y <strong>encino</strong> (Quercus sp.).
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2 style="margin:0;">Mapa mental</h2>
+            <p class="muted" style="margin:4px 0 0; font-size:13px;">Plan de manejo · Silvicultura · Regeneración · Reforestación</p>
+          </div>
+          <div class="nav">
+            <button class="btn" type="button" id="btnFit">Ajustar</button>
+            <button class="btn" type="button" id="btnToggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="btnResetMap">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="fallback" id="mapFallback">No se pudo cargar el mapa. Recarga la página.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Actividad: simulador de manejo responsable</h2>
+        <p class="muted" style="margin:8px 0 0; font-size:13px;">
+          Toma decisiones como si fueras parte de un comité comunitario. Busca equilibrio: bosque sano + producción + menos riesgo.
+        </p>
+
+        <div class="simGrid">
+          <div class="meterBox">
+            <h3 style="margin:0 0 6px; font-family:Outfit,Inter,system-ui; font-size:14px;">Indicadores</h3>
+            <p style="margin:0; color:rgba(11,16,32,.72); font-size:13px; line-height:1.45;">
+              Suben o bajan según tus decisiones.
+            </p>
+
+            <div class="meters" id="meters"></div>
+
+            <div class="actions">
+              <button class="btn" type="button" id="btnReset">Reiniciar</button>
+              <button class="btn" type="button" id="btnTips">Tips</button>
+            </div>
+
+            <div class="result info" id="tips" style="display:none;"></div>
+          </div>
+
+          <div class="scenario">
+            <h3 id="scTitle">Listo para comenzar</h3>
+            <p id="scText">Elige una decisión para iniciar el simulador.</p>
+            <div class="choices" id="choices"></div>
+
+            <div class="actions">
+              <button class="btn primary" type="button" id="btnNext" disabled>Siguiente</button>
+            </div>
+
+            <div class="result" id="feedback"></div>
+            <div class="result" id="final" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ✅ NUEVO: JUEGO CONAP / INAB (sin quitar nada de lo anterior) -->
+      <section class="card" id="juego-instituciones">
+        <div class="instHeader">
+          <div>
+            <h2>Juego: ¿CONAP o INAB?</h2>
+            <p class="muted" style="margin:8px 0 0; font-size:13px;">
+              Clasifica cada <strong>tipo de manejo</strong> en la institución correcta.
+              <br>PC: arrastra y suelta. Celular: toca una tarjeta y luego toca <strong>CONAP</strong> o <strong>INAB</strong>.
+            </p>
+          </div>
+          <div class="badge">Puntaje: <span id="instScore">0/7</span></div>
+        </div>
+
+        <div class="instGrid">
+          <div class="box">
+            <p style="margin:0 0 10px;"><strong>Tarjetas</strong></p>
+            <div class="instBank" id="instBank" aria-label="tarjetas"></div>
+
+            <div class="actions">
+              <button class="btn" type="button" id="instMix">Mezclar</button>
+              <button class="btn" type="button" id="instClear">Limpiar</button>
+              <button class="btn primary" type="button" id="instCheck">Evaluar</button>
+              <button class="btn" type="button" id="instReset">Reiniciar</button>
+            </div>
+
+            <div class="result info" id="instNote" style="display:none;"></div>
+          </div>
+
+          <div class="box">
+            <div class="instZone" style="margin-bottom:12px;">
+              <div class="instZoneTop">
+                <h3>CONAP</h3>
+                <span class="badge" style="opacity:.9;">Comercial · No Comercial</span>
+              </div>
+              <p>Coloca aquí los tipos de manejo que corresponden a CONAP.</p>
+              <div class="instDrop" id="dropCONAP" aria-label="zona CONAP"></div>
+            </div>
+
+            <div class="instZone">
+              <div class="instZoneTop">
+                <h3>INAB</h3>
+                <span class="badge" style="opacity:.9;">Producción · Saneamiento · Salvamento · Cambio uso · Científico</span>
+              </div>
+              <p>Coloca aquí los tipos de manejo que corresponden a INAB.</p>
+              <div class="instDrop" id="dropINAB" aria-label="zona INAB"></div>
+            </div>
+
+            <div class="result" id="instResult" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // ==========
+    // MAPA MENTAL (Markmap robusto)
+    // ==========
+    const md = `
+# 2.6 Manejo forestal sostenible
+## Planificación (plan de manejo)
+- Definir cuántos árboles cortar y dejar
+- Considerar tamaño, estado de desarrollo y crecimiento
+- Elaborado por técnico forestal registrado
+## Silvicultura
+- Observa bosques naturales y aplica aprendizajes
+- Protege de animales, incendios, plagas y enfermedades
+- Raleos / aclareos selectivos
+  - Más espacio y luz para árboles dominantes
+  - Menos propagación de incendios y plagas
+## Regeneración y reforestación
+- Regeneración natural
+  - Semilla de árboles dejados / rebrotes
+- Reforestación
+  - Preferible en estación lluviosa inmediata
+  - Usar mismas especies aprovechadas
+  - Dar cuidados para que lleguen a etapa adulta
+## Enfoque local (RUMCLA)
+- Aprovechamientos selectivos (baja intensidad)
+- Especies comunes
+  - Pino, aliso, ciprés, encino
+`.trim();
+
+    let mm=null, expanded=true;
+    function safeRenderMap(){
+      const fallback=document.getElementById('mapFallback');
+      try{
+        if(!window.markmap||!window.markmap.Transformer||!window.markmap.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const transformer=new Transformer();
+        const {root}=transformer.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        expanded=true;
+        fallback.classList.remove('show');
+        return true;
+      }catch(e){
+        fallback.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const t=setInterval(()=>{
+      tries++;
+      const ok=safeRenderMap();
+      if(ok||tries>=12){
+        clearInterval(t);
+        if(!mm) document.getElementById('mapFallback').classList.add('show');
+      }
+    },300);
+
+    document.getElementById('btnFit').addEventListener('click',()=>mm&&mm.fit());
+    document.getElementById('btnToggle').addEventListener('click',()=>{
+      if(!mm) return;
+      if(expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded=!expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click',()=>{ mm=null; expanded=true; safeRenderMap(); });
+
+    // ==========
+    // SIMULADOR (decisiones)
+    // ==========
+    const metersEl = document.getElementById('meters');
+    const scTitle = document.getElementById('scTitle');
+    const scText  = document.getElementById('scText');
+    const choicesEl = document.getElementById('choices');
+    const feedbackEl = document.getElementById('feedback');
+    const finalEl = document.getElementById('final');
+    const btnNext = document.getElementById('btnNext');
+
+    let idx = -1;
+    let stats = { saludBosque: 70, riesgoIncendio: 55, produccion: 60, agua: 65 };
+
+    const SCENARIOS = [
+      {
+        title: "Escenario 1: Árboles muy juntos",
+        text: "El bosque está denso. ¿Qué haces para mejorar estructura y reducir riesgos?",
+        choices: [
+          { t:"Hacer raleo/aclaréo selectivo (con criterio técnico)", d:{saludBosque:+10, riesgoIncendio:-10, produccion:+5, agua:+5},
+            f:"Bien: el raleo selectivo da espacio y luz a árboles dominantes y ayuda a reducir propagación de incendios y plagas."},
+          { t:"No hacer nada y dejarlo igual", d:{saludBosque:-5, riesgoIncendio:+8, produccion:-5, agua:-2},
+            f:"Ojo: si está muy denso, puede aumentar competencia y riesgo de propagación de incendios/plagas."},
+          { t:"Cortar todo lo que se pueda sin plan", d:{saludBosque:-18, riesgoIncendio:+10, produccion:+8, agua:-12},
+            f:"Riesgoso: sin planificación se puede agotar el bosque y afectar agua/suelo."},
+        ]
+      },
+      {
+        title: "Escenario 2: Aprovechamiento de madera/leña",
+        text: "La comunidad necesita leña/madera. ¿Cómo lo organizas?",
+        choices: [
+          { t:"Hacerlo con plan de manejo (definir cortar/dejar)", d:{saludBosque:+10, riesgoIncendio:-5, produccion:+10, agua:+6},
+            f:"Correcto: el plan de manejo ayuda a evitar cortar más de lo que el bosque puede permitir sin agotarse."},
+          { t:"Cortar solo los más grandes sin evaluar", d:{saludBosque:-10, riesgoIncendio:+4, produccion:+6, agua:-6},
+            f:"Puede afectar regeneración y biodiversidad: también importa dejar semilleros y estructura."},
+          { t:"Cambiar uso del suelo en zona alta (sin cuidado)", d:{saludBosque:-20, riesgoIncendio:+10, produccion:+4, agua:-18},
+            f:"Muy negativo: en partes altas y recargas hídricas se afecta el agua y la estabilidad del suelo."},
+        ]
+      },
+      {
+        title: "Escenario 3: Reforestación después del aprovechamiento",
+        text: "Ya se aprovechó una parte del bosque. ¿Qué acción de recuperación tomas?",
+        choices: [
+          { t:"Reforestar en época lluviosa inmediata y dar cuidados", d:{saludBosque:+14, riesgoIncendio:-6, produccion:+6, agua:+10},
+            f:"Excelente: reforestar de preferencia en la estación lluviosa más inmediata y cuidar plantas mejora el éxito."},
+          { t:"Reforestar en plena época seca 'para salir del paso'", d:{saludBosque:-6, riesgoIncendio:+2, produccion:+2, agua:-4},
+            f:"Difícil: en época seca baja la sobrevivencia. Mejor planificar con lluvias."},
+          { t:"Confiar solo en regeneración natural, sin proteger el área", d:{saludBosque:-4, riesgoIncendio:+6, produccion:-2, agua:-2},
+            f:"La regeneración puede ayudar, pero requiere proteger, dejar árboles semilleros y evitar daños."},
+        ]
+      },
+      {
+        title: "Escenario 4: Protección de zonas clave",
+        text: "¿Qué zonas decides conservar intactas dentro del manejo?",
+        choices: [
+          { t:"Dejar intactos nacimientos y áreas de recarga hídrica", d:{saludBosque:+8, riesgoIncendio:-2, produccion:+2, agua:+14},
+            f:"Muy bien: conservar nacimientos/recargas protege el agua y el bosque."},
+          { t:"Cortar cerca de nacimientos por 'facilidad'", d:{saludBosque:-12, riesgoIncendio:+3, produccion:+4, agua:-18},
+            f:"Mala decisión: afecta agua y estabilidad del ecosistema."},
+          { t:"No definir zonas; cada quien corta donde quiere", d:{saludBosque:-10, riesgoIncendio:+6, produccion:+3, agua:-8},
+            f:"Sin acuerdos se vuelve difícil cuidar el bosque y asegurar beneficios a futuro."},
+        ]
+      }
+    ];
+
+    function clamp(n){ return Math.max(0, Math.min(100, n)); }
+
+    function renderMeters(){
+      metersEl.innerHTML = "";
+      const items = [
+        {key:"saludBosque", name:"Salud del bosque"},
+        {key:"agua", name:"Protección del agua"},
+        {key:"produccion", name:"Producción sostenible"},
+        {key:"riesgoIncendio", name:"Riesgo de incendio (bajo es mejor)", invert:true},
+      ];
+
+      items.forEach(it=>{
+        const row = document.createElement("div");
+        row.className="mRow";
+
+        const label = document.createElement("div");
+        label.className="mLabel";
+        label.textContent = it.name;
+
+        const bar = document.createElement("div");
+        bar.className="bar";
+
+        const fill = document.createElement("div");
+        fill.className="fill";
+
+        let value = stats[it.key];
+        const visual = it.invert ? (100 - value) : value;
+        fill.style.width = clamp(visual) + "%";
+
+        bar.appendChild(fill);
+
+        const val = document.createElement("div");
+        val.className="mVal";
+        val.textContent = Math.round(value) + "/100";
+
+        row.appendChild(label);
+        row.appendChild(bar);
+        row.appendChild(val);
+
+        metersEl.appendChild(row);
+      });
+    }
+
+    function setScenario(i){
+      const sc = SCENARIOS[i];
+      scTitle.textContent = sc.title;
+      scText.textContent = sc.text;
+
+      choicesEl.innerHTML = "";
+      feedbackEl.style.display = "none";
+      feedbackEl.className = "result";
+      feedbackEl.textContent = "";
+      btnNext.disabled = true;
+
+      sc.choices.forEach(ch=>{
+        const b = document.createElement("button");
+        b.className="choiceBtn";
+        b.type="button";
+        b.textContent = ch.t;
+        b.addEventListener("click", ()=>{
+          Object.keys(ch.d).forEach(k=>{
+            stats[k] = clamp(stats[k] + ch.d[k]);
+          });
+          renderMeters();
+
+          const avg = Math.round((stats.saludBosque + stats.agua + stats.produccion + (100-stats.riesgoIncendio)) / 4);
+          feedbackEl.style.display="block";
+          feedbackEl.className = "result " + (avg>=75 ? "good" : avg>=55 ? "warn" : "bad");
+          feedbackEl.textContent = ch.f;
+
+          [...choicesEl.querySelectorAll("button")].forEach(x=>x.disabled=true);
+          btnNext.disabled = false;
+        });
+        choicesEl.appendChild(b);
+      });
+    }
+
+    function finish(){
+      const score = Math.round((stats.saludBosque + stats.agua + stats.produccion + (100-stats.riesgoIncendio)) / 4);
+      finalEl.style.display = "block";
+      finalEl.className = "result " + (score>=75 ? "good" : score>=55 ? "warn" : "bad");
+      finalEl.innerHTML =
+        `<strong>Resultado final:</strong> ${score}/100.<br>` +
+        (score>=75
+          ? "¡Muy buen manejo! Priorizaste planificación, reforestación oportuna y protección del agua."
+          : score>=55
+            ? "Vas bien, pero revisa decisiones: refuerza reforestación, raleo selectivo y zonas de recarga."
+            : "Necesitas mejorar: evita cortes sin plan y protege nacimientos/recargas para sostener el bosque.");
+    }
+
+    btnNext.addEventListener("click", ()=>{
+      idx++;
+      if(idx >= SCENARIOS.length){
+        scTitle.textContent = "Simulador terminado";
+        scText.textContent = "Observa tus indicadores y reflexiona qué decisiones ayudan más al bosque y al agua.";
+        choicesEl.innerHTML = "";
+        feedbackEl.style.display="none";
+        btnNext.disabled = true;
+        finish();
+        return;
+      }
+      setScenario(idx);
+    });
+
+    document.getElementById("btnReset").addEventListener("click", ()=>{
+      idx = -1;
+      stats = { saludBosque: 70, riesgoIncendio: 55, produccion: 60, agua: 65 };
+      renderMeters();
+      finalEl.style.display="none";
+      feedbackEl.style.display="none";
+      scTitle.textContent = "Listo para comenzar";
+      scText.textContent = "Elige una decisión para iniciar el simulador.";
+      choicesEl.innerHTML = "";
+      btnNext.disabled = true;
+
+      const startBtn = document.createElement("button");
+      startBtn.className = "choiceBtn";
+      startBtn.type="button";
+      startBtn.textContent = "Iniciar simulador";
+      startBtn.addEventListener("click", ()=>{
+        idx=0;
+        setScenario(idx);
+      });
+      choicesEl.appendChild(startBtn);
+    });
+
+    const tipsEl = document.getElementById("tips");
+    document.getElementById("btnTips").addEventListener("click", ()=>{
+      const show = tipsEl.style.display !== "block";
+      tipsEl.style.display = show ? "block" : "none";
+      if(show){
+        tipsEl.innerHTML =
+          "<strong>Tips del módulo:</strong><br>" +
+          "• Apoya raleos/aclaréos selectivos para mejorar estructura y reducir incendios/plagas.<br>" +
+          "• Reforesta en época lluviosa inmediata y cuida las plantas.<br>" +
+          "• Mantén intactos nacimientos y zonas de recarga hídrica.<br>" +
+          "• Organiza el aprovechamiento con plan de manejo para no agotar el bosque.";
+      }
+    });
+
+    renderMeters();
+    const startBtn = document.createElement("button");
+    startBtn.className = "choiceBtn";
+    startBtn.type="button";
+    startBtn.textContent = "Iniciar simulador";
+    startBtn.addEventListener("click", ()=>{
+      idx=0;
+      setScenario(idx);
+    });
+    choicesEl.appendChild(startBtn);
+
+    // ==========
+    // NUEVO JUEGO: CONAP vs INAB (drag & drop + tap)
+    // ==========
+    (function(){
+      const bank = document.getElementById('instBank');
+      const dropCONAP = document.getElementById('dropCONAP');
+      const dropINAB = document.getElementById('dropINAB');
+      const scoreEl = document.getElementById('instScore');
+      const noteEl = document.getElementById('instNote');
+      const resEl  = document.getElementById('instResult');
+
+      const btnMix = document.getElementById('instMix');
+      const btnClear = document.getElementById('instClear');
+      const btnCheck = document.getElementById('instCheck');
+      const btnReset = document.getElementById('instReset');
+
+      if(!bank || !dropCONAP || !dropINAB) return;
+
+      const DATA = [
+        { id:'m1', text:'Comercial', expected:'CONAP' },
+        { id:'m2', text:'No Comercial', expected:'CONAP' },
+
+        { id:'m3', text:'Producción', expected:'INAB' },
+        { id:'m4', text:'Saneamiento', expected:'INAB' },
+        { id:'m5', text:'Salvamento', expected:'INAB' },
+        { id:'m6', text:'Cambios de Uso de suelo', expected:'INAB' },
+        { id:'m7', text:'Fines científicos', expected:'INAB' },
+      ];
+
+      let selectedId = null;
+
+      function shuffle(arr){
+        const a = arr.slice();
+        for(let i=a.length-1;i>0;i--){
+          const j = Math.floor(Math.random()*(i+1));
+          [a[i],a[j]]=[a[j],a[i]];
+        }
+        return a;
+      }
+
+      function setScore(ok,total){
+        scoreEl.textContent = `${ok}/${total}`;
+      }
+
+      function note(html){
+        noteEl.innerHTML = html;
+        noteEl.style.display = 'block';
+        noteEl.className = 'result info';
+      }
+
+      function clearNote(){
+        noteEl.style.display = 'none';
+        noteEl.innerHTML = '';
+      }
+
+      function clearSelected(){
+        selectedId = null;
+        [...document.querySelectorAll('.instChip')].forEach(ch => ch.style.outline='none');
+      }
+
+      function makeChip(item){
+        const el = document.createElement('div');
+        el.className = 'instChip';
+        el.id = 'chip_'+item.id;
+        el.dataset.id = item.id;
+        el.dataset.expected = item.expected;
+        el.draggable = true;
+        el.innerHTML = `${item.text} <small>· ${item.expected}</small>`; // si no quieres mostrar la pista, borra <small>...</small>
+
+        // Si NO quieres mostrar la pista "· CONAP/INAB", usa esto:
+        // el.textContent = item.text;
+
+        el.addEventListener('dragstart', (e)=>{
+          e.dataTransfer.setData('text/plain', item.id);
+          clearSelected();
+        });
+
+        // modo celular: seleccionar
+        el.addEventListener('click', ()=>{
+          const isSame = (selectedId === item.id);
+          clearSelected();
+          if(!isSame){
+            selectedId = item.id;
+            el.style.outline = '2px solid rgba(45,160,220,.40)';
+            note('Tarjeta seleccionada. Toca <strong>CONAP</strong> o <strong>INAB</strong> para colocarla.');
+          }else{
+            clearNote();
+          }
+        });
+
+        return el;
+      }
+
+      function allChips(){
+        return [...document.querySelectorAll('.instChip')];
+      }
+
+      function resetMarks(){
+        allChips().forEach(ch=>{
+          ch.classList.remove('right','wrong');
+        });
+      }
+
+      function place(id, target){
+        const chip = document.getElementById('chip_'+id);
+        if(!chip) return;
+        if(target === 'CONAP') dropCONAP.appendChild(chip);
+        if(target === 'INAB') dropINAB.appendChild(chip);
+        clearSelected();
+        clearNote();
+      }
+
+      function enableDrop(dropEl, target){
+        dropEl.addEventListener('dragover', (e)=>{
+          e.preventDefault();
+          dropEl.classList.add('active');
+        });
+        dropEl.addEventListener('dragleave', ()=>{
+          dropEl.classList.remove('active');
+        });
+        dropEl.addEventListener('drop', (e)=>{
+          e.preventDefault();
+          dropEl.classList.remove('active');
+          const id = e.dataTransfer.getData('text/plain');
+          place(id, target);
+        });
+
+        // toque en contenedor para móvil
+        dropEl.parentElement.addEventListener('click', ()=>{
+          if(!selectedId) return;
+          place(selectedId, target);
+        });
+      }
+
+      function setup(){
+        bank.innerHTML = '';
+        dropCONAP.innerHTML = '';
+        dropINAB.innerHTML = '';
+        resEl.style.display = 'none';
+        resEl.innerHTML = '';
+        resetMarks();
+        clearSelected();
+        clearNote();
+        setScore(0, DATA.length);
+
+        shuffle(DATA).forEach(it => bank.appendChild(makeChip(it)));
+      }
+
+      function clearToBank(){
+        [...dropCONAP.querySelectorAll('.instChip'), ...dropINAB.querySelectorAll('.instChip')]
+          .forEach(ch => bank.appendChild(ch));
+        resetMarks();
+        resEl.style.display='none';
+        clearNote();
+        clearSelected();
+        setScore(0, DATA.length);
+      }
+
+      function evaluate(){
+        resetMarks();
+        resEl.style.display='none';
+
+        const placed = dropCONAP.children.length + dropINAB.children.length;
+        if(placed < DATA.length){
+          resEl.style.display = 'block';
+          resEl.className = 'result warn';
+          resEl.innerHTML = 'Aún faltan tarjetas por colocar. Completa <strong>CONAP</strong> e <strong>INAB</strong> y vuelve a evaluar.';
+          return;
+        }
+
+        let ok = 0;
+        [...dropCONAP.querySelectorAll('.instChip')].forEach(ch=>{
+          const right = (ch.dataset.expected === 'CONAP');
+          ch.classList.add(right ? 'right' : 'wrong');
+          if(right) ok++;
+        });
+        [...dropINAB.querySelectorAll('.instChip')].forEach(ch=>{
+          const right = (ch.dataset.expected === 'INAB');
+          ch.classList.add(right ? 'right' : 'wrong');
+          if(right) ok++;
+        });
+
+        setScore(ok, DATA.length);
+        const pct = Math.round((ok/DATA.length)*100);
+
+        resEl.style.display = 'block';
+        if(pct >= 85){
+          resEl.className = 'result good';
+          resEl.innerHTML = `<strong>¡Excelente!</strong> ${ok}/${DATA.length} correctas (${pct}%).`;
+        }else if(pct >= 60){
+          resEl.className = 'result warn';
+          resEl.innerHTML = `<strong>¡Bien!</strong> ${ok}/${DATA.length} correctas (${pct}%). Revisa las rojas y vuelve a intentar.`;
+        }else{
+          resEl.className = 'result bad';
+          resEl.innerHTML = `<strong>Vamos de nuevo.</strong> ${ok}/${DATA.length} correctas (${pct}%). Tip: piensa en “tipo de manejo” y su institución.`;
+        }
+      }
+
+      enableDrop(dropCONAP, 'CONAP');
+      enableDrop(dropINAB, 'INAB');
+
+      btnMix?.addEventListener('click', setup);
+      btnReset?.addEventListener('click', setup);
+      btnClear?.addEventListener('click', clearToBank);
+      btnCheck?.addEventListener('click', evaluate);
+
+      setup();
+    })();
+  </script>
+</body>
+</html>
