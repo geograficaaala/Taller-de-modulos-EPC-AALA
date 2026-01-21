@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2.5 Bosque y agua en la cuenca · EPC AALA</title>
+  <meta name="description" content="Bosque y agua: infiltración, nacimientos, sedimentos. Mapa mental + simulador de decisiones + mini quiz." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020; --muted:rgba(11,16,32,.72);
+      --glass:rgba(255,255,255,.66); --stroke:rgba(11,16,32,.10);
+      --shadow:0 18px 45px rgba(11,16,32,.16); --shadow-soft:0 10px 24px rgba(11,16,32,.12);
+      --radius:24px;
+      --good: rgba(34,197,94,.14); --bad: rgba(225,29,72,.12);
+      --warn: rgba(245,158,11,.14); --info: rgba(45,160,220,.14);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, rgba(185, 235, 255, .92), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, rgba(160, 210, 255, .90), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(210, 245, 255, .88), transparent 58%),
+        linear-gradient(135deg, #ecf9ff 0%, #e7f6ff 45%, #effbff 100%);
+      min-height:100vh;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+    header{
+      border:1px solid var(--stroke); background:var(--glass); border-radius:var(--radius);
+      box-shadow:var(--shadow-soft); backdrop-filter: blur(12px);
+      padding:18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;
+    }
+    .title{margin:0;font-family:Outfit,Inter,system-ui;font-weight:800;font-size:clamp(22px,2.7vw,34px);line-height:1.12;}
+    .subtitle{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.55;max-width:95ch;}
+    .nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 12px;border-radius:14px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.62);color:rgba(11,16,32,.92);
+      font-weight:800;text-decoration:none;font-size:13px;cursor:pointer;user-select:none;white-space:nowrap;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .btn:hover{background:rgba(255,255,255,.80);border-color:rgba(11,16,32,.18)}
+    .btn.primary{
+      background:linear-gradient(135deg, rgba(185,235,255,.92), rgba(160,210,255,.90), rgba(210,245,255,.90));
+    }
+    main{margin-top:14px;display:grid;gap:14px}
+    .card{
+      border:1px solid var(--stroke); background:var(--glass); border-radius:var(--radius);
+      box-shadow:var(--shadow); backdrop-filter: blur(12px); padding:16px;
+    }
+    .card h2{margin:0;font-family:Outfit,Inter,system-ui;font-weight:800;font-size:16px}
+    .muted{color:var(--muted)}
+    .two{display:grid;grid-template-columns:1.1fr .9fr;gap:12px;align-items:start}
+    @media (max-width:900px){.two{grid-template-columns:1fr}}
+    .box{
+      border-radius:18px;border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);padding:12px;box-shadow:var(--shadow-soft);
+    }
+    .box p{margin:0 0 10px;line-height:1.65;color:rgba(11,16,32,.84)}
+    .box ul{margin:8px 0 0 18px;padding:0;line-height:1.65;color:rgba(11,16,32,.82)}
+    .steps{display:grid;gap:10px;margin-top:10px}
+    .step{
+      border-radius:18px;border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);padding:12px;box-shadow:0 10px 22px rgba(11,16,32,.08);
+    }
+    .step .t{font-weight:900;margin:0 0 6px}
+    .step .s{margin:0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5}
+
+    .mapTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+    .mapStage{border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.58);border-radius:18px;padding:10px;box-shadow:var(--shadow-soft);overflow:hidden}
+    svg#mindmap{width:100%;height:520px;display:block;border-radius:14px;background:
+      radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+      radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{display:none;margin-top:10px;padding:10px 12px;border-radius:14px;border:1px dashed rgba(11,16,32,.18);background:rgba(255,255,255,.55);color:rgba(11,16,32,.72)}
+    .fallback.show{display:block}
+
+    .simGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:12px;align-items:start}
+    @media (max-width:980px){.simGrid{grid-template-columns:1fr}}
+    .panel{
+      border-radius:18px;border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);padding:12px;box-shadow:var(--shadow-soft);
+    }
+    .panel h3{margin:0 0 6px;font-size:14px;font-family:Outfit,Inter,system-ui}
+    .panel p{margin:0 0 10px;color:rgba(11,16,32,.72);font-size:13px;line-height:1.55}
+
+    .meter{border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.58);border-radius:18px;padding:12px;box-shadow:0 10px 22px rgba(11,16,32,.08)}
+    .big{font-size:26px;font-weight:900;font-family:Outfit,Inter,system-ui}
+    .bar{height:12px;border-radius:999px;background:rgba(11,16,32,.10);overflow:hidden;margin-top:8px}
+    .bar>div{height:100%;width:55%;background:rgba(45,160,220,.45);transition:width .2s ease}
+    .mini{font-size:12px;color:rgba(11,16,32,.68);line-height:1.4;margin-top:8px}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .badge{font-size:12px;padding:7px 10px;border-radius:999px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.62);font-weight:800;color:rgba(11,16,32,.78)}
+    .badge.good{background:var(--good)} .badge.warn{background:var(--warn)} .badge.bad{background:var(--bad)}
+
+    .choices{display:grid;gap:10px}
+    .choice{
+      border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.72);
+      border-radius:18px;padding:12px;cursor:pointer;user-select:none;
+      box-shadow:0 10px 22px rgba(11,16,32,.06);
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+      text-align:left;
+    }
+    .choice:hover{background:rgba(255,255,255,.82);border-color:rgba(11,16,32,.18);transform:translateY(-1px)}
+    .choice .t{font-weight:900;margin:0 0 6px}
+    .choice .s{margin:0;color:rgba(11,16,32,.72);font-size:12.5px;line-height:1.45}
+    .result{
+      margin-top:10px;border-radius:14px;border:1px solid rgba(11,16,32,.12);
+      padding:10px 12px;background:rgba(255,255,255,.62);display:none;
+      color:rgba(11,16,32,.82);font-size:13px;line-height:1.55
+    }
+    .result.good{background:var(--good)} .result.warn{background:var(--warn)}
+    .result.bad{background:var(--bad)} .result.info{background:var(--info)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    footer{text-align:center;color:rgba(11,16,32,.62);font-size:12px;margin-top:4px}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1 class="title">2.5 Bosque y agua en la cuenca</h1>
+        <p class="subtitle">
+          El bosque funciona como una “esponja”: ayuda a que el agua de lluvia <strong>infiltre</strong>, se <strong>almacene</strong>
+          y salga poco a poco en nacimientos y ríos. Sin bosque, aumenta la escorrentía y se arrastra suelo hacia la cuenca.
+        </p>
+      </div>
+      <div class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="2-4.html">Anterior (2.4)</a>
+        <a class="btn primary" href="2-6.html">Siguiente (2.6)</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>¿Cómo ayuda el bosque al agua?</h2>
+        <div class="two" style="margin-top:10px;">
+          <div class="box">
+            <p>
+              Cuando llueve, una parte del agua cae sobre hojas y ramas, otra cae al suelo.
+              Si el suelo tiene raíces, hojarasca y vida, el agua entra mejor (infiltra).
+              Eso permite que el agua se guarde y salga después (nacimientos y riachuelos).
+            </p>
+            <p><strong>Con bosque</strong> suele pasar:</p>
+            <ul>
+              <li>Más infiltración (se recarga el suelo).</li>
+              <li>Menos erosión (raíces sostienen la tierra).</li>
+              <li>Más agua constante en verano.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Sin bosque</strong> suele pasar:</p>
+            <ul>
+              <li>El agua corre rápido por la superficie (escorrentía).</li>
+              <li>Arrastra suelo y basura → sedimentos en ríos/lago.</li>
+              <li>En invierno hay crecidas rápidas y en verano escasez.</li>
+            </ul>
+            <p class="muted" style="margin:10px 0 0;font-size:13px;">
+              Por eso cuidar bosques en zonas altas y laderas protege el lago y fuentes de agua.
+            </p>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <p class="t">Cadena simple (lluvia → lago)</p>
+            <p class="s">Lluvia → cobertura vegetal → infiltración → nacimientos → ríos → lago (con menos sedimento).</p>
+          </div>
+          <div class="step">
+            <p class="t">Zonas importantes</p>
+            <p class="s">Laderas, nacimientos y zonas de recarga hídrica deben protegerse con árboles, barreras y suelo cubierto.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2 style="margin:0;">Mapa mental</h2>
+            <p class="muted" style="margin:4px 0 0;font-size:13px;">Infiltración · Nacimientos · Sedimentos · Acciones</p>
+          </div>
+          <div class="nav">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Recarga la página.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego: “Simulador de cuenca” (decisiones)</h2>
+        <p class="muted" style="margin:8px 0 0;font-size:13px;">
+          Harás 5 decisiones. Tu objetivo es subir el <strong>Índice de Agua Sana</strong> (mientras reduces sedimentos).
+        </p>
+
+        <div class="simGrid" style="margin-top:12px;">
+          <div class="panel">
+            <h3 id="rTitle">Ronda 1/5</h3>
+            <p id="rPrompt">Elige una opción.</p>
+            <div class="choices" id="choices"></div>
+
+            <div class="actions">
+              <button class="btn" type="button" id="skip">Saltar</button>
+              <button class="btn primary" type="button" id="next" disabled>Siguiente</button>
+              <button class="btn" type="button" id="restart">Reiniciar</button>
+            </div>
+
+            <div class="result info" id="fb"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Índice de Agua Sana</h3>
+            <div class="meter">
+              <div class="big"><span id="score">55</span>/100</div>
+              <div class="bar"><div id="fill"></div></div>
+              <div class="mini" id="level">Nivel: En camino 💧</div>
+              <div class="badges" id="badges"></div>
+            </div>
+
+            <div class="result" id="final"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // ===== MAPA =====
+    const md = `
+# 2.5 Bosque y agua en la cuenca
+## Con bosque
+- Sombra y hojarasca protegen el suelo
+- Raíces sostienen la tierra
+- Más infiltración (recarga)
+- Nacimientos más constantes
+## Sin bosque
+- Escorrentía rápida
+- Erosión (se va suelo fértil)
+- Más sedimentos en ríos/lago
+- Menos agua en verano
+## Acciones
+- Reforestar con nativas
+- Proteger nacimientos
+- Barreras vivas y terrazas
+- No quemas en época seca
+- Manejo de caminos y drenajes
+`.trim();
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('fallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0; const it=setInterval(()=>{tries++; const ok=renderMap(); if(ok||tries>12) clearInterval(it);},300);
+    document.getElementById('fit').onclick=()=>mm&&mm.fit();
+    document.getElementById('toggle').onclick=()=>{ if(!mm) return; expanded?mm.foldAll():mm.unfoldAll(); expanded=!expanded; };
+    document.getElementById('resetMap').onclick=()=>{mm=null; expanded=true; renderMap();};
+
+    // ===== SIMULADOR =====
+    const ROUNDS=[
+      {
+        area:"Ladera",
+        prompt:"En una ladera con cultivos, ¿qué reduce más la erosión?",
+        choices:[
+          {t:"Barreras vivas / terrazas y suelo cubierto", s:"Disminuye escorrentía y protege el suelo.", d:+12, badge:"Menos erosión ✅"},
+          {t:"Dejar el suelo desnudo", s:"El agua arrastra tierra y nutrientes.", d:-12, badge:"Erosión ⚠️"},
+          {t:"Quemar rastrojo para “limpiar”", s:"Pierde cobertura y aumenta riesgo de incendio.", d:-10, badge:"Quemas ❌"}
+        ]
+      },
+      {
+        area:"Nacimientos",
+        prompt:"Cerca de un nacimiento, ¿qué es mejor?",
+        choices:[
+          {t:"Zona protegida con árboles nativos", s:"Mejora infiltración y mantiene agua más constante.", d:+12, badge:"Protección de nacimientos ✅"},
+          {t:"Meter ganado hasta la orilla", s:"Compacta el suelo y ensucia el agua.", d:-10, badge:"Compactación ⚠️"},
+          {t:"Tirar basura cerca", s:"Contamina agua y afecta salud.", d:-12, badge:"Contaminación ❌"}
+        ]
+      },
+      {
+        area:"Caminos",
+        prompt:"Un camino en pendiente genera zanjas por lluvia. ¿Qué haces?",
+        choices:[
+          {t:"Canales y drenajes (cunetas) bien dirigidos", s:"Controla el agua y evita que rompa el camino.", d:+10, badge:"Drenaje ✅"},
+          {t:"No hacer nada", s:"Se forman cárcavas y sedimento baja a ríos.", d:-10, badge:"Cárcavas ⚠️"},
+          {t:"Abrir más el camino sin drenaje", s:"Aumenta el problema.", d:-12, badge:"Más sedimento ❌"}
+        ]
+      },
+      {
+        area:"Bosque",
+        prompt:"Para cuidar la cuenca, ¿qué acción ayuda más a largo plazo?",
+        choices:[
+          {t:"Reforestar y cuidar (riego, protección, reposición)", s:"No solo sembrar: mantener vivo el árbol.", d:+12, badge:"Cuidado ✅"},
+          {t:"Sembrar y olvidar", s:"Muchas plantas no sobreviven.", d:-6, badge:"Sin seguimiento ⚠️"},
+          {t:"Cortar sin reponer", s:"Se pierde cobertura y servicios del bosque.", d:-12, badge:"Sin reposición ❌"}
+        ]
+      },
+      {
+        area:"Comunidad",
+        prompt:"¿Qué acuerdo comunitario protege agua y bosque?",
+        choices:[
+          {t:"Reglas: no quemas, reforestación y protección de nacimientos", s:"Reduce incendios y conserva recarga hídrica.", d:+12, badge:"Acuerdo ✅"},
+          {t:"Permitir quemas sin control", s:"Aumenta incendios y pérdida de suelo.", d:-12, badge:"Riesgo ❌"},
+          {t:"No hablar del tema", s:"El problema crece con el tiempo.", d:-8, badge:"Sin acción ⚠️"}
+        ]
+      }
+    ];
+
+    let idx=0, score=55, selected=null;
+    const max=100, min=0;
+    const badges=new Set();
+
+    const rTitle=document.getElementById('rTitle');
+    const rPrompt=document.getElementById('rPrompt');
+    const choicesEl=document.getElementById('choices');
+    const btnNext=document.getElementById('next');
+    const btnSkip=document.getElementById('skip');
+    const btnRestart=document.getElementById('restart');
+    const fb=document.getElementById('fb');
+
+    const scoreEl=document.getElementById('score');
+    const fillEl=document.getElementById('fill');
+    const levelEl=document.getElementById('level');
+    const badgesEl=document.getElementById('badges');
+    const finalEl=document.getElementById('final');
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    function updateMeter(){
+      score=clamp(score,min,max);
+      scoreEl.textContent=String(score);
+      fillEl.style.width = score + "%";
+      let label="Nivel: En camino 💧";
+      let cls="warn";
+      if(score>=80){label="Nivel: Agua muy sana 💧✨"; cls="good";}
+      else if(score>=60){label="Nivel: Buen manejo 💧"; cls="good";}
+      else if(score>=40){label="Nivel: En camino 💧"; cls="warn";}
+      else {label="Nivel: Riesgo ⚠️"; cls="bad";}
+      levelEl.textContent=label;
+
+      badgesEl.innerHTML="";
+      const state=document.createElement('span');
+      state.className="badge " + (cls==="good"?"good":cls==="bad"?"bad":"warn");
+      state.textContent = cls==="good"?"Cuenca protegida":"Atención";
+      badgesEl.appendChild(state);
+
+      [...badges].slice(-6).forEach(b=>{
+        const s=document.createElement('span');
+        s.className="badge";
+        s.textContent="✅ " + b;
+        badgesEl.appendChild(s);
+      });
+    }
+
+    function renderRound(){
+      finalEl.style.display="none";
+      fb.style.display="none";
+      btnNext.disabled=true;
+      selected=null;
+
+      const r=ROUNDS[idx];
+      rTitle.textContent = `Ronda ${idx+1}/${ROUNDS.length} · ${r.area}`;
+      rPrompt.textContent = r.prompt;
+
+      choicesEl.innerHTML="";
+      r.choices.forEach((c)=>{
+        const b=document.createElement('button');
+        b.type="button";
+        b.className="choice";
+        b.innerHTML = `<p class="t">${c.t}</p><p class="s">${c.s}</p>`;
+        b.addEventListener('click',()=>{
+          [...choicesEl.querySelectorAll('.choice')].forEach(x=>x.style.outline='none');
+          b.style.outline="2px solid rgba(45,160,220,.45)";
+          selected=c;
+          btnNext.disabled=false;
+
+          fb.className="result " + (c.d>0 ? "good" : c.d<-10 ? "bad" : "warn");
+          fb.textContent = (c.d>0 ? "✅ Buen impacto. " : "⚠️ Mal impacto. ") + `Cambio: ${c.d>0?'+':''}${c.d}.`;
+          fb.style.display="block";
+        });
+        choicesEl.appendChild(b);
+      });
+      updateMeter();
+    }
+
+    function apply(){
+      if(!selected) return;
+      score += selected.d;
+      if(selected.d>0) badges.add(selected.badge);
+      updateMeter();
+      idx++;
+      if(idx>=ROUNDS.length) end();
+      else renderRound();
+    }
+
+    function end(){
+      choicesEl.innerHTML="";
+      rTitle.textContent="Simulador terminado";
+      rPrompt.textContent="Revisa tu resultado final y vuelve a jugar para mejorar.";
+
+      finalEl.className="result " + (score>=70?"good":score>=45?"warn":"bad");
+      finalEl.style.display="block";
+      finalEl.innerHTML =
+        (score>=70
+          ? "¡Excelente! Tus decisiones aumentan infiltración y reducen sedimentos."
+          : score>=45
+          ? "¡Buen trabajo! Aún puedes mejorar en protección de laderas, drenajes y nacimientos."
+          : "Alerta: hay riesgo de erosión y pérdida de agua. Repite el juego y elige opciones más protectoras."
+        ) + ` (Índice final: <strong>${score}/100</strong>)`;
+    }
+
+    btnNext.addEventListener('click', apply);
+    btnSkip.addEventListener('click', ()=>{
+      idx++;
+      if(idx>=ROUNDS.length) end();
+      else renderRound();
+    });
+    btnRestart.addEventListener('click', ()=>{
+      idx=0; score=55; badges.clear();
+      renderRound();
+    });
+
+    renderRound();
+  </script>
+</body>
+</html>
