@@ -12,10 +12,6 @@
   <!-- Markmap (mapa mental) -->
   <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
-  <!-- D3 + Sankey (diagrama editorial) -->
-  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
-
   <style>
     :root{
       --ink:#0b1020;
@@ -142,13 +138,13 @@
     }
 
     /* =========================
-       DIAGRAMA SANKEY (arreglado)
+       DIAGRAMA EDITORIAL (SVG NATIVO, SIEMPRE FUNCIONA)
        ========================= */
     .diagramWrap{
       margin-top: 12px;
       border-radius: 16px;
       border: 1px solid rgba(11,16,32,.12);
-      background: linear-gradient(180deg, rgba(255,255,255,.60), rgba(255,255,255,.45));
+      background: linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.46));
       box-shadow: var(--shadow-soft);
       overflow:hidden;
       position: relative;
@@ -191,21 +187,34 @@
       color: rgba(11,16,32,.78);
     }
 
-    .sankeyStage{
+    .flowStage{
       height: 560px;
       width: 100%;
       position: relative;
+      padding: 10px;
     }
-    @media (max-width: 820px){ .sankeyStage{ height: 660px; } }
+    @media (max-width: 820px){ .flowStage{ height: 700px; } }
+
+    .flowSvg{
+      width:100%;
+      height:100%;
+      display:block;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.10);
+      background:
+        radial-gradient(circle at 1px 1px, rgba(11,16,32,.06) 1px, transparent 1px) 0 0 / 22px 22px,
+        rgba(255,255,255,.40);
+      overflow:hidden;
+    }
 
     .legendBox{
       position:absolute;
-      right: 14px;
-      top: 14px;
-      width: min(360px, calc(100% - 28px));
+      right: 18px;
+      top: 18px;
+      width: min(360px, calc(100% - 36px));
       border-radius: 14px;
       border: 1px solid rgba(11,16,32,.10);
-      background: rgba(255,255,255,.72);
+      background: rgba(255,255,255,.75);
       box-shadow: var(--shadow-soft);
       padding: 10px 12px;
       z-index: 3;
@@ -225,23 +234,6 @@
       line-height: 1.35;
     }
 
-    .sErr{
-      position:absolute;
-      left: 14px;
-      bottom: 14px;
-      right: 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.78);
-      box-shadow: var(--shadow-soft);
-      padding: 10px 12px;
-      font-size: 12.5px;
-      color: rgba(11,16,32,.86);
-      display:none;
-      z-index: 3;
-    }
-    .sErr.show{ display:block; }
-
     .tooltip{
       position:absolute;
       pointer-events:none;
@@ -249,10 +241,10 @@
       opacity: 0;
       transform: translateY(6px);
       transition: opacity .10s ease, transform .10s ease;
-      max-width: 320px;
+      max-width: 340px;
       border-radius: 14px;
       border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.86);
+      background: rgba(255,255,255,.88);
       box-shadow: var(--shadow);
       padding: 10px 12px;
       font-size: 12px;
@@ -273,7 +265,7 @@
     }
 
     /* =========================
-       MAPA MENTAL (igual patrón)
+       MAPA MENTAL
        ========================= */
     .mapWrap{
       width:100%;
@@ -303,7 +295,7 @@
     .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center; }
 
     /* =========================
-       JUEGO (más vistoso)
+       SIMULADOR (más vistoso)
        ========================= */
     .simGrid{
       margin-top: 12px;
@@ -320,6 +312,18 @@
       background: rgba(255,255,255,.55);
       box-shadow: var(--shadow-soft);
       padding: 12px;
+      position: relative;
+      overflow:hidden;
+    }
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:-40px -40px auto auto;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle at 30% 30%, rgba(45,160,220,.22), transparent 60%);
+      filter: blur(2px);
+      pointer-events:none;
     }
     .panel h3{
       margin: 0 0 8px;
@@ -327,6 +331,8 @@
       font-weight: 800;
       font-size: 14px;
       letter-spacing:.2px;
+      position: relative;
+      z-index: 1;
     }
     .ctrl{
       display:grid;
@@ -334,6 +340,8 @@
       gap: 8px;
       align-items:center;
       margin: 10px 0;
+      position: relative;
+      z-index: 1;
     }
     .ctrl label{ font-weight: 800; font-size: 13px; color: rgba(11,16,32,.86); }
     .ctrl .val{
@@ -347,7 +355,7 @@
       min-width: 64px;
       text-align:center;
     }
-    input[type="range"]{ width: 100%; accent-color: rgba(45,160,220,.75); }
+    input[type="range"]{ width: 100%; accent-color: rgba(45,160,220,.75); position: relative; z-index: 1; }
 
     .simBtns{
       display:flex;
@@ -355,6 +363,21 @@
       flex-wrap:wrap;
       margin-top: 10px;
       align-items:center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge.ok{
+      border-color: rgba(30,160,90,.26);
+      background: rgba(30,160,90,.15);
+      color: rgba(11,16,32,.88);
+      box-shadow: 0 0 0 6px rgba(30,160,90,.08);
+    }
+    .badge.no{
+      border-color: rgba(210,70,100,.22);
+      background: rgba(210,70,100,.13);
+      color: rgba(11,16,32,.88);
+      box-shadow: 0 0 0 6px rgba(210,70,100,.06);
     }
 
     .statRow{
@@ -362,6 +385,8 @@
       display:grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: 10px;
+      position: relative;
+      z-index: 1;
     }
     @media (max-width: 980px){ .statRow{ grid-template-columns: 1fr 1fr; } }
     @media (max-width: 520px){ .statRow{ grid-template-columns: 1fr; } }
@@ -400,6 +425,7 @@
       width: 50%;
       border-radius: 999px;
       background: linear-gradient(90deg, rgba(45,160,220,.80), rgba(50,170,120,.80), rgba(240,110,170,.72));
+      transition: width .12s ease;
     }
 
     .canvasWrap{
@@ -423,6 +449,8 @@
       font-size: 13px;
       line-height: 1.45;
       color: rgba(11,16,32,.86);
+      position: relative;
+      z-index: 1;
     }
     .ok{ background: var(--good); border-color: rgba(30,160,90,.26); }
     .no{ background: var(--bad); border-color: rgba(210,70,100,.24); }
@@ -438,7 +466,7 @@
         <div class="kicker">Módulo 1 · Medio ambiente</div>
         <h1>1.2 Las cadenas alimenticias o tróficas</h1>
         <p class="subtitle">
-          Diagrama editorial interactivo de cadena trófica y ciclos (C, N, P), mapa mental, y un simulador de cascada trófica para evaluar comprensión.
+          Diagrama editorial interactivo (tipo libro) de cadena trófica y ciclos (C, N, P), mapa mental y simulador de cascada trófica.
         </p>
       </div>
       <nav class="nav">
@@ -483,38 +511,48 @@
       <section class="card">
         <h2>Diagrama conceptual editorial (interactivo)</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Interacción: pasar el cursor o tocar resalta; clic fija el resaltado; clic en fondo lo quita.
+          Interacción: pasar el cursor resalta; clic fija el resaltado; clic en el fondo lo quita.
         </p>
 
         <div class="diagramWrap">
           <div class="diagramTop">
             <div class="tabs">
-              <button class="tab active" id="sTabCafe" type="button">Sistema café (conceptual)</button>
-              <button class="tab" id="sTabSimple" type="button">Cadena trófica simple</button>
-              <span class="badge" id="sBadge">Resaltado: ninguno</span>
+              <button class="tab active" id="fTabCafe" type="button">Sistema café (conceptual)</button>
+              <button class="tab" id="fTabSimple" type="button">Cadena trófica simple</button>
+              <span class="badge" id="fBadge">Resaltado: ninguno</span>
             </div>
             <div class="tabs">
-              <button class="btn" id="sReset" type="button">Reiniciar</button>
+              <button class="btn" id="fReset" type="button">Reiniciar</button>
             </div>
           </div>
 
-          <div class="sankeyStage" id="sankeyStage">
+          <div class="flowStage" id="flowStage">
+            <svg class="flowSvg" id="flowSvg" viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Diagrama conceptual de cadena trófica y ciclos">
+              <defs>
+                <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="rgba(11,16,32,.18)"/>
+                </filter>
+                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(45,160,220,.25)"/>
+                </filter>
+              </defs>
+              <!-- contenido se inyecta por JS -->
+            </svg>
+
             <div class="legendBox">
               <h3>Leyenda</h3>
               <ul class="legendList">
-                <li>Reservorios: atmósfera y agua.</li>
-                <li>Vegetación: productores primarios.</li>
-                <li>Fauna: herbívoros y depredadores.</li>
-                <li>Microbiota: descomposición y simbiosis.</li>
-                <li>Suelo: MO y formas minerales (N y P).</li>
-                <li>El grosor de bandas indica intensidad relativa del flujo.</li>
+                <li>Bandas: reservorios y compartimentos (atmósfera, suelo, agua, etc.).</li>
+                <li>Nodos: componentes (vegetación, herbívoros, microbiota).</li>
+                <li>Flujos: grosor indica intensidad relativa.</li>
+                <li>Resaltado: pasa el cursor o haz clic para fijar.</li>
               </ul>
             </div>
-            <div class="tooltip" id="tip"></div>
-            <div class="sErr" id="sErr"></div>
+
+            <div class="tooltip" id="fTip"></div>
           </div>
 
-          <div class="hint" id="sHint">
+          <div class="hint" id="fHint">
             Sugerencia: identifica productores, ruta herbívoros-depredadores y cómo suelo y microbiota cierran el ciclo.
           </div>
         </div>
@@ -630,391 +668,533 @@
 
   <script>
     /* =========================================================
-       A) SANKEY (robusto + arreglado)
-       - Reintenta si CDN tarda
-       - Usa ResizeObserver
-       - Si contenedor reporta 0, usa altura CSS como respaldo
+       A) DIAGRAMA EDITORIAL SVG (SIN LIBRERÍAS)
        ========================================================= */
-    const sankeyStage = document.getElementById('sankeyStage');
-    const tip = document.getElementById('tip');
-    const sBadge = document.getElementById('sBadge');
-    const sErr = document.getElementById('sErr');
+    const flowSvg = document.getElementById('flowSvg');
+    const flowStage = document.getElementById('flowStage');
+    const fTip = document.getElementById('fTip');
+    const fBadge = document.getElementById('fBadge');
+    const fHint = document.getElementById('fHint');
 
-    let sLocked = false;
-    let sLockKey = null;
-    let sMode = 'cafe';
-    let ro = null;
+    let flowMode = 'cafe';
+    let locked = false;
+    let lockKey = null;
 
-    function badge(text){ sBadge.textContent = 'Resaltado: ' + text; }
+    function badgeFlow(text){ fBadge.textContent = 'Resaltado: ' + text; }
 
-    function setTip(html, x, y){
-      tip.innerHTML = html;
-      tip.style.left = x + 'px';
-      tip.style.top = y + 'px';
-      tip.style.opacity = 1;
-      tip.style.transform = 'translateY(0)';
+    function showTip(html, x, y){
+      fTip.innerHTML = html;
+      fTip.style.left = x + 'px';
+      fTip.style.top = y + 'px';
+      fTip.style.opacity = 1;
+      fTip.style.transform = 'translateY(0)';
     }
     function hideTip(){
-      tip.style.opacity = 0;
-      tip.style.transform = 'translateY(6px)';
+      fTip.style.opacity = 0;
+      fTip.style.transform = 'translateY(6px)';
     }
-
-    function sankeyData(mode){
-      if(mode === 'simple'){
-        return {
-          nodes: [
-            {id:'Prod', name:'Productores', group:'Vegetación'},
-            {id:'Herb', name:'Herbívoros', group:'Fauna'},
-            {id:'Pred', name:'Depredadores', group:'Fauna'},
-            {id:'Deco', name:'Descomponedores', group:'Microbiota'},
-            {id:'Soil', name:'Suelo (MO y minerales)', group:'Suelo'},
-            {id:'Water', name:'Agua (pérdidas)', group:'Agua'}
-          ],
-          links: [
-            {source:'Prod', target:'Herb', value: 6.0, label:'Consumo'},
-            {source:'Herb', target:'Pred', value: 4.2, label:'Depredación'},
-            {source:'Prod', target:'Soil', value: 2.2, label:'Hojarasca'},
-            {source:'Herb', target:'Soil', value: 1.4, label:'Excretas'},
-            {source:'Pred', target:'Soil', value: 1.0, label:'Restos'},
-            {source:'Soil', target:'Deco', value: 3.2, label:'Sustrato'},
-            {source:'Deco', target:'Soil', value: 2.6, label:'Mineralización'},
-            {source:'Soil', target:'Water', value: 1.2, label:'Lixiviación'}
-          ]
-        };
-      }
-      return {
-        nodes: [
-          {id:'Atm',   name:'Atmósfera (CO2, N2)', group:'Atmósfera'},
-          {id:'Veg',   name:'Vegetación (cafeto y sombra)', group:'Vegetación'},
-          {id:'Herb',  name:'Herbívoros', group:'Fauna'},
-          {id:'Pred',  name:'Depredadores', group:'Fauna'},
-          {id:'Micro', name:'Microbiota (descomp. y simbiosis)', group:'Microbiota'},
-          {id:'MO',    name:'Suelo: materia orgánica (MO)', group:'Suelo'},
-          {id:'NH4',   name:'Suelo: NH4+', group:'Suelo'},
-          {id:'NO3',   name:'Suelo: NO3-', group:'Suelo'},
-          {id:'PO4',   name:'Suelo: PO4---', group:'Suelo'},
-          {id:'Water', name:'Agua (N, P disueltos)', group:'Agua'}
-        ],
-        links: [
-          {source:'Atm',  target:'Veg',   value: 6.2, label:'Fotosíntesis (C)'},
-          {source:'Veg',  target:'Atm',   value: 2.6, label:'Respiración (CO2)'},
-          {source:'Veg',  target:'MO',    value: 3.1, label:'Restos (C, N, P)'},
-          {source:'MO',   target:'Micro', value: 2.4, label:'Sustrato'},
-          {source:'Micro',target:'NH4',   value: 1.6, label:'Mineralización (N)'},
-          {source:'NH4',  target:'NO3',   value: 1.2, label:'Nitrificación'},
-          {source:'NO3',  target:'Veg',   value: 1.1, label:'Asimilación (N)'},
-          {source:'PO4',  target:'Veg',   value: 0.9, label:'Asimilación (P)'},
-          {source:'Veg',  target:'Herb',  value: 2.2, label:'Consumo'},
-          {source:'Herb', target:'Pred',  value: 1.6, label:'Depredación'},
-          {source:'Herb', target:'MO',    value: 0.9, label:'Excretas'},
-          {source:'Pred', target:'MO',    value: 0.6, label:'Restos'},
-          {source:'NO3',  target:'Water', value: 0.8, label:'Lixiviación'},
-          {source:'PO4',  target:'Water', value: 0.6, label:'Arrastre de P'},
-          {source:'MO',   target:'PO4',   value: 0.7, label:'Liberación (P)'},
-          {source:'Atm',  target:'Water', value: 0.4, label:'Intercambio (N)'}
-        ]
-      };
-    }
-
-    function sankeyColors(group){
-      const map = {
-        'Atmósfera': 'rgba(70, 120, 190, .85)',
-        'Vegetación': 'rgba(90, 160, 110, .85)',
-        'Fauna': 'rgba(140, 140, 140, .85)',
-        'Microbiota': 'rgba(160, 90, 170, .85)',
-        'Suelo': 'rgba(120, 95, 70, .85)',
-        'Agua': 'rgba(55, 160, 220, .85)'
-      };
-      return map[group] || 'rgba(11,16,32,.55)';
-    }
-
-    function stageSize(){
-      const rect = sankeyStage.getBoundingClientRect();
-      let W = Math.floor(rect.width);
-      let H = Math.floor(rect.height);
-
-      if(W < 10) W = Math.floor(sankeyStage.clientWidth || 900);
-      if(H < 10){
-        const cs = getComputedStyle(sankeyStage);
-        const h = parseFloat(cs.height || '0');
-        H = (h && h > 10) ? Math.floor(h) : 560;
-      }
-      return {W, H};
-    }
-
-    function pointerXY(evt, W, H){
-      const r = sankeyStage.getBoundingClientRect();
-      const cx = (evt && evt.clientX) || (evt && evt.touches && evt.touches[0] && evt.touches[0].clientX) || 0;
-      const cy = (evt && evt.clientY) || (evt && evt.touches && evt.touches[0] && evt.touches[0].clientY) || 0;
+    function tipPos(evt){
+      const r = flowStage.getBoundingClientRect();
+      const cx = evt.clientX || 0;
+      const cy = evt.clientY || 0;
       const x = cx - r.left;
       const y = cy - r.top;
-      return {
-        x: Math.max(10, Math.min(W - 340, x + 12)),
-        y: Math.max(10, Math.min(H - 120, y + 12))
+      // mantener dentro
+      const maxX = Math.max(10, r.width - 360);
+      const maxY = Math.max(10, r.height - 120);
+      return { x: Math.max(10, Math.min(maxX, x + 12)), y: Math.max(10, Math.min(maxY, y + 12)) };
+    }
+
+    // Paleta por grupo (coherente editorial)
+    function groupColor(g){
+      const map = {
+        'Atmósfera': 'rgba(70,120,190,.90)',
+        'Vegetación': 'rgba(90,160,110,.90)',
+        'Fauna': 'rgba(140,140,140,.90)',
+        'Microbiota': 'rgba(160,90,170,.90)',
+        'Suelo': 'rgba(120,95,70,.90)',
+        'Agua': 'rgba(55,160,220,.90)'
       };
+      return map[g] || 'rgba(11,16,32,.70)';
     }
 
-    function showSankeyError(msg){
-      sErr.textContent = msg;
-      sErr.classList.add('show');
-    }
-    function clearSankeyError(){
-      sErr.classList.remove('show');
-      sErr.textContent = '';
-    }
+    // Diagrama tipo “swimlanes”
+    const diagrams = {
+      cafe: {
+        title: 'Sistema café y ciclos de C, N y P (conceptual)',
+        hint: 'Sugerencia: ubica atmósfera, vegetación, fauna, microbiota y suelo; describe cómo se conectan por C, N y P.',
+        lanes: [
+          { id:'atm',  label:'Atmósfera (reservorios gaseosos)',  y0:  20, y1: 100 },
+          { id:'veg',  label:'Vegetación (productores primarios)', y0: 110, y1: 200 },
+          { id:'faun', label:'Fauna (herbívoros y depredadores)',  y0: 210, y1: 300 },
+          { id:'mic',  label:'Microbiota (descomponedores y simbiontes)', y0: 310, y1: 400 },
+          { id:'soil', label:'Suelo (MO, N mineral, P disponible)', y0: 410, y1: 500 },
+          { id:'water',label:'Agua (pérdidas por lixiviación/escorrentía)', y0: 510, y1: 540 }
+        ],
+        nodes: [
+          // atm
+          { id:'Atm', name:'Atmósfera', group:'Atmósfera', lane:'atm', x: 70,  w: 150, h: 44, sub:'CO2, N2' },
+          { id:'AtmN',name:'Atm: N2',   group:'Atmósfera', lane:'atm', x: 920, w: 120, h: 40, sub:'Reservorio' },
 
-    function renderSankey(mode){
-      if(!window.d3 || !d3.sankey || !d3.sankeyLinkHorizontal){
-        showSankeyError('No se pudo cargar la librería del diagrama (D3 Sankey). Revisa conexión o recarga la página.');
-        return;
+          // veg
+          { id:'Veg', name:'Vegetación', group:'Vegetación', lane:'veg', x: 120, w: 200, h: 52, sub:'Cafeto y sombra' },
+          { id:'AMF', name:'Mutualismo', group:'Microbiota', lane:'veg', x: 420, w: 190, h: 44, sub:'Mejora absorción N y P' },
+
+          // fauna
+          { id:'Herb', name:'Herbívoros', group:'Fauna', lane:'faun', x: 300, w: 170, h: 46, sub:'Consumo de plantas' },
+          { id:'Pred', name:'Depredadores', group:'Fauna', lane:'faun', x: 650, w: 180, h: 46, sub:'Control poblacional' },
+
+          // micro
+          { id:'Micro', name:'Microbiota', group:'Microbiota', lane:'mic', x: 180, w: 190, h: 46, sub:'Descomposición / simbiosis' },
+          { id:'FBN', name:'Fijación biológica', group:'Microbiota', lane:'mic', x: 520, w: 220, h: 46, sub:'N2 → NH4+' },
+
+          // soil
+          { id:'MO',  name:'Suelo: MO', group:'Suelo', lane:'soil', x: 90,  w: 150, h: 46, sub:'Materia orgánica' },
+          { id:'NH4', name:'NH4+', group:'Suelo', lane:'soil', x: 340, w: 120, h: 46, sub:'Amonio' },
+          { id:'NO3', name:'NO3-', group:'Suelo', lane:'soil', x: 520, w: 120, h: 46, sub:'Nitrato' },
+          { id:'PO4', name:'PO4---', group:'Suelo', lane:'soil', x: 700, w: 140, h: 46, sub:'Fosfato' },
+
+          // water
+          { id:'Water', name:'Agua', group:'Agua', lane:'water', x: 940, w: 140, h: 40, sub:'N, P disueltos' }
+        ],
+        links: [
+          // C
+          { id:'L1', source:'Atm', target:'Veg',  value: 9, label:'Fotosíntesis (C)', note:'Entrada de C desde CO2 atmosférico.' },
+          { id:'L2', source:'Veg', target:'Atm',  value: 4, label:'Respiración (CO2)', note:'Salida de CO2 por respiración.' },
+
+          // biomasa hacia fauna
+          { id:'L3', source:'Veg', target:'Herb', value: 5, label:'Consumo (energía)', note:'Transferencia a consumidores primarios.' },
+          { id:'L4', source:'Herb',target:'Pred', value: 4, label:'Depredación', note:'Control sobre herbívoros.' },
+
+          // restos al suelo
+          { id:'L5', source:'Veg', target:'MO',   value: 5, label:'Hojarasca/restos', note:'Aporta MO y nutrientes.' },
+          { id:'L6', source:'Herb',target:'MO',   value: 3, label:'Excretas/restos', note:'Retorno de materia al suelo.' },
+          { id:'L7', source:'Pred',target:'MO',   value: 2, label:'Restos', note:'Retorno de materia al suelo.' },
+
+          // micro y mineralización
+          { id:'L8', source:'MO', target:'Micro', value: 4, label:'Sustrato', note:'Microbiota usa MO para descomponer.' },
+          { id:'L9', source:'Micro', target:'NH4',value: 3, label:'Mineralización (N)', note:'Liberación de N a forma mineral.' },
+
+          // fijación biológica
+          { id:'L10',source:'AtmN', target:'FBN', value: 2, label:'N2', note:'Entrada de N2 para fijación.' },
+          { id:'L11',source:'FBN', target:'NH4',  value: 2, label:'Fijación', note:'Conversión N2 → NH4+.' },
+
+          // nitrificación y absorción
+          { id:'L12',source:'NH4', target:'NO3',  value: 2.5, label:'Nitrificación', note:'Transformación NH4+ → NO3-.' },
+          { id:'L13',source:'NO3', target:'Veg',  value: 2.2, label:'Asimilación (N)', note:'Absorción de NO3- por raíces.' },
+          { id:'L14',source:'PO4', target:'Veg',  value: 1.8, label:'Asimilación (P)', note:'Absorción de fosfato por raíces.' },
+
+          // mutualismo mejora absorción (conceptual)
+          { id:'L15',source:'AMF', target:'Veg',  value: 1.6, label:'Mejora absorción', note:'Mutualismo que mejora adquisición de nutrientes.' },
+          { id:'L16',source:'Micro', target:'AMF',value: 1.2, label:'Simbiosis', note:'Conexión microbiota–raíces.' },
+
+          // pérdidas al agua
+          { id:'L17',source:'NO3', target:'Water',value: 2.0, label:'Lixiviación', note:'Pérdidas hacia cuerpos de agua.' },
+          { id:'L18',source:'PO4', target:'Water',value: 1.4, label:'Escorrentía', note:'Arrastre de P hacia el agua.' }
+        ]
+      },
+
+      simple: {
+        title: 'Cadena trófica simple (flujo conceptual)',
+        hint: 'Sugerencia: explica el rol de productores, herbívoros, depredadores y cómo los descomponedores retornan nutrientes.',
+        lanes: [
+          { id:'veg',  label:'Vegetación (productores)', y0:  70, y1: 160 },
+          { id:'faun', label:'Fauna (consumidores)',     y0: 170, y1: 260 },
+          { id:'mic',  label:'Descomposición',           y0: 270, y1: 360 },
+          { id:'soil', label:'Suelo (reciclaje)',        y0: 370, y1: 470 },
+          { id:'water',label:'Pérdidas',                 y0: 480, y1: 530 }
+        ],
+        nodes: [
+          { id:'Prod', name:'Productores', group:'Vegetación', lane:'veg', x: 120, w: 210, h: 54, sub:'Plantas' },
+          { id:'Herb', name:'Consumidor primario', group:'Fauna', lane:'faun', x: 380, w: 240, h: 50, sub:'Herbívoros' },
+          { id:'Pred', name:'Consumidor secundario', group:'Fauna', lane:'faun', x: 720, w: 260, h: 50, sub:'Depredadores' },
+          { id:'Deco', name:'Descomponedores', group:'Microbiota', lane:'mic', x: 200, w: 240, h: 50, sub:'Hongos y bacterias' },
+          { id:'Soil', name:'Suelo', group:'Suelo', lane:'soil', x: 520, w: 200, h: 50, sub:'Minerales y MO' },
+          { id:'Water',name:'Agua', group:'Agua', lane:'water', x: 900, w: 160, h: 44, sub:'Pérdidas' }
+        ],
+        links: [
+          { id:'S1', source:'Prod', target:'Herb', value: 8, label:'Consumo', note:'Transferencia de energía a herbívoros.' },
+          { id:'S2', source:'Herb', target:'Pred', value: 6, label:'Depredación', note:'Control de herbívoros por depredadores.' },
+          { id:'S3', source:'Prod', target:'Soil', value: 3, label:'Restos', note:'Hojarasca y materia orgánica.' },
+          { id:'S4', source:'Herb', target:'Soil', value: 2, label:'Excretas', note:'Retorno de materia al suelo.' },
+          { id:'S5', source:'Pred', target:'Soil', value: 1.4, label:'Restos', note:'Retorno de materia al suelo.' },
+          { id:'S6', source:'Soil', target:'Deco', value: 3.5, label:'Sustrato', note:'Materia para descomposición.' },
+          { id:'S7', source:'Deco', target:'Soil', value: 3.0, label:'Mineralización', note:'Nutrientes regresan al suelo.' },
+          { id:'S8', source:'Soil', target:'Water', value: 1.8, label:'Lixiviación', note:'Pérdidas del sistema.' }
+        ]
       }
-      clearSankeyError();
+    };
 
-      const prev = sankeyStage.querySelector('svg.__sankey');
-      if(prev) prev.remove();
+    function clearSvg(){
+      while(flowSvg.firstChild) flowSvg.removeChild(flowSvg.firstChild);
+      // restaurar defs
+      const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+      defs.innerHTML = `
+        <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="rgba(11,16,32,.18)"/>
+        </filter>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(45,160,220,.25)"/>
+        </filter>
+      `;
+      flowSvg.appendChild(defs);
+    }
 
-      const {W, H} = stageSize();
-      if(W < 50 || H < 50){
-        showSankeyError('El contenedor del diagrama no tiene tamaño. Intenta recargar la página.');
-        return;
-      }
+    function nodeCenter(n, lanesById){
+      const lane = lanesById.get(n.lane);
+      const yMid = (lane.y0 + lane.y1)/2;
+      const x = n.x + n.w/2;
+      const y = yMid;
+      return { x, y };
+    }
 
-      // Estado inicial
-      sLocked = false;
-      sLockKey = null;
-      badge('ninguno');
+    function thick(v){
+      // escala de grosor tipo editorial (controlado)
+      // min 4, max 22
+      const t = 4 + (v * 1.8);
+      return Math.max(4, Math.min(22, t));
+    }
+
+    function renderFlow(mode){
+      flowMode = mode;
+      const d = diagrams[mode];
+      fHint.textContent = d.hint;
+
+      locked = false;
+      lockKey = null;
+      badgeFlow('ninguno');
       hideTip();
 
-      const data = sankeyData(mode);
+      clearSvg();
 
-      const nodes = data.nodes.map(d => ({...d}));
-      const indexById = new Map(nodes.map((d,i)=>[d.id, i]));
-      const links = data.links.map(d => ({
-        ...d,
-        source: indexById.get(d.source),
-        target: indexById.get(d.target)
-      }));
+      const lanesById = new Map(d.lanes.map(x => [x.id, x]));
+      const nodesById = new Map(d.nodes.map(x => [x.id, x]));
 
-      const svg = d3.select(sankeyStage)
-        .append('svg')
-        .attr('class','__sankey')
-        .attr('width', W)
-        .attr('height', H)
-        .attr('viewBox', `0 0 ${W} ${H}`)
-        .attr('preserveAspectRatio','xMidYMid meet')
-        .style('display','block');
+      // Fondo lanes
+      d.lanes.forEach((lane, i) => {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        rect.setAttribute('x', 10);
+        rect.setAttribute('y', lane.y0);
+        rect.setAttribute('width', 1180);
+        rect.setAttribute('height', Math.max(18, lane.y1 - lane.y0));
+        rect.setAttribute('rx', 12);
+        rect.setAttribute('fill', i % 2 === 0 ? 'rgba(255,255,255,.34)' : 'rgba(255,255,255,.22)');
+        rect.setAttribute('stroke', 'rgba(11,16,32,.08)');
+        flowSvg.appendChild(rect);
 
-      svg.append('rect')
-        .attr('x',0).attr('y',0).attr('width',W).attr('height',H)
-        .attr('fill','transparent')
-        .on('click', () => {
-          sLocked = false;
-          sLockKey = null;
-          dimNone();
-          badge('ninguno');
-          hideTip();
-        });
+        const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+        label.setAttribute('x', 22);
+        label.setAttribute('y', lane.y0 + 22);
+        label.setAttribute('fill', 'rgba(11,16,32,.72)');
+        label.setAttribute('font-family', 'Outfit, Inter, system-ui');
+        label.setAttribute('font-weight', '800');
+        label.setAttribute('font-size', '12');
+        label.textContent = lane.label;
+        flowSvg.appendChild(label);
+      });
 
-      const sk = d3.sankey()
-        .nodeWidth(16)
-        .nodePadding(18)
-        .extent([[24, 22], [W - 24, H - 24]]);
+      // Grupos para capas
+      const linkLayer = document.createElementNS('http://www.w3.org/2000/svg','g');
+      const nodeLayer = document.createElementNS('http://www.w3.org/2000/svg','g');
+      flowSvg.appendChild(linkLayer);
+      flowSvg.appendChild(nodeLayer);
 
-      const graph = sk({ nodes, links });
+      // Fondo clickeable para “unlock”
+      const bgHit = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      bgHit.setAttribute('x', 0);
+      bgHit.setAttribute('y', 0);
+      bgHit.setAttribute('width', 1200);
+      bgHit.setAttribute('height', 560);
+      bgHit.setAttribute('fill', 'transparent');
+      bgHit.style.cursor = 'default';
+      bgHit.addEventListener('click', () => {
+        locked = false;
+        lockKey = null;
+        badgeFlow('ninguno');
+        applyDim(null, null);
+        hideTip();
+      });
+      // IMPORTANTE: bgHit debe estar debajo de links/nodes, así que se inserta antes
+      flowSvg.insertBefore(bgHit, flowSvg.childNodes[1]);
 
-      const linkG = svg.append('g').attr('class','links');
-      const nodeG = svg.append('g').attr('class','nodes');
+      // Links
+      const linkEls = new Map(); // id -> path
+      d.links.forEach(link => {
+        const s = nodesById.get(link.source);
+        const t = nodesById.get(link.target);
+        if(!s || !t) return;
 
-      const linkPath = linkG.selectAll('path')
-        .data(graph.links)
-        .enter()
-        .append('path')
-        .attr('d', d3.sankeyLinkHorizontal())
-        .attr('fill','none')
-        .attr('stroke', d => {
-          const g1 = d.source.group;
-          const g2 = d.target.group;
-          return (g1 === g2) ? sankeyColors(g1) : 'rgba(11,16,32,.38)';
-        })
-        .attr('stroke-opacity', 0.45)
-        .attr('stroke-linecap','round')
-        .attr('stroke-width', d => Math.max(2.5, d.width))
-        .style('cursor','pointer');
+        const sp = nodeCenter(s, lanesById);
+        const tp = nodeCenter(t, lanesById);
 
-      const node = nodeG.selectAll('g')
-        .data(graph.nodes)
-        .enter()
-        .append('g')
-        .style('cursor','pointer');
+        const dx = (tp.x - sp.x) * 0.48;
+        const pathD = `M ${sp.x} ${sp.y} C ${sp.x + dx} ${sp.y}, ${tp.x - dx} ${tp.y}, ${tp.x} ${tp.y}`;
 
-      node.append('rect')
-        .attr('x', d => d.x0)
-        .attr('y', d => d.y0)
-        .attr('height', d => Math.max(12, d.y1 - d.y0))
-        .attr('width', d => d.x1 - d.x0)
-        .attr('rx', 6)
-        .attr('fill', d => sankeyColors(d.group))
-        .attr('fill-opacity', 0.92)
-        .attr('stroke', 'rgba(11,16,32,.18)');
+        const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+        path.setAttribute('d', pathD);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', 'rgba(11,16,32,.40)');
+        path.setAttribute('stroke-width', thick(link.value));
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('opacity', '0.55');
+        path.style.cursor = 'pointer';
+        path.dataset.kind = 'link';
+        path.dataset.id = link.id;
+        path.dataset.source = link.source;
+        path.dataset.target = link.target;
 
-      node.append('text')
-        .attr('x', d => d.x0 < W/2 ? d.x1 + 10 : d.x0 - 10)
-        .attr('y', d => (d.y0 + d.y1) / 2)
-        .attr('dy', '0.32em')
-        .attr('text-anchor', d => d.x0 < W/2 ? 'start' : 'end')
-        .attr('font-family', 'Outfit, Inter, system-ui')
-        .attr('font-weight', 800)
-        .attr('font-size', 12)
-        .attr('fill', 'rgba(11,16,32,.86)')
-        .text(d => d.name);
-
-      function dimNone(){
-        node.selectAll('rect')
-          .attr('fill-opacity', 0.92)
-          .attr('stroke', 'rgba(11,16,32,.18)');
-
-        linkPath
-          .attr('stroke-opacity', 0.45)
-          .attr('stroke', d => {
-            const g1 = d.source.group;
-            const g2 = d.target.group;
-            return (g1 === g2) ? sankeyColors(g1) : 'rgba(11,16,32,.38)';
-          });
-      }
-
-      function highlightNode(n){
-        const key = 'node:' + n.id;
-        if(sLocked && sLockKey !== key) return;
-
-        node.selectAll('rect')
-          .attr('fill-opacity', d => d.id === n.id ? 0.98 : 0.18)
-          .attr('stroke', d => d.id === n.id ? 'rgba(45,160,220,.55)' : 'rgba(11,16,32,.10)');
-
-        linkPath
-          .attr('stroke-opacity', d => (d.source.id === n.id || d.target.id === n.id) ? 0.86 : 0.12)
-          .attr('stroke', d => (d.source.id === n.id || d.target.id === n.id) ? 'rgba(45,160,220,.80)' : 'rgba(11,16,32,.28)');
-
-        badge(n.name);
-      }
-
-      function highlightLink(l){
-        const key = 'link:' + l.source.id + '->' + l.target.id;
-        if(sLocked && sLockKey !== key) return;
-
-        node.selectAll('rect')
-          .attr('fill-opacity', d => (d.id === l.source.id || d.id === l.target.id) ? 0.92 : 0.18)
-          .attr('stroke', d => (d.id === l.source.id || d.id === l.target.id) ? 'rgba(45,160,220,.55)' : 'rgba(11,16,32,.10)');
-
-        linkPath
-          .attr('stroke-opacity', d => (d === l) ? 0.95 : 0.10)
-          .attr('stroke', d => (d === l) ? 'rgba(45,160,220,.82)' : 'rgba(11,16,32,.28)');
-
-        badge(l.label || 'flujo');
-      }
-
-      node
-        .on('mousemove touchmove', (event, d) => {
-          if(sLocked && sLockKey && sLockKey !== ('node:' + d.id)) return;
-          const p = pointerXY(event, W, H);
-          setTip(
-            `<strong>${d.name}</strong><br>` +
-            `<span style="color:rgba(11,16,32,.72)">Grupo:</span> ${d.group}<br>` +
-            `<span style="color:rgba(11,16,32,.72)">Magnitud:</span> ${Math.round(d.value*10)/10}`,
+        path.addEventListener('mouseenter', (evt) => {
+          const k = 'link:' + link.id;
+          if(locked && lockKey !== k) return;
+          badgeFlow(link.label || 'flujo');
+          applyDim(null, link.id);
+          const p = tipPos(evt);
+          showTip(
+            `<strong>${link.label || 'Flujo'}</strong><br>` +
+            `<span style="color:rgba(11,16,32,.70)">Desde:</span> ${nodesById.get(link.source).name}<br>` +
+            `<span style="color:rgba(11,16,32,.70)">Hacia:</span> ${nodesById.get(link.target).name}<br>` +
+            `<span style="color:rgba(11,16,32,.70)">Intensidad:</span> ${Math.round(link.value*10)/10}<br>` +
+            `<span style="color:rgba(11,16,32,.70)">Nota:</span> ${link.note || '—'}`,
             p.x, p.y
           );
-        })
-        .on('mouseenter touchstart', (event, d) => { highlightNode(d); })
-        .on('mouseleave', () => { if(!sLocked){ dimNone(); badge('ninguno'); hideTip(); } })
-        .on('click', (event, d) => {
-          event.stopPropagation();
-          const key = 'node:' + d.id;
-          if(sLocked && sLockKey === key){
-            sLocked = false; sLockKey = null; dimNone(); badge('ninguno'); hideTip();
+        });
+        path.addEventListener('mousemove', (evt) => {
+          const k = 'link:' + link.id;
+          if(locked && lockKey !== k) return;
+          const p = tipPos(evt);
+          fTip.style.left = p.x + 'px';
+          fTip.style.top = p.y + 'px';
+        });
+        path.addEventListener('mouseleave', () => {
+          if(!locked){
+            badgeFlow('ninguno');
+            applyDim(null, null);
+            hideTip();
+          }
+        });
+        path.addEventListener('click', (evt) => {
+          evt.stopPropagation();
+          const k = 'link:' + link.id;
+          if(locked && lockKey === k){
+            locked = false; lockKey = null;
+            badgeFlow('ninguno');
+            applyDim(null, null);
+            hideTip();
           }else{
-            sLocked = true; sLockKey = key; highlightNode(d);
+            locked = true; lockKey = k;
+            badgeFlow(link.label || 'flujo');
+            applyDim(null, link.id);
           }
         });
 
-      linkPath
-        .on('mousemove touchmove', (event, d) => {
-          if(sLocked && sLockKey && sLockKey !== ('link:' + d.source.id + '->' + d.target.id)) return;
-          const p = pointerXY(event, W, H);
-          setTip(
-            `<strong>${d.label || 'Flujo'}</strong><br>` +
-            `<span style="color:rgba(11,16,32,.72)">Desde:</span> ${d.source.name}<br>` +
-            `<span style="color:rgba(11,16,32,.72)">Hacia:</span> ${d.target.name}<br>` +
-            `<span style="color:rgba(11,16,32,.72)">Intensidad:</span> ${Math.round(d.value*10)/10}`,
+        linkLayer.appendChild(path);
+        linkEls.set(link.id, path);
+      });
+
+      // Nodes
+      const nodeEls = new Map(); // id -> group
+      d.nodes.forEach(node => {
+        const lane = lanesById.get(node.lane);
+        const yMid = (lane.y0 + lane.y1)/2;
+        const y = yMid - node.h/2;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+        g.dataset.kind = 'node';
+        g.dataset.id = node.id;
+        g.style.cursor = 'pointer';
+
+        const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        rect.setAttribute('x', node.x);
+        rect.setAttribute('y', y);
+        rect.setAttribute('width', node.w);
+        rect.setAttribute('height', node.h);
+        rect.setAttribute('rx', 14);
+        rect.setAttribute('fill', 'rgba(255,255,255,.86)');
+        rect.setAttribute('stroke', 'rgba(11,16,32,.18)');
+        rect.setAttribute('filter', 'url(#softShadow)');
+
+        const bar = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        bar.setAttribute('x', node.x);
+        bar.setAttribute('y', y);
+        bar.setAttribute('width', 10);
+        bar.setAttribute('height', node.h);
+        bar.setAttribute('rx', 14);
+        bar.setAttribute('fill', groupColor(node.group));
+        bar.setAttribute('opacity', '0.92');
+
+        const title = document.createElementNS('http://www.w3.org/2000/svg','text');
+        title.setAttribute('x', node.x + 18);
+        title.setAttribute('y', y + 20);
+        title.setAttribute('fill', 'rgba(11,16,32,.90)');
+        title.setAttribute('font-family', 'Outfit, Inter, system-ui');
+        title.setAttribute('font-weight', '800');
+        title.setAttribute('font-size', '13');
+        title.textContent = node.name;
+
+        const sub = document.createElementNS('http://www.w3.org/2000/svg','text');
+        sub.setAttribute('x', node.x + 18);
+        sub.setAttribute('y', y + 38);
+        sub.setAttribute('fill', 'rgba(11,16,32,.70)');
+        sub.setAttribute('font-family', 'Inter, system-ui');
+        sub.setAttribute('font-weight', '600');
+        sub.setAttribute('font-size', '12');
+        sub.textContent = node.sub || '';
+
+        g.appendChild(rect);
+        g.appendChild(bar);
+        g.appendChild(title);
+        g.appendChild(sub);
+
+        g.addEventListener('mouseenter', (evt) => {
+          const k = 'node:' + node.id;
+          if(locked && lockKey !== k) return;
+          badgeFlow(node.name);
+          applyDim(node.id, null);
+          const p = tipPos(evt);
+          showTip(
+            `<strong>${node.name}</strong><br>` +
+            `<span style="color:rgba(11,16,32,.70)">Grupo:</span> ${node.group}<br>` +
+            (node.sub ? `<span style="color:rgba(11,16,32,.70)">Detalle:</span> ${node.sub}` : ''),
             p.x, p.y
           );
-        })
-        .on('mouseenter touchstart', (event, d) => { highlightLink(d); })
-        .on('mouseleave', () => { if(!sLocked){ dimNone(); badge('ninguno'); hideTip(); } })
-        .on('click', (event, d) => {
-          event.stopPropagation();
-          const key = 'link:' + d.source.id + '->' + d.target.id;
-          if(sLocked && sLockKey === key){
-            sLocked = false; sLockKey = null; dimNone(); badge('ninguno'); hideTip();
+        });
+        g.addEventListener('mousemove', (evt) => {
+          const k = 'node:' + node.id;
+          if(locked && lockKey !== k) return;
+          const p = tipPos(evt);
+          fTip.style.left = p.x + 'px';
+          fTip.style.top = p.y + 'px';
+        });
+        g.addEventListener('mouseleave', () => {
+          if(!locked){
+            badgeFlow('ninguno');
+            applyDim(null, null);
+            hideTip();
+          }
+        });
+        g.addEventListener('click', (evt) => {
+          evt.stopPropagation();
+          const k = 'node:' + node.id;
+          if(locked && lockKey === k){
+            locked = false; lockKey = null;
+            badgeFlow('ninguno');
+            applyDim(null, null);
+            hideTip();
           }else{
-            sLocked = true; sLockKey = key; highlightLink(d);
+            locked = true; lockKey = k;
+            badgeFlow(node.name);
+            applyDim(node.id, null);
           }
         });
 
-      dimNone();
-    }
+        nodeLayer.appendChild(g);
+        nodeEls.set(node.id, g);
+      });
 
-    function redrawSankey(){
-      try{
-        renderSankey(sMode === 'simple' ? 'simple' : 'cafe');
-      }catch(e){
-        showSankeyError('Ocurrió un error al dibujar el diagrama. Recarga la página.');
-      }
-    }
-
-    function initSankeyWithRetries(){
-      let tries = 0;
-      const maxTries = 14;
-
-      const tick = () => {
-        tries++;
-        const ok = (window.d3 && d3.sankey && d3.sankeyLinkHorizontal);
-        if(ok){
-          // defer un frame para asegurar layout
-          requestAnimationFrame(() => {
-            redrawSankey();
-            if(!ro){
-              ro = new ResizeObserver(() => {
-                clearTimeout(window.__skT);
-                window.__skT = setTimeout(redrawSankey, 100);
-              });
-              ro.observe(sankeyStage);
-            }
+      // Dim / highlight
+      function applyDim(nodeId, linkId){
+        // si nada resaltado
+        if(!nodeId && !linkId){
+          // nodes normal
+          nodeEls.forEach(g => {
+            const rect = g.querySelector('rect');
+            rect.setAttribute('opacity', '1');
+            rect.setAttribute('stroke', 'rgba(11,16,32,.18)');
+            rect.setAttribute('filter', 'url(#softShadow)');
+          });
+          // links normal
+          linkEls.forEach(p => {
+            p.setAttribute('opacity', '0.55');
+            p.setAttribute('stroke', 'rgba(11,16,32,.40)');
+            p.setAttribute('filter', 'none');
           });
           return;
         }
-        if(tries >= maxTries){
-          showSankeyError('No se pudo cargar D3 Sankey. Revisa conexión o recarga.');
-          return;
+
+        // determinar links “activos”
+        const activeLinks = new Set();
+        if(linkId){
+          activeLinks.add(linkId);
         }
-        setTimeout(tick, 250);
-      };
-      tick();
+        if(nodeId){
+          d.links.forEach(l => {
+            if(l.source === nodeId || l.target === nodeId) activeLinks.add(l.id);
+          });
+        }
+
+        // nodes activos
+        const activeNodes = new Set();
+        if(nodeId) activeNodes.add(nodeId);
+        activeLinks.forEach(lid => {
+          const l = d.links.find(x => x.id === lid);
+          if(l){
+            activeNodes.add(l.source);
+            activeNodes.add(l.target);
+          }
+        });
+
+        // aplicar estilos
+        nodeEls.forEach((g, id) => {
+          const rect = g.querySelector('rect');
+          if(activeNodes.has(id)){
+            rect.setAttribute('opacity', '1');
+            rect.setAttribute('stroke', 'rgba(45,160,220,.55)');
+            rect.setAttribute('filter', 'url(#glow)');
+          }else{
+            rect.setAttribute('opacity', '0.22');
+            rect.setAttribute('stroke', 'rgba(11,16,32,.10)');
+            rect.setAttribute('filter', 'none');
+          }
+        });
+
+        linkEls.forEach((p, id) => {
+          if(activeLinks.has(id)){
+            p.setAttribute('opacity', '0.92');
+            p.setAttribute('stroke', 'rgba(45,160,220,.82)');
+            p.setAttribute('filter', 'url(#glow)');
+          }else{
+            p.setAttribute('opacity', '0.10');
+            p.setAttribute('stroke', 'rgba(11,16,32,.28)');
+            p.setAttribute('filter', 'none');
+          }
+        });
+      }
+
+      // guardar función al scope del render
+      window.__applyDim = applyDim;
+
+      // inicial
+      applyDim(null, null);
     }
 
-    document.getElementById('sTabCafe').addEventListener('click', () => {
-      sMode = 'cafe';
-      document.getElementById('sTabCafe').classList.add('active');
-      document.getElementById('sTabSimple').classList.remove('active');
-      redrawSankey();
-    });
-    document.getElementById('sTabSimple').addEventListener('click', () => {
-      sMode = 'simple';
-      document.getElementById('sTabSimple').classList.add('active');
-      document.getElementById('sTabCafe').classList.remove('active');
-      redrawSankey();
-    });
-    document.getElementById('sReset').addEventListener('click', () => redrawSankey());
+    function resetFlow(){
+      locked = false;
+      lockKey = null;
+      badgeFlow('ninguno');
+      if(window.__applyDim) window.__applyDim(null, null);
+      hideTip();
+    }
 
-    window.addEventListener('load', initSankeyWithRetries);
+    // Tabs diagrama
+    document.getElementById('fTabCafe').addEventListener('click', () => {
+      flowMode = 'cafe';
+      document.getElementById('fTabCafe').classList.add('active');
+      document.getElementById('fTabSimple').classList.remove('active');
+      renderFlow('cafe');
+    });
+    document.getElementById('fTabSimple').addEventListener('click', () => {
+      flowMode = 'simple';
+      document.getElementById('fTabSimple').classList.add('active');
+      document.getElementById('fTabCafe').classList.remove('active');
+      renderFlow('simple');
+    });
+    document.getElementById('fReset').addEventListener('click', () => {
+      renderFlow(flowMode);
+      resetFlow();
+    });
+
+    // Render inicial
+    window.addEventListener('load', () => renderFlow('cafe'));
 
     /* =========================================================
        B) MAPA MENTAL (Markmap)
@@ -1088,7 +1268,7 @@
     document.getElementById('btnReset').addEventListener('click', () => safeRender());
 
     /* =========================================================
-       C) SIMULADOR (mismo juego, más vistoso)
+       C) SIMULADOR (más vistoso)
        ========================================================= */
     const kProd = document.getElementById('kProd');
     const kHerb = document.getElementById('kHerb');
@@ -1149,6 +1329,12 @@
       setStat(svN, sbN, N);
     }
 
+    function setScoreState(text, cls){
+      simScore.textContent = text;
+      simScore.classList.remove('ok','no');
+      if(cls) simScore.classList.add(cls);
+    }
+
     function resetSim(){
       running = false;
       t = 0;
@@ -1159,7 +1345,7 @@
       for(let i=0;i<60;i++) stepSim(false);
       draw();
       refreshStats();
-      simScore.textContent = 'Estado: detenido';
+      setScoreState('Estado: detenido', null);
       simFeedback.className = 'result';
       simFeedback.textContent = 'Presiona Iniciar. Luego aplica un evento y ajusta controles para recuperar estabilidad.';
     }
@@ -1170,12 +1356,14 @@
       simFeedback.className = 'result no';
       simFeedback.textContent = 'Evento aplicado: sequía. Bajó producción primaria y nutrientes. Ajusta parámetros para recuperar estabilidad.';
       draw(); refreshStats();
+      setScoreState('Estado: inestable', 'no');
     }
     function shockPredLoss(){
       D = Math.max(0.01, D * 0.35);
       simFeedback.className = 'result no';
       simFeedback.textContent = 'Evento aplicado: pérdida de depredadores. Observa si suben herbívoros y cae vegetación.';
       draw(); refreshStats();
+      setScoreState('Estado: inestable', 'no');
     }
 
     function stepSim(push=true){
@@ -1218,12 +1406,12 @@
       const okD = D > 0.06 && D < 0.80;
 
       if(okP && okH && okD){
-        simScore.textContent = 'Estado: estable';
+        setScoreState('Estado: estable', 'ok');
         simFeedback.className = 'result ok';
         simFeedback.textContent =
           'Estado estable. Productores sostienen herbívoros; depredadores controlan herbívoros; reciclaje mantiene nutrientes.';
       }else{
-        simScore.textContent = 'Estado: inestable';
+        setScoreState('Estado: inestable', 'no');
         simFeedback.className = 'result no';
         let msg = 'Estado inestable. ';
         if(P <= 0.08) msg += 'Productores casi colapsan. ';
@@ -1239,7 +1427,6 @@
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0,0,w,h);
 
-      // Fondo
       const bg = ctx.createLinearGradient(0,0,0,h);
       bg.addColorStop(0, 'rgba(255,255,255,.70)');
       bg.addColorStop(1, 'rgba(255,255,255,.50)');
@@ -1250,7 +1437,6 @@
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
-      // Ejes + grid
       ctx.strokeStyle = 'rgba(11,16,32,.18)';
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -1272,21 +1458,19 @@
         ctx.fillText(v.toFixed(1), 8, y+4);
       }
 
-      // Título / leyenda
       ctx.fillStyle = 'rgba(11,16,32,.86)';
       ctx.font = '13px Outfit, Inter, system-ui';
       ctx.fillText('Productores', padL + 6, padT + 14);
       ctx.fillText('Herbívoros',  padL + 150, padT + 14);
       ctx.fillText('Depredadores',padL + 278, padT + 14);
 
-      // Colores
       const colP = 'rgba(50,170,120,.90)';
       const colH = 'rgba(210,150,80,.90)';
       const colD = 'rgba(120,120,120,.95)';
 
       function plotWithFill(series, color){
         if(series.length < 2) return;
-        // fill
+
         ctx.beginPath();
         for(let i=0;i<series.length;i++){
           const x = padL + (i/(MAX_POINTS-1))*plotW;
@@ -1299,12 +1483,12 @@
         ctx.closePath();
 
         const g = ctx.createLinearGradient(0,padT,0,padT+plotH);
+        // degradado suave (más vistoso)
         g.addColorStop(0, color.replace('0.90','0.18').replace('0.95','0.16'));
         g.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = g;
         ctx.fill();
 
-        // stroke
         ctx.strokeStyle = color;
         ctx.lineWidth = 2.5;
         ctx.beginPath();
@@ -1321,7 +1505,6 @@
       plotWithFill(seriesH, colH);
       plotWithFill(seriesD, colD);
 
-      // valores
       ctx.fillStyle = 'rgba(11,16,32,.86)';
       ctx.font = '12px Inter, system-ui';
       ctx.fillText('P=' + fmt(P) + '   H=' + fmt(H) + '   D=' + fmt(D) + '   N=' + fmt(N), padL, padT + plotH + 20);
@@ -1339,13 +1522,13 @@
     document.getElementById('btnStart').addEventListener('click', () => {
       if(!running){
         running = true;
-        simScore.textContent = 'Estado: ejecutando';
+        setScoreState('Estado: ejecutando', null);
         requestAnimationFrame(tick);
       }
     });
     document.getElementById('btnPause').addEventListener('click', () => {
       running = false;
-      simScore.textContent = 'Estado: pausado';
+      setScoreState('Estado: pausado', null);
     });
     document.getElementById('btnShock1').addEventListener('click', shockDrought);
     document.getElementById('btnShock2').addEventListener('click', shockPredLoss);
