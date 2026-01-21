@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2.7 Amenazas a los bosques · EPC AALA</title>
+  <meta name="description" content="Amenazas a los bosques en Sololá y la cuenca del Lago de Atitlán: causas, impactos y acciones para prevenir la deforestación." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --glass:rgba(255,255,255,.66);
+      --stroke:rgba(11,16,32,.10);
+      --shadow:0 18px 45px rgba(11,16,32,.16);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.12);
+      --radius:24px;
+
+      --good: rgba(34,197,94,.14);
+      --bad: rgba(225,29,72,.12);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(45,160,220,.14);
+    }
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      background:
+        radial-gradient(1100px 760px at 12% 12%, rgba(185, 235, 255, .92), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, rgba(160, 210, 255, .90), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(210, 245, 255, .88), transparent 58%),
+        linear-gradient(135deg, #ecf9ff 0%, #e7f6ff 45%, #effbff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1100px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.58);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      white-space: nowrap;
+    }
+    h1{
+      margin: 10px 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: clamp(22px, 2.6vw, 34px);
+      line-height: 1.12;
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 90ch;
+    }
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+      margin-top: 4px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      color: rgba(11,16,32,.92);
+      font-weight: 800;
+      text-decoration:none;
+      font-size: 13px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: linear-gradient(135deg,
+        rgba(185,235,255,.92),
+        rgba(160,210,255,.90),
+        rgba(210,245,255,.90)
+      );
+    }
+
+    .stack{ margin-top: 14px; display:grid; gap: 14px; }
+
+    .card{
+      border:1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      padding: 16px;
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing:.2px;
+    }
+
+    .twoCols{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 12px;
+    }
+    @media (max-width: 900px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .muted{ color: var(--muted); }
+
+    .pillGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 900px){ .pillGrid{ grid-template-columns: 1fr; } }
+
+    .pill{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{
+      font-weight: 900;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .pill .s{
+      font-size: 12.5px;
+      color: rgba(11,16,32,.74);
+      line-height: 1.45;
+    }
+
+    /* Mapa mental */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .svgWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+    }
+    svg{ width:100%; height: 440px; display:block; }
+    .fallback{
+      display:none;
+      padding: 12px;
+      font-size: 13px;
+      color: rgba(11,16,32,.80);
+      line-height:1.55;
+    }
+    .fallback.show{ display:block; }
+
+    /* Juego */
+    .gameGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 900px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .gameHeader{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-bottom: 8px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      white-space: nowrap;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin-top: 10px;
+      min-height: 54px;
+    }
+    .chip{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      padding: 8px 10px;
+      font-weight: 800;
+      font-size: 12px;
+      cursor: grab;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .chip:active{ cursor: grabbing; transform: translateY(1px); }
+    .chip small{ font-weight:700; opacity:.72; }
+
+    .zones{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .zone{
+      border-radius: 18px;
+      border: 1px dashed rgba(11,16,32,.22);
+      background: rgba(255,255,255,.50);
+      padding: 12px;
+      min-height: 92px;
+      box-shadow: var(--shadow-soft);
+    }
+    .zone h3{
+      margin:0 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 13px;
+    }
+    .zone p{ margin:0; font-size: 12.5px; color: rgba(11,16,32,.72); line-height:1.45; }
+
+    .zoneDrop{
+      margin-top: 10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      min-height: 40px;
+    }
+
+    .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .result{
+      margin-top:10px;
+      border-radius:16px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding:12px;
+      font-size:13px;
+      line-height:1.55;
+      color: rgba(11,16,32,.82);
+      display:none;
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
+
+    footer{
+      text-align:center;
+      padding:18px 0 4px;
+      color: rgba(11,16,32,.58);
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <span class="kicker">Módulo 2 · El Bosque</span>
+        <h1>2.7 Amenazas a los bosques</h1>
+        <p class="subtitle">
+          Los bosques enfrentan presiones humanas y fenómenos asociados al cambio climático.
+          Identificar amenazas, consecuencias y acciones ayuda a proteger el agua, la biodiversidad y los suelos en la cuenca.
+        </p>
+      </div>
+
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="2-6.html">Anterior (2.6)</a>
+        <a class="btn primary" href="3-1.html">Siguiente (3.1)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+
+        <div class="twoCols">
+          <div class="box">
+            <p style="margin:0 0 10px;">
+              En Guatemala, la presión sobre los bosques ha aumentado por el crecimiento de la población y la pobreza,
+              especialmente en regiones rurales del occidente como Sololá. Además, los bosques son vulnerables a fenómenos
+              relacionados con el cambio climático y a actividades humanas no sostenibles.
+            </p>
+
+            <p style="margin:0;">
+              Entre las amenazas más frecuentes se encuentran:
+              <strong>incendios forestales</strong>, <strong>sequías</strong>, <strong>tormentas</strong>, <strong>inundaciones</strong>,
+              <strong>plagas de insectos</strong> y la llegada de <strong>especies exóticas</strong> que pueden desplazar especies nativas.
+              En Sololá destacan como amenazas principales: <strong>incendios</strong>, <strong>tala ilegal</strong> y <strong>plagas/enfermedades</strong>.
+            </p>
+          </div>
+
+          <div class="box">
+            <p style="margin:0 0 8px;"><strong>Dato del libro (Sololá)</strong></p>
+            <p class="muted" style="margin:0;">
+              Entre 2016 y 2020 la cobertura forestal disminuyó (monitoreo satelital), mostrando pérdida de bosque y la necesidad de prevenir incendios,
+              tala ilegal y afectaciones por plagas/enfermedades.
+            </p>
+            <div class="pillGrid" style="grid-template-columns:1fr; margin-top:10px;">
+              <div class="pill">
+                <div class="t">¿Por qué importa?</div>
+                <div class="s">
+                  Incendios, insectos y enfermedades pueden afectar el crecimiento y supervivencia de los árboles,
+                  la calidad del agua y la biodiversidad.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillGrid">
+          <div class="pill">
+            <div class="t">Deforestación</div>
+            <div class="s">
+              Eliminación permanente del bosque sin permitir su regeneración natural o artificial.
+              <br><strong>Nota:</strong> talas con plan de manejo autorizado no constituyen deforestación.
+            </div>
+          </div>
+          <div class="pill">
+            <div class="t">Consecuencias</div>
+            <div class="s">
+              Reducción de biodiversidad, carencia de agua, desgaste de suelos productivos y alteración del equilibrio de los ecosistemas.
+            </div>
+          </div>
+          <div class="pill">
+            <div class="t">Prevención</div>
+            <div class="s">
+              Uso sostenible, respeto a áreas protegidas y leyes, control de tala inmoderada y planificación del uso del suelo.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2 style="margin:0;">Mapa mental</h2>
+            <div class="muted">Amenazas → deforestación → consecuencias → acciones para prevenir.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" type="button" id="btnFit">Ajustar</button>
+            <button class="btn" type="button" id="btnToggle">Contraer/Expandir</button>
+            <button class="btn" type="button" id="btnResetMap">Recargar</button>
+          </div>
+        </div>
+
+        <div class="svgWrap">
+          <svg id="mindmap"></svg>
+          <div id="mapFallback" class="fallback">
+            <strong>Si el mapa no carga:</strong> revisa tu conexión a internet o recarga la página.
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Actividad: Clasifica (Amenaza / Consecuencia / Acción)</h2>
+        <p class="muted" style="margin:0;">
+          Arrastra cada tarjeta a la categoría correcta. Luego presiona <strong>Evaluar</strong>.
+        </p>
+
+        <div class="gameGrid" style="margin-top:12px;">
+          <div class="box">
+            <div class="gameHeader">
+              <div>
+                <p style="margin:0;"><strong>Tarjetas</strong></p>
+                <p class="muted" style="margin:6px 0 0;">Tip: piensa “¿Qué lo causa?”, “¿Qué provoca?” o “¿Qué lo reduce?”</p>
+              </div>
+              <div class="badge">Puntaje: <span id="score">0</span></div>
+            </div>
+
+            <div class="chips" id="chips"></div>
+
+            <div class="gameBtns">
+              <button class="btn" type="button" id="btnMix">Mezclar</button>
+              <button class="btn" type="button" id="btnClear">Limpiar</button>
+            </div>
+
+            <div id="note" class="result info"></div>
+          </div>
+
+          <div class="box">
+            <p style="margin:0 0 6px;"><strong>Categorías</strong></p>
+            <div class="zones">
+              <div class="zone" data-zone="Amenaza">
+                <h3>Amenaza</h3>
+                <p>Factor que daña el bosque (ej.: incendios, tala ilegal, plagas).</p>
+                <div class="zoneDrop" id="zAmenaza"></div>
+              </div>
+
+              <div class="zone" data-zone="Consecuencia">
+                <h3>Consecuencia</h3>
+                <p>Efecto de perder bosque o degradarlo (ej.: menos agua, pérdida de biodiversidad).</p>
+                <div class="zoneDrop" id="zConsecuencia"></div>
+              </div>
+
+              <div class="zone" data-zone="Acción">
+                <h3>Acción</h3>
+                <p>Medida para prevenir o reducir la deforestación/degradación.</p>
+                <div class="zoneDrop" id="zAccion"></div>
+              </div>
+            </div>
+
+            <div class="gameBtns">
+              <button class="btn primary" type="button" id="btnCheck">Evaluar</button>
+              <button class="btn" type="button" id="btnResetGame">Reiniciar</button>
+            </div>
+
+            <div id="result" class="result"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Ideas clave (para recordar)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <ul style="margin:0; padding-left:18px; line-height:1.6;">
+              <li>Las amenazas incluyen eventos climáticos (sequías, tormentas) y actividades humanas (tala ilegal, incendios provocados).</li>
+              <li>Plagas, insectos y enfermedades pueden reducir la supervivencia de árboles y afectar el agua y la biodiversidad.</li>
+              <li><strong>Deforestación</strong> es eliminar el bosque sin permitir que se regenere; no es lo mismo que tala con plan autorizado.</li>
+              <li>Prevenir requiere <strong>manejo sostenible</strong> y planificación del uso de la tierra.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p style="margin:0 0 8px;"><strong>Preguntas guía</strong></p>
+            <ul style="margin:0; padding-left:18px; line-height:1.6;">
+              <li>¿Qué amenaza es más común en tu comunidad: incendios, tala o plagas?</li>
+              <li>¿Qué acciones concretas pueden hacer familias, escuelas y municipalidad?</li>
+              <li>¿Cómo se conecta el bosque con el agua del lago y con la erosión del suelo?</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // ==========================
+    // MAPA MENTAL (robusto)
+    // ==========================
+    const md = `
+# 2.7 Amenazas a los bosques
+## ¿Por qué aumentan las presiones?
+- Crecimiento de la población
+- Pobreza (especialmente en áreas rurales)
+- Actividades humanas no sostenibles
+- Fenómenos asociados al cambio climático
+## Amenazas frecuentes
+- Incendios forestales
+- Huracanes, tormentas e inundaciones
+- Sequías
+- Plagas de insectos
+- Enfermedades
+- Especies exóticas
+  - Se vuelven plagas o desplazan especies nativas
+## En Sololá destacan
+- Incendios forestales
+- Tala ilegal
+- Plagas y enfermedades
+## Deforestación
+- Eliminación permanente del bosque
+  - Sin regeneración natural o artificial
+- Nota
+  - Tala con plan de manejo autorizado ≠ deforestación
+## Consecuencias de perder bosque
+- Reducción de biodiversidad
+- Carencia de agua
+- Desgaste de suelos productivos
+- Alteración del equilibrio de ecosistemas
+## Acciones para evitarla
+- Uso sostenible del bosque
+- Mantener balance: tierras con bosque vs otros usos
+- Controlar tala inmoderada
+- Planificar uso del suelo según sus características
+- Respetar áreas protegidas y leyes forestales
+`.trim();
+
+    let mm = null, expanded = true;
+
+    function safeRenderMap(){
+      const fallback = document.getElementById('mapFallback');
+      try{
+        if(!window.markmap || !window.markmap.Transformer || !window.markmap.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        expanded = true;
+        fallback.classList.remove('show');
+        return true;
+      }catch(e){
+        fallback.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      const ok = safeRenderMap();
+      if (ok || tries >= 12){
+        clearInterval(t);
+        if (!mm) document.getElementById('mapFallback').classList.add('show');
+      }
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
+
+    // ==========================
+    // JUEGO: Clasificación (drag + tap)
+    // ==========================
+    const ITEMS = [
+      { id:'a1', t:'Incendios forestales', cat:'Amenaza' },
+      { id:'a2', t:'Tala ilegal', cat:'Amenaza' },
+      { id:'a3', t:'Plagas de insectos', cat:'Amenaza' },
+      { id:'a4', t:'Sequías', cat:'Amenaza' },
+      { id:'a5', t:'Especies exóticas invasoras', cat:'Amenaza' },
+
+      { id:'c1', t:'Reducción de biodiversidad', cat:'Consecuencia' },
+      { id:'c2', t:'Carencia de agua', cat:'Consecuencia' },
+      { id:'c3', t:'Desgaste de suelos productivos', cat:'Consecuencia' },
+      { id:'c4', t:'Alteración del equilibrio del ecosistema', cat:'Consecuencia' },
+
+      { id:'x1', t:'Uso sostenible del bosque', cat:'Acción' },
+      { id:'x2', t:'Respetar áreas protegidas y leyes', cat:'Acción' },
+      { id:'x3', t:'Controlar tala inmoderada', cat:'Acción' },
+      { id:'x4', t:'Planificar uso del suelo', cat:'Acción' },
+      { id:'x5', t:'Mantener balance bosque/otros usos', cat:'Acción' },
+    ];
+
+    const ZONES = {
+      'Amenaza': document.getElementById('zAmenaza'),
+      'Consecuencia': document.getElementById('zConsecuencia'),
+      'Acción': document.getElementById('zAccion'),
+    };
+
+    const chipsWrap = document.getElementById('chips');
+    const scoreEl = document.getElementById('score');
+    const resEl = document.getElementById('result');
+    const noteEl = document.getElementById('note');
+
+    function shuffle(arr){
+      const a = [...arr];
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function makeChip(item){
+      const el = document.createElement('div');
+      el.className = 'chip';
+      el.draggable = true;
+      el.dataset.id = item.id;
+      el.dataset.cat = item.cat;
+      el.textContent = item.t;
+
+      el.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', item.id);
+        el.style.opacity = '.6';
+      });
+      el.addEventListener('dragend', () => el.style.opacity = '1');
+
+      // Tap-to-move (celular)
+      el.addEventListener('click', () => {
+        const inPool = el.parentElement === chipsWrap;
+        if(inPool){
+          // mover a la zona con menos elementos
+          const entries = Object.entries(ZONES).map(([k,zone]) => [k, zone.children.length]);
+          entries.sort((a,b)=>a[1]-b[1]);
+          ZONES[entries[0][0]].appendChild(el);
+          note(`Movido a: <strong>${entries[0][0]}</strong> (puedes volver a tocar para regresar al pool).`);
+        }else{
+          chipsWrap.appendChild(el);
+          note(`Regresó al pool.`);
+        }
+      });
+
+      return el;
+    }
+
+    function enableDrop(zoneEl){
+      zoneEl.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        zoneEl.style.borderColor = 'rgba(11,16,32,.35)';
+      });
+      zoneEl.addEventListener('dragleave', () => {
+        zoneEl.style.borderColor = 'rgba(11,16,32,.22)';
+      });
+      zoneEl.addEventListener('drop', (e) => {
+        e.preventDefault();
+        zoneEl.style.borderColor = 'rgba(11,16,32,.22)';
+        const id = e.dataTransfer.getData('text/plain');
+        const chip = document.querySelector(`.chip[data-id="${id}"]`);
+        if(chip) zoneEl.appendChild(chip);
+      });
+    }
+
+    function note(html){
+      noteEl.innerHTML = html;
+      noteEl.style.display = 'block';
+      noteEl.className = 'result info';
+    }
+
+    function resetGame(){
+      resEl.style.display = 'none';
+      noteEl.style.display = 'none';
+      scoreEl.textContent = '0';
+      chipsWrap.innerHTML = '';
+      Object.values(ZONES).forEach(z => z.innerHTML = '');
+      shuffle(ITEMS).forEach(it => chipsWrap.appendChild(makeChip(it)));
+    }
+
+    Object.values(ZONES).forEach(enableDrop);
+
+    document.getElementById('btnMix').addEventListener('click', () => {
+      // trae todo al pool y mezcla
+      const all = [...document.querySelectorAll('.chip')].map(ch => ({
+        id: ch.dataset.id,
+        cat: ch.dataset.cat,
+        t: ch.textContent
+      }));
+      chipsWrap.innerHTML = '';
+      Object.values(ZONES).forEach(z => z.innerHTML = '');
+      shuffle(all).forEach(it => chipsWrap.appendChild(makeChip(it)));
+      note('Tarjetas mezcladas.');
+    });
+
+    document.getElementById('btnClear').addEventListener('click', () => {
+      // manda todo al pool sin mezclar
+      [...document.querySelectorAll('.chip')].forEach(ch => chipsWrap.appendChild(ch));
+      note('Todo regresó al pool.');
+    });
+
+    document.getElementById('btnResetGame').addEventListener('click', resetGame);
+
+    document.getElementById('btnCheck').addEventListener('click', () => {
+      let total = ITEMS.length;
+      let ok = 0;
+
+      // evaluar por zona
+      Object.entries(ZONES).forEach(([zoneName, zoneEl]) => {
+        [...zoneEl.querySelectorAll('.chip')].forEach(ch => {
+          if(ch.dataset.cat === zoneName) ok++;
+        });
+      });
+
+      const pct = Math.round((ok/total)*100);
+      scoreEl.textContent = `${ok}/${total}`;
+
+      resEl.style.display = 'block';
+      if(pct >= 85){
+        resEl.className = 'result ok';
+        resEl.innerHTML = `<strong>¡Excelente!</strong> ${ok} de ${total} correctas (${pct}%).`;
+      }else if(pct >= 60){
+        resEl.className = 'result warn';
+        resEl.innerHTML = `<strong>¡Bien!</strong> ${ok} de ${total} correctas (${pct}%). Revisa las que quedaron fuera de lugar y vuelve a intentar.`;
+      }else{
+        resEl.className = 'result no';
+        resEl.innerHTML = `<strong>Vamos de nuevo.</strong> ${ok} de ${total} correctas (${pct}%). Tip: “Amenaza” = lo que daña; “Consecuencia” = lo que provoca; “Acción” = lo que reduce el problema.`;
+      }
+    });
+
+    // iniciar
+    resetGame();
+  </script>
+</body>
+</html>
