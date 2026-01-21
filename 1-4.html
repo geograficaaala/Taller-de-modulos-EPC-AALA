@@ -1,7 +1,9 @@
 <!-- =========================
-     1-4.html
+     1-4.html (ACTUALIZADO)
      MÓDULO 1 · MEDIO AMBIENTE
      1.4 Ecosistemas en Sololá y la cuenca del Lago de Atitlán
+     Cambio: NUEVO JUEGO (quiz de “Rutas de la cuenca” con tarjetas + timeline)
+     Lo demás se mantiene igual.
 ========================= -->
 <!doctype html>
 <html lang="es">
@@ -9,7 +11,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>1.4 Ecosistemas en Sololá y la cuenca del Lago de Atitlán · EPC AALA</title>
-  <meta name="description" content="Ecosistemas acuáticos y terrestres: funciones, servicios ecosistémicos, amenazas y conservación. Mapa mental interactivo y juego explorador." />
+  <meta name="description" content="Ecosistemas acuáticos y terrestres: funciones, servicios ecosistémicos, amenazas y conservación. Mapa mental interactivo y juego de rutas." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -31,6 +33,7 @@
       --good: rgba(34,197,94,.12);
       --bad: rgba(225,29,72,.10);
       --warn: rgba(245,158,11,.12);
+      --info: rgba(45,160,220,.12);
     }
     *{ box-sizing:border-box; }
     body{
@@ -71,6 +74,7 @@
     }
     .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.78); border-color:rgba(11,16,32,.18); }
     .btn.primary{ background:rgba(45,160,220,.16); border-color:rgba(45,160,220,.30); }
+
     main.stack{ margin-top:14px; display:flex; flex-direction:column; gap:16px; padding:0 18px; }
 
     .card{
@@ -150,10 +154,10 @@
     }
     .mapFallback.show{ display:block; }
 
-    /* game */
+    /* NEW GAME */
     .gameGrid{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
+      grid-template-columns: 1fr 1fr;
       gap:14px;
       align-items:start;
     }
@@ -169,43 +173,115 @@
     .panel h3{ margin:0 0 8px; font-size:15px; }
     .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); line-height:1.5; font-size:13px; }
 
-    .mapSvg{
-      width:100%;
-      height:420px;
-      display:block;
-      border-radius: 14px;
-      background:
-        radial-gradient(900px 420px at 30% 10%, rgba(45,160,220,.14), transparent 55%),
-        radial-gradient(700px 420px at 70% 0%, rgba(34,197,94,.12), transparent 60%);
-      border:1px solid rgba(11,16,32,.10);
-    }
-    .hotspot{ cursor:pointer; transition: transform .12s ease, opacity .12s ease; transform-origin:center; }
-    .hotspot:hover{ transform: scale(1.03); opacity:.96; }
-    .hsLabel{ font-size: 12px; fill: rgba(11,16,32,.88); font-weight: 800; }
-    .hsSub{ font-size: 11px; fill: rgba(11,16,32,.66); font-weight: 600; }
-
-    .qBox{
+    .track{
       border:1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.70);
-      border-radius: 16px;
+      background: rgba(255,255,255,.62);
+      border-radius: 18px;
       padding:12px;
+      box-shadow: var(--shadow2);
+      overflow:hidden;
     }
-    .qTitle{ font-weight:850; margin-bottom:6px; }
-    .choices{ display:grid; gap:8px; margin-top:10px; }
-    .choiceBtn{
-      text-align:left;
-      border:1px solid rgba(11,16,32,.14);
-      background: rgba(255,255,255,.70);
-      border-radius: 14px;
-      padding:10px 10px;
-      cursor:pointer;
-      font-size:13px;
+    .trackHead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius: 999px;
+      background: rgba(45,160,220,.12);
+      border:1px solid rgba(45,160,220,.24);
+      font-size:12px;
       color: rgba(11,16,32,.84);
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      font-weight:700;
     }
-    .choiceBtn:hover{ transform: translateY(-1px); border-color: rgba(45,160,220,.32); background: rgba(255,255,255,.82); }
-    .choiceBtn.correct{ border-color: rgba(34,197,94,.35); background: rgba(34,197,94,.10); }
-    .choiceBtn.wrong{ border-color: rgba(225,29,72,.30); background: rgba(225,29,72,.08); }
+
+    .timeline{
+      position:relative;
+      padding:14px 8px 8px;
+      border-radius: 16px;
+      background:
+        radial-gradient(800px 320px at 15% 0%, rgba(45,160,220,.12), transparent 55%),
+        radial-gradient(700px 320px at 85% 10%, rgba(34,197,94,.10), transparent 60%),
+        rgba(255,255,255,.62);
+      border:1px solid rgba(11,16,32,.10);
+      min-height: 168px;
+    }
+    .line{
+      position:absolute;
+      left:28px; right:28px;
+      top:48px;
+      height:10px;
+      border-radius: 999px;
+      background: rgba(11,16,32,.08);
+    }
+    .stops{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:10px;
+      position:relative;
+      z-index:2;
+      padding: 0 8px;
+    }
+    @media (max-width: 520px){
+      .stops{ grid-template-columns: 1fr; }
+      .line{ display:none; }
+      .timeline{ min-height: unset; }
+    }
+    .stop{
+      border:1px dashed rgba(11,16,32,.22);
+      background: rgba(255,255,255,.55);
+      border-radius: 16px;
+      padding:10px;
+      min-height: 96px;
+      cursor:pointer;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .stop strong{ font-size:13px; }
+    .stop .hint{ font-size:12px; color: rgba(11,16,32,.62); line-height:1.35; }
+    .stop.filled{
+      border-style:solid;
+      border-color: rgba(34,197,94,.28);
+      background: rgba(34,197,94,.08);
+    }
+    .stop.bad{
+      border-style:solid;
+      border-color: rgba(225,29,72,.28);
+      background: rgba(225,29,72,.08);
+    }
+    .stop.targetable{
+      outline:2px solid rgba(245,158,11,.40);
+      background: rgba(245,158,11,.08);
+    }
+
+    .chips{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 520px){ .chips{ grid-template-columns: 1fr; } }
+
+    .chip{
+      border:1px solid rgba(11,16,32,.14);
+      background: rgba(255,255,255,.78);
+      border-radius: 16px;
+      padding:10px;
+      cursor:grab;
+      user-select:none;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      box-shadow: 0 10px 22px rgba(11,16,32,.08);
+    }
+    .chip:hover{ border-color: rgba(45,160,220,.34); transform: translateY(-1px); }
+    .chip:active{ cursor:grabbing; transform: scale(.99); }
+    .chip.selected{
+      outline:2px solid rgba(45,160,220,.55);
+      background: rgba(45,160,220,.10);
+    }
+    .chip .t{ font-weight:850; font-size:13px; margin-bottom:6px; }
+    .chip .s{ font-size:12px; color: rgba(11,16,32,.72); line-height:1.35; }
 
     .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
     .result{
@@ -221,6 +297,7 @@
     .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
     .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
     .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
 
     footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
   </style>
@@ -337,93 +414,50 @@
         </div>
       </section>
 
+      <!-- =========================
+           NUEVO JUEGO
+      ========================== -->
       <section class="card">
-        <h2>Juego: explorador de ecosistemas</h2>
+        <h2>Juego: rutas de la cuenca</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Toca una zona del mapa para leer su descripción y responder una pregunta. El juego funciona igual en celular y computadora.
+          Construye una ruta “de la montaña al lago”: elige la tarjeta correcta para cada etapa.
+          Funciona en PC (arrastrar) y en celular (tocar tarjeta → tocar etapa).
         </p>
 
         <div class="gameGrid" style="margin-top:12px;">
           <div class="panel">
-            <h3>Mapa interactivo</h3>
-            <p>Selecciona una zona y observa sus características.</p>
+            <h3>Tarjetas</h3>
+            <p>Coloca cada tarjeta en la etapa donde ocurre ese proceso o impacto.</p>
+            <div class="chips" id="chips"></div>
 
-            <svg class="mapSvg" viewBox="0 0 1000 520" role="img" aria-label="Mapa conceptual interactivo de ecosistemas">
-              <defs>
-                <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(11,16,32,.18)"/>
-                </filter>
-              </defs>
+            <div class="gameBtns">
+              <button class="btn" type="button" id="btnMix">Mezclar</button>
+              <button class="btn" type="button" id="btnClear">Limpiar</button>
+            </div>
 
-              <!-- Lago -->
-              <path id="lake" d="M460,140 C560,120 660,160 700,220 C740,280 700,360 610,390 C520,420 420,400 360,340 C300,280 320,170 460,140 Z"
-                    fill="rgba(45,160,220,.28)" stroke="rgba(45,160,220,.55)" stroke-width="3" filter="url(#softShadow)"/>
-              <text x="520" y="265" text-anchor="middle" class="hsLabel">Lago</text>
-              <text x="520" y="285" text-anchor="middle" class="hsSub">ecosistema acuático</text>
-
-              <!-- Volcanes / montañas -->
-              <g class="hotspot" data-id="volcan" transform="translate(90,220)">
-                <path d="M20,220 L170,20 L320,220 Z" fill="rgba(34,197,94,.20)" stroke="rgba(34,197,94,.45)" stroke-width="3" filter="url(#softShadow)"/>
-                <path d="M170,20 L210,80 L130,80 Z" fill="rgba(255,255,255,.45)"/>
-                <text x="170" y="250" text-anchor="middle" class="hsLabel">Volcanes y montañas</text>
-                <text x="170" y="270" text-anchor="middle" class="hsSub">terrestre</text>
-              </g>
-
-              <!-- Bosque -->
-              <g class="hotspot" data-id="bosque" transform="translate(690,70)">
-                <rect x="0" y="0" rx="20" ry="20" width="280" height="160"
-                      fill="rgba(34,197,94,.18)" stroke="rgba(34,197,94,.45)" stroke-width="3" filter="url(#softShadow)"/>
-                <circle cx="70" cy="70" r="26" fill="rgba(34,197,94,.35)"/>
-                <circle cx="120" cy="60" r="22" fill="rgba(34,197,94,.32)"/>
-                <circle cx="160" cy="78" r="24" fill="rgba(34,197,94,.33)"/>
-                <rect x="66" y="86" width="10" height="38" fill="rgba(11,16,32,.22)"/>
-                <rect x="116" y="82" width="10" height="42" fill="rgba(11,16,32,.22)"/>
-                <rect x="156" y="92" width="10" height="32" fill="rgba(11,16,32,.22)"/>
-                <text x="140" y="128" text-anchor="middle" class="hsLabel">Zonas boscosas</text>
-                <text x="140" y="148" text-anchor="middle" class="hsSub">cobertura</text>
-              </g>
-
-              <!-- Agroforestal -->
-              <g class="hotspot" data-id="agro" transform="translate(670,360)">
-                <rect x="0" y="0" rx="20" ry="20" width="300" height="140"
-                      fill="rgba(245,158,11,.16)" stroke="rgba(245,158,11,.45)" stroke-width="3" filter="url(#softShadow)"/>
-                <path d="M30,95 L270,95" stroke="rgba(11,16,32,.18)" stroke-width="2"/>
-                <path d="M30,70 L270,70" stroke="rgba(11,16,32,.14)" stroke-width="2"/>
-                <path d="M60,30 L60,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
-                <path d="M120,30 L120,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
-                <path d="M180,30 L180,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
-                <path d="M240,30 L240,110" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
-                <text x="150" y="44" text-anchor="middle" class="hsLabel">Agroforestales</text>
-                <text x="150" y="64" text-anchor="middle" class="hsSub">uso humano</text>
-              </g>
-
-              <!-- Ríos -->
-              <g class="hotspot" data-id="rios" transform="translate(350,430)">
-                <path d="M0,40 C120,0 260,80 400,30" fill="none" stroke="rgba(45,160,220,.60)" stroke-width="10" stroke-linecap="round"/>
-                <path d="M0,40 C120,0 260,80 400,30" fill="none" stroke="rgba(45,160,220,.25)" stroke-width="18" stroke-linecap="round"/>
-                <text x="210" y="20" text-anchor="middle" class="hsLabel">Ríos y arroyos</text>
-                <text x="210" y="40" text-anchor="middle" class="hsSub">conectan cuenca</text>
-              </g>
-            </svg>
-
-            <div id="info" class="result warn" style="display:none;"></div>
+            <div id="note" class="result info" style="display:none;"></div>
           </div>
 
-          <div class="panel">
-            <h3>Reto</h3>
-            <p>Puntaje: <strong id="score">0</strong></p>
-
-            <div class="qBox">
-              <div class="qTitle" id="qTitle">Selecciona una zona para iniciar.</div>
-              <div class="muted" id="qText">Toca una zona del mapa.</div>
-              <div class="choices" id="choices"></div>
-              <div id="final" class="result" style="display:none;"></div>
-
-              <div class="gameBtns">
-                <button class="btn" type="button" id="btnResetGame">Reiniciar</button>
-                <button class="btn primary" type="button" id="btnNext">Siguiente reto</button>
+          <div class="track">
+            <div class="trackHead">
+              <div>
+                <h3 style="margin:0 0 6px;">Ruta</h3>
+                <div class="muted">Objetivo: entender cómo se conecta la cuenca (suelo → ríos → lago).</div>
               </div>
+              <div class="badge">Puntaje: <span id="score" style="margin-left:6px;">0</span></div>
             </div>
+
+            <div class="timeline" id="timeline">
+              <div class="line"></div>
+              <div class="stops" id="stops"></div>
+            </div>
+
+            <div class="gameBtns">
+              <button class="btn primary" type="button" id="btnCheck">Evaluar</button>
+              <button class="btn" type="button" id="btnResetGame">Reiniciar juego</button>
+            </div>
+
+            <div id="result" class="result" style="display:none;"></div>
           </div>
         </div>
       </section>
@@ -434,7 +468,7 @@
 
   <script>
     // ==========
-    // 1) MAPA MENTAL
+    // MAPA MENTAL (igual)
     // ==========
     const md = `
 # 1.4 Ecosistemas en Sololá y la cuenca del Lago de Atitlán
@@ -518,152 +552,273 @@
     document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
 
     // ==========
-    // 2) JUEGO EXPLORADOR
+    // NUEVO JUEGO: RUTAS DE LA CUENCA
     // ==========
-    const ZONES = [
+    const STAGES = [
       {
-        id:'volcan',
-        name:'Volcanes y montañas',
-        info:'Zona terrestre asociada a altitud, pendientes y suelos volcánicos. La cobertura vegetal ayuda a retener suelo y regular el agua.',
-        question:'¿Qué servicio ecosistémico se relaciona más con una buena cobertura vegetal en laderas?',
-        options:[
-          { t:'Control de erosión e infiltración', ok:true },
-          { t:'Aumentar basura en ríos', ok:false },
-          { t:'Eliminar toda la vegetación', ok:false },
-        ],
+        id:'ladera',
+        title:'Laderas y suelos',
+        hint:'Procesos en el suelo y cobertura vegetal'
       },
       {
-        id:'bosque',
-        name:'Zonas boscosas',
-        info:'Bosques y cobertura arbórea sostienen biodiversidad, protegen suelo, capturan agua y ayudan a regular microclimas.',
-        question:'¿Cuál es una función típica de un bosque bien conservado?',
-        options:[
-          { t:'Proveer hábitat y proteger el suelo', ok:true },
-          { t:'Reducir la diversidad a cero', ok:false },
-          { t:'Evitar el ciclo del agua', ok:false },
-        ],
-      },
-      {
-        id:'agro',
-        name:'Sistemas agroforestales',
-        info:'Uso humano que combina cultivos con árboles. Puede mantener parte de la biodiversidad y apoyar la conservación del suelo si se maneja bien.',
-        question:'¿Qué describe mejor un agroecosistema con árboles?',
-        options:[
-          { t:'Cultivos combinados con árboles', ok:true },
-          { t:'Solo cemento', ok:false },
-          { t:'Solo agua salada', ok:false },
-        ],
+        id:'escorrentia',
+        title:'Escorrentía',
+        hint:'Lo que baja con la lluvia'
       },
       {
         id:'rios',
-        name:'Ríos y arroyos',
-        info:'Ecosistemas acuáticos que conectan la cuenca. Su calidad depende del manejo de residuos, suelo y escorrentía.',
-        question:'¿Qué afecta más directamente a ríos y arroyos?',
-        options:[
-          { t:'Contaminación y sedimentos por mal manejo', ok:true },
-          { t:'Que el agua no se mueva', ok:false },
-          { t:'Que los bosques existan', ok:false },
-        ],
+        title:'Ríos y arroyos',
+        hint:'Transporte y conexión'
       },
       {
         id:'lago',
-        name:'Lago',
-        info:'Ecosistema acuático. Cambios en nutrientes y contaminación pueden alterar el equilibrio y afectar especies.',
-        question:'El lago se clasifica como:',
-        options:[
-          { t:'Ecosistema acuático', ok:true },
-          { t:'Desierto', ok:false },
-          { t:'Glaciar', ok:false },
-        ],
+        title:'Lago',
+        hint:'Efectos finales en el agua'
       }
     ];
 
-    const infoEl = document.getElementById('info');
-    const qTitle = document.getElementById('qTitle');
-    const qText  = document.getElementById('qText');
-    const choicesEl = document.getElementById('choices');
+    // Cada tarjeta tiene una etapa correcta
+    const CARDS = [
+      { id:'bosque', stage:'ladera', t:'Cobertura vegetal', s:'Reduce erosión y favorece infiltración.' },
+      { id:'erosion', stage:'ladera', t:'Erosión del suelo', s:'Se incrementa con deforestación y pendientes.' },
+      { id:'sedimento', stage:'escorrentia', t:'Sedimentos', s:'Partículas de suelo que bajan con lluvia.' },
+      { id:'basura', stage:'escorrentia', t:'Basura y residuos', s:'Si no se maneja, llega a quebradas y ríos.' },
+      { id:'transporte', stage:'rios', t:'Transporte por ríos', s:'Corrientes llevan nutrientes/contaminantes.' },
+      { id:'ribera', stage:'rios', t:'Ribera protectora', s:'Vegetación ribereña filtra y estabiliza márgenes.' },
+      { id:'nutrientes', stage:'lago', t:'Exceso de nutrientes', s:'Puede alterar equilibrio y afectar calidad del agua.' },
+      { id:'calidad', stage:'lago', t:'Calidad del agua', s:'Depende de manejo de cuenca y tratamiento de aguas.' }
+    ];
+
+    const chipsEl = document.getElementById('chips');
+    const stopsEl = document.getElementById('stops');
+    const noteEl = document.getElementById('note');
+    const resultEl = document.getElementById('result');
     const scoreEl = document.getElementById('score');
-    const finalEl = document.getElementById('final');
 
-    let current = null;
-    let score = 0;
+    let selectedCardId = null;
 
-    function setInfo(zone){
-      infoEl.style.display = 'block';
-      infoEl.className = 'result warn';
-      infoEl.innerHTML = `<strong>${zone.name}:</strong> ${zone.info}`;
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
     }
 
-    function setQuestion(zone){
-      current = zone;
-      qTitle.textContent = `Reto: ${zone.name}`;
-      qText.textContent = zone.question;
-      choicesEl.innerHTML = '';
-      finalEl.style.display = 'none';
+    function clearSelection(){
+      selectedCardId = null;
+      [...document.querySelectorAll('.chip')].forEach(c => c.classList.remove('selected'));
+      [...document.querySelectorAll('.stop')].forEach(s => s.classList.remove('targetable'));
+    }
 
-      zone.options.forEach((opt)=>{
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'choiceBtn';
-        btn.textContent = opt.t;
-        btn.addEventListener('click', ()=>{
-          [...choicesEl.querySelectorAll('.choiceBtn')].forEach(b=>b.disabled=true);
-          if (opt.ok){
-            btn.classList.add('correct');
-            score += 10;
-            scoreEl.textContent = String(score);
-            finalEl.style.display = 'block';
-            finalEl.className = 'result ok';
-            finalEl.innerHTML = `<strong>Correcto.</strong> +10 puntos.`;
-          } else {
-            btn.classList.add('wrong');
-            finalEl.style.display = 'block';
-            finalEl.className = 'result no';
-            const good = zone.options.find(o=>o.ok)?.t || 'Respuesta correcta';
-            finalEl.innerHTML = `No. La respuesta correcta era: <strong>${good}</strong>.`;
-          }
-        });
-        choicesEl.appendChild(btn);
+    function setTargetable(on){
+      [...document.querySelectorAll('.stop')].forEach(s => s.classList.toggle('targetable', on));
+    }
+
+    function makeChip(card){
+      const div = document.createElement('div');
+      div.className = 'chip';
+      div.draggable = true;
+      div.id = 'chip_' + card.id;
+      div.dataset.id = card.id;
+      div.innerHTML = `<div class="t">${card.t}</div><div class="s">${card.s}</div>`;
+
+      // Drag (PC)
+      div.addEventListener('dragstart', (e)=>{
+        e.dataTransfer.setData('text/plain', card.id);
+        e.dataTransfer.effectAllowed = 'move';
+        clearSelection();
+      });
+
+      // Tap (móvil)
+      div.addEventListener('click', ()=>{
+        const isSel = (selectedCardId === card.id);
+        clearSelection();
+        if (!isSel){
+          selectedCardId = card.id;
+          div.classList.add('selected');
+          setTargetable(true);
+          noteEl.className = 'result info';
+          noteEl.textContent = 'Tarjeta seleccionada. Ahora toca una etapa de la ruta.';
+          noteEl.style.display = 'block';
+        } else {
+          noteEl.style.display = 'none';
+        }
+      });
+
+      return div;
+    }
+
+    function makeStop(stage){
+      const stop = document.createElement('div');
+      stop.className = 'stop';
+      stop.dataset.stage = stage.id;
+      stop.innerHTML = `
+        <div>
+          <strong>${stage.title}</strong>
+          <div class="hint">${stage.hint}</div>
+        </div>
+        <div class="hint" data-fill>Coloca 2 tarjetas aquí</div>
+      `;
+
+      // drag over + drop
+      stop.addEventListener('dragover', (e)=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; });
+      stop.addEventListener('drop', (e)=>{
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        if (!id) return;
+        placeInStop(id, stop);
+      });
+
+      // tap to place
+      stop.addEventListener('click', ()=>{
+        if (!selectedCardId) return;
+        placeInStop(selectedCardId, stop);
+        clearSelection();
+        noteEl.style.display = 'none';
+      });
+
+      return stop;
+    }
+
+    function updateFillHints(){
+      [...document.querySelectorAll('.stop')].forEach(stop=>{
+        const n = stop.querySelectorAll('.chip').length;
+        const fill = stop.querySelector('[data-fill]');
+        if (!fill) return;
+        if (n === 0) fill.textContent = 'Coloca 2 tarjetas aquí';
+        else if (n === 1) fill.textContent = 'Falta 1 tarjeta';
+        else fill.textContent = '';
       });
     }
 
-    function pickById(id){
-      const zone = ZONES.find(z=>z.id===id);
-      if (!zone) return;
-      setInfo(zone);
-      setQuestion(zone);
+    function placeInStop(cardId, stop){
+      // limite 2 tarjetas por etapa
+      const already = stop.querySelectorAll('.chip').length;
+      if (already >= 2){
+        noteEl.className = 'result warn';
+        noteEl.textContent = 'Esta etapa ya tiene 2 tarjetas. Cambia una si quieres.';
+        noteEl.style.display = 'block';
+        return;
+      }
+
+      const chip = document.getElementById('chip_' + cardId);
+      if (!chip) return;
+
+      stop.appendChild(chip);
+      stop.classList.remove('bad');
+      stop.classList.remove('filled');
+      resultEl.style.display = 'none';
+      updateFillHints();
     }
 
-    document.querySelectorAll('.hotspot').forEach(hs=>{
-      hs.addEventListener('click', ()=> pickById(hs.getAttribute('data-id')));
-    });
-
-    const lake = document.getElementById('lake');
-    if (lake){
-      lake.style.cursor='pointer';
-      lake.addEventListener('click', ()=> pickById('lago'));
+    function clearStops(){
+      [...document.querySelectorAll('.stop')].forEach(stop=>{
+        [...stop.querySelectorAll('.chip')].forEach(ch => chipsEl.appendChild(ch));
+        stop.classList.remove('filled','bad');
+      });
+      clearSelection();
+      updateFillHints();
     }
 
-    function nextRandom(){
-      const pick = ZONES[Math.floor(Math.random()*ZONES.length)];
-      setInfo(pick);
-      setQuestion(pick);
-    }
-
-    document.getElementById('btnNext').addEventListener('click', ()=>{
-      nextRandom();
-    });
-
-    document.getElementById('btnResetGame').addEventListener('click', ()=>{
-      current = null;
-      score = 0;
+    function setup(){
+      chipsEl.innerHTML = '';
+      stopsEl.innerHTML = '';
+      noteEl.style.display = 'none';
+      resultEl.style.display = 'none';
       scoreEl.textContent = '0';
-      infoEl.style.display = 'none';
-      qTitle.textContent = 'Selecciona una zona para iniciar.';
-      qText.textContent = 'Toca una zona del mapa.';
-      choicesEl.innerHTML = '';
-      finalEl.style.display = 'none';
+      clearSelection();
+
+      shuffle(CARDS).forEach(c=> chipsEl.appendChild(makeChip(c)));
+      STAGES.forEach(s=> stopsEl.appendChild(makeStop(s)));
+      updateFillHints();
+    }
+
+    document.getElementById('btnMix').addEventListener('click', ()=>{
+      clearStops();
+      const ids = [...chipsEl.querySelectorAll('.chip')].map(x=>x.dataset.id);
+      chipsEl.innerHTML='';
+      shuffle(ids).forEach(id=>{
+        const c = CARDS.find(k=>k.id===id);
+        chipsEl.appendChild(makeChip(c));
+      });
+      noteEl.className='result info';
+      noteEl.textContent='Tarjetas mezcladas.';
+      noteEl.style.display='block';
     });
+
+    document.getElementById('btnClear').addEventListener('click', ()=>{
+      clearStops();
+      noteEl.className='result info';
+      noteEl.textContent='Ruta limpiada.';
+      noteEl.style.display='block';
+    });
+
+    document.getElementById('btnResetGame').addEventListener('click', setup);
+
+    document.getElementById('btnCheck').addEventListener('click', ()=>{
+      let placed = 0;
+      let ok = 0;
+
+      // limpiar estado
+      [...document.querySelectorAll('.stop')].forEach(stop=>{
+        stop.classList.remove('filled','bad');
+      });
+
+      // validar: 2 tarjetas por etapa y correctas
+      [...document.querySelectorAll('.stop')].forEach(stop=>{
+        const stage = stop.dataset.stage;
+        const chips = [...stop.querySelectorAll('.chip')];
+        placed += chips.length;
+
+        // marcar faltantes
+        if (chips.length < 2){
+          stop.classList.add('bad');
+          return;
+        }
+
+        // evaluar chips
+        const allGood = chips.every(ch=>{
+          const card = CARDS.find(c=>c.id===ch.dataset.id);
+          return card && card.stage === stage;
+        });
+
+        if (allGood){
+          ok += 2;
+          stop.classList.add('filled');
+        } else {
+          // contar aciertos individuales
+          chips.forEach(ch=>{
+            const card = CARDS.find(c=>c.id===ch.dataset.id);
+            if (card && card.stage === stage) ok++;
+          });
+          stop.classList.add('bad');
+        }
+      });
+
+      resultEl.style.display = 'block';
+
+      // puntaje simple
+      const score = ok * 5; // 8 tarjetas total => 40 puntos max
+      scoreEl.textContent = String(score);
+
+      if (placed < CARDS.length){
+        resultEl.className = 'result warn';
+        resultEl.innerHTML = `Te faltan <strong>${CARDS.length - placed}</strong> tarjeta(s) por colocar. Completa la ruta y vuelve a evaluar.`;
+        return;
+      }
+
+      if (ok === CARDS.length){
+        resultEl.className = 'result ok';
+        resultEl.innerHTML = `<strong>Perfecto.</strong> Construiste una ruta coherente de cuenca: suelo → escorrentía → ríos → lago.`;
+      } else {
+        resultEl.className = 'result no';
+        resultEl.innerHTML = `Hay tarjetas en etapas incorrectas. Tuviste <strong>${ok}</strong> aciertos de <strong>${CARDS.length}</strong>. Ajusta y reintenta.`;
+      }
+    });
+
+    setup();
   </script>
 </body>
 </html>
