@@ -3,211 +3,242 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>2.2 Bienes y servicios ambientales del bosque · EPC AALA</title>
-  <meta name="description" content="Servicios ambientales del bosque: purificación del aire, retención de agua, control de erosión, regulación del clima. Mapa mental y juego." />
+  <title>Módulo 2 · 2.2 Bienes y servicios del bosque</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <!-- Markmap -->
   <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
   <style>
     :root{
       --ink:#0b1020;
       --muted:rgba(11,16,32,.72);
-      --muted2:rgba(11,16,32,.58);
-      --line:rgba(11,16,32,.14);
-      --shadow: 0 18px 55px rgba(11,16,32,.12);
-      --shadow2: 0 10px 28px rgba(11,16,32,.10);
-      --radius:22px;
+      --glass:rgba(255,255,255,.66);
+      --stroke:rgba(11,16,32,.10);
+      --shadow:0 18px 45px rgba(11,16,32,.16);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.12);
+      --radius:24px;
 
-      --good: rgba(34,197,94,.12);
-      --bad: rgba(225,29,72,.10);
-      --warn: rgba(245,158,11,.12);
-      --info: rgba(45,160,220,.12);
+      --good: rgba(30, 160, 90, .20);
+      --bad: rgba(210, 70, 100, .18);
+      --info: rgba(45, 160, 220, .18);
+      --warn: rgba(245, 158, 11, .18);
     }
     *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
       color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(1200px 800px at 10% 0%, rgba(45,160,220,.18), transparent 60%),
-        radial-gradient(1100px 700px at 90% 10%, rgba(34,197,94,.16), transparent 55%),
-        radial-gradient(900px 700px at 40% 100%, rgba(245,158,11,.10), transparent 60%),
-        #f4f7fb;
+        radial-gradient(1100px 760px at 12% 12%, rgba(210, 255, 220, .84), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, rgba(175, 235, 255, .84), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(255, 215, 240, .70), transparent 58%),
+        linear-gradient(135deg, #effff4 0%, #e8f6ff 45%, #fff0f7 100%);
       min-height:100vh;
     }
-    a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 40px; }
+    .wrap{ max-width:1200px; margin:0 auto; padding:26px 18px 64px; }
 
     header{
-      display:flex; gap:16px; align-items:flex-end; justify-content:space-between;
-      padding:18px 18px 0;
+      border:1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
     }
-    .kicker{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:12px; letter-spacing:.12em; text-transform:uppercase;
-      color:rgba(11,16,32,.62);
+    .kicker{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:.3px; }
+    h1{
+      margin:6px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight:800;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height:1.15;
+      letter-spacing:.2px;
     }
-    h1{ margin:8px 0 8px; font-size:30px; line-height:1.15; }
-    .subtitle{ margin:0 0 12px; max-width:92ch; color:var(--muted); line-height:1.5; }
-
-    .nav{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding-bottom:14px; }
+    .subtitle{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      max-width: 85ch;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
       padding:10px 12px;
       border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.62);
-      box-shadow: 0 8px 18px rgba(11,16,32,.06);
-      font-size:13px;
-      font-weight:800;
-      color:rgba(11,16,32,.86);
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      user-select:none;
-      cursor:pointer;
-      white-space:nowrap;
-    }
-    .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.78); border-color:rgba(11,16,32,.18); }
-    .btn.primary{ background:rgba(45,160,220,.16); border-color:rgba(45,160,220,.30); }
-
-    main.stack{ margin-top:14px; display:flex; flex-direction:column; gap:16px; padding:0 18px; }
-    .card{
       border:1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.70);
-      backdrop-filter: blur(8px);
+      background: rgba(255,255,255,.62);
+      color: rgba(11,16,32,.92);
+      font-weight:800;
+      text-decoration:none;
+      font-size:13px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(210,255,220,.88), rgba(175,235,255,.88), rgba(255,215,240,.80));
+    }
+
+    .stack{ margin-top:14px; display:grid; gap:14px; }
+    .card{
+      border:1px solid var(--stroke);
+      background: var(--glass);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
       padding:16px;
     }
-    .card h2{ margin:0 0 10px; font-size:18px; }
-    .muted{ color: var(--muted2); font-size:13px; }
+    h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight:800;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .muted{ color: var(--muted); }
 
-    .twoCols{ display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; align-items:start; }
-    @media (max-width: 900px){ .twoCols{ grid-template-columns: 1fr; } }
-
+    .twoCols{ margin-top:10px; display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
     .box{
-      border:1px solid rgba(11,16,32,.10);
-      background: rgba(255,255,255,.66);
       border-radius: 18px;
-      padding:12px;
-      box-shadow: var(--shadow2);
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      line-height:1.55;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
     }
-    .box p{ margin:0 0 10px; line-height:1.6; color:rgba(11,16,32,.84); }
-    .box ul{ margin:8px 0 0 18px; padding:0; line-height:1.6; color:rgba(11,16,32,.82); }
+    ul{ margin: 8px 0 0 18px; padding:0; }
+    li{ margin: 6px 0; }
 
-    .grid4{
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap:10px;
-      margin-top:10px;
-    }
-    @media (max-width: 980px){ .grid4{ grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 520px){ .grid4{ grid-template-columns: 1fr; } }
-
-    .pill{
-      border:1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.70);
-      border-radius: 18px;
-      padding:12px;
-      box-shadow: 0 10px 22px rgba(11,16,32,.06);
-    }
-    .pill .t{ font-weight:900; margin-bottom:6px; }
-    .pill .s{ color:rgba(11,16,32,.74); font-size:13px; line-height:1.5; }
-
-    /* MAPA */
-    .mapTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    /* Map */
+    .mapTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
     .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
     .mapStage{
-      border:1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.62);
+      margin-top: 10px;
       border-radius: 18px;
-      padding:10px;
+      border: 1px dashed rgba(11,16,32,.22);
+      background:
+        radial-gradient(circle at 1px 1px, rgba(11,16,32,.08) 1px, transparent 1px) 0 0 / 22px 22px,
+        linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,.40));
+      padding: 10px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+      position: relative;
       overflow:hidden;
     }
-    svg#mindmap{
-      width:100%;
-      height:520px;
-      display:block;
-      background:
-        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
-        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
-      border-radius: 14px;
-    }
+    svg.markmap{ width:100%; height: 420px; display:block; }
     .mapFallback{
-      display:none;
-      margin-top:10px;
-      border-radius: 14px;
-      border:1px dashed rgba(11,16,32,.18);
-      padding:12px;
-      color:rgba(11,16,32,.72);
-      background: rgba(255,255,255,.55);
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      padding: 16px;
+      text-align:center;
+      color: rgba(11,16,32,.72);
+      background: rgba(255,255,255,.74);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .15s ease;
     }
-    .mapFallback.show{ display:block; }
+    .mapFallback.show{ opacity:1; pointer-events:auto; }
 
-    /* JUEGO (matching) */
-    .gameGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
-
-    .panel{
-      border:1px solid rgba(11,16,32,.10);
+    /* Memory game */
+    .gameGrid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .hud{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top: 10px;
+    }
+    .chipHud{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
       background: rgba(255,255,255,.62);
-      border-radius: 18px;
-      padding:12px;
-      box-shadow: var(--shadow2);
+      padding: 6px 10px;
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
     }
-    .panel h3{ margin:0 0 6px; font-size:14px; }
-    .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); font-size:13px; line-height:1.45; }
+    .board{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 1100px){ .board{ grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 700px){ .board{ grid-template-columns: repeat(3, 1fr); } }
 
-    .cards{ display:grid; gap:8px; }
-    .cardItem{
-      border:1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.72);
+    .tile{
+      position:relative;
       border-radius: 16px;
-      padding:10px;
-      box-shadow: 0 10px 22px rgba(11,16,32,.06);
-      cursor:grab;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      min-height: 92px;
+      cursor:pointer;
       user-select:none;
+      overflow:hidden;
+      transform: translateZ(0);
     }
-    .cardItem:active{ cursor:grabbing; }
-    .cardItem .t{ font-weight:900; margin-bottom:4px; }
-    .cardItem .s{ color:rgba(11,16,32,.72); font-size:12px; line-height:1.4; }
+    .tileInner{
+      transition: transform .18s ease, opacity .18s ease;
+    }
+    .tile .front{
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 14px;
+      color: rgba(11,16,32,.90);
+    }
+    .tile .back{
+      opacity:0;
+      transform: translateY(6px);
+      font-size: 12.5px;
+      line-height: 1.35;
+      color: rgba(11,16,32,.80);
+      margin-top: 6px;
+      font-weight: 700;
+    }
+    .tile.revealed .back{ opacity:1; transform: translateY(0); }
+    .tile.revealed .front{ opacity:.55; }
 
-    .drop{
-      border:1px dashed rgba(11,16,32,.22);
-      background: rgba(255,255,255,.55);
-      border-radius: 16px;
-      padding:10px;
-      min-height: 60px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+    .tile.matched{
+      background: rgba(30,160,90,.10);
+      border-color: rgba(34,197,94,.26);
+      cursor: default;
     }
-    .drop strong{ font-size:13px; }
-    .drop span{ color:rgba(11,16,32,.70); font-size:12px; }
-    .drop.filled{ border-style: solid; }
 
     .result{
-      margin-top:10px;
-      border-radius: 14px;
-      border:1px solid rgba(11,16,32,.12);
-      padding:10px 12px;
-      background: rgba(255,255,255,.65);
-      color:rgba(11,16,32,.82);
-      font-size:13px;
-      line-height:1.45;
-      display:none;
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
     }
-    .result.good{ background: var(--good); }
-    .result.bad{ background: var(--bad); }
-    .result.warn{ background: var(--warn); }
-    .result.info{ background: var(--info); }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
 
-    .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-
-    footer{ padding:10px 18px 0; color:rgba(11,16,32,.55); font-size:12px; text-align:center; }
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
   </style>
 </head>
 
@@ -218,8 +249,8 @@
         <div class="kicker">Módulo 2 · El bosque</div>
         <h1>2.2 Bienes y servicios ambientales del bosque</h1>
         <p class="subtitle">
-          Los bosques brindan servicios esenciales: <strong>purifican el aire</strong>, <strong>retienen el agua</strong>,
-          <strong>evitan la erosión</strong> y <strong>regulan el clima</strong>.
+          El bosque nos da <strong>bienes</strong> (cosas que usamos) y <strong>servicios</strong> (beneficios que sostienen la vida).
+          Hoy aprenderás a reconocerlos con un juego de memoria.
         </p>
       </div>
       <nav class="nav">
@@ -230,38 +261,32 @@
     </header>
 
     <main class="stack">
-
       <section class="card">
-        <h2>Resumen</h2>
+        <h2>Contexto teórico (ampliado)</h2>
         <div class="twoCols">
           <div class="box">
             <p>
-              El libro explica que necesitamos los bosques porque cumplen funciones importantes para la vida:
-              protegen flora y fauna y ayudan a regular <strong>clima</strong>, <strong>agua</strong> y <strong>suelos</strong>.
+              Los <strong>bienes</strong> son productos que obtenemos del bosque. Los <strong>servicios ambientales</strong> son beneficios
+              que el bosque brinda sin que siempre los veamos (como regular el agua o proteger el suelo).
             </p>
-            <p class="muted">Ejemplos de servicios ambientales:</p>
             <ul>
-              <li><strong>Purificación del aire:</strong> producen oxígeno.</li>
-              <li><strong>Retienen el agua:</strong> la guardan y la liberan despacio, manteniendo fuentes más constantes.</li>
-              <li><strong>Evitan la erosión:</strong> raíces y plantas impiden que el agua/viento se lleven el suelo.</li>
-              <li><strong>Regulan el clima:</strong> refrescan el ambiente y ayudan al ciclo de lluvia.</li>
+              <li><strong>Provisión:</strong> madera, leña, alimentos, plantas medicinales, agua (por recarga hídrica).</li>
+              <li><strong>Regulación:</strong> reduce erosión, regula temperatura y humedad, ayuda a mantener calidad del agua.</li>
+              <li><strong>Soporte:</strong> hábitat, formación de suelo, ciclo de nutrientes, polinización.</li>
+              <li><strong>Culturales:</strong> paisaje, turismo, recreación, identidad local, educación.</li>
             </ul>
           </div>
-          <div class="box">
-            <p><strong>En la cuenca</strong>:</p>
-            <ul>
-              <li>Más bosque = menos sedimentos al lago.</li>
-              <li>Más infiltración = nacimientos con mejor continuidad.</li>
-              <li>Menos calor extremo local y mejor humedad.</li>
-            </ul>
-          </div>
-        </div>
 
-        <div class="grid4">
-          <div class="pill"><div class="t">Aire</div><div class="s">Oxígeno y captura de contaminantes.</div></div>
-          <div class="pill"><div class="t">Agua</div><div class="s">Retención + liberación lenta.</div></div>
-          <div class="pill"><div class="t">Suelo</div><div class="s">Protección contra erosión.</div></div>
-          <div class="pill"><div class="t">Clima</div><div class="s">Frescura y ciclo de lluvia.</div></div>
+          <div class="box">
+            <p><strong>Idea clave</strong>:</p>
+            <div class="result info">
+              Cuando se degrada un bosque, no solo se pierden árboles: también se pierden servicios como agua, suelos estables y biodiversidad.
+            </div>
+            <p style="margin-top:10px;"><strong>Ejemplo cuenca</strong>:</p>
+            <ul>
+              <li>Más deforestación → más erosión → más sedimentos en ríos → peor calidad de agua.</li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -269,7 +294,7 @@
         <div class="mapTop">
           <div>
             <h2 style="margin:0;">Mapa mental</h2>
-            <div class="muted">Incluye servicios y relación con la cuenca.</div>
+            <div class="muted">Bienes y servicios del bosque (4 categorías).</div>
           </div>
           <div class="mapBtns">
             <button class="btn" id="btnFit" type="button">Ajustar</button>
@@ -281,66 +306,29 @@
         <div class="mapStage">
           <svg id="mindmap" class="markmap"></svg>
           <div class="mapFallback" id="mapFallback">
-            <strong>No se pudo cargar el mapa mental.</strong> Recarga la página o revisa la conexión.
+            <div><strong>No se pudo cargar el mapa mental.</strong><br>Recarga la página o revisa la conexión.</div>
           </div>
         </div>
       </section>
 
       <section class="card">
-        <h2>Juego: conecta servicio ↔ explicación</h2>
+        <h2>Juego: Memoria del bosque</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Arrastra una tarjeta a su servicio (PC) o toca una tarjeta y luego toca un espacio (celular).
+          Encuentra las parejas (categoría ↔ ejemplo). Ganas cuando completas todas.
         </p>
 
-        <div class="gameGrid" style="margin-top:12px;">
-          <div class="panel">
-            <h3>Tarjetas</h3>
-            <p>Arrastra o toca para seleccionar.</p>
-            <div class="cards" id="cards"></div>
-
-            <div class="gameBtns">
-              <button class="btn" type="button" id="btnMix">Mezclar</button>
-              <button class="btn" type="button" id="btnClear">Limpiar</button>
+        <div class="gameGrid">
+          <div class="box">
+            <div class="hud">
+              <div class="chipHud">Movimientos: <span id="moves">0</span></div>
+              <div class="chipHud">Parejas: <span id="pairs">0</span> / <span id="pairsTotal">6</span></div>
+              <button class="btn" id="btnShuffle" type="button">Mezclar</button>
+              <button class="btn" id="btnReset" type="button">Reiniciar</button>
             </div>
 
-            <div id="note" class="result info" style="display:none;"></div>
-          </div>
+            <div class="board" id="board"></div>
 
-          <div class="panel">
-            <h3>Servicios (coloca aquí)</h3>
-
-            <div class="drop" data-key="aire">
-              <strong>Purificación del aire</strong>
-              <span class="muted">Suelta aquí</span>
-            </div>
-
-            <div style="height:10px;"></div>
-
-            <div class="drop" data-key="agua">
-              <strong>Retienen el agua</strong>
-              <span class="muted">Suelta aquí</span>
-            </div>
-
-            <div style="height:10px;"></div>
-
-            <div class="drop" data-key="suelo">
-              <strong>Evitan la erosión</strong>
-              <span class="muted">Suelta aquí</span>
-            </div>
-
-            <div style="height:10px;"></div>
-
-            <div class="drop" data-key="clima">
-              <strong>Regulan el clima</strong>
-              <span class="muted">Suelta aquí</span>
-            </div>
-
-            <div class="gameBtns" style="margin-top:12px;">
-              <button class="btn primary" type="button" id="btnCheck">Evaluar</button>
-              <button class="btn" type="button" id="btnResetGame">Reiniciar juego</button>
-            </div>
-
-            <div id="final" class="result" style="display:none;"></div>
+            <div class="result" id="result" style="display:none;"></div>
           </div>
         </div>
       </section>
@@ -351,34 +339,29 @@
 
   <script>
     // =========================
-    // 1) MAPA MENTAL
+    // MAPA MENTAL (robusto)
     // =========================
     const md = `
-# 2.2 Bienes y servicios ambientales del bosque
-## ¿Por qué importan?
-- Vida en el planeta
-- Protección de flora y fauna
-- Regulación de clima, agua y suelos
-## Servicios principales
-- Purificación del aire
-  - Produce oxígeno
-- Retienen el agua
-  - Guardan y liberan lentamente
-  - Ríos suben poco en invierno y no se secan en verano
-- Evitan la erosión
-  - Raíces impiden que el suelo se vaya con lluvia/viento
-- Regulan el clima
-  - Mantienen el clima más fresco
-  - Ayudan al ciclo de lluvia
-## En la cuenca
-- Menos sedimento al lago
-- Mejor infiltración y nacimientos
-- Menos extremos locales
-    `.trim();
+# 2.2 Bienes y servicios del bosque
+## Bienes (provisión)
+- Madera y leña
+- Alimentos (frutos, hongos)
+- Plantas medicinales
+## Servicios de regulación
+- Control de erosión
+- Regulación de temperatura/humedad
+- Mejora calidad del agua
+## Servicios de soporte
+- Hábitat para especies
+- Formación de suelo
+- Ciclo de nutrientes
+## Servicios culturales
+- Paisaje y turismo
+- Recreación
+- Educación e identidad
+`.trim();
 
-    let mm = null;
-    let expanded = true;
-
+    let mm = null, expanded = true;
     function safeRenderMap(){
       const fallback = document.getElementById('mapFallback');
       try{
@@ -399,169 +382,150 @@
         return true;
       }
     }
-
-    let tries = 0;
-    const t = setInterval(() => {
+    let tries=0;
+    const t=setInterval(()=>{
       tries++;
-      const ok = safeRenderMap();
-      if (ok || tries >= 12){
+      const ok=safeRenderMap();
+      if(ok || tries>=12){
         clearInterval(t);
-        if (!mm) document.getElementById('mapFallback').classList.add('show');
+        if(!mm) document.getElementById('mapFallback').classList.add('show');
       }
     }, 300);
 
     document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
     document.getElementById('btnToggle').addEventListener('click', () => {
-      if (!mm) return;
-      if (expanded) mm.foldAll(); else mm.unfoldAll();
-      expanded = !expanded;
+      if(!mm) return;
+      if(expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded=!expanded;
     });
-    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm=null; expanded=true; safeRenderMap(); });
 
     // =========================
-    // 2) JUEGO: Matching (drag + tap)
+    // JUEGO: Memoria (parejas)
     // =========================
-    const CARDS = [
-      { id:'c1', key:'aire', t:'Producen oxígeno', s:'Ayudan a mantener el aire útil para seres vivos.' },
-      { id:'c2', key:'agua', t:'Guardan y sueltan agua despacio', s:'Mantienen fuentes con cantidad más constante.' },
-      { id:'c3', key:'suelo', t:'Raíces sostienen el terreno', s:'Evitan que lluvia y viento arrastren el suelo.' },
-      { id:'c4', key:'clima', t:'Mantienen el clima más fresco', s:'Parte del agua se evapora y vuelve como lluvia.' }
+    const PAIRS = [
+      { k:"Provisión", v:"Madera y leña" },
+      { k:"Provisión", v:"Plantas medicinales" },
+      { k:"Regulación", v:"Control de erosión" },
+      { k:"Regulación", v:"Mejora calidad del agua" },
+      { k:"Soporte", v:"Hábitat para especies" },
+      { k:"Culturales", v:"Turismo y recreación" },
     ];
 
-    const cardsEl = document.getElementById('cards');
-    const drops = [...document.querySelectorAll('.drop')];
-    const noteEl = document.getElementById('note');
-    const finalEl = document.getElementById('final');
+    const boardEl = document.getElementById('board');
+    const movesEl = document.getElementById('moves');
+    const pairsEl = document.getElementById('pairs');
+    const pairsTotalEl = document.getElementById('pairsTotal');
+    const resultEl = document.getElementById('result');
 
-    let selectedId = null;
+    pairsTotalEl.textContent = String(PAIRS.length);
+
+    let tiles = [];
+    let open = [];
+    let locked = false;
+    let moves = 0;
+    let matched = 0;
 
     function shuffle(arr){
       const a = arr.slice();
-      for (let i=a.length-1;i>0;i--){
+      for(let i=a.length-1;i>0;i--){
         const j = Math.floor(Math.random()*(i+1));
         [a[i],a[j]]=[a[j],a[i]];
       }
       return a;
     }
 
-    function clearSelection(){
-      selectedId = null;
-      [...document.querySelectorAll('.cardItem')].forEach(c=>c.style.outline='none');
-      drops.forEach(d=>d.classList.remove('targetable'));
-    }
-
-    function setTargetable(on){
-      drops.forEach(d=>d.classList.toggle('targetable', on));
-    }
-
-    function makeCard(it){
-      const div = document.createElement('div');
-      div.className = 'cardItem';
-      div.draggable = true;
-      div.id = 'card_' + it.id;
-      div.dataset.id = it.id;
-      div.dataset.key = it.key;
-      div.innerHTML = `<div class="t">${it.t}</div><div class="s">${it.s}</div>`;
-
-      div.addEventListener('dragstart', (e)=>{
-        e.dataTransfer.setData('text/plain', it.id);
-        e.dataTransfer.effectAllowed='move';
-        clearSelection();
+    function buildTiles(){
+      // 2 tiles per pair: one category, one example; share same id
+      let raw = [];
+      PAIRS.forEach((p, i) => {
+        raw.push({ id:"p"+i, type:"k", text:p.k });
+        raw.push({ id:"p"+i, type:"v", text:p.v });
       });
+      tiles = shuffle(raw);
+    }
 
-      div.addEventListener('click', ()=>{
-        const isSel = (selectedId === it.id);
-        clearSelection();
-        if (!isSel){
-          selectedId = it.id;
-          div.style.outline = '2px solid rgba(45,160,220,.40)';
-          setTargetable(true);
-          noteEl.className='result info';
-          noteEl.textContent='Tarjeta seleccionada. Toca un servicio para colocarla.';
-          noteEl.style.display='block';
+    function render(){
+      boardEl.innerHTML = '';
+      tiles.forEach((t, idx) => {
+        const div = document.createElement('div');
+        div.className = 'tile';
+        div.dataset.idx = String(idx);
+        div.innerHTML = `
+          <div class="tileInner">
+            <div class="front">🌿 Carta</div>
+            <div class="back">${t.text}</div>
+          </div>
+        `;
+        div.addEventListener('click', () => flip(idx));
+        boardEl.appendChild(div);
+      });
+    }
+
+    function setHud(){
+      movesEl.textContent = String(moves);
+      pairsEl.textContent = String(matched);
+    }
+
+    function flip(i){
+      if(locked) return;
+      const t = tiles[i];
+      const el = boardEl.querySelector(`.tile[data-idx="${i}"]`);
+      if(!el || el.classList.contains('matched') || el.classList.contains('revealed')) return;
+
+      el.classList.add('revealed');
+      open.push({ i, id:t.id });
+
+      if(open.length === 2){
+        moves += 1;
+        setHud();
+        const [a,b] = open;
+        if(a.id === b.id){
+          // match
+          const ea = boardEl.querySelector(`.tile[data-idx="${a.i}"]`);
+          const eb = boardEl.querySelector(`.tile[data-idx="${b.i}"]`);
+          ea.classList.add('matched');
+          eb.classList.add('matched');
+          open = [];
+          matched += 1;
+          setHud();
+
+          if(matched === PAIRS.length){
+            resultEl.style.display = 'block';
+            resultEl.className = 'result ok';
+            resultEl.innerHTML = `<strong>¡Excelente!</strong> Completaste todas las parejas en <strong>${moves}</strong> movimientos.`;
+          }
         } else {
-          noteEl.style.display='none';
+          // hide after moment
+          locked = true;
+          setTimeout(() => {
+            const ea = boardEl.querySelector(`.tile[data-idx="${a.i}"]`);
+            const eb = boardEl.querySelector(`.tile[data-idx="${b.i}"]`);
+            if(ea) ea.classList.remove('revealed');
+            if(eb) eb.classList.remove('revealed');
+            open = [];
+            locked = false;
+          }, 650);
         }
-      });
-
-      return div;
-    }
-
-    function setup(){
-      cardsEl.innerHTML='';
-      drops.forEach(d=>{
-        d.classList.remove('filled');
-        // remover tarjetas colocadas
-        [...d.querySelectorAll('.cardItem')].forEach(x=>x.remove());
-      });
-      noteEl.style.display='none';
-      finalEl.style.display='none';
-      clearSelection();
-
-      shuffle(CARDS).forEach(it => cardsEl.appendChild(makeCard(it)));
-    }
-
-    function place(cardId, dropEl){
-      const card = document.getElementById('card_' + cardId);
-      if (!card) return;
-      dropEl.appendChild(card);
-      dropEl.classList.add('filled');
-      noteEl.style.display='none';
-      clearSelection();
-    }
-
-    drops.forEach(drop=>{
-      drop.addEventListener('dragover', (e)=>{ e.preventDefault(); });
-      drop.addEventListener('drop', (e)=>{
-        e.preventDefault();
-        const id = e.dataTransfer.getData('text/plain');
-        place(id, drop);
-      });
-      drop.addEventListener('click', ()=>{
-        if (!selectedId) return;
-        place(selectedId, drop);
-      });
-    });
-
-    document.getElementById('btnMix').addEventListener('click', setup);
-    document.getElementById('btnResetGame').addEventListener('click', setup);
-
-    document.getElementById('btnClear').addEventListener('click', ()=>{
-      drops.forEach(d=>{
-        [...d.querySelectorAll('.cardItem')].forEach(x=>cardsEl.appendChild(x));
-        d.classList.remove('filled');
-      });
-      finalEl.style.display='none';
-      noteEl.style.display='none';
-      clearSelection();
-    });
-
-    document.getElementById('btnCheck').addEventListener('click', ()=>{
-      let total=0, ok=0;
-
-      drops.forEach(d=>{
-        const key = d.dataset.key;
-        const card = d.querySelector('.cardItem');
-        if (card){
-          total++;
-          if (card.dataset.key === key) ok++;
-        }
-      });
-
-      if (total < 4){
-        finalEl.className='result warn';
-        finalEl.textContent='Te faltan conexiones. Completa los 4 servicios y vuelve a evaluar.';
-        finalEl.style.display='block';
-        return;
       }
+    }
 
-      const score = Math.round((ok/4)*100);
-      finalEl.className = 'result ' + (score>=80 ? 'good' : score>=50 ? 'warn' : 'bad');
-      finalEl.textContent = `Resultado: ${ok}/4 correctas (${score}%).`;
-      finalEl.style.display='block';
-    });
+    function resetGame(){
+      moves = 0;
+      matched = 0;
+      open = [];
+      locked = false;
+      resultEl.style.display = 'none';
+      resultEl.className = 'result';
+      buildTiles();
+      render();
+      setHud();
+    }
 
-    setup();
+    document.getElementById('btnShuffle').addEventListener('click', resetGame);
+    document.getElementById('btnReset').addEventListener('click', resetGame);
+
+    resetGame();
   </script>
 </body>
 </html>
