@@ -1,20 +1,15 @@
-<!-- =========================
-     1-9.html
-     MÓDULO 1 · MEDIO AMBIENTE
-     1.9 Huella hídrica y uso responsable del agua
-     Incluye: enlace a calculadora oficial + juego extra (clasificación Azul/Verde/Gris)
-========================= -->
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>1.9 Huella hídrica y uso responsable del agua · EPC AALA</title>
-  <meta name="description" content="Huella hídrica: qué es, tipos (azul, verde, gris), ejemplos y acciones. Mapa mental y juegos interactivos." />
+  <title>1.9 Huella ecológica y consumo responsable · EPC AALA</title>
+  <meta name="description" content="Huella ecológica: qué es, por qué importa y cómo reducirla. Mapa mental interactivo + juego de decisiones (simulador) + mini quiz." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Markmap para mapa mental -->
   <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
   <style>
@@ -86,7 +81,6 @@
     }
     .card h2{ margin:0 0 10px; font-size:18px; }
     .muted{ color: var(--muted2); font-size:13px; }
-
     .twoCols{
       display:grid;
       grid-template-columns: 1.1fr .9fr;
@@ -153,10 +147,10 @@
     }
     .mapFallback.show{ display:block; }
 
-    /* games */
+    /* game */
     .gameGrid{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr .9fr;
       gap:14px;
       align-items:start;
     }
@@ -171,6 +165,87 @@
     .panel h3{ margin:0 0 8px; font-size:15px; }
     .panel p{ margin:0 0 10px; color:rgba(11,16,32,.74); line-height:1.5; font-size:13px; }
 
+    .meter{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+    }
+    .meterTop{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .big{ font-size:26px; font-weight:850; letter-spacing:-.02em; }
+    .small{ font-size:12px; color: rgba(11,16,32,.66); line-height:1.4; }
+    .bar{
+      height:12px;
+      border-radius: 999px;
+      background: rgba(11,16,32,.08);
+      overflow:hidden;
+      margin-top:10px;
+    }
+    .bar > div{
+      height:100%;
+      width:40%;
+      border-radius: 999px;
+      background: rgba(45,160,220,.55);
+      transition: width .18s ease;
+    }
+    .badgeRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .badge{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      color: rgba(11,16,32,.78);
+      user-select:none;
+    }
+    .badge.good{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .badge.warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+    .badge.bad{ background: var(--bad); border-color: rgba(225,29,72,.26); }
+
+    .choices{ display:grid; gap:10px; }
+    .choice{
+      border:1px solid rgba(11,16,32,.14);
+      background: rgba(255,255,255,.78);
+      border-radius: 18px;
+      padding:12px;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(11,16,32,.08);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      text-align:left;
+    }
+    .choice:hover{ border-color: rgba(45,160,220,.34); transform: translateY(-1px); }
+    .choice:active{ transform: scale(.99); }
+    .choice .t{ font-weight:850; margin-bottom:6px; font-size:13px; }
+    .choice .s{ font-size:12px; color: rgba(11,16,32,.72); line-height:1.35; }
+    .choice.selected{ outline:2px solid rgba(45,160,220,.55); background: rgba(45,160,220,.10); }
+
+    .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .result{
+      margin-top:10px;
+      border-radius:16px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding:12px;
+      font-size:13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
+    .warnBox{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(11,16,32,.18);
+      background: rgba(255,255,255,.7);
+    }
+
+    /* iframe */
     .iframeWrap{
       border:1px solid rgba(11,16,32,.12);
       background: rgba(255,255,255,.62);
@@ -195,66 +270,6 @@
       background: rgba(255,255,255,.62);
       flex-wrap:wrap;
     }
-    .small{ font-size:12px; color: rgba(11,16,32,.66); line-height:1.4; }
-
-    /* classification game */
-    .chips{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:10px;
-    }
-    @media (max-width: 520px){ .chips{ grid-template-columns: 1fr; } }
-    .chip{
-      border:1px solid rgba(11,16,32,.14);
-      background: rgba(255,255,255,.78);
-      border-radius: 16px;
-      padding:10px;
-      cursor:grab;
-      user-select:none;
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      box-shadow: 0 10px 22px rgba(11,16,32,.08);
-    }
-    .chip:hover{ border-color: rgba(45,160,220,.34); transform: translateY(-1px); }
-    .chip:active{ cursor:grabbing; transform: scale(.99); }
-    .chip.selected{ outline:2px solid rgba(45,160,220,.55); background: rgba(45,160,220,.10); }
-    .chip .t{ font-weight:850; font-size:13px; margin-bottom:6px; }
-    .chip .s{ font-size:12px; color: rgba(11,16,32,.72); line-height:1.35; }
-
-    .bins{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap:10px;
-    }
-    @media (max-width: 900px){ .bins{ grid-template-columns: 1fr; } }
-    .bin{
-      border:1px dashed rgba(11,16,32,.22);
-      background: rgba(255,255,255,.55);
-      border-radius: 16px;
-      padding:10px;
-      min-height: 120px;
-      cursor:pointer;
-    }
-    .bin strong{ display:block; margin-bottom:6px; font-size:13px; }
-    .bin .hint{ font-size:12px; color: rgba(11,16,32,.62); margin-bottom:10px; line-height:1.35; }
-    .bin.targetable{ outline:2px solid rgba(245,158,11,.40); background: rgba(245,158,11,.08); }
-    .bin.good{ border-style:solid; border-color: rgba(34,197,94,.28); background: rgba(34,197,94,.08); }
-    .bin.bad{ border-style:solid; border-color: rgba(225,29,72,.28); background: rgba(225,29,72,.08); }
-
-    .gameBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-    .result{
-      margin-top:10px;
-      border-radius:16px;
-      border:1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.55);
-      padding:12px;
-      font-size:13px;
-      line-height:1.55;
-      color: rgba(11,16,32,.82);
-    }
-    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
-    .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
-    .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
-    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
 
     footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
   </style>
@@ -265,10 +280,10 @@
     <header>
       <div>
         <div class="kicker">Módulo 1 · Medio ambiente</div>
-        <h1>1.9 Huella hídrica y uso responsable del agua</h1>
+        <h1>1.9 Huella ecológica y consumo responsable</h1>
         <p class="subtitle">
-          La huella hídrica es un indicador del uso de agua asociado a nuestra vida diaria: lo que consumimos directamente (agua en casa)
-          y lo que consumimos de forma indirecta (agua para producir alimentos y bienes). Comprenderla ayuda a cuidar la cuenca.
+          La <strong>huella ecológica</strong> mide nuestro impacto considerando el uso de recursos naturales y los desechos
+          que generamos. Conocerla ayuda a comparar lo que usamos con la capacidad del planeta para seguir brindando bienes sin agotarse.
         </p>
       </div>
       <nav class="nav">
@@ -280,68 +295,46 @@
 
     <main class="stack">
       <section class="card">
-        <h2>Contexto teórico (ampliado)</h2>
+        <h2>Concepto</h2>
         <div class="twoCols">
           <div class="box">
             <p>
-              La <strong>huella hídrica</strong> mide el volumen total de agua utilizado para sostener un estilo de vida, un producto o un servicio.
-              Se analiza porque muchos consumos “no se ven”: por ejemplo, alimentos y ropa requieren agua en su producción.
+              La huella ecológica es una medida para valorar el impacto de personas y poblaciones en el ambiente.
+              Considera el <strong>uso de recursos naturales</strong> que necesitamos y la <strong>producción de desechos</strong>
+              de nuestras actividades y hábitos de consumo.
             </p>
-            <p><strong>Tipos principales</strong>:</p>
+            <p><strong>Se puede calcular</strong> a nivel de:</p>
             <ul>
-              <li><strong>Azul:</strong> agua superficial o subterránea extraída (ríos, lagos, pozos) para riego, industria o uso doméstico.</li>
-              <li><strong>Verde:</strong> agua de lluvia almacenada en el suelo y usada por plantas (agricultura de temporal, bosques).</li>
-              <li><strong>Gris:</strong> volumen de agua necesario para diluir contaminantes hasta niveles aceptables (impacto de contaminación).</li>
+              <li>Persona</li>
+              <li>Familia</li>
+              <li>Comunidad</li>
+              <li>Pueblo / País</li>
+              <li>Mundo</li>
             </ul>
           </div>
           <div class="box">
-            <p><strong>Relación con la cuenca</strong>:</p>
-            <ul>
-              <li>La pérdida de cobertura vegetal aumenta escorrentía, erosión y afecta calidad del agua.</li>
-              <li>Descargas sin tratamiento elevan huella gris (más contaminación, más impacto).</li>
-              <li>El ahorro y el manejo responsable reducen presión sobre ríos, nacimientos y el lago.</li>
-            </ul>
-            <p style="margin-top:10px;">
-              Reducir huella hídrica no solo es “usar menos agua” en casa; también implica elecciones de consumo y manejo de residuos.
+            <p>
+              Calcularla es útil para <strong>comparar</strong> los recursos que usamos y los desechos que generamos con la
+              capacidad de un ecosistema y del planeta para seguir ofreciendo esos bienes sin destruirse.
+            </p>
+            <p class="muted" style="margin:0;">
+              Meta: tomar decisiones cotidianas más responsables (energía, transporte, alimentación y residuos).
             </p>
           </div>
         </div>
 
         <div class="grid3">
           <div class="pill">
-            <div class="t">Directa</div>
-            <div class="s">Agua usada en casa: baño, lavado, cocina, limpieza.</div>
+            <div class="t">Recursos</div>
+            <div class="s">Lo que tomamos de la naturaleza: agua, suelo, bosques, energía, alimentos.</div>
           </div>
           <div class="pill">
-            <div class="t">Indirecta</div>
-            <div class="s">Agua usada para producir alimentos, ropa, energía y servicios.</div>
+            <div class="t">Desechos</div>
+            <div class="s">Lo que devolvemos: basura, emisiones, aguas residuales, contaminación.</div>
           </div>
           <div class="pill">
-            <div class="t">Prioridad</div>
-            <div class="s">Proteger nacimientos, riberas y bosques mejora disponibilidad y calidad del agua.</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>Ideas clave</h2>
-        <div class="twoCols">
-          <div class="box">
-            <ul>
-              <li>La huella hídrica integra agua usada y contaminación asociada (no solo litros del grifo).</li>
-              <li>La huella azul se relaciona con extracción; la verde con lluvia en suelos; la gris con contaminación.</li>
-              <li>Alimentos y bienes de consumo pueden representar la mayor parte de la huella total.</li>
-              <li>Conservación de suelos y bosques es esencial para regular el ciclo del agua en la cuenca.</li>
-            </ul>
-          </div>
-          <div class="box">
-            <p><strong>Acciones concretas</strong>:</p>
-            <ul>
-              <li>Reparar fugas, usar agua eficientemente, reutilizar cuando sea seguro.</li>
-              <li>Reducir contaminación: no tirar aceite, químicos, basura; manejar aguas residuales.</li>
-              <li>Preferir prácticas y productos con manejo responsable del agua.</li>
-              <li>Proteger cobertura vegetal y riberas (reduce erosión y sedimentos).</li>
-            </ul>
+            <div class="t">Responsabilidad</div>
+            <div class="s">La reducción de contaminación y el cuidado de bienes naturales es tarea de todos y todas.</div>
           </div>
         </div>
       </section>
@@ -350,7 +343,7 @@
         <div class="mapTop">
           <div>
             <h2 style="margin:0;">Mapa mental</h2>
-            <div class="muted">Tipos de huella hídrica, relación con la cuenca y acciones.</div>
+            <div class="muted">Definición, qué evalúa y cómo reducir la huella.</div>
           </div>
           <div class="mapBtns">
             <button class="btn" id="btnFit" type="button">Ajustar</button>
@@ -365,69 +358,64 @@
             <div><strong>No se pudo cargar el mapa mental.</strong><br>Recarga la página o revisa la conexión.</div>
           </div>
         </div>
+
+        <div class="muted" style="margin-top:10px;">
+          Tip: si el mapa se ve muy grande, presiona <span class="kbd">Ajustar</span>.
+        </div>
       </section>
 
       <section class="card">
-        <h2>Juego 1: cálculo de huella hídrica</h2>
+        <h2>Juego: “Misión Huella Cero” (simulador de decisiones)</h2>
         <p class="muted" style="margin:8px 0 0;">
-          Puedes realizar el cálculo con la herramienta oficial. Si tu navegador bloquea la vista incrustada, usa el botón “Abrir”.
+          Elige la mejor opción en cada situación. Tus decisiones suben o bajan el “medidor” de huella. Al final recibes un plan de acción.
         </p>
 
-        <div class="iframeWrap" style="margin-top:12px;">
-          <iframe title="Calculadora de huella ecológica" src="https://www.footprintcalculator.org/home/"></iframe>
-          <div class="iframeBar">
-            <div class="small">
-              Enlace oficial: Footprint Calculator.
+        <div class="gameGrid" style="margin-top:12px;">
+          <div class="panel">
+            <h3 id="roundTitle">Ronda 1 de 5 · Transporte</h3>
+            <p id="roundPrompt">Selecciona una opción.</p>
+            <div class="choices" id="choices"></div>
+
+            <div class="gameBtns">
+              <button class="btn" type="button" id="btnSkip">Saltar ronda</button>
+              <button class="btn primary" type="button" id="btnNext" disabled>Siguiente</button>
+              <button class="btn" type="button" id="btnRestart">Reiniciar</button>
             </div>
-            <a class="btn primary" href="https://www.footprintcalculator.org/home/" target="_blank" rel="noopener">Abrir en nueva pestaña</a>
+
+            <div id="feedback" class="result info" style="display:none;"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Tu medidor</h3>
+
+            <div class="meter" aria-live="polite">
+              <div class="meterTop">
+                <div>
+                  <div class="small">Puntaje (menos es mejor)</div>
+                  <div class="big"><span id="score">55</span>/100</div>
+                </div>
+                <div class="small" id="level">Nivel: En camino 🌿</div>
+              </div>
+              <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
+              <div class="badgeRow" id="badges"></div>
+            </div>
+
+            <div id="finalPlan" class="result" style="display:none;"></div>
           </div>
         </div>
       </section>
 
       <section class="card">
-        <h2>Juego 2: clasifica huella azul, verde y gris</h2>
+        <h2>Herramienta de cálculo (opcional)</h2>
         <p class="muted" style="margin:8px 0 0;">
-          PC: arrastra. Celular: toca una tarjeta y luego toca el contenedor.
+          Si tu navegador bloquea el contenido incrustado, usa el botón “Abrir en nueva pestaña”.
         </p>
 
-        <div class="gameGrid" style="margin-top:12px;">
-          <div class="panel">
-            <h3>Tarjetas</h3>
-            <p>Coloca cada ejemplo en el tipo de huella hídrica que corresponde.</p>
-            <div class="chips" id="chips"></div>
-
-            <div class="gameBtns">
-              <button class="btn" type="button" id="btnMix">Mezclar</button>
-              <button class="btn" type="button" id="btnClear">Limpiar</button>
-            </div>
-            <div id="note" class="result info" style="display:none;"></div>
-          </div>
-
-          <div class="panel">
-            <h3>Contenedores</h3>
-            <p>Después presiona “Evaluar”. Toca una tarjeta dentro de un contenedor para devolverla.</p>
-
-            <div class="bins" style="margin-top:10px;">
-              <div class="bin" data-bin="azul">
-                <strong>Huella azul</strong>
-                <div class="hint">Extracción de agua de ríos, lagos o pozos.</div>
-              </div>
-              <div class="bin" data-bin="verde">
-                <strong>Huella verde</strong>
-                <div class="hint">Agua de lluvia en el suelo utilizada por plantas.</div>
-              </div>
-              <div class="bin" data-bin="gris">
-                <strong>Huella gris</strong>
-                <div class="hint">Impacto por contaminación: agua necesaria para diluir contaminantes.</div>
-              </div>
-            </div>
-
-            <div class="gameBtns">
-              <button class="btn primary" type="button" id="btnCheck">Evaluar</button>
-              <button class="btn" type="button" id="btnResetGame">Reiniciar juego</button>
-            </div>
-
-            <div id="result" class="result" style="display:none;"></div>
+        <div class="iframeWrap" style="margin-top:12px;">
+          <iframe title="Footprint Calculator" src="https://www.footprintcalculator.org/home/"></iframe>
+          <div class="iframeBar">
+            <div class="small">Enlace oficial: Footprint Calculator.</div>
+            <a class="btn primary" href="https://www.footprintcalculator.org/home/" target="_blank" rel="noopener">Abrir en nueva pestaña</a>
           </div>
         </div>
       </section>
@@ -437,268 +425,310 @@
   </div>
 
   <script>
-    // ==========
-    // MAPA MENTAL (robusto)
-    // ==========
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
     const md = `
-# 1.9 Huella hídrica
+# 1.9 Huella ecológica
 ## ¿Qué es?
-- Indicador del uso total de agua
-- Incluye consumo directo e indirecto
-## Tipos
-- Azul
-  - Agua extraída (ríos, lagos, pozos)
-  - Riego, industria, uso doméstico
-- Verde
-  - Agua de lluvia en el suelo
-  - Bosques y agricultura de temporal
-- Gris
-  - Impacto por contaminación
-  - Agua requerida para diluir contaminantes
-## Relación con la cuenca
-- Cobertura vegetal regula infiltración y escorrentía
-- Contaminación incrementa huella gris
-- Erosión aumenta sedimentos en ríos y lago
-## Cómo reducir
-- Ahorro y eficiencia (fugas, consumo responsable)
-- Manejo de residuos y aguas residuales
-- Protección de riberas y reforestación
-- Consumo informado
-`.trim();
+- Medida del impacto humano en el ambiente
+- Considera
+  - Uso de recursos naturales
+  - Producción de desechos
+## ¿Para qué sirve?
+- Comparar
+  - lo que usamos y desechamos
+  - con la capacidad del planeta
+- Identificar hábitos a mejorar
+## ¿En qué influye?
+- Energía y electricidad
+- Transporte
+- Alimentación
+- Residuos (basura, reciclaje)
+- Agua (ahorro y contaminación)
+## ¿Cómo reducirla?
+- Consumir menos y mejor
+  - reparar, reutilizar, compartir
+- Separar y reducir residuos
+- Ahorrar energía
+- Movilidad sostenible
+- Proteger bienes naturales
+  - bosques, suelos, agua
+`;
 
     let mm = null;
-    let expanded = true;
+    let allCollapsed = false;
 
-    function safeRenderMap(){
-      const fallback = document.getElementById('mapFallback');
+    function safeShowFallback(show){
+      const el = document.getElementById('mapFallback');
+      if(!el) return;
+      el.classList.toggle('show', !!show);
+    }
+
+    async function initMarkmap(){
       try{
-        if (!window.markmap || !window.markmap.Transformer || !window.markmap.Markmap) return false;
-        const { Transformer, Markmap } = window.markmap;
+        if(!window.markmap || !window.markmap.Markmap){
+          safeShowFallback(true);
+          return;
+        }
+        const { Markmap, Transformer } = window.markmap;
+
         const transformer = new Transformer();
         const { root } = transformer.transform(md);
 
         const svg = document.getElementById('mindmap');
-        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        if(!svg){ safeShowFallback(true); return; }
 
-        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
-        expanded = true;
-        fallback.classList.remove('show');
-        return true;
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { duration: 250 }, root);
+        mm.fit();
+        safeShowFallback(false);
       }catch(e){
-        fallback.classList.add('show');
-        return true;
+        console.warn('Markmap error:', e);
+        safeShowFallback(true);
       }
     }
 
-    let tries = 0;
-    const t = setInterval(() => {
-      tries++;
-      const ok = safeRenderMap();
-      if (ok || tries >= 12){
-        clearInterval(t);
-        if (!mm) document.getElementById('mapFallback').classList.add('show');
+    document.getElementById('btnFit')?.addEventListener('click', () => mm?.fit());
+    document.getElementById('btnResetMap')?.addEventListener('click', () => { allCollapsed = false; initMarkmap(); });
+    document.getElementById('btnToggle')?.addEventListener('click', () => {
+      if(!mm) return;
+      try{
+        allCollapsed = !allCollapsed;
+        mm.data.descendants().forEach(d => {
+          if(d.children && d.children.length){
+            d.data.fold = allCollapsed ? 1 : 0;
+          }
+        });
+        mm.renderData(mm.data);
+        mm.fit();
+      }catch(e){
+        console.warn('toggle error', e);
       }
-    }, 300);
-
-    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
-    document.getElementById('btnToggle').addEventListener('click', () => {
-      if (!mm) return;
-      if (expanded) mm.foldAll(); else mm.unfoldAll();
-      expanded = !expanded;
     });
-    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
 
-    // ==========
-    // JUEGO 2: CLASIFICACIÓN (drag + tap)
-    // ==========
-    const ITEMS = [
-      { id:'riego', bin:'azul', t:'Riego con agua de pozo', s:'Uso de agua subterránea extraída para agricultura.' },
-      { id:'ducha', bin:'azul', t:'Uso doméstico (ducha)', s:'Agua de red/pozo utilizada en casa.' },
-      { id:'temporal', bin:'verde', t:'Cultivo de temporal', s:'Producción que depende principalmente de lluvia en el suelo.' },
-      { id:'bosque', bin:'verde', t:'Bosque y lluvia', s:'Agua de lluvia usada por vegetación y almacenada en el suelo.' },
-      { id:'aguas', bin:'gris', t:'Aguas residuales sin tratar', s:'La contaminación incrementa la huella gris.' },
-      { id:'agro', bin:'gris', t:'Escorrentía con fertilizantes', s:'Nutrientes y químicos aumentan el impacto por contaminación.' },
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initMarkmap, { once:true });
+    }else{
+      initMarkmap();
+    }
+
+    // =========================
+    // JUEGO: Misión Huella Cero
+    // =========================
+    const rounds = [
+      {
+        area: "Transporte",
+        prompt: "Vas a un lugar cercano (15 minutos). ¿Qué eliges?",
+        choices: [
+          { title: "Caminar / bicicleta", desc: "Cero combustible y buena salud.", delta: -10, badge: "Movilidad sostenible" },
+          { title: "Transporte público / compartido", desc: "Menos autos, menos emisiones.", delta: -5, badge: "Compartir viaje" },
+          { title: "Carro solo", desc: "Más combustible y más emisiones.", delta: +8, badge: "Auto individual" }
+        ]
+      },
+      {
+        area: "Energía",
+        prompt: "En casa, ¿qué haces con luces y aparatos?",
+        choices: [
+          { title: "Apago y desconecto lo que no uso", desc: "Ahorro de energía y dinero.", delta: -8, badge: "Ahorro energético" },
+          { title: "Uso bombillas eficientes y apago al salir", desc: "Buen hábito, reduce consumo.", delta: -5, badge: "Eficiencia" },
+          { title: "Dejo todo encendido / en standby", desc: "Consumo extra sin necesidad.", delta: +7, badge: "Desperdicio" }
+        ]
+      },
+      {
+        area: "Alimentación",
+        prompt: "Al escoger comida, ¿cuál es tu mejor decisión?",
+        choices: [
+          { title: "Más local y de temporada", desc: "Menos transporte y mejor apoyo local.", delta: -7, badge: "Local/temporada" },
+          { title: "Evito desperdicio (sirvo lo justo)", desc: "Menos basura y menos recursos usados.", delta: -6, badge: "Cero desperdicio" },
+          { title: "Compro mucho y se desperdicia", desc: "Se pierden recursos y aumenta basura.", delta: +9, badge: "Desperdicio de alimentos" }
+        ]
+      },
+      {
+        area: "Residuos",
+        prompt: "Después de consumir, ¿qué haces con los residuos?",
+        choices: [
+          { title: "Separar (orgánico/reciclable/no reciclable)", desc: "Facilita reciclaje y compost.", delta: -8, badge: "Separación" },
+          { title: "Reutilizar envases y bolsas", desc: "Menos compras, menos basura.", delta: -6, badge: "Reutilización" },
+          { title: "Todo a la misma bolsa", desc: "Dificulta el reciclaje y aumenta impacto.", delta: +7, badge: "Mezcla residuos" }
+        ]
+      },
+      {
+        area: "Agua",
+        prompt: "Sobre el agua, ¿qué acción ayuda más a reducir impacto?",
+        choices: [
+          { title: "Reparo fugas y cierro el grifo", desc: "Ahorro directo y constante.", delta: -6, badge: "Ahorro de agua" },
+          { title: "No tiro aceite/químicos al desagüe", desc: "Reduce contaminación del agua.", delta: -7, badge: "Menos contaminación" },
+          { title: "Uso agua sin cuidado", desc: "Más extracción y más desperdicio.", delta: +8, badge: "Uso irresponsable" }
+        ]
+      }
     ];
 
-    const chipsEl = document.getElementById('chips');
-    const bins = [...document.querySelectorAll('.bin')];
-    const noteEl = document.getElementById('note');
-    const resultEl = document.getElementById('result');
+    let roundIndex = 0;
+    let score = 55; // 0 = mejor, 100 = peor
+    let selectedChoice = null;
+    const maxScore = 100;
+    const minScore = 0;
 
-    let selectedId = null;
+    const elRoundTitle = document.getElementById('roundTitle');
+    const elRoundPrompt = document.getElementById('roundPrompt');
+    const elChoices = document.getElementById('choices');
+    const elFeedback = document.getElementById('feedback');
+    const elScore = document.getElementById('score');
+    const elBarFill = document.getElementById('barFill');
+    const elLevel = document.getElementById('level');
+    const elBadges = document.getElementById('badges');
+    const elFinalPlan = document.getElementById('finalPlan');
 
-    function shuffle(arr){
-      const a = arr.slice();
-      for (let i=a.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [a[i],a[j]]=[a[j],a[i]];
-      }
-      return a;
+    const btnNext = document.getElementById('btnNext');
+    const btnSkip = document.getElementById('btnSkip');
+    const btnRestart = document.getElementById('btnRestart');
+
+    const earnedBadges = new Set();
+
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+    function setLevel(){
+      let text = "";
+      let cls = "warn";
+      if(score <= 25){ text = "Nivel: Guardián/a del planeta 🌎✨"; cls = "good"; }
+      else if(score <= 45){ text = "Nivel: Muy responsable 🌿"; cls = "good"; }
+      else if(score <= 65){ text = "Nivel: En camino 🌱"; cls = "warn"; }
+      else { text = "Nivel: Necesita mejoras 🔧"; cls = "bad"; }
+
+      elLevel.textContent = text;
+
+      const w = clamp((score / maxScore) * 100, 3, 100);
+      elBarFill.style.width = w + "%";
+
+      const badge = document.createElement('span');
+      badge.className = "badge " + (cls === "good" ? "good" : cls === "bad" ? "bad" : "warn");
+      badge.textContent = cls === "good" ? "Huella baja" : cls === "bad" ? "Huella alta" : "Huella media";
+      const first = elBadges.querySelector('[data-kind="state"]');
+      if(first) first.remove();
+      badge.dataset.kind = "state";
+      elBadges.prepend(badge);
     }
 
-    function clearSelection(){
-      selectedId = null;
-      [...document.querySelectorAll('.chip')].forEach(c=>c.classList.remove('selected'));
-      bins.forEach(b=>b.classList.remove('targetable'));
-    }
-    function setTargetable(on){
-      bins.forEach(b=>b.classList.toggle('targetable', on));
-    }
+    function renderBadges(){
+      const state = elBadges.querySelector('[data-kind="state"]');
+      elBadges.innerHTML = "";
+      if(state) elBadges.appendChild(state);
 
-    function makeChip(item){
-      const div = document.createElement('div');
-      div.className = 'chip';
-      div.draggable = true;
-      div.id = 'chip_' + item.id;
-      div.dataset.id = item.id;
-      div.innerHTML = <div class="t">${item.t}</div><div class="s">${item.s}</div>;
-
-      div.addEventListener('dragstart', (e)=>{
-        e.dataTransfer.setData('text/plain', item.id);
-        e.dataTransfer.effectAllowed='move';
-        clearSelection();
+      [...earnedBadges].slice(-6).forEach(b => {
+        const s = document.createElement('span');
+        s.className = "badge";
+        s.textContent = "✅ " + b;
+        elBadges.appendChild(s);
       });
-
-      div.addEventListener('click', ()=>{
-        // si está dentro de un bin, devolverlo
-        const parentBin = div.closest('.bin');
-        if (parentBin){
-          chipsEl.appendChild(div);
-          noteEl.className='result info';
-          noteEl.textContent='Tarjeta devuelta.';
-          noteEl.style.display='block';
-          resultEl.style.display='none';
-          clearSelection();
-          bins.forEach(b=>b.classList.remove('good','bad'));
-          return;
-        }
-
-        const same = (selectedId === item.id);
-        clearSelection();
-        if (!same){
-          selectedId = item.id;
-          div.classList.add('selected');
-          setTargetable(true);
-          noteEl.className='result info';
-          noteEl.textContent='Tarjeta seleccionada. Ahora toca un contenedor.';
-          noteEl.style.display='block';
-          resultEl.style.display='none';
-        } else {
-          noteEl.style.display='none';
-        }
-      });
-
-      return div;
     }
 
-    function place(id, binEl){
-      const chip = document.getElementById('chip_' + id);
-      if (!chip) return;
-      binEl.appendChild(chip);
-      noteEl.style.display='none';
-      resultEl.style.display='none';
-      bins.forEach(b=>b.classList.remove('good','bad'));
-    }
+    function renderRound(){
+      const r = rounds[roundIndex];
+      selectedChoice = null;
+      elRoundTitle.textContent = `Ronda ${roundIndex+1} de ${rounds.length} · ${r.area}`;
+      elRoundPrompt.textContent = r.prompt;
+      elChoices.innerHTML = "";
+      elFeedback.style.display = "none";
+      elFinalPlan.style.display = "none";
+      btnNext.disabled = true;
 
-    bins.forEach(binEl=>{
-      binEl.addEventListener('dragover', (e)=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; });
-      binEl.addEventListener('drop', (e)=>{
-        e.preventDefault();
-        const id = e.dataTransfer.getData('text/plain');
-        if (!id) return;
-        place(id, binEl);
-      });
+      r.choices.forEach((c, i) => {
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.className = "choice";
+        btn.innerHTML = `<div class="t">${c.title}</div><div class="s">${c.desc}</div>`;
+        btn.addEventListener('click', () => {
+          elChoices.querySelectorAll('.choice').forEach(x => x.classList.remove('selected'));
+          btn.classList.add('selected');
+          selectedChoice = { ...c, index: i };
+          btnNext.disabled = false;
 
-      binEl.addEventListener('click', ()=>{
-        if (!selectedId) return;
-        place(selectedId, binEl);
-        clearSelection();
-      });
-    });
-
-    function setupGame(){
-      chipsEl.innerHTML='';
-      resultEl.style.display='none';
-      noteEl.style.display='none';
-      clearSelection();
-
-      bins.forEach(b=>{
-        [...b.querySelectorAll('.chip')].forEach(ch=>chipsEl.appendChild(ch));
-        b.classList.remove('good','bad');
-      });
-
-      shuffle(ITEMS).forEach(it=>chipsEl.appendChild(makeChip(it)));
-    }
-
-    document.getElementById('btnMix').addEventListener('click', ()=>{
-      setupGame();
-      noteEl.className='result info';
-      noteEl.textContent='Tarjetas mezcladas.';
-      noteEl.style.display='block';
-    });
-
-    document.getElementById('btnClear').addEventListener('click', ()=>{
-      bins.forEach(b=>{
-        [...b.querySelectorAll('.chip')].forEach(ch=>chipsEl.appendChild(ch));
-        b.classList.remove('good','bad');
-      });
-      clearSelection();
-      resultEl.style.display='none';
-      noteEl.className='result info';
-      noteEl.textContent='Contenedores limpiados.';
-      noteEl.style.display='block';
-    });
-
-    document.getElementById('btnResetGame').addEventListener('click', setupGame);
-
-    document.getElementById('btnCheck').addEventListener('click', ()=>{
-      let placed = 0;
-      let ok = 0;
-
-      bins.forEach(b=>b.classList.remove('good','bad'));
-
-      bins.forEach(binEl=>{
-        const binName = binEl.dataset.bin;
-        const chips = [...binEl.querySelectorAll('.chip')];
-        if (chips.length === 0) return;
-
-        placed += chips.length;
-
-        const allGood = chips.every(ch=>{
-          const item = ITEMS.find(x=>x.id === ch.dataset.id);
-          return item && item.bin === binName;
+          const deltaText = c.delta < 0 ? `¡Baja tu huella (${c.delta})!` : `Sube tu huella (+${c.delta}).`;
+          elFeedback.className = "result " + (c.delta < 0 ? "ok" : "warnBox");
+          elFeedback.innerHTML = `<strong>${deltaText}</strong><br><span class="muted">Consejo:</span> ${c.desc}`;
+          elFeedback.style.display = "block";
         });
-
-        if (allGood){
-          ok += chips.length;
-          binEl.classList.add('good');
-        } else {
-          chips.forEach(ch=>{
-            const item = ITEMS.find(x=>x.id === ch.dataset.id);
-            if (item && item.bin === binName) ok++;
-          });
-          binEl.classList.add('bad');
-        }
+        elChoices.appendChild(btn);
       });
+    }
 
-      resultEl.style.display='block';
+    function applyChoice(choice){
+      score = clamp(score + choice.delta, minScore, maxScore);
+      elScore.textContent = String(score);
+      if(choice.badge) earnedBadges.add(choice.badge);
+      setLevel();
+      renderBadges();
+    }
 
-      if (placed < ITEMS.length){
-        resultEl.className='result warn';
-        resultEl.innerHTML = Te faltan <strong>${ITEMS.length - placed}</strong> tarjeta(s) por ubicar.;
-        return;
-      }
+    function showFinalPlan(){
+      const title = score <= 45 ? "¡Excelente! Tu huella va bajando." :
+                    score <= 65 ? "Buen inicio. Hay espacio para mejorar." :
+                                  "Reto aceptado: necesitamos cambios más fuertes.";
 
-      if (ok === ITEMS.length){
-        resultEl.className='result ok';
-        resultEl.innerHTML = <strong>Correcto.</strong> Clasificación completa: azul, verde y gris.;
-      } else {
-        resultEl.className='result no';
-        resultEl.innerHTML = Hay tarjetas incorrectas. Aciertos: <strong>${ok}</strong> de <strong>${ITEMS.length}</strong>.;
+      const tips = [
+        { k:"Transporte", v:"Camina, usa bici, comparte o usa transporte público cuando sea posible." },
+        { k:"Energía", v:"Apaga y desconecta lo que no uses. Prefiere focos eficientes." },
+        { k:"Alimentación", v:"Compra local/de temporada y evita desperdiciar alimentos." },
+        { k:"Residuos", v:"Reduce, reutiliza y separa. Lo orgánico puede convertirse en compost." },
+        { k:"Agua", v:"Repara fugas y evita contaminar (aceites/químicos al desagüe)."},
+      ];
+
+      const list = tips.map(t => `<li><strong>${t.k}:</strong> ${t.v}</li>`).join("");
+
+      elFinalPlan.className = "result " + (score <= 45 ? "ok" : score <= 65 ? "info" : "warnBox");
+      elFinalPlan.innerHTML = `
+        <strong>${title}</strong>
+        <p style="margin:8px 0 0;">Plan de acción sugerido:</p>
+        <ul style="margin:8px 0 0 18px; padding:0; line-height:1.6;">${list}</ul>
+        <p style="margin:10px 0 0;" class="muted">Tip: vuelve a jugar y trata de bajar tu puntaje por debajo de 45.</p>
+      `;
+      elFinalPlan.style.display = "block";
+    }
+
+    btnNext?.addEventListener('click', () => {
+      if(!selectedChoice) return;
+      applyChoice(selectedChoice);
+      roundIndex++;
+      if(roundIndex >= rounds.length){
+        elRoundTitle.textContent = "¡Juego terminado!";
+        elRoundPrompt.textContent = "Revisa tu plan y vuelve a intentar bajar el puntaje.";
+        elChoices.innerHTML = "";
+        btnNext.disabled = true;
+        showFinalPlan();
+      }else{
+        renderRound();
       }
     });
 
-    setupGame();
+    btnSkip?.addEventListener('click', () => {
+      roundIndex++;
+      if(roundIndex >= rounds.length){
+        elRoundTitle.textContent = "¡Juego terminado!";
+        elRoundPrompt.textContent = "Revisa tu plan y vuelve a intentar bajar el puntaje.";
+        elChoices.innerHTML = "";
+        btnNext.disabled = true;
+        showFinalPlan();
+      }else{
+        renderRound();
+      }
+    });
+
+    btnRestart?.addEventListener('click', () => {
+      roundIndex = 0;
+      score = 55;
+      earnedBadges.clear();
+      elScore.textContent = String(score);
+      setLevel();
+      renderBadges();
+      renderRound();
+    });
+
+    elScore.textContent = String(score);
+    setLevel();
+    renderBadges();
+    renderRound();
   </script>
 </body>
 </html>
