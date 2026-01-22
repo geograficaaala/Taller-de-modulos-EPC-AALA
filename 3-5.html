@@ -1,0 +1,1165 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.5 Cuencas hidrográficas en Sololá · EPC AALA</title>
+  <meta name="description" content="Cuencas hidrográficas en Sololá: Atitlán (endorreica) y cuencas que drenan al Pacífico y al Caribe. Teoría + mapa mental + 2 juegos interactivos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap (mapa mental): autoloader funciona mejor en archivos locales -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --info: rgba(56,189,248,.16);
+      --warn: rgba(245,158,11,.14);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 92ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.82); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
+    .miniRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+
+    /* ===== MAPA MENTAL ===== */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      position:relative;
+      padding: 10px;
+    }
+    svg#mindmap{
+      width:100%;
+      height: 520px;
+      display:block;
+      border-radius: 14px;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      display:none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.72);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .fallback.show{ display:block; }
+
+    /* ===== JUEGO 1: SIMULADOR DE CUENCA + LAGO ===== */
+    .simGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .simGrid{ grid-template-columns: 1fr; } }
+
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 52%; }
+    select{
+      width: 52%;
+      border-radius: 12px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.65);
+      padding: 8px 10px;
+      font-weight: 800;
+      color: rgba(11,16,32,.82);
+      box-shadow: var(--shadow-soft);
+    }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 78px; text-align:right; }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .svgPanel{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+
+    .goalRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top: 10px;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      background: rgba(255,255,255,.60);
+      white-space: nowrap;
+    }
+    .tag.good{ background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.22); }
+    .tag.warn{ background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.22); }
+    .tag.bad{ background: rgba(225,29,72,.10); border-color: rgba(225,29,72,.20); }
+
+    /* ===== JUEGO 2: RETO DESTINOS ===== */
+    .destGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .destGrid{ grid-template-columns: 1fr; } }
+
+    .basinList{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .basinList h3{
+      margin: 0 0 8px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .basinBtn{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      text-align:left;
+      font-family: Inter, system-ui;
+      color: rgba(11,16,32,.92);
+      font-weight: 900;
+      margin: 8px 0;
+    }
+    .basinBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .basinBtn:active{ transform: translateY(1px); }
+    .basinBtn.selected{ outline: 3px solid rgba(120,210,255,.35); }
+    .basinBtn.locked{
+      cursor:default;
+      opacity:.92;
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.22);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(120,210,255,.20);
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(11,16,32,.80);
+      flex: 0 0 auto;
+    }
+
+    .destChoices{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .destBtn{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+      cursor:pointer;
+      text-align:left;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .destBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .destBtn .t{ font-weight: 900; margin: 0 0 6px; }
+    .destBtn .s{ margin: 0; color: rgba(11,16,32,.72); font-size: 12.8px; line-height: 1.45; }
+
+    .hud{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.5 Cuencas hidrográficas en el departamento de Sololá</h1>
+        <p class="subtitle">
+          En Sololá conviven cuencas que drenan al <strong>Océano Pacífico</strong>, una gran cuenca que drena al <strong>Mar Caribe</strong>
+          y una cuenca <strong>endorreica</strong> (cerrada): la del <strong>Lago de Atitlán</strong>. En esta sección verás por qué el saneamiento
+          de las cuencas es clave y cómo las decisiones en el territorio cambian el agua que llega a los ríos y al lago.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-4.html">Anterior (3.4)</a>
+        <a class="btn primary" href="3-6.html">Siguiente (3.6)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              Una <strong>cuenca hidrográfica</strong> es el territorio donde el agua de lluvia se reúne y fluye hacia un mismo
+              punto: un río, un lago o el mar. En Sololá, el relieve volcánico, los suelos y la cobertura vegetal influyen en
+              cuánta agua se <strong>infiltra</strong> (recarga) y cuánta baja como <strong>escorrentía</strong>.
+            </p>
+            <ul>
+              <li><strong>Exorreica:</strong> el agua sale de la cuenca y llega al mar (Pacífico o Caribe).</li>
+              <li><strong>Endorreica:</strong> el agua se queda “encerrada” y termina en un lago (ej. Atitlán).</li>
+              <li><strong>Calidad del agua:</strong> basura, sedimentos y nutrientes viajan por los ríos; lo que ocurre “arriba” se refleja “abajo”.</li>
+            </ul>
+
+            <div class="result info">
+              <strong>Mensaje clave:</strong> cuidar una cuenca no es solo “tener más agua”, sino <em>agua más limpia</em> y
+              <em>más constante</em> durante el año.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Cuencas presentes en Sololá (resumen)</strong></p>
+            <ul>
+              <li><strong>Atitlán (endorreica):</strong> drena al Lago de Atitlán.</li>
+              <li><strong>Madre Vieja (Pacífico):</strong> parte del territorio drena hacia el sur.</li>
+              <li><strong>Nahualate (Pacífico):</strong> nace en la Sierra Madre y baja hacia la costa.</li>
+              <li><strong>Samalá (Pacífico):</strong> cuenca del suroccidente con nacimientos en sierra.</li>
+              <li><strong>Sis–Icán (Pacífico):</strong> asociada a laderas volcánicas; desemboca en estuarios.</li>
+              <li><strong>Motagua (Caribe):</strong> gran cuenca que termina en el mar Caribe.</li>
+            </ul>
+
+            <div class="result warn">
+              <strong>Riesgo frecuente:</strong> más escorrentía + menos cobertura = más <strong>erosión</strong> y más <strong>sedimento</strong>
+              en ríos y lago.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Lago de Atitlán (datos físicos)</div>
+            <p class="s">
+              Lago profundo de montaña (≈1554 msnm). Área ≈130 km², profundidad máxima ≈324 m y volumen ≈24.4 km³.
+            </p>
+          </div>
+          <div class="pill">
+            <div class="t">Ríos (permanentes e intermitentes)</div>
+            <p class="s">
+              Hay ríos con agua todo el año y otros que corren sobre todo en época lluviosa. Eso cambia el aporte al lago.
+            </p>
+          </div>
+          <div class="pill">
+            <div class="t">Calidad del agua del lago</div>
+            <p class="s">
+              Sus características químicas lo hacen especial, pero hoy enfrenta un proceso de <strong>eutrofización</strong>
+              (deterioro por exceso de nutrientes).
+            </p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>¿Por qué importa el Lago de Atitlán?</strong></p>
+            <ul>
+              <li>Hábitat de peces, aves acuáticas y vida asociada a tulares.</li>
+              <li>Base de economía local (alimentos, artesanías con tul, turismo y transporte).</li>
+              <li>Ayuda al ciclo del agua (evaporación que alimenta nubes).</li>
+              <li>Registro científico: sedimentos guardan historia ambiental y geológica.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Idea práctica para la cuenca</strong></p>
+            <ul>
+              <li><strong>Más bosque y suelo cubierto</strong> → más infiltración y menos sedimento.</li>
+              <li><strong>Menos superficie impermeable</strong> → menos picos de caudal y menos inundaciones rápidas.</li>
+              <li><strong>Saneamiento</strong> (manejo de aguas residuales y basura) → menos nutrientes y mejor calidad del agua.</li>
+              <li><strong>Protección de riberas</strong> → filtra sedimentos antes de llegar al río.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: centrar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de cuencas en Sololá"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Si estás abriendo el archivo sin internet, revisa que el script de Markmap pueda descargarse.
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · Simulador “Cuenca → Río → Lago”</h2>
+        <div class="hint">
+          Objetivo: mantener el lago <strong>claro</strong> (baja carga de nutrientes y sedimentos) y lograr <strong>buena recarga</strong>.
+          Cambia las condiciones del territorio y observa cómo reacciona la cuenca.
+        </div>
+
+        <div class="simGrid">
+          <div class="box">
+            <div class="goalRow">
+              <span class="mini" id="simGoal">Meta: Lago claro + Recarga alta + Sedimento bajo</span>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="rain">Lluvia (mm)</label>
+              <input id="rain" type="range" min="400" max="1600" step="25" value="950">
+              <div class="val" id="rainVal">950</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="forest">Bosque / cobertura (%)</label>
+              <input id="forest" type="range" min="0" max="100" step="5" value="60">
+              <div class="val" id="forestVal">60%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="imperv">Impermeable (%)</label>
+              <input id="imperv" type="range" min="0" max="70" step="5" value="12">
+              <div class="val" id="impervVal">12%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="slope">Pendiente</label>
+              <input id="slope" type="range" min="0" max="100" step="5" value="55">
+              <div class="val" id="slopeVal">Media</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="soil">Tipo de suelo</label>
+              <select id="soil">
+                <option value="sand">Arenoso (más infiltración)</option>
+                <option value="loam" selected>Franco (equilibrado)</option>
+                <option value="clay">Arcilloso (menos infiltración)</option>
+              </select>
+              <div class="val" id="soilVal">Franco</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="san">Saneamiento</label>
+              <input id="san" type="range" min="0" max="100" step="5" value="35">
+              <div class="val" id="sanVal">35%</div>
+            </div>
+
+            <div class="miniRow">
+              <button class="btn" id="btnTry" type="button">Evaluar meta</button>
+              <button class="btn" id="btnResetSim" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="simScore">0</span></span>
+            </div>
+
+            <div class="result info" id="simMsg">Tip: más bosque + mejor saneamiento suele ayudar al lago.</div>
+          </div>
+
+          <div class="box">
+            <p><strong>Indicadores de la cuenca (modelo didáctico)</strong></p>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Escorrentía (Q)</div>
+                <div class="v" id="kQ">0</div>
+                <div class="u">mm (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Recarga (R)</div>
+                <div class="v" id="kR">0</div>
+                <div class="u">mm (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Sedimento</div>
+                <div class="v" id="kS">0</div>
+                <div class="u">índice 0–100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Nutrientes</div>
+                <div class="v" id="kN">0</div>
+                <div class="u">índice 0–100</div>
+              </div>
+            </div>
+
+            <div class="svgPanel" style="margin-top:10px;">
+              <svg viewBox="0 0 960 360" width="100%" height="auto" role="img" aria-label="Esquema de cuenca hacia un lago">
+                <defs>
+                  <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="rgba(180,235,255,.75)"/>
+                    <stop offset="1" stop-color="rgba(255,255,255,.0)"/>
+                  </linearGradient>
+                  <linearGradient id="land" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="rgba(205, 230, 240, .55)"/>
+                    <stop offset="1" stop-color="rgba(175, 215, 235, .30)"/>
+                  </linearGradient>
+                </defs>
+
+                <rect x="0" y="0" width="960" height="360" fill="url(#sky)"/>
+                <!-- Montañas / cuenca -->
+                <path d="M0 280 C120 200, 210 190, 300 240 C380 285, 460 260, 540 215 C630 165, 740 170, 960 250 L960 360 L0 360 Z"
+                      fill="url(#land)" stroke="rgba(11,16,32,.08)"/>
+
+                <!-- Bosque (puntos) -->
+                <g id="trees" opacity="0.85"></g>
+
+                <!-- Río -->
+                <path id="river" d="M360 250 C420 245, 480 255, 540 265 C600 275, 680 280, 760 285"
+                      fill="none" stroke="rgba(35,140,210,.55)" stroke-width="10" stroke-linecap="round"/>
+
+                <!-- Lago -->
+                <path id="lake" d="M680 290 C740 270, 820 270, 900 295 C910 325, 850 345, 780 340 C720 338, 690 325, 680 290 Z"
+                      fill="rgba(120,210,255,.45)" stroke="rgba(11,16,32,.10)"/>
+
+                <!-- Mancha de sedimento -->
+                <path id="plume" d="M700 295 C740 280, 780 282, 820 295 C805 312, 770 320, 735 318 C715 317, 704 307, 700 295 Z"
+                      fill="rgba(185, 150, 120, .00)"/>
+
+                <!-- Etiquetas -->
+                <text x="60" y="55" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="16" fill="rgba(11,16,32,.78)">Cuenca</text>
+                <text x="770" y="275" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="16" fill="rgba(11,16,32,.78)">Lago</text>
+              </svg>
+
+              <div class="hint">
+                Observa el lago: si suben nutrientes y sedimentos, cambia el color y aparece una “pluma” café.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · Reto “¿A dónde drena esta cuenca?”</h2>
+        <div class="hint">
+          Selecciona una cuenca y luego elige su destino. Completa las 6 sin equivocarte demasiado.
+          (Pista: Atitlán es endorreica; Motagua llega al Caribe; las demás van al Pacífico).
+        </div>
+
+        <div class="destGrid">
+          <div class="basinList">
+            <h3>Cuencas</h3>
+            <div id="basins"></div>
+
+            <div class="hud">
+              <span class="mini">Aciertos: <span id="dOk">0</span>/6</span>
+              <span class="mini">Errores: <span id="dBad">0</span></span>
+              <span class="mini">Tiempo: <span id="dTime">0</span>s</span>
+              <button class="btn" id="btnResetDest" type="button">Reiniciar</button>
+            </div>
+
+            <div class="result info" id="dMsg" style="display:none;"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>Destinos</strong></p>
+            <div class="destChoices">
+              <button class="destBtn" type="button" data-dest="pacifico">
+                <p class="t">Océano Pacífico</p>
+                <p class="s">Cuencas costeras del sur y suroccidente.</p>
+              </button>
+              <button class="destBtn" type="button" data-dest="caribe">
+                <p class="t">Mar Caribe</p>
+                <p class="s">Gran cuenca del Motagua.</p>
+              </button>
+              <button class="destBtn" type="button" data-dest="endorreica">
+                <p class="t">Cuenca endorreica (Lago de Atitlán)</p>
+                <p class="s">El agua no llega al mar; queda en el lago.</p>
+              </button>
+            </div>
+
+            <div class="result" id="destExplain" style="margin-top:12px;">
+              Elige una cuenca de la lista y luego su destino.
+            </div>
+
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Extra:</strong> aunque un río llegue al mar, lo que tiremos “arriba” puede viajar lejos. Por ejemplo,
+              la basura y contaminación que baja por un río grande puede afectar ecosistemas costeros.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = `
+# 3.5 Cuencas hidrográficas en Sololá
+## Idea central
+- Lo que ocurre en la parte alta llega a ríos y al lago
+- Cantidad **y** calidad del agua dependen del territorio
+## Tipos de cuenca
+- Exorreica → drena al mar (Pacífico o Caribe)
+- Endorreica → termina en un lago (Atitlán)
+## Cuencas en Sololá
+- Atitlán (endorreica)
+- Madre Vieja (Pacífico)
+- Nahualate (Pacífico)
+- Samalá (Pacífico)
+- Sis–Icán (Pacífico)
+- Motagua (Caribe)
+## Lago de Atitlán
+- Lago profundo de montaña (≈1554 msnm)
+- Ríos permanentes e intermitentes alimentan el lago
+- Hoy enfrenta eutrofización (exceso de nutrientes)
+## ¿Qué lo protege?
+- Bosque y suelo cubierto → más infiltración
+- Menos impermeable → menos picos de caudal
+- Saneamiento → menos nutrientes y basura
+- Riberas protegidas → filtran sedimentos
+`.trim();
+
+    let mm=null, expanded=true;
+
+    function renderMap(){
+      const fb = document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const it = setInterval(() => {
+      tries++;
+      const ok = renderMap();
+      if (ok || tries >= 12) clearInterval(it);
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; renderMap(); });
+
+    // =========================
+    // JUEGO 1: SIMULADOR CUENCA→LAGO
+    // =========================
+    const elRain = document.getElementById('rain');
+    const elForest = document.getElementById('forest');
+    const elImp = document.getElementById('imperv');
+    const elSlope = document.getElementById('slope');
+    const elSoil = document.getElementById('soil');
+    const elSan = document.getElementById('san');
+
+    const rainVal = document.getElementById('rainVal');
+    const forestVal = document.getElementById('forestVal');
+    const impVal = document.getElementById('impervVal');
+    const slopeVal = document.getElementById('slopeVal');
+    const soilVal = document.getElementById('soilVal');
+    const sanVal = document.getElementById('sanVal');
+
+    const kQ = document.getElementById('kQ');
+    const kR = document.getElementById('kR');
+    const kS = document.getElementById('kS');
+    const kN = document.getElementById('kN');
+
+    const simMsg = document.getElementById('simMsg');
+    const simScore = document.getElementById('simScore');
+
+    const river = document.getElementById('river');
+    const lake = document.getElementById('lake');
+    const plume = document.getElementById('plume');
+    const trees = document.getElementById('trees');
+
+    let score = 0;
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    function slopeName(x){
+      if (x <= 30) return "Baja";
+      if (x <= 70) return "Media";
+      return "Alta";
+    }
+
+    function soilName(v){
+      if (v === "sand") return "Arenoso";
+      if (v === "clay") return "Arcilloso";
+      return "Franco";
+    }
+
+    // Modelo didáctico (intencionalmente simple)
+    function calcBasin(P, forest, imperv, slope, soil, san){
+      // permeabilidad base por suelo
+      const soilInf = (soil === "sand") ? 0.62 : (soil === "loam" ? 0.48 : 0.34);
+
+      // Ajustes por pendiente (más pendiente → más Q, más sedimento)
+      const slopeRun = 0.10 + (slope/100) * 0.18;
+      const slopeSed = 0.18 + (slope/100) * 0.55;
+
+      // Infiltración potencial: bosque mejora estructura y reduce compactación
+      const infFactor = clamp(
+        soilInf + (forest * 0.0030) - (imperv * 0.0070) - slopeRun,
+        0.08, 0.85
+      );
+      let INF = P * infFactor;
+
+      // Escorrentía: crece con impermeable y pendiente; baja con bosque
+      const runFactor = clamp(
+        (0.22 + slopeRun) + (imperv * 0.0090) - (forest * 0.0025) + (P > 1200 ? 0.06 : 0),
+        0.10, 0.82
+      );
+      let Q = P * runFactor;
+
+      // Ajuste para no superar P
+      const sum = INF + Q;
+      if (sum > P * 0.98){
+        const scale = (P * 0.98) / sum;
+        INF *= scale;
+        Q *= scale;
+      }
+
+      // Recarga: fracción de INF; mejora con bosque, baja con arcilla e impermeable
+      const rBase = (soil === "sand") ? 0.55 : (soil === "loam" ? 0.48 : 0.40);
+      const rFrac = clamp(rBase + (forest * 0.0018) - (imperv * 0.0012), 0.22, 0.72);
+      const R = INF * rFrac;
+
+      // Sedimento: sube con pendiente + Q; baja con bosque (cobertura) y suelo no desnudo
+      const Sed = clamp(
+        (slopeSed * 60) + (Q / 18) - (forest * 0.45),
+        0, 100
+      );
+
+      // Nutrientes: suben con baja cobertura + baja sanidad; también arrastre por Q
+      // (saneamiento alto reduce carga)
+      const N = clamp(
+        (100 - san) * 0.70 + (100 - forest) * 0.30 + (Q / 30),
+        0, 100
+      );
+
+      return { Q, R, Sed, N };
+    }
+
+    function drawTrees(forest){
+      // Dibuja puntos como "árboles" distribuidos en ladera izquierda
+      while (trees.firstChild) trees.removeChild(trees.firstChild);
+      const count = Math.round(clamp(forest, 0, 100) * 0.8); // hasta ~80 puntos
+      for (let i=0;i<count;i++){
+        const cx = 80 + Math.random()*420;
+        const cy = 160 + Math.random()*110;
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("cx", cx.toFixed(1));
+        c.setAttribute("cy", cy.toFixed(1));
+        c.setAttribute("r", (1.8 + Math.random()*2.6).toFixed(1));
+        c.setAttribute("fill", "rgba(34,197,94,.35)");
+        trees.appendChild(c);
+      }
+    }
+
+    function lakeColor(N){
+      // 0 claro, 100 muy eutrófico
+      const t = clamp(N, 0, 100) / 100;
+      // interpolación simple: azul → verde
+      const r = Math.round(120 + (40 * t));
+      const g = Math.round(210 + (40 * t));
+      const b = Math.round(255 - (120 * t));
+      return `rgba(${r},${g},${b},.55)`;
+    }
+
+    function plumeOpacity(Sed){
+      // sedimento 0-100 → 0.0 - 0.45
+      return (clamp(Sed,0,100) / 100 * 0.45).toFixed(3);
+    }
+
+    function updateSim(){
+      const P = Number(elRain.value);
+      const F = Number(elForest.value);
+      const I = Number(elImp.value);
+      const Sl = Number(elSlope.value);
+      const soil = elSoil.value;
+      const san = Number(elSan.value);
+
+      rainVal.textContent = String(P);
+      forestVal.textContent = `${F}%`;
+      impVal.textContent = `${I}%`;
+      slopeVal.textContent = slopeName(Sl);
+      soilVal.textContent = soilName(soil);
+      sanVal.textContent = `${san}%`;
+
+      const out = calcBasin(P, F, I, Sl, soil, san);
+
+      kQ.textContent = Math.round(out.Q);
+      kR.textContent = Math.round(out.R);
+      kS.textContent = Math.round(out.Sed);
+      kN.textContent = Math.round(out.N);
+
+      // Visuales
+      river.setAttribute("stroke-width", String(clamp(6 + out.Q/120, 6, 18)));
+      lake.setAttribute("fill", lakeColor(out.N));
+      plume.setAttribute("fill", `rgba(185,150,120, ${plumeOpacity(out.Sed)})`);
+      drawTrees(F);
+
+      // Mensaje
+      const clear = out.N <= 35 && out.Sed <= 35;
+      const recharge = out.R >= 220;
+      const ok = clear && recharge;
+
+      if (ok){
+        simMsg.className = "result ok";
+        simMsg.innerHTML = `<strong>¡Buen manejo!</strong> Lago claro y recarga alta. (Q=${Math.round(out.Q)} · R=${Math.round(out.R)})`;
+      } else {
+        simMsg.className = "result info";
+        const tips = [];
+        if (out.N > 35) tips.push("sube saneamiento y reduce nutrientes");
+        if (out.Sed > 35) tips.push("aumenta bosque/cobertura o baja pendiente efectiva (terrazas)");
+        if (out.R < 220) tips.push("reduce impermeable y mejora infiltración");
+        simMsg.innerHTML = `<strong>Observación:</strong> ` + (tips.length ? tips.join(" · ") : "ajusta variables para mejorar el lago y la recarga.");
+      }
+
+      return { out, ok };
+    }
+
+    [elRain, elForest, elImp, elSlope, elSoil, elSan].forEach(el => el.addEventListener('input', updateSim));
+    elSoil.addEventListener('change', updateSim);
+
+    document.getElementById('btnTry').addEventListener('click', () => {
+      const r = updateSim();
+      if (r.ok){
+        score += 1;
+        simScore.textContent = String(score);
+      }
+    });
+
+    document.getElementById('btnResetSim').addEventListener('click', () => {
+      score = 0;
+      simScore.textContent = "0";
+      elRain.value = 950;
+      elForest.value = 60;
+      elImp.value = 12;
+      elSlope.value = 55;
+      elSoil.value = "loam";
+      elSan.value = 35;
+      updateSim();
+    });
+
+    // Inicial
+    updateSim();
+
+    // =========================
+    // JUEGO 2: RETO DESTINOS
+    // =========================
+    const BASINS = [
+      { id:"atitlan", name:"Atitlán", dest:"endorreica", tip:"Cuenca cerrada: el agua termina en el lago." },
+      { id:"madre", name:"Madre Vieja", dest:"pacifico", tip:"Cuenca que drena al sur (Pacífico)." },
+      { id:"nahualate", name:"Nahualate", dest:"pacifico", tip:"Nace en Sierra Madre y baja hacia el Pacífico." },
+      { id:"samala", name:"Samalá", dest:"pacifico", tip:"Cuenca del suroccidente; llega al Pacífico." },
+      { id:"sisican", name:"Sis–Icán", dest:"pacifico", tip:"Cuenca asociada a estuarios del Pacífico." },
+      { id:"motagua", name:"Motagua", dest:"caribe", tip:"Gran cuenca que desemboca en el Caribe." },
+    ];
+
+    const basinsEl = document.getElementById('basins');
+    const dOkEl = document.getElementById('dOk');
+    const dBadEl = document.getElementById('dBad');
+    const dTimeEl = document.getElementById('dTime');
+    const dMsg = document.getElementById('dMsg');
+    const destExplain = document.getElementById('destExplain');
+
+    let selBasin = null;
+    let locked = new Set();
+    let okCount = 0;
+    let badCount = 0;
+    let seconds = 0;
+    let timer = null;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function startTimer(){
+      if (timer) return;
+      timer = setInterval(() => {
+        seconds++;
+        dTimeEl.textContent = String(seconds);
+      }, 1000);
+    }
+    function stopTimer(){
+      if (!timer) return;
+      clearInterval(timer);
+      timer = null;
+    }
+
+    function renderBasins(){
+      basinsEl.innerHTML = "";
+      shuffle(BASINS).forEach((b, idx) => {
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.className = "basinBtn";
+        btn.dataset.id = b.id;
+        btn.innerHTML = `<span>${b.name}</span><span class="badge">C${idx+1}</span>`;
+        btn.addEventListener('click', () => {
+          startTimer();
+          if (locked.has(b.id)) return;
+          document.querySelectorAll('.basinBtn').forEach(x => x.classList.remove('selected'));
+          btn.classList.add('selected');
+          selBasin = b;
+          destExplain.className = "result info";
+          destExplain.textContent = `Seleccionaste "${b.name}". Ahora elige su destino.`;
+          dMsg.style.display = "none";
+        });
+        basinsEl.appendChild(btn);
+      });
+    }
+
+    function updateHud(){
+      dOkEl.textContent = String(okCount);
+      dBadEl.textContent = String(badCount);
+      dTimeEl.textContent = String(seconds);
+    }
+
+    function lockBasin(id){
+      document.querySelectorAll('.basinBtn').forEach(btn => {
+        if (btn.dataset.id === id){
+          btn.classList.remove('selected');
+          btn.classList.add('locked');
+          btn.disabled = true;
+        }
+      });
+    }
+
+    function finish(){
+      stopTimer();
+      dMsg.style.display = "block";
+      dMsg.className = "result " + (badCount <= 2 ? "ok" : "warn");
+      dMsg.innerHTML = (badCount <= 2)
+        ? `<strong>¡Reto completado!</strong> Excelente. Tiempo: <strong>${seconds}s</strong>, errores: <strong>${badCount}</strong>.`
+        : `<strong>¡Reto completado!</strong> Bien. Tiempo: <strong>${seconds}s</strong>, errores: <strong>${badCount}</strong>. Repite para mejorar.`;
+    }
+
+    document.querySelectorAll('.destBtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        startTimer();
+        const dest = btn.getAttribute('data-dest');
+        if (!selBasin){
+          destExplain.className = "result warn";
+          destExplain.textContent = "Primero selecciona una cuenca en la lista.";
+          return;
+        }
+
+        if (selBasin.dest === dest){
+          okCount++;
+          locked.add(selBasin.id);
+          lockBasin(selBasin.id);
+
+          destExplain.className = "result ok";
+          destExplain.innerHTML = `<strong>Correcto.</strong> ${selBasin.name} → ${dest === "pacifico" ? "Pacífico" : dest === "caribe" ? "Caribe" : "Lago (endorreica)"}.
+            <br><span style="color:rgba(11,16,32,.72)">${selBasin.tip}</span>`;
+        } else {
+          badCount++;
+          destExplain.className = "result no";
+          destExplain.innerHTML = `<strong>No.</strong> Intenta otra vez. Pista: ${selBasin.tip}`;
+        }
+
+        // reset selection
+        selBasin = null;
+        document.querySelectorAll('.basinBtn').forEach(x => x.classList.remove('selected'));
+
+        updateHud();
+        if (okCount === BASINS.length) finish();
+      });
+    });
+
+    document.getElementById('btnResetDest').addEventListener('click', () => {
+      stopTimer();
+      seconds = 0;
+      okCount = 0;
+      badCount = 0;
+      selBasin = null;
+      locked = new Set();
+      dMsg.style.display = "none";
+      destExplain.className = "result";
+      destExplain.textContent = "Elige una cuenca de la lista y luego su destino.";
+      renderBasins();
+      updateHud();
+    });
+
+    renderBasins();
+    updateHud();
+  </script>
+</body>
+</html>
