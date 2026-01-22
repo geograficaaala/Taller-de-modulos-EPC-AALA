@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Módulo 3 · 3.1 El ciclo del agua</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Markmap -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --glass:rgba(255,255,255,.66);
+      --stroke:rgba(11,16,32,.10);
+      --shadow:0 18px 45px rgba(11,16,32,.16);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.12);
+      --radius:24px;
+
+      --good: rgba(30, 160, 90, .20);
+      --bad: rgba(210, 70, 100, .18);
+      --info: rgba(45, 160, 220, .18);
+      --warn: rgba(245, 158, 11, .18);
+      --focus: rgba(120, 190, 255, .22);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, rgba(190, 255, 210, .84), transparent 58%),
+        radial-gradient(980px 760px at 82% 18%, rgba(170, 226, 255, .84), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(255, 235, 190, .70), transparent 58%),
+        linear-gradient(135deg, #effff4 0%, #e8f6ff 45%, #fff6e8 100%);
+      min-height:100vh;
+    }
+    .wrap{ max-width:1200px; margin:0 auto; padding:26px 18px 64px; }
+
+    header{
+      border:1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .kicker{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:.3px; }
+    h1{
+      margin:6px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight:800;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      max-width: 90ch;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      color: rgba(11,16,32,.92);
+      font-weight:800;
+      text-decoration:none;
+      font-size:13px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(190,255,210,.90), rgba(170,226,255,.88), rgba(255,235,190,.78));
+    }
+
+    .stack{ margin-top:14px; display:grid; gap:14px; }
+    .card{
+      border:1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      padding:16px;
+    }
+    h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight:800;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .muted{ color: var(--muted); }
+
+    .twoCols{ margin-top:10px; display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+    .box{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      line-height:1.55;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+    }
+    ul{ margin: 8px 0 0 18px; padding:0; }
+    li{ margin: 6px 0; }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+    .pill{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.56);
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 13px;
+      margin: 0 0 6px;
+    }
+    .pill .s{
+      margin:0;
+      color: rgba(11,16,32,.74);
+      font-size: 12.5px;
+      line-height:1.45;
+    }
+
+    /* Map */
+    .mapTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapStage{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px dashed rgba(11,16,32,.22);
+      background:
+        radial-gradient(circle at 1px 1px, rgba(11,16,32,.08) 1px, transparent 1px) 0 0 / 22px 22px,
+        linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,.40));
+      padding: 10px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+      position: relative;
+      overflow:hidden;
+    }
+    svg.markmap{ width:100%; height: 420px; display:block; }
+    .mapFallback{
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      padding: 16px;
+      text-align:center;
+      color: rgba(11,16,32,.72);
+      background: rgba(255,255,255,.74);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .15s ease;
+    }
+    .mapFallback.show{ opacity:1; pointer-events:auto; }
+
+    /* Games */
+    .gameGrid{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .panel h3{
+      margin: 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+
+    .case{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      line-height: 1.55;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+    }
+
+    .hud{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .chipHud{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      padding: 6px 10px;
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+
+    .choices{
+      margin-top: 10px;
+      display:grid;
+      gap:10px;
+    }
+    .choiceBtn{
+      width:100%;
+      justify-content:flex-start;
+      gap:10px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      text-align:left;
+      font-family: Inter, system-ui;
+      color: rgba(11,16,32,.92);
+    }
+    .choiceBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .choiceBtn:active{ transform: translateY(1px); }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: var(--focus);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+
+    /* Memorama */
+    .memoTop{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+    .memoGrid{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .memoGrid{ grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px){ .memoGrid{ grid-template-columns: repeat(2, 1fr); } }
+
+    .card3d{
+      position:relative;
+      height: 92px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      cursor:pointer;
+      perspective: 900px;
+      user-select:none;
+    }
+    .card3d[aria-disabled="true"]{ cursor: default; opacity:.8; }
+
+    .inner{
+      position:absolute; inset:0;
+      transform-style: preserve-3d;
+      transition: transform .28s ease;
+      border-radius: 16px;
+    }
+    .card3d.flipped .inner{ transform: rotateY(180deg); }
+
+    .face{
+      position:absolute; inset:0;
+      border-radius: 16px;
+      backface-visibility: hidden;
+      display:flex; align-items:center; justify-content:center;
+      padding: 10px;
+      text-align:center;
+      font-weight: 800;
+      font-size: 12.5px;
+      color: rgba(11,16,32,.90);
+    }
+    .front{
+      background:
+        radial-gradient(circle at 1px 1px, rgba(11,16,32,.10) 1px, transparent 1px) 0 0 / 18px 18px,
+        rgba(255,255,255,.62);
+    }
+    .back{
+      transform: rotateY(180deg);
+      background: rgba(255,255,255,.80);
+      border: 1px solid rgba(11,16,32,.08);
+    }
+    .matched{
+      outline: 2px solid rgba(34,197,94,.35);
+      background: rgba(30,160,90,.10);
+    }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.1 El ciclo del agua</h1>
+        <p class="subtitle">
+          El agua puede estar en <strong>estado líquido</strong>, <strong>sólido</strong> (hielo) o <strong>gaseoso</strong> (vapor).
+          Como el agua cambia de un estado a otro, decimos que el agua del planeta es <strong>dinámica</strong>.
+          Ese proceso se llama <strong>ciclo del agua</strong> o <strong>ciclo hidrológico</strong>.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="index.html">Anterior</a>
+        <a class="btn primary" href="3-2.html">Siguiente (3.2)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+
+        <div class="twoCols">
+          <div class="box">
+            <p style="margin:0 0 8px;">
+              El <strong>ciclo del agua</strong> ayuda a <strong>limpiar</strong> y <strong>distribuir</strong> el agua del planeta.
+              Ocurre porque la energía del sol, el viento, la temperatura y la gravedad mueven el agua entre la atmósfera, la tierra y los cuerpos de agua.
+            </p>
+
+            <p style="margin:10px 0 0;"><strong>Procesos clave:</strong></p>
+            <ul>
+              <li><strong>Evaporación:</strong> el sol calienta el agua de ríos, lagos, océanos, suelo y seres vivos, y la convierte en <strong>vapor</strong>.</li>
+              <li><strong>Condensación:</strong> cuando baja la temperatura, el vapor se transforma en <strong>gotitas</strong> y se forman <strong>nubes</strong>.</li>
+              <li><strong>Precipitación:</strong> cuando las gotas se vuelven pesadas, caen a la tierra como <strong>lluvia</strong>, <strong>granizo</strong> o <strong>nieve</strong>.</li>
+              <li><strong>Infiltración:</strong> parte del agua se <strong>absorbe</strong> en el suelo y puede llegar a fuentes subterráneas.</li>
+              <li><strong>Escorrentía:</strong> parte del agua corre por la superficie (ríos/quebradas) y llega a lagos u océanos para continuar el ciclo.</li>
+            </ul>
+          </div>
+
+          <div class="box">
+            <p style="margin:0;"><strong>Mini-checklist (para explicar con tus palabras)</strong></p>
+            <ul>
+              <li>¿Qué “empuja” al agua a evaporarse? → <strong>energía del sol</strong>.</li>
+              <li>¿Qué pasa cuando el vapor se enfría? → <strong>condensa</strong> y forma nubes.</li>
+              <li>¿Cómo vuelve el agua a la tierra? → <strong>precipitación</strong>.</li>
+              <li>¿A dónde va el agua cuando entra al suelo? → <strong>infiltra</strong> a lo subterráneo.</li>
+              <li>¿Qué agua “corre” por la superficie? → <strong>escorrentía</strong>.</li>
+            </ul>
+
+            <div class="result info" style="margin-top:10px;">
+              Tip rápido: piensa en “<strong>sube</strong>” (evaporación), “<strong>se junta</strong>” (condensación),
+              “<strong>cae</strong>” (precipitación) y “<strong>se mueve</strong>” (infiltración/escorrentía).
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Estados del agua</div>
+            <p class="s">Líquido, sólido (hielo) y gaseoso (vapor). Cambia de estado en el ciclo.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Distribuye</div>
+            <p class="s">Mueve el agua entre atmósfera, suelo, ríos, lagos y océanos.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Limpia</div>
+            <p class="s">La lluvia y el flujo ayudan a “renovar” el agua (sin contaminarla).</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2 style="margin:0;">Mapa mental</h2>
+            <div class="muted">Resumen visual del ciclo del agua.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Ajustar</button>
+            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap"></svg>
+          <div class="mapFallback" id="mapFallback">
+            <div><strong>No se pudo cargar el mapa mental.</strong><br>Recarga la página o revisa la conexión.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1: Ruta de una gota</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          Tú decides qué proceso del ciclo ocurre según la situación. (No es ordenar: es elegir la mejor explicación).
+        </p>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Situación</h3>
+            <div class="case" id="dropCase">Cargando…</div>
+
+            <div class="hud">
+              <div class="chipHud">Ronda: <span id="dropIdx">1</span> / <span id="dropTotal">5</span></div>
+              <div class="chipHud">Puntos: <span id="dropScore">0</span></div>
+            </div>
+
+            <div class="choices" id="dropChoices"></div>
+
+            <div class="result" id="dropFeedback" style="display:none;"></div>
+
+            <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn" id="dropNext" type="button" disabled>Siguiente</button>
+              <button class="btn" id="dropReset" type="button">Reiniciar</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Guía rápida</h3>
+            <div class="box" style="margin-top:10px;">
+              <ul>
+                <li><strong>Evaporación:</strong> agua → vapor por calor del sol.</li>
+                <li><strong>Condensación:</strong> vapor → gotitas (nubes) por enfriamiento.</li>
+                <li><strong>Precipitación:</strong> el agua cae (lluvia/granizo/nieve).</li>
+                <li><strong>Infiltración:</strong> entra al suelo y recarga agua subterránea.</li>
+                <li><strong>Escorrentía:</strong> corre por la superficie hacia ríos/lagos/océano.</li>
+              </ul>
+              <div class="result warn" style="margin-top:10px;">
+                Si dudas, busca la “pista”: ¿sube, se junta, cae, entra al suelo o corre?
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2: Memorama de procesos</h2>
+        <p class="muted" style="margin:8px 0 0;">
+          Encuentra las parejas: <strong>proceso</strong> ↔ <strong>definición</strong>. (Emparejar, no ordenar).
+        </p>
+
+        <div class="memoTop">
+          <div class="hud" style="margin:0;">
+            <div class="chipHud">Intentos: <span id="memoMoves">0</span></div>
+            <div class="chipHud">Parejas: <span id="memoPairs">0</span> / 5</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn" id="memoRestart" type="button">Reiniciar memorama</button>
+          </div>
+        </div>
+
+        <div class="memoGrid" id="memoGrid" aria-label="Memorama del ciclo del agua"></div>
+
+        <div class="result info" id="memoMsg" style="margin-top:10px; display:none;"></div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (robusto)
+    // =========================
+    const md = `
+# 3.1 El ciclo del agua (ciclo hidrológico)
+## Estados del agua
+- Líquido
+- Sólido (hielo)
+- Gaseoso (vapor)
+## ¿Qué hace el ciclo?
+- Limpia y distribuye el agua del planeta
+- Mueve agua entre atmósfera, tierra y cuerpos de agua
+## Procesos
+- Evaporación
+  - El sol calienta el agua y se vuelve vapor
+  - El viento puede transportar el vapor
+- Condensación
+  - Baja la temperatura
+  - Se forman gotitas y nubes
+- Precipitación
+  - Las gotas se vuelven pesadas
+  - Cae lluvia / granizo / nieve
+- Infiltración
+  - El agua entra al suelo
+  - Recarga fuentes subterráneas
+- Escorrentía
+  - El agua corre por la superficie
+  - Llega a ríos, quebradas y al océano
+## Idea clave
+- Es un ciclo: vuelve a empezar continuamente
+    `.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function safeRenderMap(){
+      const fallback = document.getElementById('mapFallback');
+      try{
+        if (!window.markmap || !window.markmap.Transformer || !window.markmap.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        expanded = true;
+        fallback.classList.remove('show');
+        return true;
+      }catch(e){
+        fallback.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      const ok = safeRenderMap();
+      if (ok || tries >= 12){
+        clearInterval(t);
+        if (!mm) document.getElementById('mapFallback').classList.add('show');
+      }
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
+
+    // =========================
+    // JUEGO 1: Ruta de una gota
+    // =========================
+    const DROP_LABELS = [
+      { key:"evaporacion", name:"Evaporación", desc:"Agua → vapor (calor del sol)" },
+      { key:"condensacion", name:"Condensación", desc:"Vapor → gotitas / nubes" },
+      { key:"precipitacion", name:"Precipitación", desc:"Cae lluvia/granizo/nieve" },
+      { key:"infiltracion", name:"Infiltración", desc:"Entra al suelo" },
+      { key:"escorrentia", name:"Escorrentía", desc:"Corre por la superficie" },
+    ];
+
+    const DROP_CASES = [
+      {
+        text: "Mediodía. El sol calienta un charco y poco a poco “desaparece” hacia el aire.",
+        answer: "evaporacion",
+        why: "Cuando el sol calienta el agua, parte se transforma en vapor: eso es evaporación."
+      },
+      {
+        text: "En la montaña, el aire se enfría y aparecen nubes densas formadas por gotitas.",
+        answer: "condensacion",
+        why: "Al bajar la temperatura, el vapor se convierte en gotitas y forma nubes: condensación."
+      },
+      {
+        text: "Las gotas en una nube se vuelven pesadas y caen al suelo como lluvia.",
+        answer: "precipitacion",
+        why: "Cuando el agua cae desde las nubes (lluvia, granizo o nieve) se llama precipitación."
+      },
+      {
+        text: "Después de llover, parte del agua se mete en la tierra y recarga el agua subterránea.",
+        answer: "infiltracion",
+        why: "El agua que entra al suelo y puede llegar a lo subterráneo es infiltración."
+      },
+      {
+        text: "Tras una lluvia fuerte, el agua baja por la ladera y se junta en una quebrada.",
+        answer: "escorrentia",
+        why: "El agua que corre por la superficie hacia ríos/quebradas es escorrentía."
+      }
+    ];
+
+    const dropCaseEl = document.getElementById('dropCase');
+    const dropChoicesEl = document.getElementById('dropChoices');
+    const dropFeedbackEl = document.getElementById('dropFeedback');
+    const dropNextBtn = document.getElementById('dropNext');
+    const dropResetBtn = document.getElementById('dropReset');
+
+    const dropIdxEl = document.getElementById('dropIdx');
+    const dropTotalEl = document.getElementById('dropTotal');
+    const dropScoreEl = document.getElementById('dropScore');
+
+    let dIdx = 0;
+    let dScore = 0;
+    let dLocked = false;
+
+    dropTotalEl.textContent = String(DROP_CASES.length);
+
+    function renderDropChoices(){
+      dropChoicesEl.innerHTML = '';
+      DROP_LABELS.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'choiceBtn';
+        b.type = 'button';
+        b.innerHTML = `<span class="badge">${opt.name}</span> <span style="font-weight:600; color: rgba(11,16,32,.70);">${opt.desc}</span>`;
+        b.addEventListener('click', () => pickDrop(opt.key));
+        dropChoicesEl.appendChild(b);
+      });
+    }
+
+    function showDrop(){
+      dLocked = false;
+      dropNextBtn.disabled = true;
+      dropFeedbackEl.style.display = 'none';
+      dropFeedbackEl.className = 'result';
+      dropIdxEl.textContent = String(dIdx + 1);
+      dropScoreEl.textContent = String(dScore);
+
+      dropCaseEl.textContent = DROP_CASES[dIdx].text;
+      renderDropChoices();
+
+      dropNextBtn.textContent = (dIdx === DROP_CASES.length - 1) ? 'Ver resultado' : 'Siguiente';
+    }
+
+    function labelFromKey(k){
+      const f = DROP_LABELS.find(x => x.key === k);
+      return f ? f.name : k;
+    }
+
+    function pickDrop(key){
+      if (dLocked) return;
+      dLocked = true;
+
+      const correct = DROP_CASES[dIdx].answer === key;
+      if (correct) dScore += 1;
+
+      dropFeedbackEl.style.display = 'block';
+      dropFeedbackEl.className = 'result ' + (correct ? 'ok' : 'no');
+      dropFeedbackEl.innerHTML = `
+        <strong>${correct ? '¡Correcto!' : 'Casi…'}</strong><br>
+        ${DROP_CASES[dIdx].why}<br>
+        <div style="margin-top:8px;"><strong>Tu elección:</strong> ${labelFromKey(key)}</div>
+      `;
+
+      dropScoreEl.textContent = String(dScore);
+      dropNextBtn.disabled = false;
+    }
+
+    dropNextBtn.addEventListener('click', () => {
+      if (!dLocked) return;
+
+      if (dIdx < DROP_CASES.length - 1){
+        dIdx++;
+        showDrop();
+      } else {
+        dropFeedbackEl.style.display = 'block';
+        dropFeedbackEl.className = 'result info';
+        dropFeedbackEl.innerHTML = `<strong>¡Listo!</strong><br>
+          Tu puntuación fue <strong>${dScore} / ${DROP_CASES.length}</strong>.<br>
+          Si quieres mejorar, reinicia y lee las pistas.`;
+        dropCaseEl.textContent = 'Juego finalizado. Puedes reiniciar para intentarlo de nuevo.';
+        dropChoicesEl.innerHTML = '';
+        dropNextBtn.disabled = true;
+      }
+    });
+
+    dropResetBtn.addEventListener('click', () => {
+      dIdx = 0;
+      dScore = 0;
+      showDrop();
+    });
+
+    showDrop();
+
+    // =========================
+    // JUEGO 2: Memorama (parejas)
+    // =========================
+    const PAIRS = [
+      ["Evaporación", "Agua → vapor por calor del sol."],
+      ["Condensación", "Vapor → gotitas; se forman nubes."],
+      ["Precipitación", "El agua cae: lluvia, granizo o nieve."],
+      ["Infiltración", "El agua entra al suelo y recarga lo subterráneo."],
+      ["Escorrentía", "El agua corre por la superficie hacia ríos/lagos."]
+    ];
+
+    const memoGrid = document.getElementById('memoGrid');
+    const memoMovesEl = document.getElementById('memoMoves');
+    const memoPairsEl = document.getElementById('memoPairs');
+    const memoRestart = document.getElementById('memoRestart');
+    const memoMsg = document.getElementById('memoMsg');
+
+    let memoState = {
+      first: null,
+      lock: false,
+      moves: 0,
+      matched: 0
+    };
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function buildMemoDeck(){
+      // cards: {id, pairId, text}
+      const cards = [];
+      PAIRS.forEach((p, idx) => {
+        cards.push({ id: `t-${idx}`, pairId: idx, text: p[0] });
+        cards.push({ id: `d-${idx}`, pairId: idx, text: p[1] });
+      });
+      return shuffle(cards);
+    }
+
+    function renderMemo(){
+      const deck = buildMemoDeck();
+      memoGrid.innerHTML = '';
+      memoMsg.style.display = 'none';
+      memoState = { first:null, lock:false, moves:0, matched:0 };
+      memoMovesEl.textContent = '0';
+      memoPairsEl.textContent = '0';
+
+      deck.forEach(card => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'card3d';
+        btn.dataset.pair = String(card.pairId);
+        btn.dataset.id = card.id;
+        btn.setAttribute('aria-label', 'Carta del memorama');
+
+        btn.innerHTML = `
+          <div class="inner">
+            <div class="face front">?</div>
+            <div class="face back">${card.text}</div>
+          </div>
+        `;
+
+        btn.addEventListener('click', () => flipMemo(btn));
+        memoGrid.appendChild(btn);
+      });
+    }
+
+    function flipMemo(cardEl){
+      if (memoState.lock) return;
+      if (cardEl.getAttribute('aria-disabled') === 'true') return;
+      if (cardEl.classList.contains('flipped')) return;
+
+      cardEl.classList.add('flipped');
+
+      if (!memoState.first){
+        memoState.first = cardEl;
+        return;
+      }
+
+      // second flip
+      memoState.moves += 1;
+      memoMovesEl.textContent = String(memoState.moves);
+
+      const first = memoState.first;
+      const samePair = first.dataset.pair === cardEl.dataset.pair;
+      const sameCard = first.dataset.id === cardEl.dataset.id;
+
+      memoState.lock = true;
+
+      setTimeout(() => {
+        if (samePair && !sameCard){
+          // match
+          first.classList.add('matched');
+          cardEl.classList.add('matched');
+          first.setAttribute('aria-disabled', 'true');
+          cardEl.setAttribute('aria-disabled', 'true');
+
+          memoState.matched += 1;
+          memoPairsEl.textContent = String(memoState.matched);
+
+          if (memoState.matched === PAIRS.length){
+            memoMsg.className = 'result ok';
+            memoMsg.style.display = 'block';
+            memoMsg.innerHTML = `<strong>¡Ganaste!</strong><br>Encontraste todas las parejas en <strong>${memoState.moves}</strong> intentos.`;
+          }
+        } else {
+          // no match
+          first.classList.remove('flipped');
+          cardEl.classList.remove('flipped');
+        }
+
+        memoState.first = null;
+        memoState.lock = false;
+      }, 650);
+    }
+
+    memoRestart.addEventListener('click', renderMemo);
+    renderMemo();
+  </script>
+</body>
+</html>
