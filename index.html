@@ -7,81 +7,130 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --ink: rgba(11,16,32,92);
-      --muted: rgba(11,16,32,70);
-      --card: rgba(255,255,255,72);
-      --stroke: rgba(11,16,32,10);
-      --shadow: 0 18px 45px rgba(15,23,42,10);
-      --shadow-soft: 0 10px 22px rgba(15,23,42,08);
-      --radius: 22px;
+      /* Paleta pastel azul/celeste */
+      --ink: rgba(10, 18, 35, .92);
+      --muted: rgba(10, 18, 35, .68);
 
-      --ok: rgba(34,197,94,14);
-      --warn: rgba(245,158,11,15);
-      --accent: rgba(15,118,110,12);
+      --glass: rgba(255,255,255,.70);
+      --glass2: rgba(255,255,255,.58);
+      --stroke: rgba(10, 18, 35, .10);
 
-      --bgA: rgba(180,235,255,55);
-      --bgB: rgba(195,255,210,35);
-      --bgC: rgba(225,215,255,35);
+      --shadow: 0 18px 45px rgba(10,18,35,.14);
+      --shadow-soft: 0 10px 22px rgba(10,18,35,.10);
+      --radius: 24px;
+
+      --skyA: rgba(160, 220, 255, .85);
+      --skyB: rgba(185, 235, 255, .78);
+      --skyC: rgba(210, 245, 255, .70);
+      --lavA: rgba(210, 220, 255, .55);
+
+      --accent: rgba(60, 170, 255, .20);
+      --accent-strong: rgba(60, 170, 255, .32);
+
+      --okBg: rgba(34,197,94,.14);
+      --okBd: rgba(34,197,94,.22);
+      --todoBg: rgba(245,158,11,.16);
+      --todoBd: rgba(245,158,11,.22);
     }
 
     *{ box-sizing:border-box; }
+    html, body{ height:100%; }
     body{
       margin:0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color: var(--ink);
       background:
-        radial-gradient(900px 500px at 18% 20%, var(--bgA), transparent 60%),
-        radial-gradient(900px 600px at 85% 35%, var(--bgB), transparent 62%),
-        radial-gradient(850px 650px at 35% 95%, var(--bgC), transparent 60%),
-        #f7fbff;
+        radial-gradient(1100px 760px at 12% 12%, rgba(170,235,255,.92), transparent 58%),
+        radial-gradient(980px 760px at 82% 18%, rgba(185,245,255,.88), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, rgba(210,220,255,.60), transparent 58%),
+        linear-gradient(135deg, #f2fbff 0%, #f5fbff 40%, #f7fbff 100%);
     }
 
-    .wrap{ max-width: 1100px; margin: 0 auto; padding: 28px 16px 40px; }
+    .wrap{ max-width: 1180px; margin: 0 auto; padding: 26px 16px 46px; }
 
+    /* Header tipo “tarjeta” */
     header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
       gap: 14px;
-      padding: 18px 18px 10px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      font-size: 12px;
+      color: rgba(10,18,35,.62);
+      font-weight: 800;
+      letter-spacing: .3px;
+      text-transform: uppercase;
     }
 
     .title{
-      margin: 0 0 8px;
+      margin: 6px 0 8px;
       font-family: Outfit, Inter, system-ui;
       font-weight: 800;
       letter-spacing: -0.02em;
-      font-size: 28px;
+      font-size: clamp(22px, 2.6vw, 30px);
+      line-height: 1.12;
     }
 
-    .subtitle{ margin:0; color: var(--muted); line-height:1.55; max-width: 72ch; }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      line-height:1.55;
+      max-width: 78ch;
+      font-size: 13px;
+    }
 
     .pillRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
     .pill{
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,55);
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.62);
       border-radius: 999px;
       padding: 8px 10px;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 12px;
-      color: rgba(11,16,32,72);
+      color: rgba(10,18,35,.72);
       box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
     }
 
-    main.stack{ display:grid; gap: 14px; padding: 10px 18px 0; }
+    main.stack{ display:grid; gap: 14px; padding: 14px 0 0; }
 
+    /* Cards principales */
     .card{
       border: 1px solid var(--stroke);
-      background: var(--card);
+      background: var(--glass);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
       padding: 16px;
       overflow:hidden;
+      position: relative;
     }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 220px at 10% 0%, rgba(160,220,255,.18), transparent 55%),
+        radial-gradient(520px 240px at 90% 5%, rgba(210,245,255,.14), transparent 55%);
+      pointer-events:none;
+      opacity: .9;
+    }
+
+    .card > *{ position: relative; }
 
     h2{
       margin:0;
@@ -93,12 +142,24 @@
 
     .muted{ color: var(--muted); }
 
+    /* Hero de cada módulo */
     .moduleHero{
       margin-top: 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(11,16,32,10);
-      background: linear-gradient(135deg, rgba(255,255,255,75), rgba(255,255,255,35));
+      border-radius: 20px;
+      border: 1px solid rgba(10,18,35,.10);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.70), rgba(255,255,255,.42));
       padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .moduleHero.blue{
+      background:
+        linear-gradient(135deg, rgba(180,235,255,.58), rgba(255,255,255,.42));
+    }
+    .moduleHero.celeste{
+      background:
+        linear-gradient(135deg, rgba(160,220,255,.52), rgba(185,245,255,.34), rgba(255,255,255,.38));
     }
 
     .moduleTop{
@@ -109,31 +170,56 @@
       flex-wrap:wrap;
       margin-bottom: 10px;
     }
-    .moduleName{ margin:0; font-weight: 900; font-size: 14px; }
-    .moduleMeta{ margin:6px 0 0; color: rgba(11,16,32,72); font-size: 12.5px; line-height: 1.45; max-width: 70ch; }
+    .moduleName{
+      margin:0;
+      font-weight: 900;
+      font-size: 14px;
+      color: rgba(10,18,35,.86);
+      font-family: Outfit, Inter, system-ui;
+      letter-spacing: .2px;
+    }
+    .moduleMeta{
+      margin:6px 0 0;
+      color: rgba(10,18,35,.70);
+      font-size: 12.5px;
+      line-height: 1.45;
+      max-width: 80ch;
+    }
 
+    /* Botones */
     .btn{
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,65);
-      color: rgba(11,16,32,86);
+      border: 1px solid rgba(10,18,35,.12);
+      background: rgba(255,255,255,.66);
+      color: rgba(10,18,35,.88);
       padding: 10px 12px;
       border-radius: 14px;
       text-decoration:none;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 13px;
       box-shadow: var(--shadow-soft);
       user-select:none;
       display:inline-flex;
       align-items:center;
       gap: 8px;
-      transition: transform .08s ease;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      backdrop-filter: blur(10px);
+      white-space: nowrap;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,.82);
+      border-color: rgba(10,18,35,.18);
     }
     .btn:active{ transform: translateY(1px); }
+
     .btn.primary{
-      background: var(--accent);
-      border-color: rgba(15,118,110,22);
+      background: linear-gradient(135deg, rgba(160,220,255,.55), rgba(185,245,255,.42));
+      border-color: rgba(60,170,255,.28);
+    }
+    .btn.primary:hover{
+      background: linear-gradient(135deg, rgba(160,220,255,.68), rgba(185,245,255,.52));
     }
 
+    /* Grid subtemas */
     .subGrid{
       display:grid;
       grid-template-columns: repeat(2, 1fr);
@@ -143,16 +229,31 @@
     @media (max-width: 560px){ .subGrid{ grid-template-columns: 1fr; } }
 
     .subCard{
-      border-radius: 18px;
-      border: 1px solid rgba(11,16,32,10);
-      background: rgba(255,255,255,58);
+      border-radius: 20px;
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.62);
       padding: 12px;
       box-shadow: var(--shadow-soft);
       display:flex;
       flex-direction:column;
       gap: 10px;
-      min-height: 136px;
+      min-height: 140px;
+      position: relative;
+      overflow:hidden;
     }
+
+    .subCard::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(520px 180px at 10% 0%, rgba(160,220,255,.18), transparent 55%),
+        radial-gradient(520px 200px at 90% 10%, rgba(210,245,255,.14), transparent 55%);
+      pointer-events:none;
+      opacity: .85;
+    }
+    .subCard > *{ position: relative; }
+
     .subTop{
       display:flex;
       align-items:flex-start;
@@ -166,25 +267,34 @@
       font-size: 14px;
       letter-spacing:.2px;
       line-height: 1.2;
+      color: rgba(10,18,35,.90);
     }
+
     .tag{
       display:inline-flex;
       align-items:center;
       padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(11,16,32,10);
-      font-weight: 800;
+      border: 1px solid rgba(10,18,35,.10);
+      font-weight: 900;
       font-size: 12px;
-      color: rgba(11,16,32,78);
-      background: rgba(255,255,255,60);
+      color: rgba(10,18,35,.76);
+      background: rgba(255,255,255,.64);
       white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(10,18,35,.08);
     }
-    .tag.ok{ background: var(--ok); }
-    .tag.todo{ background: var(--warn); }
+    .tag.ok{
+      background: var(--okBg);
+      border-color: var(--okBd);
+    }
+    .tag.todo{
+      background: var(--todoBg);
+      border-color: var(--todoBd);
+    }
 
     .subDesc{
       margin:0;
-      color: rgba(11,16,32,72);
+      color: rgba(10,18,35,.70);
       font-size: 12.5px;
       line-height: 1.45;
     }
@@ -196,18 +306,23 @@
       align-items:center;
     }
 
+    /* “Próximamente” con estilo bonito */
     .ghost{
-      opacity: .62;
+      opacity: .68;
+      filter: grayscale(.08);
+    }
+    .ghost .btn{
       pointer-events:none;
-      filter: grayscale(.12);
+      opacity:.62;
     }
 
     footer{
       margin-top: 14px;
-      color: rgba(11,16,32,62);
-      font-size: 12px;
+      color: rgba(10,18,35,.60);
+      font-size: 12.5px;
       line-height: 1.4;
       text-align:center;
+      padding: 10px 0 2px;
     }
   </style>
 </head>
@@ -216,9 +331,10 @@
   <div class="wrap">
     <header>
       <div>
-        <h1 class="title">Taller de Módulos · EPC AALA</h1>
+        <div class="kicker">EPC AALA · Taller de módulos</div>
+        <h1 class="title">Plataforma interactiva de aprendizaje</h1>
         <p class="subtitle">
-          Plataforma interactiva para desarrollar los módulos con teoría, mapas/diagramas y actividades evaluativas.
+          Teoría + mapas mentales + actividades lúdicas por subtema. Diseño homogéneo en tonos pastel azul/celeste.
         </p>
       </div>
 
@@ -230,11 +346,12 @@
     </header>
 
     <main class="stack">
+      <!-- MÓDULO 1 -->
       <section class="card">
         <h2>Módulo 1 · Medio ambiente</h2>
         <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
 
-        <div class="moduleHero">
+        <div class="moduleHero blue">
           <div class="moduleTop">
             <div>
               <h3 class="moduleName">Subtemas</h3>
@@ -357,12 +474,12 @@
         </div>
       </section>
 
-      <!-- ✅ MÓDULO 2 ACTIVADO -->
+      <!-- MÓDULO 2 -->
       <section class="card">
         <h2>Módulo 2 · El bosque</h2>
         <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
 
-        <div class="moduleHero" style="background: linear-gradient(135deg, rgba(210,255,225,55), rgba(255,255,255,35));">
+        <div class="moduleHero blue">
           <div class="moduleTop">
             <div>
               <h3 class="moduleName">Subtemas</h3>
@@ -438,12 +555,12 @@
         </div>
       </section>
 
-      <!-- ✅ MÓDULO 3 ACTIVADO -->
+      <!-- MÓDULO 3 -->
       <section class="card">
         <h2>Módulo 3 · El agua y las cuencas hidrográficas</h2>
         <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
 
-        <div class="moduleHero" style="background: linear-gradient(135deg, rgba(180,235,255,55), rgba(195,255,210,40), rgba(225,215,255,45));">
+        <div class="moduleHero celeste">
           <div class="moduleTop">
             <div>
               <h3 class="moduleName">Subtemas</h3>
@@ -552,7 +669,6 @@
 
   <script>
     (async () => {
-      // ✅ FIX: antes estaba mal escrito. Debe ser "..."
       const tags = [...document.querySelectorAll('[data-file]')];
       const base = location.href.replace(/\/index\.html.*$/,'/').replace(/#.*$/,'');
 
@@ -582,9 +698,10 @@
             card.classList.add('ghost');
             link.setAttribute('aria-disabled', 'true');
             link.style.pointerEvents = 'none';
-            link.style.opacity = '.6';
+            link.style.opacity = '.62';
           }
         }catch(_){
+          // Si no hay conexión o GH bloquea el HEAD, no cambiamos nada.
         }
       }));
     })();
