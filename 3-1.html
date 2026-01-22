@@ -819,25 +819,24 @@
     let expanded = true;
 
     function safeRenderMap(){
-      const fallback = document.getElementById('mapFallback');
-      try{
-        if (!window.markmap || !window.markmap.Transformer || !window.markmap.Markmap) return false;
-        const { Transformer, Markmap } = window.markmap;
-        const transformer = new Transformer();
-        const { root } = transformer.transform(md);
+  const fallback = document.getElementById('mapFallback');
+  try{
+    const transformer = new markmap.Transformer();
+    const { root } = transformer.transform(md);
 
-        const svg = document.getElementById('mindmap');
-        while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const svg = document.getElementById('mindmap');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
-        expanded = true;
-        fallback.classList.remove('show');
-        return true;
-      }catch(e){
-        fallback.classList.add('show');
-        return true;
-      }
-    }
+    mm = markmap.Markmap.create(svg, { autoFit:true, duration:240 }, root);
+    expanded = true;
+    fallback.classList.remove('show');
+    return true;
+  }catch(e){
+    console.error(e);
+    fallback.classList.add('show');
+    return false;
+  }
+}
 
     let tries = 0;
     const t = setInterval(() => {
