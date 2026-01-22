@@ -1,0 +1,1639 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.3 Cuencas hidrográficas y manejo integrado · EPC AALA</title>
+  <meta name="description" content="Cuencas hidrográficas y manejo integrado: zonas (alta, media, baja), recarga hídrica, factores que afectan la cuenca, comités de cuenca. Mapa mental + 2 juegos interactivos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap (mapa mental) — versión autoloader (más robusta) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --ok: rgba(45, 160, 220, .16);
+      --warn: rgba(120, 190, 255, .18);
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --info: rgba(56,189,248,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 92ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.25fr .95fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+    .warn{ background: var(--warn); border-color: rgba(120,190,255,.24); }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+
+    /* MAPA MENTAL */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      position:relative;
+      padding: 10px;
+    }
+    svg#mindmap{
+      width:100%;
+      height: 520px;
+      display:block;
+      border-radius: 14px;
+      background:
+        radial-gradient(700px 380px at 18% 0%, rgba(56,189,248,.12), transparent 55%),
+        radial-gradient(700px 380px at 82% 8%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      padding: 10px 12px;
+      font-size: 13px;
+      color: rgba(11,16,32,.72);
+      display:none;
+    }
+    .fallback.show{ display:block; }
+
+    /* ZONAS (ALTA/MEDIA/BAJA) */
+    .zonesGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .zonesGrid{ grid-template-columns: 1fr; } }
+
+    .zoneRow{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 980px){ .zoneRow{ grid-template-columns: 1fr; } }
+
+    .zone{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+      min-height: 140px;
+    }
+    .zone h3{
+      margin:0 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .zone .zHint{
+      margin:0;
+      font-size: 12.6px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.45;
+    }
+
+    /* JUEGO 1 (Planificador) */
+    .planGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .planGrid{ grid-template-columns: 1fr; } }
+
+    .ctrl{
+      margin-top: 10px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .ctrl label{
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.82);
+      width: 42%;
+    }
+    .ctrl input[type="range"]{ width: 48%; }
+    .ctrl .val{
+      width: 56px;
+      text-align:right;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.78);
+    }
+    .budget{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .bar{
+      flex: 1 1 auto;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(11,16,32,.10);
+      overflow:hidden;
+      margin: 0 10px;
+    }
+    .bar > div{
+      height:100%;
+      width: 0%;
+      background: rgba(35,140,210,.45);
+      transition: width .15s ease;
+    }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    /* JUEGO 2 (Clasificador por zonas) */
+    .classGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .classGrid{ grid-template-columns: 1fr; } }
+
+    .cards{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .cardBtn{
+      width:100%;
+      text-align:left;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      color: rgba(11,16,32,.90);
+      font-family: Inter, system-ui;
+    }
+    .cardBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .cardBtn:active{ transform: translateY(0px); }
+    .cardBtn.selected{ outline: 3px solid rgba(120,210,255,.35); }
+    .cardBtn.locked{
+      cursor:default;
+      opacity:.92;
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.22);
+    }
+    .cardBtn .t{ font-weight: 900; margin: 0 0 6px; }
+    .cardBtn .s{ margin: 0; font-size: 12.6px; color: rgba(11,16,32,.72); line-height: 1.45; }
+
+    .zonePick{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+      align-items:center;
+    }
+    .zBtn{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      cursor:pointer;
+      box-shadow: var(--shadow-soft);
+      transition: background .12s ease, border-color .12s ease, transform .08s ease;
+    }
+    .zBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .zBtn:active{ transform: translateY(1px); }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  
+    /* Actividad extra: Simulador visual de cuenca */
+    .basinGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .basinGrid{ grid-template-columns: 1fr; } }
+
+    .basinStage{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .basinStage svg{ width:100%; height:auto; display:block; }
+    .chartWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    canvas#hydro{ width:100%; height:220px; display:block; }
+
+    .ctrlGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .ctrl{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .ctrl .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .ctrl label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    .ctrl input[type="range"]{ width: 56%; min-width: 180px; }
+    .ctrl .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.74); min-width: 84px; text-align:right; }
+    .togRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 8px; }
+    .toggle{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px; border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      font-weight: 900; font-size: 12px; color: rgba(11,16,32,.78);
+      cursor:pointer; user-select:none;
+    }
+    .toggle input{ accent-color: rgba(35,140,210,.55); }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.3 Cuencas hidrográficas y manejo integrado de cuencas</h1>
+        <p class="subtitle">
+          Una <strong>cuenca hidrográfica</strong> es una unidad territorial donde el agua de la lluvia se reúne y escurre hacia un
+          <strong>punto común</strong> (un río, lago o el mar). En la cuenca vivimos personas, plantas y animales: todo está conectado.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-2.html">Anterior (3.2)</a>
+        <a class="btn primary" href="3-4.html">Siguiente (3.4)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="hint">Basado en el Módulo 3 del libro: definición, organización de cuencas, zonas (alta/media/baja), recarga hídrica, manejo integrado y factores que afectan la cuenca.</div>
+
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              Una cuenca es como una “gran bandeja” natural: lo que pasa en las partes altas puede sentirse abajo.
+              Por eso, al hablar de cuencas, siempre pensamos en <strong>agua + suelo + vegetación + personas</strong>.
+            </p>
+            <ul>
+              <li><strong>Definición:</strong> el agua de precipitación se concentra y fluye hacia un mismo destino.</li>
+              <li><strong>Unidad natural:</strong> no sigue límites municipales; una cuenca puede incluir varios municipios.</li>
+              <li><strong>Ejemplo local:</strong> la cuenca del <strong>Lago de Atitlán</strong> funciona como unidad natural conectada.</li>
+            </ul>
+
+            <div class="result info">
+              <strong>Idea clave:</strong> el agua y el suelo están estrechamente relacionados: si el suelo se degrada (erosión, compactación),
+              cambia la infiltración y se afectan ríos, manantiales y acuíferos.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Funciones de una cuenca (mirada integral)</strong></p>
+            <ul>
+              <li><strong>Hidrológica:</strong> capta lluvia, la infiltra, la almacena y la conduce por ríos y quebradas.</li>
+              <li><strong>Ecológica:</strong> sostiene hábitats (bosque, riberas) y biodiversidad.</li>
+              <li><strong>Socioeconómica:</strong> aporta recursos para agricultura, bosque, agua potable y actividades productivas; también es espacio social y cultural.</li>
+            </ul>
+            <div class="result warn">
+              <strong>Si una cuenca se degrada</strong>, puede aumentar la escorrentía, la erosión, los sedimentos en ríos y la contaminación por aguas residuales o químicos.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Endorreica</div>
+            <p class="s">Cuenca “cerrada”: el agua no llega al mar; termina en un lago/laguna o se evapora/infiltra dentro del territorio.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Exorreica</div>
+            <p class="s">Cuenca “abierta”: los ríos desembocan en el mar. Ejemplo: cuencas que drenan al océano Pacífico.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Manejo integrado</div>
+            <p class="s">Acciones técnicas, sociales, económicas, administrativas y legales para gestionar agua y ambiente de forma sostenible.</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>Zonas de la cuenca: alta, media y baja</strong></p>
+            <ul>
+              <li><strong>Parte alta:</strong> más pendiente y nacimientos; es clave para <strong>recarga</strong> y conservación del suelo.</li>
+              <li><strong>Parte media:</strong> conecta alta y baja; suele mezclar agricultura, poblados y ríos principales.</li>
+              <li><strong>Parte baja:</strong> recibe todo lo que viene de arriba; allí se acumulan sedimentos y contaminación.</li>
+            </ul>
+            <div class="result info">
+              <strong>Tip:</strong> cuidar la parte alta (bosques, suelos, nacimientos) ayuda a que en la parte baja haya menos crecidas, menos sedimento y agua más constante.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Zona de recarga hídrica</strong></p>
+            <ul>
+              <li>La recarga es cuando la lluvia <strong>se infiltra</strong> y abastece el agua del subsuelo (<strong>acuíferos</strong>).</li>
+              <li>Ocurre a través del suelo/roca (poros y fracturas).</li>
+              <li>Se favorece con <strong>vegetación</strong>, suelos con buena estructura y poca compactación.</li>
+            </ul>
+            <div class="result warn">
+              <strong>Riesgo:</strong> superficies impermeables, suelos compactados y pérdida de cobertura reducen la recarga y aumentan escorrentía.
+            </div>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>Factores que afectan una cuenca (ejemplos)</strong></p>
+            <ul>
+              <li><strong>Aguas residuales</strong> sin tratamiento: contaminan ríos, lagos y acuíferos.</li>
+              <li><strong>Fertilizantes y plaguicidas</strong>: pueden superar la capacidad de renovación del agua.</li>
+              <li><strong>Medicamentos y aceites</strong>: también alteran la calidad del agua.</li>
+              <li><strong>Erosión del suelo</strong>: aumenta sedimentos y reduce calidad del agua.</li>
+            </ul>
+          </div>
+
+          <div class="box">
+            <p><strong>Organización social: comités de cuenca</strong></p>
+            <ul>
+              <li>Representan a la comunidad e incluyen actores públicos y privados.</li>
+              <li>Pueden participar: propietarios de tierras, instituciones estatales, gobiernos locales, juntas de agua, sectores productivos (agro), etc.</li>
+              <li>La meta es coordinar acciones y reglas para mejorar agua, suelo y bienestar.</li>
+            </ul>
+            <div class="result info">
+              <strong>Idea:</strong> una cuenca se cuida mejor cuando hay acuerdos, participación y seguimiento (no solo “hacer una acción” una vez).
+            </div>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top:12px;">
+          <p><strong>Dato del territorio (Sololá): cuencas que intervienen</strong></p>
+          <p style="font-size:13.2px;color:rgba(11,16,32,.74);margin-top:6px;">
+            En el departamento pueden intervenir varias cuencas (por ejemplo, Lago de Atitlán, Nahualate, Madre Vieja, Motagua, Samalá, Sis–Icán).
+            Esto muestra por qué los límites políticos no siempre coinciden con la realidad del agua.
+          </p>
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de cuencas y manejo integrado"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica la conexión a internet (CDN) o recarga la página.
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- ACTIVIDAD EXTRA: SIMULADOR VISUAL DE CUENCA -->
+      <section class="card">
+        <h2>Actividad · Laboratorio de cuenca (simulador visual)</h2>
+        <div class="hint">
+          Ajusta la lluvia y el territorio y observa cómo cambian la <strong>escorrentía</strong>, la <strong>recarga</strong>,
+          el <strong>riesgo de sedimentos</strong> y el <strong>pico de caudal</strong>. Es un modelo didáctico (simplificado) para entender relaciones causa–efecto.
+        </div>
+
+        <div class="basinGrid">
+          <div class="basinStage">
+            <svg viewBox="0 0 960 420" role="img" aria-label="Cuenca hidrográfica (simulador)">
+              <defs>
+                <linearGradient id="skyB" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(180,235,255,.78)"/>
+                  <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+                </linearGradient>
+                <linearGradient id="riverB" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(120,210,255,.55)"/>
+                  <stop offset="1" stop-color="rgba(60,170,235,.35)"/>
+                </linearGradient>
+              </defs>
+
+              <rect x="0" y="0" width="960" height="420" fill="url(#skyB)"/>
+
+              <!-- montañas / laderas -->
+              <path d="M0 300 L190 160 L320 300 Z" fill="rgba(180,220,255,.45)"/>
+              <path d="M220 300 L460 130 L690 300 Z" fill="rgba(160,210,255,.38)"/>
+              <path d="M610 300 L760 185 L960 300 Z" fill="rgba(180,220,255,.34)"/>
+
+              <!-- suelo -->
+              <rect x="0" y="300" width="960" height="26" fill="rgba(185, 210, 230, .35)"/>
+
+              <!-- río principal -->
+              <path id="riverPath" d="M80 320 C220 335, 320 340, 430 342 C540 345, 680 336, 860 330"
+                fill="none" stroke="rgba(35,140,210,.38)" stroke-width="12" stroke-linecap="round"/>
+
+              <!-- flechas -->
+              <g opacity="0.95">
+                <path id="runArrow" d="M220 260 C260 280, 320 305, 380 322"
+                  fill="none" stroke="rgba(35,140,210,.55)" stroke-width="10" stroke-linecap="round"/>
+                <path id="runArrow2" d="M680 250 C640 275, 610 300, 560 324"
+                  fill="none" stroke="rgba(35,140,210,.45)" stroke-width="8" stroke-linecap="round"/>
+
+                <path id="infArrow" d="M470 300 L470 356"
+                  fill="none" stroke="rgba(11,16,32,.28)" stroke-width="8" stroke-linecap="round"/>
+                <path id="infArrow2" d="M505 300 L505 350"
+                  fill="none" stroke="rgba(11,16,32,.20)" stroke-width="6" stroke-linecap="round"/>
+              </g>
+
+              <!-- acuífero -->
+              <rect x="250" y="350" width="460" height="56" rx="18" fill="rgba(190,235,255,.22)" stroke="rgba(11,16,32,.10)"/>
+              <rect id="aqFill" x="260" y="392" width="440" height="8" rx="12" fill="rgba(120,210,255,.35)"/>
+
+              <!-- nube + lluvia -->
+              <g>
+                <ellipse cx="750" cy="85" rx="70" ry="38" fill="rgba(255,255,255,.90)" stroke="rgba(11,16,32,.10)"/>
+                <ellipse cx="695" cy="95" rx="55" ry="30" fill="rgba(255,255,255,.92)" stroke="rgba(11,16,32,.10)"/>
+                <ellipse cx="810" cy="95" rx="55" ry="30" fill="rgba(255,255,255,.92)" stroke="rgba(11,16,32,.10)"/>
+
+                <g id="rainLines" opacity=".65">
+                  <line x1="720" y1="125" x2="705" y2="190" stroke="rgba(35,140,210,.35)" stroke-width="6" stroke-linecap="round"/>
+                  <line x1="750" y1="125" x2="748" y2="205" stroke="rgba(35,140,210,.35)" stroke-width="6" stroke-linecap="round"/>
+                  <line x1="780" y1="125" x2="792" y2="192" stroke="rgba(35,140,210,.35)" stroke-width="6" stroke-linecap="round"/>
+                </g>
+
+                <text x="750" y="88" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Lluvia</text>
+              </g>
+
+              <!-- etiquetas -->
+              <text x="80" y="160" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.78)">Parte alta</text>
+              <text x="430" y="120" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.78)">Parte media</text>
+              <text x="820" y="180" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.78)">Parte baja</text>
+
+              <text x="500" y="380" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.78)">Acuífero (recarga)</text>
+            </svg>
+
+            <div class="chartWrap" style="margin-top:10px;">
+              <div class="mini" style="margin:0 0 6px;">Hidrograma (respuesta rápida + flujo base) · 0–24 h</div>
+              <canvas id="hydro" width="920" height="240" aria-label="Hidrograma de caudal"></canvas>
+              <div class="hint" style="margin-top:8px;">
+                Tip: más <strong>impermeabilización</strong> y más <strong>pendiente</strong> suelen aumentar el <strong>pico</strong> de crecida y el <strong>sedimento</strong>.
+              </div>
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Controles del territorio y clima</strong></p>
+
+            <div class="ctrlGrid">
+              <div class="ctrl">
+                <div class="row">
+                  <label for="bRain">Lluvia del evento</label>
+                  <input id="bRain" type="range" min="20" max="160" step="5" value="90">
+                  <div class="val" id="bRainVal">90 mm</div>
+                </div>
+              </div>
+
+              <div class="ctrl">
+                <div class="row">
+                  <label for="bForest">Cobertura de bosque</label>
+                  <input id="bForest" type="range" min="0" max="100" step="5" value="60">
+                  <div class="val" id="bForestVal">60%</div>
+                </div>
+              </div>
+
+              <div class="ctrl">
+                <div class="row">
+                  <label for="bImp">Superficie impermeable</label>
+                  <input id="bImp" type="range" min="0" max="60" step="5" value="10">
+                  <div class="val" id="bImpVal">10%</div>
+                </div>
+              </div>
+
+              <div class="ctrl">
+                <div class="row">
+                  <label for="bSlope">Pendiente promedio</label>
+                  <input id="bSlope" type="range" min="0" max="35" step="1" value="14">
+                  <div class="val" id="bSlopeVal">14°</div>
+                </div>
+              </div>
+
+              <div class="ctrl">
+                <div class="row">
+                  <label for="bSoil">Tipo de suelo</label>
+                  <input id="bSoil" type="range" min="0" max="2" step="1" value="1">
+                  <div class="val" id="bSoilVal">Franco</div>
+                </div>
+                <div class="togRow">
+                  <label class="toggle"><input id="bTerrace" type="checkbox" checked> Terrazas / barreras vivas</label>
+                  <label class="toggle"><input id="bRestore" type="checkbox"> Reforestación (mediano plazo)</label>
+                </div>
+              </div>
+
+              <div class="ctrl">
+                <div class="row" style="align-items:flex-start">
+                  <span class="mini" style="margin:0;">Reto rápido</span>
+                  <button class="btn" id="bCheck" type="button">Evaluar reto</button>
+                </div>
+                <div class="mini" id="bGoal" style="margin-top:6px;">Meta: Recarga ≥ 25 mm · Sedimentos ≤ 35/100 · Pico ≤ 18</div>
+                <div class="result" id="bMsg" style="display:none;"></div>
+              </div>
+            </div>
+
+            <p style="margin-top:12px;"><strong>Indicadores (del modelo)</strong></p>
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Escorrentía (Q)</div>
+                <div class="v" id="bQ">0</div>
+                <div class="u">mm del evento</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Infiltración (INF)</div>
+                <div class="v" id="bINF">0</div>
+                <div class="u">mm del evento</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Recarga (R)</div>
+                <div class="v" id="bR">0</div>
+                <div class="u">mm (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Pico de caudal</div>
+                <div class="v" id="bPeak">0</div>
+                <div class="u">índice (0–30)</div>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Cómo leerlo:</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li><strong>Q</strong> sube con impermeabilización y pendientes (respuesta rápida).</li>
+                <li><strong>R</strong> aumenta con más bosque, suelos permeables y prácticas como terrazas.</li>
+                <li><strong>Sedimentos</strong> crecen si hay erosión (pendiente alta, suelo sin cobertura).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · Planificador de manejo integrado (presupuesto de acciones)</h2>
+        <div class="hint">
+          Objetivo: con un presupuesto de <strong>100 puntos</strong>, distribuye esfuerzo entre acciones.
+          Busca una cuenca con <strong>recarga alta</strong>, <strong>sedimentos bajos</strong>, <strong>contaminación baja</strong> y <strong>participación alta</strong>.
+        </div>
+
+        <div class="planGrid">
+          <div class="box">
+            <div class="budget">
+              <span class="mini">Presupuesto usado</span>
+              <div class="bar" aria-label="Barra de presupuesto"><div id="budFill"></div></div>
+              <span class="mini"><span id="budUsed">0</span>/100</span>
+            </div>
+
+            <div class="ctrl">
+              <label for="aReforest">Reforestación / protección de bosque (zona alta)</label>
+              <input id="aReforest" type="range" min="0" max="100" step="5" value="25">
+              <div class="val" id="vReforest">25</div>
+            </div>
+
+            <div class="ctrl">
+              <label for="aSoil">Conservación de suelos (terrazas, barreras vivas)</label>
+              <input id="aSoil" type="range" min="0" max="100" step="5" value="25">
+              <div class="val" id="vSoil">25</div>
+            </div>
+
+            <div class="ctrl">
+              <label for="aWaste">Tratamiento de aguas residuales (comunidad)</label>
+              <input id="aWaste" type="range" min="0" max="100" step="5" value="20">
+              <div class="val" id="vWaste">20</div>
+            </div>
+
+            <div class="ctrl">
+              <label for="aAgro">Buenas prácticas agrícolas (menos químicos, franjas ribereñas)</label>
+              <input id="aAgro" type="range" min="0" max="100" step="5" value="15">
+              <div class="val" id="vAgro">15</div>
+            </div>
+
+            <div class="ctrl">
+              <label for="aComm">Comité de cuenca y educación (acuerdos + seguimiento)</label>
+              <input id="aComm" type="range" min="0" max="100" step="5" value="15">
+              <div class="val" id="vComm">15</div>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+              <button class="btn" id="btnEvalPlan" type="button">Evaluar plan</button>
+              <button class="btn" id="btnResetPlan" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="planScore">0</span></span>
+            </div>
+
+            <div class="result info" id="planMsg" style="display:none;"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>Indicadores del plan (modelo didáctico)</strong></p>
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Recarga (subsuelo)</div>
+                <div class="v" id="kR">0</div>
+                <div class="u">índice 0–100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Sedimentos / erosión</div>
+                <div class="v" id="kSed">0</div>
+                <div class="u">índice 0–100 (bajo es mejor)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Contaminación</div>
+                <div class="v" id="kPol">0</div>
+                <div class="u">índice 0–100 (bajo es mejor)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Participación social</div>
+                <div class="v" id="kSoc">0</div>
+                <div class="u">índice 0–100</div>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Cómo se interpreta:</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li><strong>Recarga</strong> mejora con bosque + suelos sanos (infiltración).</li>
+                <li><strong>Sedimentos</strong> bajan con conservación de suelos y cobertura.</li>
+                <li><strong>Contaminación</strong> baja con tratamiento de aguas residuales y mejor manejo agrícola.</li>
+                <li><strong>Participación</strong> sube con comité, acuerdos y educación comunitaria.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · Misiones por zona (alta, media, baja)</h2>
+        <div class="hint">
+          Objetivo: selecciona una acción y luego elige la zona donde es <strong>más efectiva</strong>. Hazlo bien para completar todas las misiones.
+          (Este juego no es de “ordenar tarjetas”: es de <strong>clasificar acciones por zona</strong> como en un plan real de cuenca.)
+        </div>
+
+        <div class="classGrid">
+          <div class="box">
+            <p><strong>Acciones disponibles</strong></p>
+            <p class="hint" style="margin-top:6px;">1) Toca una tarjeta para seleccionarla. 2) Elige una zona. 3) Se bloqueará si es correcta.</p>
+            <div class="cards" id="actionCards"></div>
+
+            <div class="result" id="classMsg" style="display:none;"></div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+              <span class="mini">Aciertos: <span id="cOk">0</span>/<span id="cTotal">0</span></span>
+              <span class="mini">Intentos: <span id="cTry">0</span></span>
+              <button class="btn" id="btnResetClass" type="button">Reiniciar juego</button>
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Selecciona zona</strong></p>
+            <div class="zonePick">
+              <button class="zBtn" type="button" data-zone="alta">Zona alta</button>
+              <button class="zBtn" type="button" data-zone="media">Zona media</button>
+              <button class="zBtn" type="button" data-zone="baja">Zona baja</button>
+            </div>
+
+            <div class="zoneRow">
+              <div class="zone">
+                <h3>Zona alta</h3>
+                <p class="zHint">Nacimientos, bosque, suelos en pendiente: aquí se protege la recarga y se reduce erosión.</p>
+                <div class="result info" id="zAlta" style="margin-top:10px; display:none;"></div>
+              </div>
+              <div class="zone">
+                <h3>Zona media</h3>
+                <p class="zHint">Conecta alta y baja: agricultura + poblados + ríos principales; se combinan acciones.</p>
+                <div class="result info" id="zMedia" style="margin-top:10px; display:none;"></div>
+              </div>
+              <div class="zone">
+                <h3>Zona baja</h3>
+                <p class="zHint">Recibe sedimentos y contaminación: aquí importan saneamiento, riberas y control de descargas.</p>
+                <div class="result info" id="zBaja" style="margin-top:10px; display:none;"></div>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:12px;">
+              <strong>Consejo:</strong> si una acción es preventiva (bosque/suelos), suele ser más potente en la <strong>zona alta</strong>.
+              Si es de saneamiento (descargas), suele ser clave en la <strong>zona baja</strong>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = `
+# 3.3 Cuencas hidrográficas y manejo integrado
+## Qué es una cuenca
+- Unidad territorial
+- La lluvia se reúne y escurre a un punto común (río, lago, mar)
+- Conecta: personas, flora y fauna
+## Organización
+- Endorreica (cerrada)
+  - No llega al mar
+  - Termina en lago/laguna o se infiltra/evapora
+- Exorreica (abierta)
+  - Drena al mar
+  - Ríos salen del territorio
+## Zonas de la cuenca
+- Parte alta
+  - Nacimientos, bosque, pendientes
+  - Zona clave de recarga hídrica
+- Parte media
+  - Conecta alta y baja
+  - Agricultura y poblados
+- Parte baja
+  - Recibe sedimentos y contaminación
+  - Control de descargas y riberas
+## Recarga hídrica
+- Lluvia infiltra → acuífero (manto freático)
+- Depende de suelo, rocas, vegetación y compactación
+## Manejo integrado
+- Acciones técnicas + sociales + económicas + administrativas + legales
+- Busca: gestión sostenible del agua y del ambiente
+- Mejora calidad de vida y protege servicios ambientales
+## Factores que afectan
+- Aguas residuales sin tratar
+- Fertilizantes y plaguicidas
+- Aceites y medicamentos
+- Erosión del suelo y sedimentos
+## Organización social
+- Comités de cuenca
+  - Comunidad + instituciones públicas/privadas
+  - Juntas de agua, gobiernos locales, sectores productivos
+  - Acuerdos, seguimiento y coordinación
+`.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function renderMap(){
+      const fb = document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const t = new Transformer();
+        const { root } = t.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+
+    // Reintentos (por si el CDN tarda)
+    let tries = 0;
+    const it = setInterval(() => {
+      tries++;
+      const ok = renderMap();
+      if (ok || tries >= 12) clearInterval(it);
+      if (!mm && tries >= 12) document.getElementById('mapFallback').classList.add('show');
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm=null; expanded=true; renderMap(); });
+
+    
+    // =========================
+    // ACTIVIDAD EXTRA: LABORATORIO DE CUENCA (simulador visual)
+    // =========================
+    const bRain = document.getElementById('bRain');
+    const bForest = document.getElementById('bForest');
+    const bImp = document.getElementById('bImp');
+    const bSlope = document.getElementById('bSlope');
+    const bSoil = document.getElementById('bSoil');
+    const bTerrace = document.getElementById('bTerrace');
+    const bRestore = document.getElementById('bRestore');
+
+    const bRainVal = document.getElementById('bRainVal');
+    const bForestVal = document.getElementById('bForestVal');
+    const bImpVal = document.getElementById('bImpVal');
+    const bSlopeVal = document.getElementById('bSlopeVal');
+    const bSoilVal = document.getElementById('bSoilVal');
+
+    const bQEl = document.getElementById('bQ');
+    const bINFEl = document.getElementById('bINF');
+    const bREl = document.getElementById('bR');
+    const bPeakEl = document.getElementById('bPeak');
+
+    const runArrow = document.getElementById('runArrow');
+    const runArrow2 = document.getElementById('runArrow2');
+    const infArrow = document.getElementById('infArrow');
+    const infArrow2 = document.getElementById('infArrow2');
+    const aqFill = document.getElementById('aqFill');
+    const rainLines = document.getElementById('rainLines');
+
+    const hydro = document.getElementById('hydro');
+    const hctx = hydro.getContext('2d');
+
+    const bMsg = document.getElementById('bMsg');
+
+    function soilNameB(x){
+      if (x === 0) return "Arenoso";
+      if (x === 1) return "Franco";
+      return "Arcilloso";
+    }
+    function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
+
+    function calcBasin(P, forest, imp, slope, soil, terrace, restore){
+      const soilInfBase = (soil===0)?0.65:(soil===1?0.50:0.32);
+      const soilSedBase = (soil===0)?0.38:(soil===1?0.55:0.70);
+
+      // Infiltración (fracción)
+      let infF = soilInfBase + (0.0025*forest) - (0.0070*imp) + (terrace?0.06:0);
+      if (restore) infF += 0.03; // mejora lenta
+      infF = clamp(infF, 0.08, 0.85);
+
+      // Escorrentía (fracción)
+      let runF = 0.20 + (0.010*imp) + (0.0060*slope) - (0.0030*forest) + (terrace?-0.06:0);
+      runF = clamp(runF, 0.10, 0.85);
+
+      // Normalización suave para que INF+Q no exceda P
+      const sumF = infF + runF;
+      if (sumF > 0.95){
+        const s = 0.95 / sumF;
+        infF *= s; runF *= s;
+      }
+
+      const INF = P * infF;
+      const Q = P * runF;
+
+      // Recarga: fracción de INF
+      let rFrac = (soil===0)?0.48:(soil===1?0.42:0.34);
+      rFrac += 0.0020*forest - 0.0010*imp + (terrace?0.03:0) + (restore?0.04:0);
+      rFrac = clamp(rFrac, 0.18, 0.70);
+      const R = INF * rFrac;
+
+      // Riesgo de sedimentos (0–100)
+      let sed = soilSedBase + (0.015*slope) + (0.010*imp) - (0.010*forest);
+      if (terrace) sed -= 0.18;
+      sed = clamp(sed, 0, 1);
+      const SED = Math.round(sed*100);
+
+      // Tiempo de respuesta (horas)
+      let tau = 10 - (0.08*slope) - (0.05*imp) + (0.06*forest) + (terrace?1.2:0);
+      tau = clamp(tau, 2.0, 14.0);
+
+      // Hidrograma (índice) 0-24h
+      const dt = 0.5;
+      const series = [];
+      let uSum = 0;
+
+      for (let t=0; t<=24+1e-9; t+=dt){
+        let u = 0;
+        if (t>0){
+          const x = t/tau;
+          u = x * Math.exp(1 - x); // forma tipo gamma, pico cerca de tau
+        }
+        uSum += u*dt;
+        series.push({t, u});
+      }
+
+      // Normalizar para que el área ~1
+      series.forEach(p => p.u = (uSum>0 ? p.u/uSum : 0));
+
+      // Convertir a "caudal índice": quickflow + baseflow
+      // Quickflow proporcional a Q; baseflow proporcional a una parte de R
+      const base = (R*0.22)/24; // mm/h equivalente (escala didáctica)
+      const qSeries = series.map(p => {
+        const quick = Q * p.u; // mm/h equivalente
+        return { t: p.t, q: quick + base };
+      });
+
+      // Pico índice (0–30 aprox)
+      const qMax = qSeries.reduce((m,p)=>Math.max(m,p.q), 0);
+      const peakIndex = clamp((qMax/6.0) * (1 + slope/28) * (1 + imp/90), 0, 30);
+
+      return { INF, Q, R, SED, tau, qSeries, peakIndex };
+    }
+
+    function drawHydro(qSeries){
+      const W = hydro.width, H = hydro.height;
+      hctx.clearRect(0,0,W,H);
+
+      // fondo suave
+      hctx.fillStyle = "rgba(255,255,255,0.0)";
+      hctx.fillRect(0,0,W,H);
+
+      // márgenes
+      const padL = 40, padR = 14, padT = 14, padB = 28;
+      const w = W - padL - padR;
+      const h = H - padT - padB;
+
+      const maxQ = qSeries.reduce((m,p)=>Math.max(m,p.q), 0) || 1;
+      const maxY = maxQ * 1.12;
+
+      // ejes
+      hctx.strokeStyle = "rgba(11,16,32,.18)";
+      hctx.lineWidth = 1;
+      hctx.beginPath();
+      hctx.moveTo(padL, padT);
+      hctx.lineTo(padL, padT+h);
+      hctx.lineTo(padL+w, padT+h);
+      hctx.stroke();
+
+      // ticks x (0,6,12,18,24)
+      hctx.fillStyle = "rgba(11,16,32,.62)";
+      hctx.font = "12px Inter, system-ui, sans-serif";
+      [0,6,12,18,24].forEach(t => {
+        const x = padL + (t/24)*w;
+        hctx.strokeStyle = "rgba(11,16,32,.10)";
+        hctx.beginPath();
+        hctx.moveTo(x, padT+h);
+        hctx.lineTo(x, padT+h+4);
+        hctx.stroke();
+        hctx.fillText(String(t), x-4, padT+h+18);
+      });
+      hctx.fillText("h", padL+w+6, padT+h+18);
+
+      // ticks y (0, 25%, 50%, 75%, 100%)
+      [0,0.25,0.5,0.75,1].forEach(fr => {
+        const y = padT + h - fr*h;
+        hctx.strokeStyle = "rgba(11,16,32,.08)";
+        hctx.beginPath();
+        hctx.moveTo(padL, y);
+        hctx.lineTo(padL+w, y);
+        hctx.stroke();
+        const val = (fr*maxY).toFixed(1);
+        hctx.fillStyle = "rgba(11,16,32,.62)";
+        hctx.fillText(val, 6, y+4);
+      });
+
+      // curva
+      hctx.strokeStyle = "rgba(35,140,210,.70)";
+      hctx.lineWidth = 3;
+      hctx.beginPath();
+      qSeries.forEach((p,i)=>{
+        const x = padL + (p.t/24)*w;
+        const y = padT + h - (p.q/maxY)*h;
+        if(i===0) hctx.moveTo(x,y);
+        else hctx.lineTo(x,y);
+      });
+      hctx.stroke();
+
+      // relleno suave bajo curva
+      hctx.fillStyle = "rgba(35,140,210,.10)";
+      hctx.beginPath();
+      qSeries.forEach((p,i)=>{
+        const x = padL + (p.t/24)*w;
+        const y = padT + h - (p.q/maxY)*h;
+        if(i===0) hctx.moveTo(x,y);
+        else hctx.lineTo(x,y);
+      });
+      hctx.lineTo(padL+w, padT+h);
+      hctx.lineTo(padL, padT+h);
+      hctx.closePath();
+      hctx.fill();
+
+      // etiqueta
+      hctx.fillStyle = "rgba(11,16,32,.74)";
+      hctx.font = "12px Inter, system-ui, sans-serif";
+      hctx.fillText("Caudal (índice)", padL, 12);
+    }
+
+    function updateBasin(){
+      const P = Number(bRain.value);
+      const F = Number(bForest.value);
+      const I = Number(bImp.value);
+      const S = Number(bSlope.value);
+      const So = Number(bSoil.value);
+      const T = !!bTerrace.checked;
+      const Rf = !!bRestore.checked;
+
+      bRainVal.textContent = `${P} mm`;
+      bForestVal.textContent = `${F}%`;
+      bImpVal.textContent = `${I}%`;
+      bSlopeVal.textContent = `${S}°`;
+      bSoilVal.textContent = soilNameB(So);
+
+      const out = calcBasin(P,F,I,S,So,T,Rf);
+
+      bQEl.textContent = Math.round(out.Q);
+      bINFEl.textContent = Math.round(out.INF);
+      bREl.textContent = Math.round(out.R);
+      bPeakEl.textContent = out.peakIndex.toFixed(1);
+
+      // Ajustar grosor de flechas (visual)
+      const runW = clamp(4 + (out.Q/12), 4, 22);
+      const infW = clamp(4 + (out.INF/14), 4, 20);
+
+      runArrow.setAttribute('stroke-width', runW.toFixed(1));
+      runArrow2.setAttribute('stroke-width', Math.max(4, runW-3).toFixed(1));
+      infArrow.setAttribute('stroke-width', infW.toFixed(1));
+      infArrow2.setAttribute('stroke-width', Math.max(3, infW-3).toFixed(1));
+
+      // “nivel” del acuífero (altura de relleno)
+      const fillH = clamp(out.R/2.2, 6, 44); // escala didáctica
+      const y = 406 - fillH; // base ~406
+      aqFill.setAttribute('y', y.toFixed(1));
+      aqFill.setAttribute('height', fillH.toFixed(1));
+
+      // Intensidad de lluvia (opacidad)
+      const rainOp = clamp(P/160, 0.15, 0.95);
+      rainLines.setAttribute('opacity', rainOp.toFixed(2));
+
+      drawHydro(out.qSeries);
+
+      // ocultar mensaje si cambian controles
+      bMsg.style.display = "none";
+    }
+
+    [bRain,bForest,bImp,bSlope,bSoil].forEach(el=>el.addEventListener('input', updateBasin));
+    [bTerrace,bRestore].forEach(el=>el.addEventListener('change', updateBasin));
+
+    document.getElementById('bCheck').addEventListener('click', () => {
+      const P = Number(bRain.value);
+      const F = Number(bForest.value);
+      const I = Number(bImp.value);
+      const S = Number(bSlope.value);
+      const So = Number(bSoil.value);
+      const T = !!bTerrace.checked;
+      const Rf = !!bRestore.checked;
+
+      const out = calcBasin(P,F,I,S,So,T,Rf);
+
+      const goalR = out.R >= 25;
+      const goalSed = out.SED <= 35;
+      const goalPeak = out.peakIndex <= 18;
+
+      bMsg.style.display = "block";
+      if (goalR && goalSed && goalPeak){
+        bMsg.className = "result ok";
+        bMsg.innerHTML = `<strong>¡Reto logrado!</strong><br>
+          Recarga: <strong>${Math.round(out.R)} mm</strong> · Sedimentos: <strong>${out.SED}/100</strong> · Pico: <strong>${out.peakIndex.toFixed(1)}</strong>.`;
+      } else {
+        bMsg.className = "result warn";
+        bMsg.innerHTML = `<strong>Aún no.</strong><br>
+          Recarga: <strong>${Math.round(out.R)} mm</strong> (≥ 25) · Sedimentos: <strong>${out.SED}/100</strong> (≤ 35) · Pico: <strong>${out.peakIndex.toFixed(1)}</strong> (≤ 18).<br>
+          <span style="color:rgba(11,16,32,.72)">Pista: sube bosque, usa terrazas, baja impermeable o pendiente.</span>`;
+      }
+    });
+
+    // Inicial
+    updateBasin();
+
+// =========================
+    // JUEGO 1: PLANIFICADOR
+    // =========================
+    const elReforest = document.getElementById('aReforest');
+    const elSoil = document.getElementById('aSoil');
+    const elWaste = document.getElementById('aWaste');
+    const elAgro = document.getElementById('aAgro');
+    const elComm = document.getElementById('aComm');
+
+    const vReforest = document.getElementById('vReforest');
+    const vSoil = document.getElementById('vSoil');
+    const vWaste = document.getElementById('vWaste');
+    const vAgro = document.getElementById('vAgro');
+    const vComm = document.getElementById('vComm');
+
+    const budUsed = document.getElementById('budUsed');
+    const budFill = document.getElementById('budFill');
+
+    const kR = document.getElementById('kR');
+    const kSed = document.getElementById('kSed');
+    const kPol = document.getElementById('kPol');
+    const kSoc = document.getElementById('kSoc');
+
+    const planMsg = document.getElementById('planMsg');
+    const planScore = document.getElementById('planScore');
+
+    let score = 0;
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
+
+    function readPlan(){
+      const Rf = Number(elReforest.value);
+      const Sl = Number(elSoil.value);
+      const Ws = Number(elWaste.value);
+      const Ag = Number(elAgro.value);
+      const Cm = Number(elComm.value);
+      const total = Rf + Sl + Ws + Ag + Cm;
+      return { Rf, Sl, Ws, Ag, Cm, total };
+    }
+
+    function calcIndicators(p){
+      // Modelo didáctico (0-100)
+      // - Recarga: bosque y suelos, con un pequeño aporte de buenas prácticas agro
+      const recarga = clamp(
+        25 + 0.55*p.Rf + 0.35*p.Sl + 0.12*p.Ag - 0.20* Math.max(0, p.total - 100),
+        0, 100
+      );
+
+      // - Sedimentos: bajan con suelos y bosque; suben si hay poco manejo (total muy bajo)
+      const sed = clamp(
+        70 - 0.55*p.Sl - 0.25*p.Rf + 0.10*Math.max(0, 60 - p.total),
+        0, 100
+      );
+
+      // - Contaminación: baja con tratamiento + agro; sube si no hay comité (menos seguimiento)
+      const pol = clamp(
+        72 - 0.60*p.Ws - 0.28*p.Ag - 0.15*p.Cm + 0.10*Math.max(0, 60 - p.total),
+        0, 100
+      );
+
+      // - Participación: depende de comité, y un poco de acciones visibles (reforestación/suelos)
+      const soc = clamp(
+        18 + 0.75*p.Cm + 0.12*p.Rf + 0.10*p.Sl,
+        0, 100
+      );
+
+      return { recarga, sed, pol, soc };
+    }
+
+    function updatePlan(){
+      const p = readPlan();
+
+      vReforest.textContent = p.Rf;
+      vSoil.textContent = p.Sl;
+      vWaste.textContent = p.Ws;
+      vAgro.textContent = p.Ag;
+      vComm.textContent = p.Cm;
+
+      budUsed.textContent = p.total;
+      budFill.style.width = clamp(p.total,0,100) + "%";
+      budFill.style.background = p.total <= 100 ? "rgba(35,140,210,.45)" : "rgba(225,29,72,.32)";
+
+      const ind = calcIndicators(p);
+
+      kR.textContent = Math.round(ind.recarga);
+      kSed.textContent = Math.round(ind.sed);
+      kPol.textContent = Math.round(ind.pol);
+      kSoc.textContent = Math.round(ind.soc);
+
+      // Mensaje instantáneo si excede presupuesto
+      if (p.total > 100){
+        planMsg.style.display = "block";
+        planMsg.className = "result warn";
+        planMsg.innerHTML = "<strong>Presupuesto excedido.</strong> Ajusta los controles para volver a 100 o menos.";
+      } else {
+        planMsg.style.display = "none";
+      }
+    }
+
+    [elReforest, elSoil, elWaste, elAgro, elComm].forEach(el => el.addEventListener('input', updatePlan));
+
+    document.getElementById('btnEvalPlan').addEventListener('click', () => {
+      const p = readPlan();
+      const ind = calcIndicators(p);
+
+      planMsg.style.display = "block";
+
+      if (p.total > 100){
+        planMsg.className = "result no";
+        planMsg.innerHTML = "<strong>No se puede evaluar.</strong> Primero baja el presupuesto a <strong>100</strong> o menos.";
+        return;
+      }
+
+      const ok1 = ind.recarga >= 70;
+      const ok2 = ind.sed <= 35;
+      const ok3 = ind.pol <= 35;
+      const ok4 = ind.soc >= 60;
+
+      if (ok1 && ok2 && ok3 && ok4){
+        score += 1;
+        planScore.textContent = String(score);
+        planMsg.className = "result ok";
+        planMsg.innerHTML =
+          `<strong>¡Plan muy sólido!</strong><br>
+          Recarga: <strong>${Math.round(ind.recarga)}</strong> · Sedimentos: <strong>${Math.round(ind.sed)}</strong> ·
+          Contaminación: <strong>${Math.round(ind.pol)}</strong> · Participación: <strong>${Math.round(ind.soc)}</strong>.`;
+      } else {
+        planMsg.className = "result no";
+        planMsg.innerHTML =
+          `<strong>Plan mejorable.</strong><br>
+          Tu meta sugerida: Recarga ≥ 70, Sedimentos ≤ 35, Contaminación ≤ 35, Participación ≥ 60.<br>
+          Resultado actual: Recarga <strong>${Math.round(ind.recarga)}</strong>, Sedimentos <strong>${Math.round(ind.sed)}</strong>,
+          Contaminación <strong>${Math.round(ind.pol)}</strong>, Participación <strong>${Math.round(ind.soc)}</strong>.`;
+      }
+    });
+
+    document.getElementById('btnResetPlan').addEventListener('click', () => {
+      score = 0;
+      planScore.textContent = "0";
+      elReforest.value = 25;
+      elSoil.value = 25;
+      elWaste.value = 20;
+      elAgro.value = 15;
+      elComm.value = 15;
+      planMsg.style.display = "none";
+      updatePlan();
+    });
+
+    updatePlan();
+
+    // =========================
+    // JUEGO 2: CLASIFICADOR POR ZONAS
+    // =========================
+    const ACTIONS = [
+      { id:"a1", title:"Proteger nacimientos y bosque", desc:"Cercar nacimientos, reforestar con nativas, evitar incendios.", zone:"alta", why:"En la zona alta se protege la recarga y nacimientos." },
+      { id:"a2", title:"Terrazas y barreras vivas", desc:"Reducen erosión en laderas y frenan sedimentos.", zone:"alta", why:"Previene erosión donde hay pendientes." },
+      { id:"a3", title:"Franjas ribereñas y menos químicos", desc:"Reducir plaguicidas/fertilizantes y dejar vegetación en riberas.", zone:"media", why:"En zona media hay agricultura y ríos principales." },
+      { id:"a4", title:"Manejo de caminos y drenajes", desc:"Cunetas y pasos de agua para evitar cárcavas y sedimento.", zone:"media", why:"Conecta partes: caminos suelen estar en zona media." },
+      { id:"a5", title:"Tratamiento de aguas residuales", desc:"Plantas, biodigestores o sistemas comunitarios; evitar descargas directas.", zone:"baja", why:"En la zona baja se recibe la contaminación: saneamiento es clave." },
+      { id:"a6", title:"Control de descargas y limpieza de riberas", desc:"Evitar basura, aceites y vertidos; jornadas de limpieza y monitoreo.", zone:"baja", why:"La parte baja acumula sedimentos y contaminantes." }
+    ];
+
+    const actionCards = document.getElementById('actionCards');
+    const cOkEl = document.getElementById('cOk');
+    const cTotalEl = document.getElementById('cTotal');
+    const cTryEl = document.getElementById('cTry');
+    const classMsg = document.getElementById('classMsg');
+
+    const zAlta = document.getElementById('zAlta');
+    const zMedia = document.getElementById('zMedia');
+    const zBaja = document.getElementById('zBaja');
+
+    let selectedId = null;
+    let locked = new Set();
+    let okCount = 0;
+    let triesCount = 0;
+
+    function renderActions(){
+      actionCards.innerHTML = "";
+      ACTIONS.forEach(a => {
+        const b = document.createElement('button');
+        b.type = "button";
+        b.className = "cardBtn";
+        b.dataset.id = a.id;
+        b.innerHTML = `<p class="t">${a.title}</p><p class="s">${a.desc}</p>`;
+        b.addEventListener('click', () => {
+          if (locked.has(a.id)) return;
+          document.querySelectorAll('.cardBtn.selected').forEach(x => x.classList.remove('selected'));
+          b.classList.add('selected');
+          selectedId = a.id;
+
+          classMsg.style.display = "block";
+          classMsg.className = "result info";
+          classMsg.innerHTML = "<strong>Seleccionado:</strong> ahora elige una zona (alta, media o baja).";
+        });
+        actionCards.appendChild(b);
+      });
+
+      cTotalEl.textContent = String(ACTIONS.length);
+      cOkEl.textContent = String(okCount);
+      cTryEl.textContent = String(triesCount);
+
+      zAlta.style.display = "none";
+      zMedia.style.display = "none";
+      zBaja.style.display = "none";
+    }
+
+    function lockCard(id){
+      document.querySelectorAll('#actionCards .cardBtn').forEach(btn => {
+        if (btn.dataset.id === id){
+          btn.classList.remove('selected');
+          btn.classList.add('locked');
+          btn.disabled = true;
+        }
+      });
+    }
+
+    function showZoneNote(zone, text){
+      const box = zone === "alta" ? zAlta : zone === "media" ? zMedia : zBaja;
+      box.style.display = "block";
+      box.innerHTML = text;
+    }
+
+    document.querySelectorAll('[data-zone]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!selectedId){
+          classMsg.style.display = "block";
+          classMsg.className = "result warn";
+          classMsg.innerHTML = "<strong>Primero selecciona una acción.</strong> Luego elige la zona.";
+          return;
+        }
+
+        const chosenZone = btn.dataset.zone;
+        const a = ACTIONS.find(x => x.id === selectedId);
+        if (!a) return;
+
+        triesCount++;
+        cTryEl.textContent = String(triesCount);
+
+        if (chosenZone === a.zone){
+          okCount++;
+          cOkEl.textContent = String(okCount);
+          locked.add(a.id);
+          lockCard(a.id);
+
+          classMsg.style.display = "block";
+          classMsg.className = "result ok";
+          classMsg.innerHTML = `<strong>Correcto.</strong> ${a.why}`;
+
+          showZoneNote(a.zone, `✅ <strong>${a.title}</strong><br><span style="color:rgba(11,16,32,.72)">${a.desc}</span>`);
+
+          selectedId = null;
+          document.querySelectorAll('.cardBtn.selected').forEach(x => x.classList.remove('selected'));
+
+          if (okCount === ACTIONS.length){
+            classMsg.className = "result info";
+            classMsg.innerHTML = `<strong>Juego completado.</strong><br>Aciertos: <strong>${okCount}/${ACTIONS.length}</strong> · Intentos: <strong>${triesCount}</strong>.`;
+          }
+        } else {
+          classMsg.style.display = "block";
+          classMsg.className = "result no";
+          classMsg.innerHTML = `<strong>No coincide.</strong> Pista: piensa dónde la acción tiene mayor impacto (prevención arriba, saneamiento abajo).`;
+        }
+      });
+    });
+
+    document.getElementById('btnResetClass').addEventListener('click', () => {
+      selectedId = null;
+      locked = new Set();
+      okCount = 0;
+      triesCount = 0;
+      classMsg.style.display = "none";
+      renderActions();
+    });
+
+    renderActions();
+  </script>
+</body>
+</html>
