@@ -10,8 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Markmap (mapa mental) -->
-  <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.17.0/dist/browser/index.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.17.0/dist/browser/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
 
   <style>
     :root{
@@ -821,13 +820,15 @@
     function safeRenderMap(){
   const fallback = document.getElementById('mapFallback');
   try{
-    const transformer = new markmap.Transformer();
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const { Transformer, Markmap } = window.markmap;
+    const transformer = new Transformer();
     const { root } = transformer.transform(md);
 
     const svg = document.getElementById('mindmap');
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-    mm = markmap.Markmap.create(svg, { autoFit:true, duration:240 }, root);
+    mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
     expanded = true;
     fallback.classList.remove('show');
     return true;
