@@ -2,118 +2,103 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Taller de Módulos · EPC AALA</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --ink:#0b1020;
-      --muted:rgba(11,16,32,.72);
-      --glass:rgba(255,255,255,.66);
-      --stroke:rgba(11,16,32,.10);
-      --shadow:0 18px 45px rgba(11,16,32,.16);
-      --shadow-soft:0 10px 24px rgba(11,16,32,.12);
-      --radius:24px;
+      --ink: rgba(11,16,32,92);
+      --muted: rgba(11,16,32,70);
+      --card: rgba(255,255,255,72);
+      --stroke: rgba(11,16,32,10);
+      --shadow: 0 18px 45px rgba(15,23,42,10);
+      --shadow-soft: 0 10px 22px rgba(15,23,42,08);
+      --radius: 22px;
 
-      --ok: rgba(45, 160, 220, .18);
-      --warn: rgba(120, 190, 255, .18);
+      --ok: rgba(34,197,94,14);
+      --warn: rgba(245,158,11,15);
+      --accent: rgba(15,118,110,12);
+
+      --bgA: rgba(180,235,255,55);
+      --bgB: rgba(195,255,210,35);
+      --bgC: rgba(225,215,255,35);
     }
-    *{ box-sizing:border-box; }
 
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      color:var(--ink);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--ink);
       background:
-        radial-gradient(1100px 760px at 12% 12%, rgba(185, 235, 255, .92), transparent 58%),
-        radial-gradient(980px 760px at 84% 18%, rgba(160, 210, 255, .90), transparent 62%),
-        radial-gradient(1200px 920px at 48% 96%, rgba(210, 245, 255, .88), transparent 58%),
-        linear-gradient(135deg, #ecf9ff 0%, #e7f6ff 45%, #effbff 100%);
-
-      min-height:100vh;
+        radial-gradient(900px 500px at 18% 20%, var(--bgA), transparent 60%),
+        radial-gradient(900px 600px at 85% 35%, var(--bgB), transparent 62%),
+        radial-gradient(850px 650px at 35% 95%, var(--bgC), transparent 60%),
+        #f7fbff;
     }
 
-    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+    .wrap{ max-width: 1100px; margin: 0 auto; padding: 28px 16px 40px; }
 
     header{
-      border: 1px solid var(--stroke);
-      background: var(--glass);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(12px);
-      padding: 18px;
       display:flex;
-      justify-content:space-between;
       align-items:flex-start;
-      gap: 12px;
-      flex-wrap:wrap;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 18px 18px 10px;
     }
+
     .title{
-      margin:0;
+      margin: 0 0 8px;
       font-family: Outfit, Inter, system-ui;
       font-weight: 800;
-      font-size: clamp(22px, 2.7vw, 34px);
-      line-height: 1.12;
-      letter-spacing:.2px;
-    }
-    .subtitle{
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-      max-width: 90ch;
+      letter-spacing: -0.02em;
+      font-size: 28px;
     }
 
-    .pillRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .subtitle{ margin:0; color: var(--muted); line-height:1.55; max-width: 72ch; }
+
+    .pillRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 10px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,55);
       border-radius: 999px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.58);
-      font-weight: 800;
+      padding: 8px 10px;
+      font-weight: 700;
       font-size: 12px;
-      color: rgba(11,16,32,.78);
-      white-space: nowrap;
+      color: rgba(11,16,32,72);
+      box-shadow: var(--shadow-soft);
     }
 
-    .stack{ margin-top: 14px; display:grid; gap: 14px; }
+    main.stack{ display:grid; gap: 14px; padding: 10px 18px 0; }
 
     .card{
-      border:1px solid var(--stroke);
-      background: var(--glass);
+      border: 1px solid var(--stroke);
+      background: var(--card);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
       padding: 16px;
+      overflow:hidden;
     }
-    .card h2{
+
+    h2{
       margin:0;
       font-family: Outfit, Inter, system-ui;
       font-weight: 800;
-      font-size: 16px;
-      letter-spacing:.2px;
+      font-size: 18px;
+      letter-spacing: -.01em;
     }
+
     .muted{ color: var(--muted); }
 
     .moduleHero{
       margin-top: 12px;
-      border-radius: 22px;
-      border: 1px solid rgba(11,16,32,.10);
-      background: linear-gradient(135deg,
-        rgba(185,235,255,.62),
-        rgba(160,210,255,.58),
-        rgba(210,245,255,.56)
-      );
-      padding: 14px;
-      box-shadow: var(--shadow-soft);
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,10);
+      background: linear-gradient(135deg, rgba(255,255,255,75), rgba(255,255,255,35));
+      padding: 12px;
     }
 
     .moduleTop{
@@ -122,63 +107,45 @@
       justify-content:space-between;
       gap: 12px;
       flex-wrap:wrap;
+      margin-bottom: 10px;
     }
-    .moduleName{
-      margin:0;
-      font-family: Outfit, Inter, system-ui;
-      font-weight: 800;
-      font-size: 18px;
-      letter-spacing:.2px;
-    }
-    .moduleMeta{
-      margin: 6px 0 0;
-      color: rgba(11,16,32,.78);
-      font-size: 13px;
-      line-height: 1.45;
-      max-width: 90ch;
-    }
+    .moduleName{ margin:0; font-weight: 900; font-size: 14px; }
+    .moduleMeta{ margin:6px 0 0; color: rgba(11,16,32,72); font-size: 12.5px; line-height: 1.45; max-width: 70ch; }
 
     .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,65);
+      color: rgba(11,16,32,86);
       padding: 10px 12px;
       border-radius: 14px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.62);
-      color: rgba(11,16,32,.92);
-      font-weight: 800;
       text-decoration:none;
+      font-weight: 800;
       font-size: 13px;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
-      cursor:pointer;
+      box-shadow: var(--shadow-soft);
       user-select:none;
-      white-space: nowrap;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease;
     }
-    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
     .btn:active{ transform: translateY(1px); }
-
     .btn.primary{
-      background: linear-gradient(135deg,
-        rgba(185,235,255,.92),
-        rgba(160,210,255,.90),
-        rgba(210,245,255,.90)
-      );
+      background: var(--accent);
+      border-color: rgba(15,118,110,22);
     }
 
     .subGrid{
-      margin-top: 12px;
       display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
-    @media (max-width: 1020px){ .subGrid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 920px){ .subGrid{ grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px){ .subGrid{ grid-template-columns: 1fr; } }
 
     .subCard{
       border-radius: 18px;
-      border: 1px solid rgba(11,16,32,.10);
-      background: rgba(255,255,255,.58);
+      border: 1px solid rgba(11,16,32,10);
+      background: rgba(255,255,255,58);
       padding: 12px;
       box-shadow: var(--shadow-soft);
       display:flex;
@@ -205,11 +172,11 @@
       align-items:center;
       padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(11,16,32,.10);
+      border: 1px solid rgba(11,16,32,10);
       font-weight: 800;
       font-size: 12px;
-      color: rgba(11,16,32,.78);
-      background: rgba(255,255,255,.60);
+      color: rgba(11,16,32,78);
+      background: rgba(255,255,255,60);
       white-space: nowrap;
     }
     .tag.ok{ background: var(--ok); }
@@ -217,7 +184,7 @@
 
     .subDesc{
       margin:0;
-      color: rgba(11,16,32,.72);
+      color: rgba(11,16,32,72);
       font-size: 12.5px;
       line-height: 1.45;
     }
@@ -237,7 +204,7 @@
 
     footer{
       margin-top: 14px;
-      color: rgba(11,16,32,.62);
+      color: rgba(11,16,32,62);
       font-size: 12px;
       line-height: 1.4;
       text-align:center;
@@ -337,7 +304,7 @@
                 <h4 class="subTitle">1.6 Biodiversidad</h4>
                 <span class="tag todo" data-file="1-6.html">Próximamente</span>
               </div>
-              <p class="subDesc">Niveles de biodiversidad e importancia ecológica.</p>
+              <p class="subDesc">Variedad de vida y por qué importa.</p>
               <div class="subActions">
                 <a class="btn" href="1-6.html" aria-disabled="true">Abrir</a>
               </div>
@@ -348,7 +315,7 @@
                 <h4 class="subTitle">1.7 Deterioro ambiental</h4>
                 <span class="tag todo" data-file="1-7.html">Próximamente</span>
               </div>
-              <p class="subDesc">Causas y efectos sobre ecosistemas y sociedad.</p>
+              <p class="subDesc">Causas y consecuencias del deterioro.</p>
               <div class="subActions">
                 <a class="btn" href="1-7.html" aria-disabled="true">Abrir</a>
               </div>
@@ -359,7 +326,7 @@
                 <h4 class="subTitle">1.8 Cambio climático</h4>
                 <span class="tag todo" data-file="1-8.html">Próximamente</span>
               </div>
-              <p class="subDesc">Causas, impactos y respuestas.</p>
+              <p class="subDesc">Conceptos básicos e impactos.</p>
               <div class="subActions">
                 <a class="btn" href="1-8.html" aria-disabled="true">Abrir</a>
               </div>
@@ -370,7 +337,7 @@
                 <h4 class="subTitle">1.9 Huella ecológica</h4>
                 <span class="tag todo" data-file="1-9.html">Próximamente</span>
               </div>
-              <p class="subDesc">Indicadores de impacto ambiental del consumo.</p>
+              <p class="subDesc">Consumo y presión sobre recursos.</p>
               <div class="subActions">
                 <a class="btn" href="1-9.html" aria-disabled="true">Abrir</a>
               </div>
@@ -381,7 +348,7 @@
                 <h4 class="subTitle">1.10 Estrategias para contrarrestar problemas ambientales</h4>
                 <span class="tag todo" data-file="1-10.html">Próximamente</span>
               </div>
-              <p class="subDesc">Acciones individuales y colectivas para conservación.</p>
+              <p class="subDesc">Acciones y buenas prácticas.</p>
               <div class="subActions">
                 <a class="btn" href="1-10.html" aria-disabled="true">Abrir</a>
               </div>
@@ -395,11 +362,11 @@
         <h2>Módulo 2 · El bosque</h2>
         <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
 
-        <div class="moduleHero" style="background: linear-gradient(135deg, rgba(195,255,210,.58), rgba(180,235,255,.50), rgba(255,235,190,.48));">
+        <div class="moduleHero" style="background: linear-gradient(135deg, rgba(210,255,225,55), rgba(255,255,255,35));">
           <div class="moduleTop">
             <div>
               <h3 class="moduleName">Subtemas</h3>
-              <p class="moduleMeta">Bosque, servicios ambientales, funciones, estructura, tipos, manejo y amenazas.</p>
+              <p class="moduleMeta">Bosque, plantación, reforestación, bienes y servicios ambientales, funciones, estructura, tipos, manejo y amenazas.</p>
             </div>
             <a class="btn primary" href="#subtemas2">Ver</a>
           </div>
@@ -471,12 +438,121 @@
         </div>
       </section>
 
+      <!-- ✅ MÓDULO 3 ACTIVADO -->
+      <section class="card">
+        <h2>Módulo 3 · El agua y las cuencas hidrográficas</h2>
+        <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
+
+        <div class="moduleHero" style="background: linear-gradient(135deg, rgba(180,235,255,55), rgba(195,255,210,40), rgba(225,215,255,45));">
+          <div class="moduleTop">
+            <div>
+              <h3 class="moduleName">Subtemas</h3>
+              <p class="moduleMeta">Ciclo del agua, fuentes, cuencas hidrográficas, vida acuática, calidad del agua y salud.</p>
+            </div>
+            <a class="btn primary" href="#subtemas3">Ver</a>
+          </div>
+
+          <div class="subGrid" id="subtemas3">
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.1 El ciclo del agua</h4>
+                <span class="tag todo" data-file="3-1.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Cómo el agua cambia de estado y se mueve en la naturaleza (ciclo hidrológico).</p>
+              <div class="subActions"><a class="btn" href="3-1.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.2 Fuentes de agua</h4>
+                <span class="tag todo" data-file="3-2.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Ríos, lagos, aguas subterráneas y otras fuentes.</p>
+              <div class="subActions"><a class="btn" href="3-2.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.3 Cuencas hidrográficas y manejo integrado de cuencas</h4>
+                <span class="tag todo" data-file="3-3.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Qué es una cuenca y por qué todo está conectado.</p>
+              <div class="subActions"><a class="btn" href="3-3.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.4 Manejo integrado de cuencas</h4>
+                <span class="tag todo" data-file="3-4.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Acciones coordinadas para cuidar agua, suelo y bosque.</p>
+              <div class="subActions"><a class="btn" href="3-4.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.5 Cuencas hidrográficas en el departamento de Sololá</h4>
+                <span class="tag todo" data-file="3-5.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Principales cuencas que intervienen en Sololá y su importancia.</p>
+              <div class="subActions"><a class="btn" href="3-5.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.6 Vida acuática</h4>
+                <span class="tag todo" data-file="3-6.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Biodiversidad en ríos, lagos y humedales.</p>
+              <div class="subActions"><a class="btn" href="3-6.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.7 Calidad del agua del Lago de Atitlán</h4>
+                <span class="tag todo" data-file="3-7.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Indicadores básicos de calidad del agua y su interpretación.</p>
+              <div class="subActions"><a class="btn" href="3-7.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.8 Fuentes de contaminación del agua y sus efectos</h4>
+                <span class="tag todo" data-file="3-8.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Contaminación microbiológica, química y más.</p>
+              <div class="subActions"><a class="btn" href="3-8.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.9 Efectos de la contaminación en el agua</h4>
+                <span class="tag todo" data-file="3-9.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Impactos en ecosistemas, economía y bienestar.</p>
+              <div class="subActions"><a class="btn" href="3-9.html" aria-disabled="true">Abrir</a></div>
+            </div>
+
+            <div class="subCard ghost">
+              <div class="subTop">
+                <h4 class="subTitle">3.10 La calidad del agua y los efectos en la salud</h4>
+                <span class="tag todo" data-file="3-10.html">Próximamente</span>
+              </div>
+              <p class="subDesc">Relación entre agua segura y enfermedades.</p>
+              <div class="subActions"><a class="btn" href="3-10.html" aria-disabled="true">Abrir</a></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer>EPC AALA</footer>
     </main>
   </div>
 
   <script>
     (async () => {
+      // ✅ FIX: antes estaba mal escrito. Debe ser "..."
       const tags = [...document.querySelectorAll('[data-file]')];
       const base = location.href.replace(/\/index\.html.*$/,'/').replace(/#.*$/,'');
 
