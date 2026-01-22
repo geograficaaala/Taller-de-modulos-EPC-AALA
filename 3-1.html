@@ -3,269 +3,188 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Módulo 3 · 3.1 El ciclo del agua</title>
+  <title>3.1 El ciclo del agua · EPC AALA</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Markmap -->
-  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+  <!-- Markmap (mapa mental) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.17.0/dist/browser/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.17.0/dist/browser/index.min.js"></script>
 
   <style>
     :root{
       --ink:#0b1020;
       --muted:rgba(11,16,32,.72);
-      --glass:rgba(255,255,255,.66);
       --stroke:rgba(11,16,32,.10);
-      --shadow:0 18px 45px rgba(11,16,32,.16);
-      --shadow-soft:0 10px 24px rgba(11,16,32,.12);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
       --radius:24px;
 
-      --good: rgba(30, 160, 90, .20);
-      --bad: rgba(210, 70, 100, .18);
-      --info: rgba(45, 160, 220, .18);
-      --warn: rgba(245, 158, 11, .18);
-      --focus: rgba(120, 190, 255, .22);
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --ok: rgba(45, 160, 220, .16);
+      --warn: rgba(120, 190, 255, .18);
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --info: rgba(56,189,248,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
     }
+
     *{ box-sizing:border-box; }
+
     body{
       margin:0;
       color:var(--ink);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(1100px 760px at 12% 12%, rgba(190, 255, 210, .84), transparent 58%),
-        radial-gradient(980px 760px at 82% 18%, rgba(170, 226, 255, .84), transparent 62%),
-        radial-gradient(1200px 920px at 48% 96%, rgba(255, 235, 190, .70), transparent 58%),
-        linear-gradient(135deg, #effff4 0%, #e8f6ff 45%, #fff6e8 100%);
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
       min-height:100vh;
     }
-    .wrap{ max-width:1200px; margin:0 auto; padding:26px 18px 64px; }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
 
     header{
-      border:1px solid var(--stroke);
+      border: 1px solid var(--stroke);
       background: var(--glass);
       border-radius: var(--radius);
       box-shadow: var(--shadow-soft);
       backdrop-filter: blur(12px);
-      padding:16px;
+      padding: 18px;
       display:flex;
       justify-content:space-between;
       align-items:flex-start;
-      gap:12px;
+      gap: 12px;
       flex-wrap:wrap;
     }
-    .kicker{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:.3px; }
-    h1{
-      margin:6px 0 0;
-      font-family: Outfit, Inter, system-ui;
-      font-weight:800;
-      font-size: clamp(20px, 2.5vw, 28px);
-      line-height:1.15;
-      letter-spacing:.2px;
-    }
-    .subtitle{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.45;
-      max-width: 90ch;
-    }
-    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(11,16,32,.12);
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
       background: rgba(255,255,255,.62);
-      color: rgba(11,16,32,.92);
-      font-weight:800;
-      text-decoration:none;
-      font-size:13px;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
-      cursor:pointer;
-      user-select:none;
-      white-space: nowrap;
-    }
-    .btn:hover{ background: rgba(255,255,255,.80); border-color: rgba(11,16,32,.18); }
-    .btn:active{ transform: translateY(1px); }
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(190,255,210,.90), rgba(170,226,255,.88), rgba(255,235,190,.78));
-    }
-
-    .stack{ margin-top:14px; display:grid; gap:14px; }
-    .card{
-      border:1px solid var(--stroke);
-      background: var(--glass);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-      padding:16px;
-    }
-    h2{
-      margin:0;
-      font-family: Outfit, Inter, system-ui;
-      font-weight:800;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
-    .muted{ color: var(--muted); }
-
-    .twoCols{ margin-top:10px; display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; }
-    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
-    .box{
-      border-radius: 18px;
-      border: 1px solid rgba(11,16,32,.10);
-      background: rgba(255,255,255,.58);
-      padding: 12px;
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
       box-shadow: var(--shadow-soft);
-      line-height:1.55;
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 92ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
       font-size: 13px;
       color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
     }
-    ul{ margin: 8px 0 0 18px; padding:0; }
-    li{ margin: 6px 0; }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.25fr .95fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
 
     .grid3{
       margin-top: 12px;
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
     @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
     .pill{
-      border-radius: 18px;
       border: 1px solid rgba(11,16,32,.10);
-      background: rgba(255,255,255,.56);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
       padding: 12px;
       box-shadow: var(--shadow-soft);
     }
-    .pill .t{
-      font-family: Outfit, Inter, system-ui;
-      font-weight: 800;
-      font-size: 13px;
-      margin: 0 0 6px;
-    }
-    .pill .s{
-      margin:0;
-      color: rgba(11,16,32,.74);
-      font-size: 12.5px;
-      line-height:1.45;
-    }
-
-    /* Map */
-    .mapTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
-    .mapStage{
-      margin-top: 10px;
-      border-radius: 18px;
-      border: 1px dashed rgba(11,16,32,.22);
-      background:
-        radial-gradient(circle at 1px 1px, rgba(11,16,32,.08) 1px, transparent 1px) 0 0 / 22px 22px,
-        linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,.40));
-      padding: 10px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
-      position: relative;
-      overflow:hidden;
-    }
-    svg.markmap{ width:100%; height: 420px; display:block; }
-    .mapFallback{
-      position:absolute; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      padding: 16px;
-      text-align:center;
-      color: rgba(11,16,32,.72);
-      background: rgba(255,255,255,.74);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .15s ease;
-    }
-    .mapFallback.show{ opacity:1; pointer-events:auto; }
-
-    /* Games */
-    .gameGrid{
-      margin-top: 12px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      align-items:start;
-    }
-    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
-
-    .panel{
-      border-radius: 18px;
-      border: 1px solid rgba(11,16,32,.10);
-      background: rgba(255,255,255,.58);
-      padding: 12px;
-      box-shadow: var(--shadow-soft);
-    }
-    .panel h3{
-      margin: 0;
-      font-family: Outfit, Inter, system-ui;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing:.2px;
-    }
-
-    .case{
-      margin-top: 10px;
-      border-radius: 16px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.55);
-      padding: 12px;
-      line-height: 1.55;
-      font-size: 13px;
-      color: rgba(11,16,32,.86);
-    }
-
-    .hud{
-      margin-top: 10px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .chipHud{
-      border-radius: 999px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.62);
-      padding: 6px 10px;
-      font-weight: 800;
-      font-size: 12px;
-      color: rgba(11,16,32,.78);
-    }
-
-    .choices{
-      margin-top: 10px;
-      display:grid;
-      gap:10px;
-    }
-    .choiceBtn{
-      width:100%;
-      justify-content:flex-start;
-      gap:10px;
-      padding: 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(11,16,32,.12);
-      background: rgba(255,255,255,.62);
-      font-weight: 800;
-      cursor:pointer;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
-      text-align:left;
-      font-family: Inter, system-ui;
-      color: rgba(11,16,32,.92);
-    }
-    .choiceBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
-    .choiceBtn:active{ transform: translateY(1px); }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,16,32,.10);
-      background: var(--focus);
-      font-size: 12px;
-      white-space: nowrap;
-    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
 
     .result{
       margin-top: 10px;
@@ -278,67 +197,233 @@
       color: rgba(11,16,32,.82);
     }
     .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
-    .no{ background: var(--bad); border-color: rgba(225,29,72,.26); }
-    .info{ background: var(--info); border-color: rgba(45,160,220,.25); }
-    .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+    .warn{ background: var(--warn); border-color: rgba(120,190,255,.24); }
 
-    /* Memorama */
-    .memoTop{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
-    .memoGrid{
-      margin-top:10px;
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
     }
-    @media (max-width: 980px){ .memoGrid{ grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 560px){ .memoGrid{ grid-template-columns: repeat(2, 1fr); } }
 
-    .card3d{
-      position:relative;
-      height: 92px;
-      border-radius: 16px;
+    /* Mapa mental */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
       border: 1px solid rgba(11,16,32,.12);
       background: rgba(255,255,255,.60);
       box-shadow: var(--shadow-soft);
-      cursor:pointer;
-      perspective: 900px;
-      user-select:none;
+      overflow:hidden;
+      position:relative;
     }
-    .card3d[aria-disabled="true"]{ cursor: default; opacity:.8; }
-
-    .inner{
+    #mindmap{ width:100%; height: 460px; display:block; }
+    .fallback{
       position:absolute; inset:0;
-      transform-style: preserve-3d;
-      transition: transform .28s ease;
-      border-radius: 16px;
-    }
-    .card3d.flipped .inner{ transform: rotateY(180deg); }
-
-    .face{
-      position:absolute; inset:0;
-      border-radius: 16px;
-      backface-visibility: hidden;
       display:flex; align-items:center; justify-content:center;
-      padding: 10px;
+      padding: 18px;
+      background: rgba(255,255,255,.72);
+      color: rgba(11,16,32,.78);
       text-align:center;
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .2s ease;
+    }
+    .fallback.show{ opacity: 1; pointer-events:auto; }
+
+    /* Diagrama */
+    .diagramGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .diagramGrid{ grid-template-columns: 1fr; } }
+
+    .svgWrap{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+    .tipRow{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
       font-weight: 800;
-      font-size: 12.5px;
-      color: rgba(11,16,32,.90);
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
     }
-    .front{
-      background:
-        radial-gradient(circle at 1px 1px, rgba(11,16,32,.10) 1px, transparent 1px) 0 0 / 18px 18px,
-        rgba(255,255,255,.62);
+    .chip button{
+      border:none;
+      background: transparent;
+      font: inherit;
+      color: inherit;
+      cursor:pointer;
+      padding:0;
     }
-    .back{
-      transform: rotateY(180deg);
-      background: rgba(255,255,255,.80);
-      border: 1px solid rgba(11,16,32,.08);
+
+    /* Juego 1: Simulador */
+    .simGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
     }
-    .matched{
-      outline: 2px solid rgba(34,197,94,.35);
-      background: rgba(30,160,90,.10);
+    @media (max-width: 980px){ .simGrid{ grid-template-columns: 1fr; } }
+
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 52%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 64px; text-align:right; }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
     }
+    @media (max-width: 520px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .scenario{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+      align-items:center;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      background: rgba(255,255,255,.60);
+      white-space: nowrap;
+    }
+    .tag.active{ background: rgba(120,210,255,.24); border-color: rgba(35,140,210,.20); }
+
+    /* Juego 2: Emparejar */
+    .matchGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .matchGrid{ grid-template-columns: 1fr; } }
+
+    .list{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .list h3{
+      margin: 0 0 8px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+
+    .itemBtn{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      text-align:left;
+      font-family: Inter, system-ui;
+      color: rgba(11,16,32,.92);
+      font-weight: 900;
+      margin: 8px 0;
+    }
+    .itemBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .itemBtn:active{ transform: translateY(1px); }
+    .itemBtn.selected{ outline: 3px solid rgba(120,210,255,.35); }
+    .itemBtn.locked{
+      cursor:default;
+      opacity:.92;
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.22);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(120,210,255,.20);
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(11,16,32,.80);
+      flex: 0 0 auto;
+    }
+
+    .hud{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .hud .mini{ box-shadow: var(--shadow-soft); }
 
     footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
   </style>
@@ -349,11 +434,11 @@
     <header>
       <div>
         <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
-        <h1>3.1 El ciclo del agua</h1>
+        <h1>3.1 El ciclo del agua (ciclo hidrológico)</h1>
         <p class="subtitle">
-          El agua puede estar en <strong>estado líquido</strong>, <strong>sólido</strong> (hielo) o <strong>gaseoso</strong> (vapor).
-          Como el agua cambia de un estado a otro, decimos que el agua del planeta es <strong>dinámica</strong>.
-          Ese proceso se llama <strong>ciclo del agua</strong> o <strong>ciclo hidrológico</strong>.
+          El agua puede estar en estado <strong>líquido</strong>, <strong>sólido</strong> (hielo) o <strong>gaseoso</strong> (vapor) y cambia
+          continuamente de un estado a otro. Ese movimiento y transformación del agua en el planeta se conoce como
+          <strong>ciclo del agua</strong> o <strong>ciclo hidrológico</strong>.
         </p>
       </div>
       <nav class="nav">
@@ -364,143 +449,329 @@
     </header>
 
     <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
       <section class="card">
         <h2>Contexto teórico (ampliado)</h2>
 
         <div class="twoCols">
           <div class="box">
-            <p style="margin:0 0 8px;">
-              El <strong>ciclo del agua</strong> ayuda a <strong>limpiar</strong> y <strong>distribuir</strong> el agua del planeta.
-              Ocurre porque la energía del sol, el viento, la temperatura y la gravedad mueven el agua entre la atmósfera, la tierra y los cuerpos de agua.
+            <p>
+              El ciclo del agua <strong>distribuye y “renueva”</strong> el agua del planeta mediante cambios de estado y transporte.
+              En el ciclo intervienen procesos clave:
             </p>
-
-            <p style="margin:10px 0 0;"><strong>Procesos clave:</strong></p>
             <ul>
-              <li><strong>Evaporación:</strong> el sol calienta el agua de ríos, lagos, océanos, suelo y seres vivos, y la convierte en <strong>vapor</strong>.</li>
-              <li><strong>Condensación:</strong> cuando baja la temperatura, el vapor se transforma en <strong>gotitas</strong> y se forman <strong>nubes</strong>.</li>
-              <li><strong>Precipitación:</strong> cuando las gotas se vuelven pesadas, caen a la tierra como <strong>lluvia</strong>, <strong>granizo</strong> o <strong>nieve</strong>.</li>
-              <li><strong>Infiltración:</strong> parte del agua se <strong>absorbe</strong> en el suelo y puede llegar a fuentes subterráneas.</li>
-              <li><strong>Escorrentía:</strong> parte del agua corre por la superficie (ríos/quebradas) y llega a lagos u océanos para continuar el ciclo.</li>
-            </ul>
-          </div>
-
-          <div class="box">
-            <p style="margin:0;"><strong>Mini-checklist (para explicar con tus palabras)</strong></p>
-            <ul>
-              <li>¿Qué “empuja” al agua a evaporarse? → <strong>energía del sol</strong>.</li>
-              <li>¿Qué pasa cuando el vapor se enfría? → <strong>condensa</strong> y forma nubes.</li>
-              <li>¿Cómo vuelve el agua a la tierra? → <strong>precipitación</strong>.</li>
-              <li>¿A dónde va el agua cuando entra al suelo? → <strong>infiltra</strong> a lo subterráneo.</li>
-              <li>¿Qué agua “corre” por la superficie? → <strong>escorrentía</strong>.</li>
+              <li><strong>Evaporación:</strong> la energía solar transforma agua líquida (océanos, ríos, lagos, suelo) en vapor. El <strong>viento</strong> transporta ese vapor.</li>
+              <li><strong>Condensación:</strong> cuando la atmósfera se enfría, el vapor se convierte en gotas microscópicas y se forman <strong>nubes</strong>.</li>
+              <li><strong>Precipitación:</strong> al crecer las gotas o cristales, caen por gravedad en forma de <strong>lluvia</strong>, <strong>granizo</strong> o <strong>nieve</strong>.</li>
+              <li><strong>Infiltración y escorrentía:</strong> parte del agua se <strong>infiltra</strong> al suelo y puede recargar <strong>acuíferos</strong>; otra parte fluye como <strong>escorrentía</strong> hacia ríos y quebradas.</li>
             </ul>
 
             <div class="result info" style="margin-top:10px;">
-              Tip rápido: piensa en “<strong>sube</strong>” (evaporación), “<strong>se junta</strong>” (condensación),
-              “<strong>cae</strong>” (precipitación) y “<strong>se mueve</strong>” (infiltración/escorrentía).
+              <strong>Idea clave:</strong> el ciclo es “dinámico” porque combina <em>energía</em> (sol), <em>gravedad</em>, <em>viento</em> y <em>características del territorio</em> (suelo, pendientes, vegetación).
             </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Detalles técnicos útiles</strong></p>
+            <ul>
+              <li><strong>Evapotranspiración (ET):</strong> suma de evaporación + transpiración de plantas. Depende de radiación solar, temperatura, humedad y viento.</li>
+              <li><strong>Sublimación / deposición:</strong> paso directo de <em>sólido ↔ gas</em> (hielo ↔ vapor) en condiciones frías o secas.</li>
+              <li><strong>Percolación:</strong> movimiento del agua infiltrada hacia capas más profundas hasta llegar a un <strong>manto freático</strong>.</li>
+              <li><strong>Tiempo de residencia:</strong> el agua “permanece” diferentes tiempos según el reservorio (atmósfera: días; suelos: semanas/meses; acuíferos: meses/años).</li>
+              <li><strong>Balance hídrico (idea):</strong> <em>Entrada (P)</em> − <em>Salidas (ET + Q)</em> ≈ <em>Cambio de almacenamiento (ΔS)</em>, donde Q representa escorrentía/descarga.</li>
+            </ul>
           </div>
         </div>
 
         <div class="grid3">
           <div class="pill">
             <div class="t">Estados del agua</div>
-            <p class="s">Líquido, sólido (hielo) y gaseoso (vapor). Cambia de estado en el ciclo.</p>
+            <p class="s">Líquido, sólido y gaseoso. Cambios de fase: evaporación, fusión, congelación, condensación, sublimación.</p>
           </div>
           <div class="pill">
-            <div class="t">Distribuye</div>
-            <p class="s">Mueve el agua entre atmósfera, suelo, ríos, lagos y océanos.</p>
+            <div class="t">Reservorios</div>
+            <p class="s">Océanos, ríos, lagos, suelo, acuíferos, atmósfera, nieve/hielo y seres vivos.</p>
           </div>
           <div class="pill">
-            <div class="t">Limpia</div>
-            <p class="s">La lluvia y el flujo ayudan a “renovar” el agua (sin contaminarla).</p>
+            <div class="t">Conexión cuenca</div>
+            <p class="s">La forma del terreno, cobertura vegetal y tipo de suelo controlan infiltración, recarga y escorrentía.</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>Impacto humano en el ciclo del agua</strong></p>
+            <ul>
+              <li><strong>Extracción</strong> excesiva de agua dulce (ríos, lagos, fuentes subterráneas) reduce disponibilidad de agua potable.</li>
+              <li><strong>Cambio climático</strong> altera patrones de evaporación, condensación y precipitación (lluvias intensas o sequías).</li>
+              <li><strong>Pérdida de vegetación</strong> por agricultura, minería, caminos y construcción: disminuye agua disponible, aumenta riesgo de inundaciones y erosión.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Territorio y recarga hídrica</strong></p>
+            <ul>
+              <li><strong>Vegetación</strong> intercepta lluvia, protege el suelo y mejora infiltración.</li>
+              <li><strong>Suelo</strong> con buena estructura y materia orgánica infiltra más; suelos compactados infiltran menos y generan más escorrentía.</li>
+              <li><strong>Pendiente</strong> alta acelera escorrentía; terrazas y cobertura reducen velocidad y erosión.</li>
+              <li><strong>Superficies impermeables</strong> (concreto/asfalto) reducen infiltración y aumentan picos de caudal.</li>
+            </ul>
           </div>
         </div>
       </section>
 
+      <!-- MAPA MENTAL -->
       <section class="card">
         <div class="mapTop">
           <div>
-            <h2 style="margin:0;">Mapa mental</h2>
-            <div class="muted">Resumen visual del ciclo del agua.</div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
           </div>
           <div class="mapBtns">
-            <button class="btn" id="btnFit" type="button">Ajustar</button>
-            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
-            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
           </div>
         </div>
 
-        <div class="mapStage">
-          <svg id="mindmap" class="markmap"></svg>
-          <div class="mapFallback" id="mapFallback">
-            <div><strong>No se pudo cargar el mapa mental.</strong><br>Recarga la página o revisa la conexión.</div>
+        <div class="mapWrap">
+          <svg id="mindmap" role="img" aria-label="Mapa mental del ciclo del agua"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica que el dispositivo tenga acceso a los scripts de Markmap.
           </div>
         </div>
       </section>
 
+      <!-- DIAGRAMA + EXPLICACIÓN -->
       <section class="card">
-        <h2>Juego 1: Ruta de una gota</h2>
-        <p class="muted" style="margin:8px 0 0;">
-          Tú decides qué proceso del ciclo ocurre según la situación. (No es ordenar: es elegir la mejor explicación).
-        </p>
+        <h2>Diagrama del ciclo del agua (clicable)</h2>
+        <div class="diagramGrid">
+          <div class="svgWrap">
+            <svg viewBox="0 0 960 520" width="100%" height="auto" aria-label="Diagrama del ciclo del agua" role="img">
+              <!-- fondo -->
+              <defs>
+                <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(180,235,255,.75)"/>
+                  <stop offset="1" stop-color="rgba(255,255,255,.0)"/>
+                </linearGradient>
+                <linearGradient id="water" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(120,210,255,.50)"/>
+                  <stop offset="1" stop-color="rgba(60,170,235,.35)"/>
+                </linearGradient>
+              </defs>
 
-        <div class="gameGrid">
-          <div class="panel">
-            <h3>Situación</h3>
-            <div class="case" id="dropCase">Cargando…</div>
+              <rect x="0" y="0" width="960" height="520" fill="url(#sky)"/>
+              <rect x="0" y="360" width="960" height="160" fill="url(#water)" opacity=".95"/>
 
-            <div class="hud">
-              <div class="chipHud">Ronda: <span id="dropIdx">1</span> / <span id="dropTotal">5</span></div>
-              <div class="chipHud">Puntos: <span id="dropScore">0</span></div>
-            </div>
+              <!-- montañas -->
+              <path d="M0 360 L180 210 L320 360 Z" fill="rgba(180,220,255,.45)"/>
+              <path d="M220 360 L420 190 L620 360 Z" fill="rgba(160,210,255,.38)"/>
+              <path d="M520 360 L700 230 L860 360 Z" fill="rgba(180,220,255,.34)"/>
 
-            <div class="choices" id="dropChoices"></div>
+              <!-- suelo -->
+              <rect x="0" y="330" width="960" height="30" fill="rgba(185, 210, 230, .35)"/>
 
-            <div class="result" id="dropFeedback" style="display:none;"></div>
+              <!-- nube -->
+              <g id="node-cond" class="node" data-key="condensacion" style="cursor:pointer">
+                <ellipse cx="520" cy="110" rx="70" ry="38" fill="rgba(255,255,255,.90)" stroke="rgba(11,16,32,.10)"/>
+                <ellipse cx="465" cy="120" rx="55" ry="30" fill="rgba(255,255,255,.92)" stroke="rgba(11,16,32,.10)"/>
+                <ellipse cx="580" cy="120" rx="55" ry="30" fill="rgba(255,255,255,.92)" stroke="rgba(11,16,32,.10)"/>
+                <text x="520" y="118" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Condensación</text>
+              </g>
 
-            <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
-              <button class="btn" id="dropNext" type="button" disabled>Siguiente</button>
-              <button class="btn" id="dropReset" type="button">Reiniciar</button>
+              <!-- sol -->
+              <g id="node-sol" class="node" data-key="energia" style="cursor:pointer">
+                <circle cx="140" cy="110" r="40" fill="rgba(255, 220, 130, .72)" stroke="rgba(11,16,32,.10)"/>
+                <text x="140" y="116" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.80)">Sol</text>
+              </g>
+
+              <!-- evaporación -->
+              <g id="node-evap" class="node" data-key="evaporacion" style="cursor:pointer">
+                <path d="M720 360 C710 320, 735 305, 730 270 C725 230, 760 215, 750 175"
+                      fill="none" stroke="rgba(35,140,210,.55)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M760 360 C750 318, 780 300, 772 265 C763 230, 800 210, 790 175"
+                      fill="none" stroke="rgba(35,140,210,.45)" stroke-width="5" stroke-linecap="round"/>
+                <text x="780" y="150" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Evaporación</text>
+              </g>
+
+              <!-- precipitación -->
+              <g id="node-prec" class="node" data-key="precipitacion" style="cursor:pointer">
+                <line x1="505" y1="150" x2="485" y2="220" stroke="rgba(35,140,210,.35)" stroke-width="6" stroke-linecap="round"/>
+                <line x1="530" y1="150" x2="520" y2="240" stroke="rgba(35,140,210,.35)" stroke-width="6" stroke-linecap="round"/>
+                <line x1="555" y1="150" x2="560" y2="225" stroke="rgba(35,140,210,.35)" stroke-width="6" stroke-linecap="round"/>
+                <text x="540" y="265" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Precipitación</text>
+              </g>
+
+              <!-- escorrentía -->
+              <g id="node-runoff" class="node" data-key="escorrentia" style="cursor:pointer">
+                <path d="M310 330 C360 315, 420 320, 465 335 C520 355, 590 350, 650 340"
+                      fill="none" stroke="rgba(35,140,210,.55)" stroke-width="7" stroke-linecap="round"/>
+                <text x="500" y="318" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Escorrentía</text>
+              </g>
+
+              <!-- infiltración -->
+              <g id="node-infil" class="node" data-key="infiltracion" style="cursor:pointer">
+                <path d="M430 300 L430 350" stroke="rgba(11,16,32,.32)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M410 300 L410 350" stroke="rgba(11,16,32,.22)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M450 300 L450 350" stroke="rgba(11,16,32,.22)" stroke-width="5" stroke-linecap="round"/>
+                <text x="430" y="290" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Infiltración</text>
+              </g>
+
+              <!-- acuífero -->
+              <g id="node-aq" class="node" data-key="acuifero" style="cursor:pointer">
+                <rect x="320" y="390" width="360" height="90" rx="18" fill="rgba(190,235,255,.35)" stroke="rgba(11,16,32,.10)"/>
+                <text x="500" y="440" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Acuífero / Manto freático</text>
+              </g>
+            </svg>
+
+            <div class="tipRow">
+              <span class="chip"><button type="button" data-focus="evaporacion">Evaporación</button></span>
+              <span class="chip"><button type="button" data-focus="condensacion">Condensación</button></span>
+              <span class="chip"><button type="button" data-focus="precipitacion">Precipitación</button></span>
+              <span class="chip"><button type="button" data-focus="infiltracion">Infiltración</button></span>
+              <span class="chip"><button type="button" data-focus="escorrentia">Escorrentía</button></span>
+              <span class="chip"><button type="button" data-focus="acuifero">Acuífero</button></span>
             </div>
           </div>
 
-          <div class="panel">
-            <h3>Guía rápida</h3>
-            <div class="box" style="margin-top:10px;">
-              <ul>
-                <li><strong>Evaporación:</strong> agua → vapor por calor del sol.</li>
-                <li><strong>Condensación:</strong> vapor → gotitas (nubes) por enfriamiento.</li>
-                <li><strong>Precipitación:</strong> el agua cae (lluvia/granizo/nieve).</li>
-                <li><strong>Infiltración:</strong> entra al suelo y recarga agua subterránea.</li>
-                <li><strong>Escorrentía:</strong> corre por la superficie hacia ríos/lagos/océano.</li>
-              </ul>
-              <div class="result warn" style="margin-top:10px;">
-                Si dudas, busca la “pista”: ¿sube, se junta, cae, entra al suelo o corre?
+          <div class="box">
+            <p><strong>Explicación del elemento seleccionado</strong></p>
+            <div class="result info" id="explainBox" style="margin-top:10px;">
+              Haz clic en un proceso del diagrama para ver una explicación técnica.
+            </div>
+
+            <p style="margin-top:12px;"><strong>Precipitación e intensidad</strong></p>
+            <ul>
+              <li>La intensidad de lluvia influye en la <strong>escorrentía</strong>: lluvias intensas saturan rápido el suelo.</li>
+              <li>Suelo con baja infiltración genera <strong>picos de caudal</strong> mayores (crecidas rápidas).</li>
+              <li>La cobertura vegetal reduce impacto de gotas y ayuda a controlar <strong>erosión</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1: SIMULADOR DE CUENCA -->
+      <section class="card">
+        <h2>Juego 1 · Simulador de agua en la cuenca (balance hídrico)</h2>
+        <div class="hint">
+          Objetivo: ajustar condiciones del territorio y del clima para lograr una <strong>recarga subterránea alta</strong> y una <strong>escorrentía baja</strong>.
+          El modelo usa un cálculo simplificado (didáctico) basado en cómo cambian infiltración, escorrentía y evapotranspiración.
+        </div>
+
+        <div class="simGrid">
+          <div class="box">
+            <div class="scenario">
+              <span class="tag active" id="scA">Escenario A</span>
+              <span class="tag" id="scB">Escenario B</span>
+              <span class="tag" id="scC">Escenario C</span>
+              <span class="mini" id="scGoal">Meta: Recarga ≥ 180 mm · Escorrentía ≤ 140 mm</span>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="rain">Lluvia (P)</label>
+              <input id="rain" type="range" min="400" max="1400" step="20" value="900">
+              <div class="val" id="rainVal">900 mm</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="temp">Temperatura</label>
+              <input id="temp" type="range" min="10" max="32" step="1" value="22">
+              <div class="val" id="tempVal">22 °C</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="veg">Cobertura vegetal</label>
+              <input id="veg" type="range" min="0" max="100" step="5" value="60">
+              <div class="val" id="vegVal">60%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="imperv">Superficie impermeable</label>
+              <input id="imperv" type="range" min="0" max="60" step="5" value="10">
+              <div class="val" id="impervVal">10%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="soil">Tipo de suelo</label>
+              <input id="soil" type="range" min="0" max="2" step="1" value="1">
+              <div class="val" id="soilVal">Franco</div>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn" id="btnCheckSim" type="button">Evaluar meta</button>
+              <button class="btn" id="btnResetSim" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="simScore">0</span></span>
+            </div>
+
+            <div class="result" id="simMsg" style="display:none;"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>Resultados del balance (simplificado)</strong></p>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Evapotranspiración (ET)</div>
+                <div class="v" id="kET">0</div>
+                <div class="u">mm (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Escorrentía (Q)</div>
+                <div class="v" id="kQ">0</div>
+                <div class="u">mm (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Infiltración</div>
+                <div class="v" id="kINF">0</div>
+                <div class="u">mm (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Recarga (subsuelo)</div>
+                <div class="v" id="kR">0</div>
+                <div class="u">mm (aprox.)</div>
               </div>
             </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Cómo calcula el modelo:</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li><strong>ET</strong> aumenta con temperatura y vegetación (más transpiración).</li>
+                <li><strong>Infiltración</strong> aumenta con suelo más permeable y vegetación; baja con impermeabilización.</li>
+                <li><strong>Escorrentía</strong> sube cuando baja infiltración o sube impermeabilización.</li>
+                <li><strong>Recarga</strong> es una fracción de la infiltración (lo demás queda como humedad del suelo o uso por plantas).</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
+      <!-- JUEGO 2: EMPAREJAR PROCESOS -->
       <section class="card">
-        <h2>Juego 2: Memorama de procesos</h2>
-        <p class="muted" style="margin:8px 0 0;">
-          Encuentra las parejas: <strong>proceso</strong> ↔ <strong>definición</strong>. (Emparejar, no ordenar).
-        </p>
-
-        <div class="memoTop">
-          <div class="hud" style="margin:0;">
-            <div class="chipHud">Intentos: <span id="memoMoves">0</span></div>
-            <div class="chipHud">Parejas: <span id="memoPairs">0</span> / 5</div>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn" id="memoRestart" type="button">Reiniciar memorama</button>
-          </div>
+        <h2>Juego 2 · Empareja procesos con su definición (precisión técnica)</h2>
+        <div class="hint">
+          Objetivo: emparejar correctamente <strong>cada proceso</strong> con su <strong>definición</strong>. Se registran intentos y tiempo.
         </div>
 
-        <div class="memoGrid" id="memoGrid" aria-label="Memorama del ciclo del agua"></div>
+        <div class="matchGrid">
+          <div class="list">
+            <h3>Procesos</h3>
+            <div id="procList"></div>
+          </div>
 
-        <div class="result info" id="memoMsg" style="margin-top:10px; display:none;"></div>
+          <div class="list">
+            <h3>Definiciones</h3>
+            <div id="defList"></div>
+
+            <div class="hud">
+              <span class="mini">Aciertos: <span id="mOk">0</span>/<span id="mTotal">0</span></span>
+              <span class="mini">Intentos: <span id="mTry">0</span></span>
+              <span class="mini">Tiempo: <span id="mTime">0</span>s</span>
+              <button class="btn" id="btnResetMatch" type="button">Reiniciar juego</button>
+            </div>
+
+            <div class="result" id="mMsg" style="display:none;"></div>
+          </div>
+        </div>
       </section>
 
       <footer>EPC AALA</footer>
@@ -509,35 +780,39 @@
 
   <script>
     // =========================
-    // MAPA MENTAL (robusto)
+    // MAPA MENTAL (Markmap)
     // =========================
     const md = `
 # 3.1 El ciclo del agua (ciclo hidrológico)
-## Estados del agua
-- Líquido
-- Sólido (hielo)
-- Gaseoso (vapor)
-## ¿Qué hace el ciclo?
-- Limpia y distribuye el agua del planeta
-- Mueve agua entre atmósfera, tierra y cuerpos de agua
-## Procesos
+## Qué es
+- Agua cambia de estado: líquido, sólido (hielo), gas (vapor)
+- Movimiento continuo entre reservorios del planeta
+- Distribuye y renueva el agua
+## Procesos principales
 - Evaporación
-  - El sol calienta el agua y se vuelve vapor
-  - El viento puede transportar el vapor
+  - Energía solar transforma agua líquida en vapor
+  - Transporte por viento
 - Condensación
-  - Baja la temperatura
-  - Se forman gotitas y nubes
+  - Enfriamiento del aire → formación de nubes (gotas pequeñas)
 - Precipitación
-  - Las gotas se vuelven pesadas
-  - Cae lluvia / granizo / nieve
-- Infiltración
-  - El agua entra al suelo
-  - Recarga fuentes subterráneas
-- Escorrentía
-  - El agua corre por la superficie
-  - Llega a ríos, quebradas y al océano
-## Idea clave
-- Es un ciclo: vuelve a empezar continuamente
+  - Caída por gravedad: lluvia, nieve, granizo
+- Infiltración y escorrentía
+  - Infiltración hacia subsuelo/acuíferos
+  - Escorrentía superficial hacia ríos/quebradas y océano
+## Procesos complementarios
+- Transpiración (plantas) → vapor
+- Evapotranspiración (ET) = evaporación + transpiración
+- Sublimación / deposición (sólido ↔ gas)
+- Percolación (movimiento profundo) → manto freático
+## Controladores del ciclo
+- Energía solar, temperatura, humedad, viento
+- Tipo de suelo (textura/estructura/compactación)
+- Vegetación (intercepción, raíces, protección del suelo)
+- Pendiente y cobertura del territorio
+## Impacto humano
+- Extracción excesiva (ríos, lagos, fuentes subterráneas)
+- Cambio climático altera evaporación/condensación/precipitación
+- Pérdida de vegetación: menos infiltración, más inundación y erosión
     `.trim();
 
     let mm = null;
@@ -583,159 +858,246 @@
     document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
 
     // =========================
-    // JUEGO 1: Ruta de una gota
+    // DIAGRAMA CLICABLE
     // =========================
-    const DROP_LABELS = [
-      { key:"evaporacion", name:"Evaporación", desc:"Agua → vapor (calor del sol)" },
-      { key:"condensacion", name:"Condensación", desc:"Vapor → gotitas / nubes" },
-      { key:"precipitacion", name:"Precipitación", desc:"Cae lluvia/granizo/nieve" },
-      { key:"infiltracion", name:"Infiltración", desc:"Entra al suelo" },
-      { key:"escorrentia", name:"Escorrentía", desc:"Corre por la superficie" },
-    ];
-
-    const DROP_CASES = [
-      {
-        text: "Mediodía. El sol calienta un charco y poco a poco “desaparece” hacia el aire.",
-        answer: "evaporacion",
-        why: "Cuando el sol calienta el agua, parte se transforma en vapor: eso es evaporación."
-      },
-      {
-        text: "En la montaña, el aire se enfría y aparecen nubes densas formadas por gotitas.",
-        answer: "condensacion",
-        why: "Al bajar la temperatura, el vapor se convierte en gotitas y forma nubes: condensación."
-      },
-      {
-        text: "Las gotas en una nube se vuelven pesadas y caen al suelo como lluvia.",
-        answer: "precipitacion",
-        why: "Cuando el agua cae desde las nubes (lluvia, granizo o nieve) se llama precipitación."
-      },
-      {
-        text: "Después de llover, parte del agua se mete en la tierra y recarga el agua subterránea.",
-        answer: "infiltracion",
-        why: "El agua que entra al suelo y puede llegar a lo subterráneo es infiltración."
-      },
-      {
-        text: "Tras una lluvia fuerte, el agua baja por la ladera y se junta en una quebrada.",
-        answer: "escorrentia",
-        why: "El agua que corre por la superficie hacia ríos/quebradas es escorrentía."
-      }
-    ];
-
-    const dropCaseEl = document.getElementById('dropCase');
-    const dropChoicesEl = document.getElementById('dropChoices');
-    const dropFeedbackEl = document.getElementById('dropFeedback');
-    const dropNextBtn = document.getElementById('dropNext');
-    const dropResetBtn = document.getElementById('dropReset');
-
-    const dropIdxEl = document.getElementById('dropIdx');
-    const dropTotalEl = document.getElementById('dropTotal');
-    const dropScoreEl = document.getElementById('dropScore');
-
-    let dIdx = 0;
-    let dScore = 0;
-    let dLocked = false;
-
-    dropTotalEl.textContent = String(DROP_CASES.length);
-
-    function renderDropChoices(){
-      dropChoicesEl.innerHTML = '';
-      DROP_LABELS.forEach(opt => {
-        const b = document.createElement('button');
-        b.className = 'choiceBtn';
-        b.type = 'button';
-        b.innerHTML = `<span class="badge">${opt.name}</span> <span style="font-weight:600; color: rgba(11,16,32,.70);">${opt.desc}</span>`;
-        b.addEventListener('click', () => pickDrop(opt.key));
-        dropChoicesEl.appendChild(b);
-      });
-    }
-
-    function showDrop(){
-      dLocked = false;
-      dropNextBtn.disabled = true;
-      dropFeedbackEl.style.display = 'none';
-      dropFeedbackEl.className = 'result';
-      dropIdxEl.textContent = String(dIdx + 1);
-      dropScoreEl.textContent = String(dScore);
-
-      dropCaseEl.textContent = DROP_CASES[dIdx].text;
-      renderDropChoices();
-
-      dropNextBtn.textContent = (dIdx === DROP_CASES.length - 1) ? 'Ver resultado' : 'Siguiente';
-    }
-
-    function labelFromKey(k){
-      const f = DROP_LABELS.find(x => x.key === k);
-      return f ? f.name : k;
-    }
-
-    function pickDrop(key){
-      if (dLocked) return;
-      dLocked = true;
-
-      const correct = DROP_CASES[dIdx].answer === key;
-      if (correct) dScore += 1;
-
-      dropFeedbackEl.style.display = 'block';
-      dropFeedbackEl.className = 'result ' + (correct ? 'ok' : 'no');
-      dropFeedbackEl.innerHTML = `
-        <strong>${correct ? '¡Correcto!' : 'Casi…'}</strong><br>
-        ${DROP_CASES[dIdx].why}<br>
-        <div style="margin-top:8px;"><strong>Tu elección:</strong> ${labelFromKey(key)}</div>
-      `;
-
-      dropScoreEl.textContent = String(dScore);
-      dropNextBtn.disabled = false;
-    }
-
-    dropNextBtn.addEventListener('click', () => {
-      if (!dLocked) return;
-
-      if (dIdx < DROP_CASES.length - 1){
-        dIdx++;
-        showDrop();
-      } else {
-        dropFeedbackEl.style.display = 'block';
-        dropFeedbackEl.className = 'result info';
-        dropFeedbackEl.innerHTML = `<strong>¡Listo!</strong><br>
-          Tu puntuación fue <strong>${dScore} / ${DROP_CASES.length}</strong>.<br>
-          Si quieres mejorar, reinicia y lee las pistas.`;
-        dropCaseEl.textContent = 'Juego finalizado. Puedes reiniciar para intentarlo de nuevo.';
-        dropChoicesEl.innerHTML = '';
-        dropNextBtn.disabled = true;
-      }
-    });
-
-    dropResetBtn.addEventListener('click', () => {
-      dIdx = 0;
-      dScore = 0;
-      showDrop();
-    });
-
-    showDrop();
-
-    // =========================
-    // JUEGO 2: Memorama (parejas)
-    // =========================
-    const PAIRS = [
-      ["Evaporación", "Agua → vapor por calor del sol."],
-      ["Condensación", "Vapor → gotitas; se forman nubes."],
-      ["Precipitación", "El agua cae: lluvia, granizo o nieve."],
-      ["Infiltración", "El agua entra al suelo y recarga lo subterráneo."],
-      ["Escorrentía", "El agua corre por la superficie hacia ríos/lagos."]
-    ];
-
-    const memoGrid = document.getElementById('memoGrid');
-    const memoMovesEl = document.getElementById('memoMoves');
-    const memoPairsEl = document.getElementById('memoPairs');
-    const memoRestart = document.getElementById('memoRestart');
-    const memoMsg = document.getElementById('memoMsg');
-
-    let memoState = {
-      first: null,
-      lock: false,
-      moves: 0,
-      matched: 0
+    const explain = {
+      energia:
+        "<strong>Sol (energía):</strong> la radiación solar aporta energía para cambios de fase (evaporación y fusión) y calienta la superficie, creando gradientes de temperatura que favorecen circulación atmosférica.",
+      evaporacion:
+        "<strong>Evaporación:</strong> paso de agua líquida a vapor. Aumenta con mayor temperatura, viento y menor humedad relativa. Ocurre en océanos, ríos, lagos y en el suelo. Parte del vapor también proviene de plantas (transpiración).",
+      condensacion:
+        "<strong>Condensación:</strong> cuando el aire se enfría hasta acercarse al punto de rocío, el vapor pasa a gotas diminutas (o cristales si está frío) y se forman nubes. Requiere núcleos de condensación (partículas) para crecer.",
+      precipitacion:
+        "<strong>Precipitación:</strong> caída de agua desde nubes cuando las gotas/cristales crecen y superan fuerzas de soporte del aire. Puede ser lluvia, nieve o granizo, según temperatura en nube y en la columna de aire.",
+      infiltracion:
+        "<strong>Infiltración:</strong> entrada del agua al suelo. Depende de la textura (arena infiltra más que arcilla), estructura, compactación, materia orgánica y cobertura vegetal. Es clave para recargar acuíferos.",
+      escorrentia:
+        "<strong>Escorrentía:</strong> flujo superficial del agua cuando la lluvia supera la infiltración o el suelo está saturado. Aumenta con pendientes altas, suelos compactados y superficies impermeables; puede transportar sedimentos y causar erosión.",
+      acuifero:
+        "<strong>Acuífero / manto freático:</strong> zona subterránea donde el agua se almacena en poros y fracturas. Se recarga por infiltración y percolación; descarga por manantiales, ríos baseflow y extracción en pozos."
     };
+
+    function setExplain(key){
+      const box = document.getElementById('explainBox');
+      box.className = "result info";
+      box.innerHTML = explain[key] || "Selecciona un elemento del diagrama.";
+    }
+
+    document.querySelectorAll('.node').forEach(n => {
+      n.addEventListener('click', () => setExplain(n.dataset.key));
+    });
+
+    // Chips de enfoque
+    document.querySelectorAll('[data-focus]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const k = btn.getAttribute('data-focus');
+        setExplain(k);
+      });
+    });
+
+    // =========================
+    // JUEGO 1: SIMULADOR (balance simplificado)
+    // =========================
+    const elRain = document.getElementById('rain');
+    const elTemp = document.getElementById('temp');
+    const elVeg  = document.getElementById('veg');
+    const elImp  = document.getElementById('imperv');
+    const elSoil = document.getElementById('soil');
+
+    const rainVal = document.getElementById('rainVal');
+    const tempVal = document.getElementById('tempVal');
+    const vegVal  = document.getElementById('vegVal');
+    const impVal  = document.getElementById('impervVal');
+    const soilVal = document.getElementById('soilVal');
+
+    const kET  = document.getElementById('kET');
+    const kQ   = document.getElementById('kQ');
+    const kINF = document.getElementById('kINF');
+    const kR   = document.getElementById('kR');
+
+    const simMsg   = document.getElementById('simMsg');
+    const simScore = document.getElementById('simScore');
+
+    const scA = document.getElementById('scA');
+    const scB = document.getElementById('scB');
+    const scC = document.getElementById('scC');
+    const scGoal = document.getElementById('scGoal');
+
+    let scenario = "A";
+    let score = 0;
+
+    const scenarios = {
+      A: { P: 900, T: 22, V: 60, I: 10, S: 1, goalR: 180, goalQ: 140, name: "Meta: Recarga ≥ 180 mm · Escorrentía ≤ 140 mm" },
+      B: { P: 650, T: 28, V: 35, I: 25, S: 2, goalR: 140, goalQ: 110, name: "Meta: Recarga ≥ 140 mm · Escorrentía ≤ 110 mm" },
+      C: { P: 1200, T: 18, V: 75, I: 5,  S: 0, goalR: 260, goalQ: 190, name: "Meta: Recarga ≥ 260 mm · Escorrentía ≤ 190 mm" }
+    };
+
+    function soilName(x){
+      if (x === 0) return "Arenoso";
+      if (x === 1) return "Franco";
+      return "Arcilloso";
+    }
+
+    function setScenario(k){
+      scenario = k;
+      const s = scenarios[k];
+      elRain.value = s.P;
+      elTemp.value = s.T;
+      elVeg.value  = s.V;
+      elImp.value  = s.I;
+      elSoil.value = s.S;
+
+      scA.classList.toggle('active', k==="A");
+      scB.classList.toggle('active', k==="B");
+      scC.classList.toggle('active', k==="C");
+
+      scGoal.textContent = s.name;
+      simMsg.style.display = "none";
+      updateSim();
+    }
+
+    scA.addEventListener('click', () => setScenario("A"));
+    scB.addEventListener('click', () => setScenario("B"));
+    scC.addEventListener('click', () => setScenario("C"));
+
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+    function calcSim(P, T, V, I, S){
+      // Coeficientes base por suelo (permeabilidad relativa)
+      // arenoso > franco > arcilloso
+      const soilInf = (S === 0) ? 0.62 : (S === 1 ? 0.48 : 0.34);
+      const soilRun = (S === 0) ? 0.24 : (S === 1 ? 0.34 : 0.44);
+
+      // ET: sube con T y con vegetación (transpiración) y baja un poco cuando hay mucha impermeabilización
+      // (modelo didáctico)
+      const ET = clamp(
+        (0.18 * P) + (9.5 * (T - 10)) + (2.2 * V) - (1.2 * I),
+        120,
+        980
+      );
+
+      // Infiltración potencial: depende del suelo + vegetación, y cae con impermeabilización
+      // Ajuste por lluvia intensa: más lluvia puede saturar y convertir parte en escorrentía
+      const infFactor = clamp(soilInf + (0.0028 * V) - (0.0065 * I), 0.10, 0.86);
+      let INF = P * infFactor;
+
+      // Escorrentía: crece por impermeabilización y por suelo menos permeable.
+      // Lluvia muy alta también incrementa Q por saturación.
+      const runFactor = clamp(soilRun + (0.0075 * I) - (0.0022 * V) + (P > 1000 ? 0.06 : 0.0), 0.10, 0.78);
+      let Q = P * runFactor;
+
+      // Ajuste de coherencia: no permitir que INF+Q exceda P en exceso
+      // Si excede, se re-normaliza (suelo almacena/humedad superficial).
+      const sum = INF + Q;
+      if (sum > P * 0.98){
+        const scale = (P * 0.98) / sum;
+        INF *= scale;
+        Q   *= scale;
+      }
+
+      // Recarga: fracción de INF, el resto queda como humedad del suelo y/o retorna por ET en el tiempo
+      // Aumenta un poco con vegetación (raíces/mejor estructura) y baja con arcilla
+      const rFracBase = (S === 0) ? 0.55 : (S === 1 ? 0.48 : 0.40);
+      const rFrac = clamp(rFracBase + (0.0015 * V) - (0.0010 * I), 0.25, 0.70);
+      const R = INF * rFrac;
+
+      return { ET, INF, Q, R };
+    }
+
+    function updateSim(){
+      const P = Number(elRain.value);
+      const T = Number(elTemp.value);
+      const V = Number(elVeg.value);
+      const I = Number(elImp.value);
+      const S = Number(elSoil.value);
+
+      rainVal.textContent = `${P} mm`;
+      tempVal.textContent = `${T} °C`;
+      vegVal.textContent  = `${V}%`;
+      impVal.textContent  = `${I}%`;
+      soilVal.textContent = soilName(S);
+
+      const out = calcSim(P,T,V,I,S);
+
+      kET.textContent  = Math.round(out.ET);
+      kINF.textContent = Math.round(out.INF);
+      kQ.textContent   = Math.round(out.Q);
+      kR.textContent   = Math.round(out.R);
+    }
+
+    [elRain, elTemp, elVeg, elImp, elSoil].forEach(el => el.addEventListener('input', updateSim));
+
+    document.getElementById('btnCheckSim').addEventListener('click', () => {
+      const s = scenarios[scenario];
+      const out = calcSim(Number(elRain.value), Number(elTemp.value), Number(elVeg.value), Number(elImp.value), Number(elSoil.value));
+
+      const okR = out.R >= s.goalR;
+      const okQ = out.Q <= s.goalQ;
+
+      simMsg.style.display = "block";
+      if (okR && okQ){
+        score += 1;
+        simScore.textContent = String(score);
+        simMsg.className = "result ok";
+        simMsg.innerHTML = `<strong>Meta lograda.</strong><br>
+          Recarga: <strong>${Math.round(out.R)} mm</strong> (meta ≥ ${s.goalR}) · Escorrentía: <strong>${Math.round(out.Q)} mm</strong> (meta ≤ ${s.goalQ}).`;
+      } else {
+        simMsg.className = "result no";
+        simMsg.innerHTML = `<strong>Meta no lograda.</strong><br>
+          Recarga: <strong>${Math.round(out.R)} mm</strong> (meta ≥ ${s.goalR}) · Escorrentía: <strong>${Math.round(out.Q)} mm</strong> (meta ≤ ${s.goalQ}).`;
+      }
+    });
+
+    document.getElementById('btnResetSim').addEventListener('click', () => {
+      score = 0;
+      simScore.textContent = "0";
+      setScenario("A");
+    });
+
+    // Inicial
+    setScenario("A");
+
+    // =========================
+    // JUEGO 2: EMPAREJAR
+    // =========================
+    const PROCS = [
+      { id:"evap",  name:"Evaporación" },
+      { id:"cond",  name:"Condensación" },
+      { id:"prec",  name:"Precipitación" },
+      { id:"infil", name:"Infiltración" },
+      { id:"run",   name:"Escorrentía" },
+      { id:"et",    name:"Evapotranspiración" },
+      { id:"perc",  name:"Percolación" },
+      { id:"aq",    name:"Acuífero / manto freático" }
+    ];
+
+    const DEFS = [
+      { id:"cond",  text:"Cambio de vapor a gotas/cristales por enfriamiento; forma nubes." },
+      { id:"evap",  text:"Cambio de líquido a vapor por energía solar; el vapor puede ser transportado por viento." },
+      { id:"prec",  text:"Caída de agua desde nubes por gravedad (lluvia, nieve o granizo)." },
+      { id:"run",   text:"Flujo superficial cuando la lluvia supera infiltración o el suelo está saturado." },
+      { id:"infil", text:"Entrada de agua al suelo; depende de textura, estructura, compactación y cobertura." },
+      { id:"et",    text:"Suma de evaporación + transpiración de plantas; salida importante del balance hídrico." },
+      { id:"perc",  text:"Movimiento del agua infiltrada hacia capas profundas hasta alcanzar el manto freático." },
+      { id:"aq",    text:"Almacenamiento subterráneo en poros/fracturas; se recarga por infiltración/percolación y puede alimentar manantiales." }
+    ];
+
+    const procList = document.getElementById('procList');
+    const defList  = document.getElementById('defList');
+    const mOk = document.getElementById('mOk');
+    const mTotal = document.getElementById('mTotal');
+    const mTry = document.getElementById('mTry');
+    const mTime = document.getElementById('mTime');
+    const mMsg = document.getElementById('mMsg');
+
+    let selProc = null;
+    let selDef  = null;
+    let lockedP = new Set();
+    let lockedD = new Set();
+    let okCount = 0;
+    let triesCount = 0;
+    let seconds = 0;
+    let timer = null;
 
     function shuffle(arr){
       const a = arr.slice();
@@ -746,95 +1108,178 @@
       return a;
     }
 
-    function buildMemoDeck(){
-      // cards: {id, pairId, text}
-      const cards = [];
-      PAIRS.forEach((p, idx) => {
-        cards.push({ id: `t-${idx}`, pairId: idx, text: p[0] });
-        cards.push({ id: `d-${idx}`, pairId: idx, text: p[1] });
+    function renderMatch(){
+      procList.innerHTML = "";
+      defList.innerHTML = "";
+
+      const pShuf = shuffle(PROCS);
+      const dShuf = shuffle(DEFS);
+
+      pShuf.forEach((p, idx) => {
+        const b = document.createElement('button');
+        b.type = "button";
+        b.className = "itemBtn";
+        b.dataset.id = p.id;
+        b.innerHTML = `<span>${p.name}</span><span class="badge">P${idx+1}</span>`;
+        b.addEventListener('click', () => pickProc(p.id, b));
+        procList.appendChild(b);
       });
-      return shuffle(cards);
+
+      dShuf.forEach((d, idx) => {
+        const b = document.createElement('button');
+        b.type = "button";
+        b.className = "itemBtn";
+        b.dataset.id = d.id;
+        b.innerHTML = `<span style="font-weight:800; color:rgba(11,16,32,.78)">Definición ${idx+1}</span><span class="badge">D${idx+1}</span>`;
+        b.addEventListener('click', () => pickDef(d.id, b));
+        defList.appendChild(b);
+
+        const small = document.createElement('div');
+        small.className = "result";
+        small.style.marginTop = "8px";
+        small.style.display = "none";
+        small.dataset.def = d.id;
+        small.textContent = d.text;
+        defList.appendChild(small);
+      });
+
+      mTotal.textContent = String(PROCS.length);
+      updateHud();
     }
 
-    function renderMemo(){
-      const deck = buildMemoDeck();
-      memoGrid.innerHTML = '';
-      memoMsg.style.display = 'none';
-      memoState = { first:null, lock:false, moves:0, matched:0 };
-      memoMovesEl.textContent = '0';
-      memoPairsEl.textContent = '0';
+    function startTimer(){
+      if (timer) return;
+      timer = setInterval(() => {
+        seconds++;
+        mTime.textContent = String(seconds);
+      }, 1000);
+    }
 
-      deck.forEach(card => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'card3d';
-        btn.dataset.pair = String(card.pairId);
-        btn.dataset.id = card.id;
-        btn.setAttribute('aria-label', 'Carta del memorama');
+    function stopTimer(){
+      if (!timer) return;
+      clearInterval(timer);
+      timer = null;
+    }
 
-        btn.innerHTML = `
-          <div class="inner">
-            <div class="face front">?</div>
-            <div class="face back">${card.text}</div>
-          </div>
-        `;
+    function updateHud(){
+      mOk.textContent = String(okCount);
+      mTry.textContent = String(triesCount);
+      mTime.textContent = String(seconds);
+    }
 
-        btn.addEventListener('click', () => flipMemo(btn));
-        memoGrid.appendChild(btn);
+    function clearSelections(){
+      document.querySelectorAll('.itemBtn.selected').forEach(el => el.classList.remove('selected'));
+      selProc = null;
+      selDef  = null;
+    }
+
+    function lockButtons(procId, defId){
+      // lock proc
+      document.querySelectorAll('#procList .itemBtn').forEach(btn => {
+        if (btn.dataset.id === procId){
+          btn.classList.remove('selected');
+          btn.classList.add('locked');
+          btn.disabled = true;
+        }
+      });
+
+      // lock def
+      document.querySelectorAll('#defList .itemBtn').forEach(btn => {
+        if (btn.dataset.id === defId){
+          btn.classList.remove('selected');
+          btn.classList.add('locked');
+          btn.disabled = true;
+        }
+      });
+
+      // show text block for that definition
+      document.querySelectorAll('#defList .result').forEach(r => {
+        if (r.dataset.def === defId){
+          r.style.display = "block";
+          r.className = "result ok";
+        }
       });
     }
 
-    function flipMemo(cardEl){
-      if (memoState.lock) return;
-      if (cardEl.getAttribute('aria-disabled') === 'true') return;
-      if (cardEl.classList.contains('flipped')) return;
+    function pickProc(id, btn){
+      startTimer();
+      if (lockedP.has(id)) return;
 
-      cardEl.classList.add('flipped');
+      document.querySelectorAll('#procList .itemBtn').forEach(x => x.classList.remove('selected'));
+      btn.classList.add('selected');
+      selProc = id;
 
-      if (!memoState.first){
-        memoState.first = cardEl;
-        return;
+      checkPair();
+    }
+
+    function pickDef(id, btn){
+      startTimer();
+      if (lockedD.has(id)) return;
+
+      document.querySelectorAll('#defList .itemBtn').forEach(x => x.classList.remove('selected'));
+      btn.classList.add('selected');
+      selDef = id;
+
+      checkPair();
+    }
+
+    function checkPair(){
+      if (!selProc || !selDef) return;
+
+      triesCount++;
+      const correct = selProc === selDef;
+
+      mMsg.style.display = "block";
+      if (correct){
+        okCount++;
+        lockedP.add(selProc);
+        lockedD.add(selDef);
+
+        mMsg.className = "result ok";
+        mMsg.innerHTML = `<strong>Correcto.</strong> Emparejaste <strong>${nameOf(selProc)}</strong> con su definición.`;
+
+        lockButtons(selProc, selDef);
+        clearSelections();
+
+        if (okCount === PROCS.length){
+          stopTimer();
+          mMsg.className = "result info";
+          mMsg.innerHTML = `<strong>Juego completado.</strong><br>
+            Aciertos: <strong>${okCount}/${PROCS.length}</strong> · Intentos: <strong>${triesCount}</strong> · Tiempo: <strong>${seconds}s</strong>.`;
+        }
+      } else {
+        mMsg.className = "result no";
+        mMsg.innerHTML = `<strong>No coincide.</strong> Intenta otra combinación.`;
+        // mantener selecciones para que el usuario cambie una de las dos
       }
 
-      // second flip
-      memoState.moves += 1;
-      memoMovesEl.textContent = String(memoState.moves);
-
-      const first = memoState.first;
-      const samePair = first.dataset.pair === cardEl.dataset.pair;
-      const sameCard = first.dataset.id === cardEl.dataset.id;
-
-      memoState.lock = true;
-
-      setTimeout(() => {
-        if (samePair && !sameCard){
-          // match
-          first.classList.add('matched');
-          cardEl.classList.add('matched');
-          first.setAttribute('aria-disabled', 'true');
-          cardEl.setAttribute('aria-disabled', 'true');
-
-          memoState.matched += 1;
-          memoPairsEl.textContent = String(memoState.matched);
-
-          if (memoState.matched === PAIRS.length){
-            memoMsg.className = 'result ok';
-            memoMsg.style.display = 'block';
-            memoMsg.innerHTML = `<strong>¡Ganaste!</strong><br>Encontraste todas las parejas en <strong>${memoState.moves}</strong> intentos.`;
-          }
-        } else {
-          // no match
-          first.classList.remove('flipped');
-          cardEl.classList.remove('flipped');
-        }
-
-        memoState.first = null;
-        memoState.lock = false;
-      }, 650);
+      updateHud();
     }
 
-    memoRestart.addEventListener('click', renderMemo);
-    renderMemo();
+    function nameOf(id){
+      const p = PROCS.find(x => x.id === id);
+      return p ? p.name : id;
+    }
+
+    document.getElementById('btnResetMatch').addEventListener('click', () => {
+      stopTimer();
+      seconds = 0;
+      okCount = 0;
+      triesCount = 0;
+      lockedP = new Set();
+      lockedD = new Set();
+      selProc = null;
+      selDef = null;
+      mMsg.style.display = "none";
+      renderMatch();
+    });
+
+    renderMatch();
+
+    // =========================
+    // Mensajes del diagrama (inicio)
+    // =========================
+    setExplain("evaporacion");
   </script>
 </body>
 </html>
