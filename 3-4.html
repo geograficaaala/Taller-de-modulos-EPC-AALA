@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.4 Manejo integrado de cuencas · EPC AALA</title>
+  <meta name="description" content="Manejo integrado de cuencas: definición, factores que afectan, actores. Mapa mental + planificador de manejo + detector de amenazas en una cuenca." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap (mapa mental) - autoloader (el más estable para sitios estáticos) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --info: rgba(56,189,248,.16);
+      --warn: rgba(245,158,11,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 95ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+
+    /* =========================
+       MAPA MENTAL
+       ========================= */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .mapStage{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    svg#mindmap{
+      width:100%;
+      height: 520px;
+      display:block;
+      border-radius: 14px;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(56,189,248,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.08), transparent 55%);
+    }
+    .fallback{
+      display:none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.72);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .fallback.show{ display:block; }
+
+    /* =========================
+       JUEGO 1: PLANIFICADOR
+       ========================= */
+    .planGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .planGrid{ grid-template-columns: 1fr; } }
+
+    .ctrlRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 52%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 64px; text-align:right; }
+
+    .meterGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){ .meterGrid{ grid-template-columns: 1fr; } }
+
+    .meter{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .meter .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 900; }
+    .meter .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 20px; letter-spacing:.2px; }
+    .bar{ height: 10px; border-radius: 999px; background: rgba(11,16,32,.10); overflow:hidden; margin-top: 8px; }
+    .bar > div{ height:100%; width:50%; background: rgba(35,140,210,.42); transition: width .2s ease; }
+
+    .budgetRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      align-items:center;
+      margin-top: 12px;
+    }
+
+    /* mini cuenca SVG */
+    .basinWrap{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .legendRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+    .legend{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .dot{ width:10px; height:10px; border-radius:999px; background: rgba(35,140,210,.45); display:inline-block; }
+
+    /* =========================
+       JUEGO 2: DETECTOR DE AMENAZAS
+       ========================= */
+    .huntGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .huntGrid{ grid-template-columns: 1fr; } }
+
+    .huntStage{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .huntStage svg{ width:100%; height:auto; display:block; border-radius: 14px; }
+
+    .hot{ cursor:pointer; }
+    .hot:hover{ filter: drop-shadow(0 6px 10px rgba(11,16,32,.16)); }
+
+    .checklist{
+      margin: 0;
+      padding-left: 18px;
+      color: rgba(11,16,32,.82);
+      font-size: 13.4px;
+      line-height: 1.55;
+    }
+    .checklist li{ margin: 7px 0; }
+    .done{ text-decoration: line-through; opacity: .75; }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+    code.kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(11,16,32,.14);
+      background: rgba(255,255,255,.62);
+      color: rgba(11,16,32,.78);
+    }
+  
+    /* =========================
+       JUEGOS NUEVOS: AHORCADO + SOPA
+       ========================= */
+    .hangGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .hangGrid{ grid-template-columns: 1fr; } }
+
+    .hangTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .hangWord{
+      margin-top: 12px;
+      padding: 14px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing: .22em;
+      text-align:center;
+      font-size: 22px;
+      line-height: 1.25;
+      user-select:none;
+      word-break: break-word;
+    }
+    .hangInfo{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+      align-items:center;
+    }
+    .hangLetters{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 520px){ .hangLetters{ grid-template-columns: repeat(6, 1fr); } }
+    .lbtn{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.66);
+      border-radius: 14px;
+      padding: 10px 0;
+      font-weight: 900;
+      font-family: Inter, system-ui;
+      cursor:pointer;
+      box-shadow: var(--shadow-soft);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      color: rgba(11,16,32,.86);
+      user-select:none;
+    }
+    .lbtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .lbtn:active{ transform: translateY(1px); }
+    .lbtn[disabled]{ opacity:.55; cursor:default; }
+    .lbtn.good{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+    .lbtn.bad{ background: rgba(225,29,72,.12); border-color: rgba(225,29,72,.20); }
+
+    .hangStage{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .partOn{ opacity: 1 !important; }
+
+    .wsGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .wsGrid{ grid-template-columns: 1fr; } }
+
+    .wsTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .wsStage{
+      margin-top: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+      overflow:auto;
+    }
+    .wsBoard{
+      display:grid;
+      grid-template-columns: repeat(12, 34px);
+      gap: 6px;
+      justify-content:center;
+      user-select:none;
+    }
+    @media (max-width: 520px){
+      .wsBoard{ grid-template-columns: repeat(12, 26px); gap: 5px; }
+    }
+    .cell{
+      width:34px; height:34px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius: 12px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      color: rgba(11,16,32,.84);
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .cell:hover{ background: rgba(255,255,255,.86); border-color: rgba(11,16,32,.18); }
+    .cell:active{ transform: translateY(1px); }
+    .cell.sel{ outline: 3px solid rgba(120,210,255,.35); }
+    .cell.found{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+    .cell.dim{ opacity: .72; }
+
+    .wsWords{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .wtag{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-weight: 900;
+      color: rgba(11,16,32,.86);
+    }
+    .wtag.done{
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.22);
+      opacity: .9;
+    }
+    .wtag small{
+      font-weight: 800;
+      color: rgba(11,16,32,.62);
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.4 Manejo integrado de cuencas</h1>
+        <p class="subtitle">
+          El <strong>manejo integrado de cuencas</strong> son las acciones que realizan las personas y organizaciones para
+          <strong>proteger el agua, el suelo y el bosque</strong> dentro de una cuenca. Como todo está conectado, una buena
+          gestión busca reducir problemas como <strong>erosión</strong>, <strong>contaminación</strong> y <strong>deforestación</strong>,
+          y mejorar la participación de la comunidad.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-3.html">Anterior (3.3)</a>
+        <a class="btn primary" href="3-5.html">Siguiente (3.5)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+
+        <div class="twoCols">
+          <div class="box">
+            <p><strong>¿Qué es el manejo integrado de cuencas?</strong></p>
+            <p>
+              Es el conjunto de acciones para aprovechar y proteger el agua, el suelo y el bosque dentro de una cuenca,
+              mejorando la forma en que se usan y se cuidan estos bienes naturales. En el libro se resalta que el manejo
+              requiere <strong>participación</strong> y coordinación, porque una cuenca la manejamos <strong>todas las personas</strong>
+              que vivimos y trabajamos en ella.
+            </p>
+
+            <div class="result info">
+              <strong>Idea clave:</strong> si el suelo se degrada, el agua se afecta (están estrechamente relacionados). Por eso
+              el manejo integrado incluye acciones tanto en tierra como en ríos, lagos y nacimientos.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Factores que afectan a una cuenca</strong></p>
+            <ul>
+              <li><strong>Deforestación</strong> y pérdida de zonas de recarga.</li>
+              <li><strong>Descarga de aguas residuales</strong> sin tratamiento en ríos y lagos.</li>
+              <li><strong>Uso excesivo de agroquímicos</strong> (fertilizantes y plaguicidas).</li>
+              <li><strong>Erosión</strong> y arrastre de sedimentos.</li>
+              <li><strong>Quemas e incendios</strong> (roza o quema de basureros).</li>
+              <li><strong>Carreteras</strong> sin planificación y asentamientos en zonas de recarga.</li>
+              <li><strong>Basureros</strong> ilegales o no controlados cerca de cuerpos de agua.</li>
+              <li><strong>Desarrollo industrial</strong> en zonas no adecuadas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Organización</div>
+            <p class="s">Comités de cuenca: representan a la comunidad e incluyen instituciones públicas y privadas, propietarios, autoridades y sectores económicos.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Coordinación</div>
+            <p class="s">Organismos de cuenca coordinan gestiones relacionadas con el agua, mantienen información y promueven participación.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Componentes</div>
+            <p class="s">Un plan puede integrar acciones en agua, suelo y bosque; y sumar institucionalidad y participación ciudadana.</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>¿Quiénes manejan una cuenca?</strong></p>
+            <p>
+              En el libro se explica que las cuencas deben ser manejadas por <strong>todas las personas</strong> que habitan el área.
+              Un modo de organizarse son los <strong>comités de cuenca</strong> (comunidad + instituciones).
+            </p>
+            <ul>
+              <li>Instituciones públicas y privadas.</li>
+              <li>Propietarios de tierras.</li>
+              <li>Entidades estatales y gobiernos locales.</li>
+              <li>Autoridades de suministro de agua y servicios públicos.</li>
+              <li>Sectores económicos (por ejemplo, agro) y grupos interesados.</li>
+            </ul>
+          </div>
+
+          <div class="box">
+            <p><strong>Ejemplo de organismo de cuenca</strong></p>
+            <p>
+              Para el Lago de Atitlán se menciona la <strong>Autoridad para el Manejo Sustentable de la Cuenca del Lago de Atitlán y su Entorno (AMSCLAE)</strong>,
+              que coordina gestiones del agua a nivel de cuenca, propiciando comunicación e involucramiento de distintos sectores.
+            </p>
+            <div class="result info">
+              En el libro se describe que el plan de manejo integrado del Lago de Atitlán contempla acciones en <strong>agua</strong>, <strong>suelo</strong> y <strong>bosque</strong>, e incluye un componente de <strong>institucionalidad y participación ciudadana</strong>.
+            </div>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top:12px;">
+          <p><strong>Cuencas hidrográficas en el departamento de Sololá</strong></p>
+          <p style="margin-bottom:8px;">
+            Se mencionan seis cuencas fundamentales para el sistema hídrico del departamento y la región:
+          </p>
+          <ul>
+            <li>Cuenca Río Nahualate</li>
+            <li>Cuenca Río Madre Vieja</li>
+            <li>Cuenca Lago de Atitlán</li>
+            <li>Cuenca Río Motagua</li>
+            <li>Cuenca Río Samalá</li>
+            <li>Cuenca Río Sis - Icán</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Si no se ve, revisa conexión a Internet (carga Markmap). Botones: ajustar y plegar.</div>
+          </div>
+          <div class="nav">
+            <button class="btn" id="mmFit" type="button">Ajustar</button>
+            <button class="btn" id="mmToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="mmReset" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental: Manejo integrado de cuencas"></svg>
+          <div class="fallback" id="mmFallback">
+            No se pudo cargar el mapa mental. Si estás sin Internet, el mapa no cargará porque usa un script CDN.
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · Ahorcado de conceptos de cuenca</h2>
+        <div class="hint">
+          Adivina palabras clave del <strong>manejo integrado de cuencas</strong>. Tienes <strong>6 vidas</strong>.
+          Usa la pista si te atoras.
+        </div>
+
+        <div class="hangGrid">
+          <div class="box">
+            <div class="hangTop">
+              <span class="mini">Palabra: <strong id="hIdx">1</strong>/<strong id="hTotal">1</strong></span>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn" id="hHintBtn" type="button">Pista</button>
+                <button class="btn" id="hNew" type="button">Nueva palabra</button>
+                <button class="btn" id="hReset" type="button">Reiniciar</button>
+              </div>
+            </div>
+
+            <div class="hangWord" id="hWord" aria-label="Palabra del ahorcado"></div>
+
+            <div class="hangInfo">
+              <span class="mini">Vidas: <strong id="hLives">6</strong></span>
+              <span class="mini">Errores: <strong id="hWrong">0</strong></span>
+              <span class="mini">Aciertos seguidos: <strong id="hStreak">0</strong></span>
+            </div>
+
+            <div class="hangLetters" id="hLetters" aria-label="Teclado de letras"></div>
+
+            <div class="result info" id="hMsg" style="display:block;">
+              Elige una letra para empezar.
+            </div>
+          </div>
+
+          <div class="box">
+            <p style="margin:0 0 10px;"><strong>Dibujo (progreso)</strong></p>
+            <div class="hangStage" aria-label="Dibujo del ahorcado">
+              <svg viewBox="0 0 260 240" width="100%" height="240" role="img" aria-label="Ahorcado">
+                <g fill="none" stroke="rgba(11,16,32,.45)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 220 H160" />
+                  <path d="M60 220 V30" />
+                  <path d="M58 30 H170" />
+                  <path d="M170 30 V60" />
+                </g>
+
+                <!-- Partes (se encienden con clases) -->
+                <g id="hgParts" fill="none" stroke="rgba(35,140,210,.58)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.18">
+                  <circle data-part="head" cx="170" cy="80" r="18" />
+                  <path data-part="body" d="M170 98 V145" />
+                  <path data-part="armL" d="M170 112 L150 130" />
+                  <path data-part="armR" d="M170 112 L190 130" />
+                  <path data-part="legL" d="M170 145 L152 176" />
+                  <path data-part="legR" d="M170 145 L188 176" />
+                </g>
+
+                <g fill="rgba(11,16,32,.68)" font-family="Outfit, Inter, system-ui" font-weight="900">
+                  <text x="20" y="22" font-size="14">Vidas = partes</text>
+                </g>
+              </svg>
+            </div>
+
+            <p style="margin:12px 0 0;"><strong>Pista</strong></p>
+            <div class="result info" id="hHintBox" style="display:block;">
+              Pulsa “Pista” para verla.
+            </div>
+
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Tip:</strong> muchas palabras son procesos (ej.: infiltración, escorrentía) o acciones (ej.: reforestación).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · Sopa de letras: cuencas hidrográficas</h2>
+        <div class="hint">
+          Encuentra las palabras escondidas en la sopa. Para seleccionar: haz clic en una letra (inicio) y luego en otra (fin).
+          Se aceptan líneas <strong>horizontales</strong>, <strong>verticales</strong> y <strong>diagonales</strong>, también al revés.
+        </div>
+
+        <div class="wsGrid">
+          <div class="box">
+            <div class="wsTop">
+              <span class="mini">Encontradas: <strong id="wsFound">0</strong>/<strong id="wsTotal">0</strong></span>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn" id="wsHintBtn" type="button">Pista</button>
+                <button class="btn" id="wsNew" type="button">Nueva sopa</button>
+                <button class="btn" id="wsReset" type="button">Reiniciar</button>
+              </div>
+            </div>
+
+            <div class="wsStage" id="wsStage" aria-label="Sopa de letras"></div>
+
+            <div class="result info" id="wsMsg" style="display:block;">
+              Selecciona inicio y fin de una palabra.
+            </div>
+          </div>
+
+          <div class="box">
+            <p style="margin:0 0 10px;"><strong>Lista de palabras</strong></p>
+            <div class="wsWords" id="wsWords" aria-label="Lista de palabras"></div>
+
+            <div class="result info" id="wsHint" style="display:none;"></div>
+
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Tip:</strong> si una palabra no te sale, prueba en diagonal o al revés 😉
+            </div>
+          </div>
+        </div>
+      </section>
+<footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap) - render manual estable
+    // =========================
+    const mmMd = `
+# 3.4 Manejo integrado de cuencas
+## ¿Qué es?
+- Acciones para proteger y aprovechar agua, suelo y bosque
+- En una cuenca todo está conectado
+- Requiere coordinación y participación
+## Relación agua-suelo
+- Agua y suelo están estrechamente relacionados
+- Si el suelo se degrada, el agua se afecta
+## Factores que afectan a una cuenca
+- Deforestación (menos infiltración)
+- Aguas residuales sin tratamiento
+- Agroquímicos (fertilizantes y plaguicidas)
+- Erosión y sedimentos
+- Quemas e incendios
+- Carreteras sin planificación
+- Asentamientos en zonas de recarga
+- Basureros cerca de ríos y lagos
+- Desarrollo industrial en zonas no adecuadas
+## ¿Quiénes la manejan?
+- Todas las personas que habitan la cuenca
+- Comités de cuenca (comunidad + instituciones)
+## Organismos de cuenca
+- Coordinan gestiones del agua
+- Mantienen información y articulan sectores
+- Ejemplo: AMSCLAE (Atitlán)
+## Plan de manejo (idea)
+- Agua + Suelo + Bosque
+- + Institucionalidad y participación ciudadana
+## Sololá (cuencas mencionadas)
+- Río Nahualate
+- Río Madre Vieja
+- Lago de Atitlán
+- Río Motagua
+- Río Samalá
+- Río Sis - Icán
+`.trim();
+
+    let mm = null;
+    let mmExpanded = true;
+
+    function renderMindmap(){
+      const fb = document.getElementById('mmFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const t = new Transformer();
+        const { root } = t.transform(mmMd);
+
+        const svg = document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+
+    let mmTries = 0;
+    const mmIt = setInterval(() => {
+      mmTries++;
+      const ok = renderMindmap();
+      if(ok || mmTries > 12) clearInterval(mmIt);
+    }, 300);
+
+    document.getElementById('mmFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('mmToggle').addEventListener('click', () => {
+      if(!mm) return;
+      mmExpanded ? mm.foldAll() : mm.unfoldAll();
+      mmExpanded = !mmExpanded;
+    });
+    document.getElementById('mmReset').addEventListener('click', () => {
+      mm = null; mmExpanded = true; renderMindmap();
+    });
+
+    
+    // =========================
+    // JUEGO 1: AHORCADO
+    // =========================
+    const H_WORDS = [
+      { w: "CUENCA", hint: "Territorio donde el agua escurre hacia un mismo río o lago." },
+      { w: "INFILTRACION", hint: "Cuando el agua entra al suelo y puede recargar el subsuelo." },
+      { w: "ESCORRENTIA", hint: "Agua que corre por la superficie cuando no infiltra." },
+      { w: "RECARGA", hint: "Aporte de agua a los acuíferos o manto freático." },
+      { w: "ACUIFERO", hint: "Reserva subterránea de agua en poros o fracturas." },
+      { w: "EROSION", hint: "Pérdida de suelo por agua o viento; aumenta con pendientes y suelo desnudo." },
+      { w: "REFORESTACION", hint: "Acción de recuperar cobertura arbórea en áreas degradadas." },
+      { w: "SEDIMENTOS", hint: "Partículas de suelo que viajan al río/lago; suben con la erosión." },
+      { w: "GOBERNANZA", hint: "Reglas, acuerdos y organización para manejar la cuenca." }
+    ];
+
+    const H_ALPHA = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+
+    const hWordEl = document.getElementById("hWord");
+    const hLettersEl = document.getElementById("hLetters");
+    const hLivesEl = document.getElementById("hLives");
+    const hWrongEl = document.getElementById("hWrong");
+    const hMsg = document.getElementById("hMsg");
+    const hHintBox = document.getElementById("hHintBox");
+    const hIdxEl = document.getElementById("hIdx");
+    const hTotalEl = document.getElementById("hTotal");
+    const hStreakEl = document.getElementById("hStreak");
+    const hgParts = document.getElementById("hgParts");
+
+    const hBtnHint = document.getElementById("hHintBtn");
+    const hBtnNew = document.getElementById("hNew");
+    const hBtnReset = document.getElementById("hReset");
+
+    let hOrder = [];
+    let hPos = 0;
+    let hTarget = "";
+    let hHint = "";
+    let hGuessed = new Set();
+    let hLives = 6;
+    let hWrong = 0;
+    let hStreak = 0;
+    let hLocked = false;
+
+    function shuffle(a){
+      const x = a.slice();
+      for(let i=x.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [x[i],x[j]] = [x[j],x[i]];
+      }
+      return x;
+    }
+
+    function hNormalize(s){
+      // juego sin tildes para que sea más fácil
+      return s
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^A-ZÑ]/g, "");
+    }
+
+    function hBuildKeyboard(){
+      hLettersEl.innerHTML = "";
+      H_ALPHA.forEach(ch => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "lbtn";
+        b.textContent = ch;
+        b.addEventListener("click", () => hPick(ch, b));
+        hLettersEl.appendChild(b);
+      });
+    }
+
+    function hRenderWord(){
+      const out = [];
+      for(const ch of hTarget){
+        if(ch === " "){ out.push(" "); continue; }
+        out.push(hGuessed.has(ch) ? ch : "•");
+      }
+      hWordEl.textContent = out.join(" ");
+    }
+
+    function hUpdateUI(){
+      hLivesEl.textContent = String(hLives);
+      hWrongEl.textContent = String(hWrong);
+      hStreakEl.textContent = String(hStreak);
+      hIdxEl.textContent = String(hPos + 1);
+      hTotalEl.textContent = String(hOrder.length);
+
+      // activar partes según errores (0..6)
+      const parts = ["head","body","armL","armR","legL","legR"];
+      const show = hWrong;
+      hgParts.querySelectorAll("[data-part]").forEach((el) => {
+        el.classList.remove("partOn");
+        el.style.opacity = "0.18";
+      });
+      for(let i=0;i<Math.min(show, parts.length);i++){
+        const el = hgParts.querySelector(`[data-part="${parts[i]}"]`);
+        if(el){ el.classList.add("partOn"); el.style.opacity = "1"; }
+      }
+    }
+
+    function hCheckWin(){
+      for(const ch of hTarget){
+        if(ch === " ") continue;
+        if(!hGuessed.has(ch)) return false;
+      }
+      return true;
+    }
+
+    function hSetMsg(kind, html){
+      hMsg.style.display = "block";
+      hMsg.className = "result " + (kind || "info");
+      hMsg.innerHTML = html;
+    }
+
+    function hStartAt(pos){
+      const item = H_WORDS[hOrder[pos]];
+      hTarget = hNormalize(item.w);
+      hHint = item.hint;
+
+      hGuessed = new Set();
+      hLives = 6;
+      hWrong = 0;
+      hLocked = false;
+      hHintBox.textContent = "Pulsa “Pista” para verla.";
+
+      // auto-descubrir letras repetidas si son muy cortas (no aplica aquí, pero ayuda)
+      // no revela nada de entrada
+      hBuildKeyboard();
+      hRenderWord();
+      hUpdateUI();
+      hSetMsg("info", "Elige una letra para empezar.");
+    }
+
+    function hNext(){
+      hPos = (hPos + 1) % hOrder.length;
+      hStartAt(hPos);
+    }
+
+    function hResetAll(){
+      hOrder = shuffle([...Array(H_WORDS.length).keys()]);
+      hPos = 0;
+      hStreak = 0;
+      hStartAt(hPos);
+    }
+
+    function hRevealHint(){
+      hHintBox.textContent = hHint;
+      hSetMsg("info", "💡 Pista activada. Sigue probando letras.");
+    }
+
+    function hPick(ch, btn){
+      if(hLocked) return;
+      btn.disabled = true;
+
+      const good = hTarget.includes(ch);
+      if(good){
+        btn.classList.add("good");
+        hGuessed.add(ch);
+        hRenderWord();
+
+        if(hCheckWin()){
+          hLocked = true;
+          hStreak += 1;
+          hUpdateUI();
+          hSetMsg("ok", `✅ <strong>¡Correcto!</strong> La palabra era <strong>${hTarget}</strong>.<br>
+            Racha: <strong>${hStreak}</strong>. Pulsa “Nueva palabra”.`);
+          return;
+        }
+        hSetMsg("info", "✅ Bien. Sigue.");
+      }else{
+        btn.classList.add("bad");
+        hWrong += 1;
+        hLives -= 1;
+        hUpdateUI();
+
+        if(hLives <= 0){
+          hLocked = true;
+          hStreak = 0;
+          hRenderWord(); // deja el estado, pero mostramos la palabra al perder
+          hWordEl.textContent = hTarget.split("").join(" ");
+          hSetMsg("no", `❌ <strong>Se acabaron las vidas.</strong> La palabra era <strong>${hTarget}</strong>.<br>
+            Pulsa “Nueva palabra” o “Reiniciar”.`);
+          return;
+        }
+        hSetMsg("warn", `⚠️ No está. Te quedan <strong>${hLives}</strong> vidas.`);
+      }
+    }
+
+    hBtnHint.addEventListener("click", hRevealHint);
+    hBtnNew.addEventListener("click", hNext);
+    hBtnReset.addEventListener("click", hResetAll);
+
+    // init
+    hResetAll();
+
+    // =========================
+    // JUEGO 2: SOPA DE LETRAS
+    // =========================
+    const WS_WORDS = [
+      { w:"CUENCA", hint:"Territorio que drena a un río/lago" },
+      { w:"RIO", hint:"Corriente de agua principal" },
+      { w:"LAGO", hint:"Cuerpo de agua que recibe aportes" },
+      { w:"SUELO", hint:"Medio donde infiltra el agua" },
+      { w:"BOSQUE", hint:"Cobertura que protege e infiltra" },
+      { w:"ACUIFERO", hint:"Reserva subterránea" },
+      { w:"RECARGA", hint:"Aporte al subsuelo" },
+      { w:"EROSION", hint:"Pérdida de suelo" }
+    ].map(x => ({...x, w: hNormalize(x.w)}));
+
+    const wsStage = document.getElementById("wsStage");
+    const wsWordsEl = document.getElementById("wsWords");
+    const wsFoundEl = document.getElementById("wsFound");
+    const wsTotalEl = document.getElementById("wsTotal");
+    const wsMsg = document.getElementById("wsMsg");
+    const wsHint = document.getElementById("wsHint");
+
+    const wsHintBtn = document.getElementById("wsHintBtn");
+    const wsNewBtn = document.getElementById("wsNew");
+    const wsResetBtn = document.getElementById("wsReset");
+
+    const N = 12;
+    const DIRS = [
+      [1,0],[-1,0],[0,1],[0,-1],
+      [1,1],[1,-1],[-1,1],[-1,-1]
+    ];
+
+    let wsGrid = [];
+    let wsBtnGrid = [];
+    let wsFound = new Set();
+    let wsStart = null; // {r,c}
+    let wsLocked = false;
+
+    function wsRandLetter(){
+      const letters = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+      return letters[Math.floor(Math.random()*letters.length)];
+    }
+
+    function wsClearMsg(kind, text){
+      wsMsg.className = "result " + (kind || "info");
+      wsMsg.textContent = text;
+      wsMsg.style.display = "block";
+    }
+
+    function wsBuildEmpty(){
+      wsGrid = Array.from({length:N}, () => Array.from({length:N}, () => ""));
+      // relleno inicial
+      for(let r=0;r<N;r++){
+        for(let c=0;c<N;c++){
+          wsGrid[r][c] = wsRandLetter();
+        }
+      }
+    }
+
+    function wsCanPlace(word, r, c, dr, dc){
+      for(let i=0;i<word.length;i++){
+        const rr = r + dr*i, cc = c + dc*i;
+        if(rr<0 || rr>=N || cc<0 || cc>=N) return false;
+        const cur = wsGrid[rr][cc];
+        if(cur !== "" && cur !== word[i]) return false;
+      }
+      return true;
+    }
+
+    function wsPlace(word){
+      for(let tries=0;tries<350;tries++){
+        const [dr,dc] = DIRS[Math.floor(Math.random()*DIRS.length)];
+        const r = Math.floor(Math.random()*N);
+        const c = Math.floor(Math.random()*N);
+        if(!wsCanPlace(word, r, c, dr, dc)) continue;
+        for(let i=0;i<word.length;i++){
+          wsGrid[r+dr*i][c+dc*i] = word[i];
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function wsGenerate(){
+      wsFound = new Set();
+      wsStart = null;
+      wsLocked = false;
+      wsHint.style.display = "none";
+
+      wsBuildEmpty();
+      // Reintentar hasta lograr colocar todas
+      let ok = false;
+      for(let attempt=0;attempt<12 && !ok;attempt++){
+        wsBuildEmpty();
+        ok = true;
+        for(const item of WS_WORDS){
+          if(!wsPlace(item.w)){ ok = false; break; }
+        }
+      }
+
+      wsRenderBoard();
+      wsRenderWords();
+      wsUpdateHud();
+      wsClearMsg("info", "Selecciona inicio y fin de una palabra.");
+    }
+
+    function wsRenderBoard(){
+      wsStage.innerHTML = "";
+      const board = document.createElement("div");
+      board.className = "wsBoard";
+      wsBtnGrid = Array.from({length:N}, () => Array.from({length:N}, () => null));
+
+      for(let r=0;r<N;r++){
+        for(let c=0;c<N;c++){
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "cell";
+          b.textContent = wsGrid[r][c];
+          b.dataset.r = String(r);
+          b.dataset.c = String(c);
+          b.addEventListener("click", () => wsPick(r,c));
+          wsBtnGrid[r][c] = b;
+          board.appendChild(b);
+        }
+      }
+      wsStage.appendChild(board);
+    }
+
+    function wsRenderWords(){
+      wsWordsEl.innerHTML = "";
+      WS_WORDS.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "wtag";
+        row.dataset.w = item.w;
+        row.innerHTML = `<span>${item.w}</span><small>${item.hint}</small>`;
+        wsWordsEl.appendChild(row);
+      });
+      wsTotalEl.textContent = String(WS_WORDS.length);
+    }
+
+    function wsUpdateHud(){
+      wsFoundEl.textContent = String(wsFound.size);
+      // marcar lista
+      document.querySelectorAll(".wtag").forEach(el => {
+        const w = el.dataset.w;
+        el.classList.toggle("done", wsFound.has(w));
+      });
+
+      if(wsFound.size === WS_WORDS.length){
+        wsLocked = true;
+        wsClearMsg("ok", "✅ ¡Completaste la sopa! Pulsa “Nueva sopa” para jugar otra vez.");
+      }
+    }
+
+    function wsClearSelection(){
+      document.querySelectorAll(".cell.sel").forEach(el => el.classList.remove("sel"));
+    }
+
+    function wsPath(a, b){
+      // devuelve lista de coords si están en línea válida
+      const dr = Math.sign(b.r - a.r);
+      const dc = Math.sign(b.c - a.c);
+      // debe ser horizontal/vertical/diagonal
+      const ar = Math.abs(b.r - a.r);
+      const ac = Math.abs(b.c - a.c);
+      if(!(dr === 0 || dc === 0 || ar === ac)) return null;
+
+      // evitar "saltos" no lineales
+      if(dr !== 0 && dc !== 0 && ar !== ac) return null;
+
+      const steps = Math.max(ar, ac);
+      const coords = [];
+      for(let i=0;i<=steps;i++){
+        const rr = a.r + dr*i, cc = a.c + dc*i;
+        if(rr<0||rr>=N||cc<0||cc>=N) return null;
+        coords.push({r:rr,c:cc});
+      }
+      return coords;
+    }
+
+    function wsRead(coords){
+      return coords.map(p => wsGrid[p.r][p.c]).join("");
+    }
+
+    function wsMark(coords){
+      coords.forEach(p => wsBtnGrid[p.r][p.c].classList.add("found"));
+      // quitar selección visual
+      wsClearSelection();
+    }
+
+    function wsPick(r,c){
+      if(wsLocked) return;
+
+      // no permitir seleccionar celdas ya encontradas como "solo" (igual dejamos)
+      const btn = wsBtnGrid[r][c];
+
+      if(!wsStart){
+        wsStart = {r,c};
+        wsClearSelection();
+        btn.classList.add("sel");
+        wsClearMsg("info", "Ahora elige la letra final.");
+        return;
+      }
+
+      // segunda selección
+      const end = {r,c};
+      const coords = wsPath(wsStart, end);
+      wsStart = null;
+
+      if(!coords || coords.length < 2){
+        wsClearSelection();
+        wsClearMsg("warn", "Esa selección no es una línea válida. Intenta horizontal, vertical o diagonal.");
+        return;
+      }
+
+      const s1 = wsRead(coords);
+      const s2 = s1.split("").reverse().join("");
+
+      const hit = WS_WORDS.find(x => x.w === s1 || x.w === s2);
+      if(!hit){
+        wsClearSelection();
+        wsClearMsg("no", "No es una palabra de la lista. Prueba otra dirección.");
+        return;
+      }
+
+      if(wsFound.has(hit.w)){
+        wsClearSelection();
+        wsClearMsg("warn", "Esa palabra ya la encontraste. Busca otra.");
+        return;
+      }
+
+      wsFound.add(hit.w);
+      wsMark(coords);
+      wsClearMsg("ok", `✅ Encontraste: ${hit.w}`);
+      wsUpdateHud();
+    }
+
+    function wsShowHint(){
+      // muestra 1 palabra no encontrada y su pista
+      const pending = WS_WORDS.filter(x => !wsFound.has(x.w));
+      if(pending.length === 0){
+        wsHint.style.display = "none";
+        return;
+      }
+      const pick = pending[Math.floor(Math.random()*pending.length)];
+      wsHint.style.display = "block";
+      wsHint.className = "result info";
+      wsHint.innerHTML = `<strong>Pista:</strong> busca <strong>${pick.w}</strong> · ${pick.hint}`;
+    }
+
+    function wsResetSame(){
+      // reinicia progreso sin generar otra sopa
+      wsFound = new Set();
+      wsStart = null;
+      wsLocked = false;
+      wsHint.style.display = "none";
+      document.querySelectorAll(".cell").forEach(el => {
+        el.classList.remove("found", "sel");
+      });
+      wsUpdateHud();
+      wsClearMsg("info", "Reiniciado. Selecciona inicio y fin de una palabra.");
+    }
+
+    wsHintBtn.addEventListener("click", wsShowHint);
+    wsNewBtn.addEventListener("click", wsGenerate);
+    wsResetBtn.addEventListener("click", wsResetSame);
+
+    // init
+    wsGenerate();
+
+</script>
+</body>
+</html>
