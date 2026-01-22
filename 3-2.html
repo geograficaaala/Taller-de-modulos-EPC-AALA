@@ -1,0 +1,1263 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.2 Fuentes de agua · EPC AALA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap (mapa mental) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --ok: rgba(45, 160, 220, .16);
+      --warn: rgba(120, 190, 255, .18);
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --info: rgba(56,189,248,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 92ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.25fr .95fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+    .warn{ background: var(--warn); border-color: rgba(120,190,255,.24); }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+
+    /* ===== Mapa mental ===== */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      position:relative;
+    }
+    #mindmap{ width:100%; height: 460px; display:block; }
+    .fallback{
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      padding: 18px;
+      background: rgba(255,255,255,.72);
+      color: rgba(11,16,32,.78);
+      text-align:center;
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .2s ease;
+    }
+    .fallback.show{ opacity: 1; pointer-events:auto; }
+
+    /* ===== Diagrama clicable ===== */
+    .diagramGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .diagramGrid{ grid-template-columns: 1fr; } }
+
+    .svgWrap{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+    .tipRow{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .chip button{
+      border:none;
+      background: transparent;
+      font: inherit;
+      color: inherit;
+      cursor:pointer;
+      padding:0;
+    }
+
+    /* ===== Juego 1: Captación de lluvia (reto) ===== */
+    .simGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .simGrid{ grid-template-columns: 1fr; } }
+
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 52%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 92px; text-align:right; }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .scenario{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+      align-items:center;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      background: rgba(255,255,255,.60);
+      white-space: nowrap;
+      cursor:pointer;
+      user-select:none;
+    }
+    .tag.active{ background: rgba(120,210,255,.24); border-color: rgba(35,140,210,.20); }
+
+    /* ===== Juego 2: Arrastrar y soltar (clasificación) ===== */
+    .ddGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .ddGrid{ grid-template-columns: 1fr; } }
+
+    .ddBoard{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .ddCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .ddCols{ grid-template-columns: 1fr; } }
+
+    .dropZone{
+      border-radius: 18px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.56);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      min-height: 170px;
+    }
+    .dropZone.over{
+      outline: 3px solid rgba(120,210,255,.35);
+      border-color: rgba(35,140,210,.25);
+      background: rgba(120,210,255,.12);
+    }
+    .dzTitle{
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      font-size: 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color: rgba(11,16,32,.86);
+    }
+    .dzTitle span{ font-size: 12px; color: rgba(11,16,32,.62); font-weight: 800; }
+
+    .cardsTray{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .cardChip{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 12px;
+      font-weight: 900;
+      font-size: 13px;
+      cursor: grab;
+      user-select:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color: rgba(11,16,32,.86);
+    }
+    .cardChip:active{ cursor:grabbing; }
+    .cardChip small{
+      font-weight: 900;
+      font-size: 11px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(120,210,255,.18);
+      color: rgba(11,16,32,.74);
+    }
+    .hud{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .hud .mini{ box-shadow: var(--shadow-soft); }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.2 Fuentes de agua</h1>
+        <p class="subtitle">
+          Aunque el planeta tiene muchísima agua, solo una parte pequeña es <strong>agua dulce</strong> (apta para beber y regar).
+          En esta lección verás <strong>de dónde viene el agua dulce</strong>, cómo se conecta con los bosques y la cuenca, y por qué
+          algunas fuentes pueden <strong>agotarse</strong> o <strong>contaminarse</strong>.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-1.html">Anterior (3.1)</a>
+        <a class="btn primary" href="3-3.html">Siguiente (3.3)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              El agua dulce es limitada: una parte está congelada, otra parte está bajo el suelo y otra está en ríos y lagos.
+              Por eso es clave reconocer las <strong>fuentes de agua</strong> y cuidarlas.
+            </p>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Idea clave:</strong> las fuentes de agua se agrupan en <em>meteorológicas</em> (lluvia), <em>superficiales</em>
+              (ríos, lagunas y lagos) y <em>subterráneas</em> (acuíferos y mantos freáticos).
+            </div>
+
+            <p style="margin-top:12px;">
+              En una cuenca, lo que ocurre en la parte alta (bosques, suelos, caminos) puede mejorar o empeorar
+              la calidad y cantidad de agua que llega a los ríos, al lago o a los pozos.
+            </p>
+
+            <ul>
+              <li><strong>Calidad:</strong> depende de contaminación, sedimentos y tratamiento.</li>
+              <li><strong>Cantidad:</strong> depende de lluvia, infiltración, recarga y extracción.</li>
+              <li><strong>Disponibilidad:</strong> cambia entre época lluviosa y época seca.</li>
+            </ul>
+          </div>
+
+          <div class="box">
+            <p><strong>Resumen rápido de cada fuente</strong></p>
+            <ul>
+              <li><strong>Lluvia (meteorológica):</strong> recarga ríos, lagos y el agua subterránea; también ayuda a “limpiar” el aire.</li>
+              <li><strong>Agua subterránea:</strong> se almacena en acuíferos; es una reserva importante, pero <strong>no es infinita</strong>.</li>
+              <li><strong>Ríos:</strong> nacen en manantiales y se alimentan por escorrentía; llevan agua y nutrientes hacia lagos u océanos.</li>
+              <li><strong>Lagunas y lagos:</strong> almacenan agua superficial; son sensibles a contaminación y cambios del territorio.</li>
+              <li><strong>Manantiales:</strong> salida natural del agua subterránea hacia la superficie (a veces, agua caliente).</li>
+            </ul>
+
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Atención:</strong> si se extrae demasiada agua de pozos, puede bajar el nivel del manto freático y algunos manantiales
+              pueden disminuir o secarse.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Meteorológicas</div>
+            <p class="s">Lluvia y captación pluvial. Inician el camino del agua en la cuenca y ayudan a recargar otras fuentes.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Superficiales</div>
+            <p class="s">Ríos, quebradas, lagunas y lagos. Son visibles, pero cambian rápido con contaminación o deforestación.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Subterráneas</div>
+            <p class="s">Acuíferos y mantos freáticos. Se recargan lentamente; requieren protección del suelo y buena infiltración.</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>¿Qué papel tienen los bosques?</strong></p>
+            <ul>
+              <li>Ayudan a <strong>captar</strong> el agua de lluvia y disminuir la erosión.</li>
+              <li>Mejoran la <strong>infiltración</strong> (el agua entra al suelo) y favorecen la <strong>recarga</strong> subterránea.</li>
+              <li>Reducen picos de escorrentía e inundaciones.</li>
+              <li>Protegen nacimientos, quebradas y riberas.</li>
+            </ul>
+            <div class="result info" style="margin-top:10px;">
+              <strong>Analogía útil:</strong> un bosque sano se comporta como una “esponja”: retiene, infiltra y libera agua con más estabilidad en el tiempo.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Riesgos comunes para las fuentes</strong></p>
+            <ul>
+              <li><strong>Sobreextracción:</strong> demasiados pozos o bombeo constante sin recarga suficiente.</li>
+              <li><strong>Contaminación:</strong> residuos, aguas grises/negra, agroquímicos, basura o derrames cerca de fuentes.</li>
+              <li><strong>Sellado del suelo:</strong> asfalto y concreto reducen infiltración y aumentan escorrentía.</li>
+              <li><strong>Cambio climático:</strong> puede intensificar lluvias o prolongar sequías.</li>
+            </ul>
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Tip:</strong> en la práctica, proteger una fuente implica proteger el <em>territorio alrededor</em> (zona de recarga, pendiente, suelo y vegetación).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: centrar, plegar/desplegar y recargar si falla la red.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" role="img" aria-label="Mapa mental de fuentes de agua"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica que el dispositivo tenga acceso a los scripts de Markmap.
+          </div>
+        </div>
+      </section>
+
+      <!-- DIAGRAMA CLICABLE -->
+      <section class="card">
+        <h2>Diagrama de fuentes de agua (clicable)</h2>
+        <div class="diagramGrid">
+          <div class="svgWrap">
+            <svg viewBox="0 0 960 520" width="100%" height="auto" aria-label="Diagrama de fuentes de agua" role="img">
+              <defs>
+                <linearGradient id="sky2" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(180,235,255,.82)"/>
+                  <stop offset="1" stop-color="rgba(255,255,255,.0)"/>
+                </linearGradient>
+                <linearGradient id="water2" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(120,210,255,.52)"/>
+                  <stop offset="1" stop-color="rgba(60,170,235,.35)"/>
+                </linearGradient>
+                <linearGradient id="soil2" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(200, 225, 240, .42)"/>
+                  <stop offset="1" stop-color="rgba(185, 210, 230, .26)"/>
+                </linearGradient>
+              </defs>
+
+              <!-- fondo -->
+              <rect x="0" y="0" width="960" height="520" fill="url(#sky2)"/>
+              <rect x="0" y="360" width="960" height="160" fill="url(#water2)" opacity=".96"/>
+              <rect x="0" y="325" width="960" height="40" fill="url(#soil2)" opacity=".96"/>
+
+              <!-- montañas -->
+              <path d="M0 360 L180 210 L320 360 Z" fill="rgba(180,220,255,.42)"/>
+              <path d="M240 360 L430 190 L640 360 Z" fill="rgba(160,210,255,.36)"/>
+              <path d="M560 360 L725 235 L900 360 Z" fill="rgba(180,220,255,.32)"/>
+
+              <!-- bosque -->
+              <g id="node-forest" class="node" data-key="bosque" style="cursor:pointer">
+                <circle cx="230" cy="300" r="16" fill="rgba(34,197,94,.22)" stroke="rgba(11,16,32,.12)"/>
+                <circle cx="255" cy="305" r="13" fill="rgba(34,197,94,.18)" stroke="rgba(11,16,32,.12)"/>
+                <circle cx="210" cy="310" r="13" fill="rgba(34,197,94,.16)" stroke="rgba(11,16,32,.12)"/>
+                <rect x="220" y="318" width="10" height="22" rx="3" fill="rgba(120,90,60,.28)"/>
+                <rect x="250" y="318" width="9" height="20" rx="3" fill="rgba(120,90,60,.26)"/>
+                <text x="235" y="292" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.82)">Bosque</text>
+              </g>
+
+              <!-- lluvia -->
+              <g id="node-rain" class="node" data-key="lluvia" style="cursor:pointer">
+                <g opacity=".95">
+                  <ellipse cx="130" cy="110" rx="66" ry="34" fill="rgba(255,255,255,.92)" stroke="rgba(11,16,32,.10)"/>
+                  <ellipse cx="85" cy="120" rx="50" ry="28" fill="rgba(255,255,255,.92)" stroke="rgba(11,16,32,.10)"/>
+                  <ellipse cx="175" cy="120" rx="50" ry="28" fill="rgba(255,255,255,.92)" stroke="rgba(11,16,32,.10)"/>
+                </g>
+                <line x1="115" y1="150" x2="105" y2="205" stroke="rgba(35,140,210,.34)" stroke-width="6" stroke-linecap="round"/>
+                <line x1="140" y1="150" x2="138" y2="220" stroke="rgba(35,140,210,.34)" stroke-width="6" stroke-linecap="round"/>
+                <line x1="165" y1="150" x2="172" y2="205" stroke="rgba(35,140,210,.34)" stroke-width="6" stroke-linecap="round"/>
+                <text x="130" y="104" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.82)">Lluvia</text>
+              </g>
+
+              <!-- río -->
+              <g id="node-river" class="node" data-key="rio" style="cursor:pointer">
+                <path d="M100 332 C165 320, 230 332, 300 338 C365 345, 410 338, 470 330 C540 320, 625 328, 720 344"
+                      fill="none" stroke="rgba(35,140,210,.60)" stroke-width="8" stroke-linecap="round"/>
+                <text x="405" y="312" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.82)">Río / Quebrada</text>
+              </g>
+
+              <!-- lago -->
+              <g id="node-lake" class="node" data-key="lago" style="cursor:pointer">
+                <ellipse cx="780" cy="410" rx="130" ry="55" fill="rgba(120,210,255,.30)" stroke="rgba(11,16,32,.10)"/>
+                <ellipse cx="780" cy="410" rx="95" ry="38" fill="rgba(120,210,255,.22)" stroke="rgba(11,16,32,.08)"/>
+                <text x="780" y="418" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.82)">Lago / Laguna</text>
+              </g>
+
+              <!-- pozo / acuífero -->
+              <g id="node-aq" class="node" data-key="acuifero" style="cursor:pointer">
+                <rect x="345" y="390" width="280" height="86" rx="18" fill="rgba(190,235,255,.30)" stroke="rgba(11,16,32,.10)"/>
+                <text x="485" y="430" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.82)">Acuífero / manto freático</text>
+                <path d="M590 350 L590 392" stroke="rgba(11,16,32,.28)" stroke-width="6" stroke-linecap="round"/>
+                <rect x="575" y="330" width="30" height="24" rx="10" fill="rgba(255,255,255,.72)" stroke="rgba(11,16,32,.12)"/>
+                <text x="590" y="347" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="12" fill="rgba(11,16,32,.80)">Pozo</text>
+              </g>
+
+              <!-- manantial -->
+              <g id="node-spring" class="node" data-key="manantial" style="cursor:pointer">
+                <circle cx="520" cy="330" r="10" fill="rgba(255,255,255,.88)" stroke="rgba(11,16,32,.12)"/>
+                <path d="M520 330 C535 340, 540 348, 545 356" fill="none" stroke="rgba(35,140,210,.55)" stroke-width="5" stroke-linecap="round"/>
+                <text x="565" y="325" text-anchor="start" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.82)">Manantial</text>
+              </g>
+            </svg>
+
+            <div class="tipRow">
+              <span class="chip"><button type="button" data-focus="lluvia">Lluvia</button></span>
+              <span class="chip"><button type="button" data-focus="rio">Ríos</button></span>
+              <span class="chip"><button type="button" data-focus="lago">Lago/Laguna</button></span>
+              <span class="chip"><button type="button" data-focus="acuifero">Acuífero/Pozo</button></span>
+              <span class="chip"><button type="button" data-focus="manantial">Manantial</button></span>
+              <span class="chip"><button type="button" data-focus="bosque">Bosque</button></span>
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Explicación del elemento seleccionado</strong></p>
+            <div class="result info" id="explainBox" style="margin-top:10px;">
+              Haz clic en un elemento del diagrama para ver una explicación técnica.
+            </div>
+
+            <p style="margin-top:12px;"><strong>Conexión rápida (cuenca)</strong></p>
+            <ul>
+              <li>La <strong>lluvia</strong> llega al suelo: una parte infiltra y recarga, otra parte es escorrentía hacia ríos.</li>
+              <li>Los <strong>bosques</strong> ayudan a infiltrar y disminuir erosión (menos sedimento en el agua).</li>
+              <li>Los <strong>ríos</strong> alimentan lagos y también transportan nutrientes (si no están contaminados).</li>
+              <li>El <strong>acuífero</strong> alimenta manantiales y puede bajar si se bombea en exceso.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1: RETO DE CAPTACIÓN DE LLUVIA -->
+      <section class="card">
+        <h2>Juego 1 · Reto de captación de lluvia (agua para la casa)</h2>
+        <div class="hint">
+          Objetivo: ajustar condiciones para que tu captación de lluvia cubra una parte importante del consumo.
+          El modelo es didáctico: calcula el agua recolectable con base en lluvia, área de techo y eficiencia del sistema.
+        </div>
+
+        <div class="simGrid">
+          <div class="box">
+            <div class="scenario">
+              <span class="tag active" id="capA">Escenario A</span>
+              <span class="tag" id="capB">Escenario B</span>
+              <span class="tag" id="capC">Escenario C</span>
+              <span class="mini" id="capGoal">Meta: cubrir ≥ 35% de la demanda anual</span>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="rainmm">Lluvia anual</label>
+              <input id="rainmm" type="range" min="500" max="2000" step="25" value="1200">
+              <div class="val" id="rainmmVal">1200 mm</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="roof">Área de techo</label>
+              <input id="roof" type="range" min="10" max="160" step="5" value="55">
+              <div class="val" id="roofVal">55 m²</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="eff">Eficiencia</label>
+              <input id="eff" type="range" min="45" max="90" step="1" value="75">
+              <div class="val" id="effVal">75%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="people">Personas</label>
+              <input id="people" type="range" min="2" max="10" step="1" value="5">
+              <div class="val" id="peopleVal">5</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="lpd">Consumo por persona</label>
+              <input id="lpd" type="range" min="15" max="90" step="5" value="40">
+              <div class="val" id="lpdVal">40 L/día</div>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn" id="btnCheckCap" type="button">Evaluar meta</button>
+              <button class="btn" id="btnResetCap" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="capScore">0</span></span>
+            </div>
+
+            <div class="result" id="capMsg" style="display:none;"></div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Nota práctica:</strong> para uso doméstico, la captación debe ir con limpieza de canaletas, filtro/primer lavado
+              y almacenamiento protegido (tapa, malla, sombra, cloro si aplica).
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Resultados del reto</strong></p>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Agua recolectada</div>
+                <div class="v" id="kHarvest">0</div>
+                <div class="u">litros/año (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Demanda anual</div>
+                <div class="v" id="kDemand">0</div>
+                <div class="u">litros/año</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Cobertura</div>
+                <div class="v" id="kCover">0%</div>
+                <div class="u">de la demanda</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Promedio diario</div>
+                <div class="v" id="kDaily">0</div>
+                <div class="u">litros/día (prom.)</div>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Cómo calcula:</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li><strong>1 mm</strong> de lluvia ≈ <strong>1 litro</strong> por m².</li>
+                <li>Agua recolectada ≈ <em>lluvia(mm) × área(m²) × eficiencia</em>.</li>
+                <li>Demanda anual ≈ <em>personas × litros/día × 365</em>.</li>
+              </ul>
+            </div>
+
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Pista:</strong> subir el área del techo o la eficiencia ayuda, pero si la lluvia baja (sequía) la captación cae.
+              Por eso conviene combinar fuentes (captación + protección de manantiales + ahorro).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2: CLASIFICA (DRAG & DROP) -->
+      <section class="card">
+        <h2>Juego 2 · Clasifica las fuentes de agua (arrastrar y soltar)</h2>
+        <div class="hint">
+          Objetivo: arrastra cada tarjeta a su categoría correcta: <strong>Meteorológica</strong>, <strong>Superficial</strong> o <strong>Subterránea</strong>.
+          Se registran intentos, aciertos y tiempo.
+        </div>
+
+        <div class="ddGrid">
+          <div class="ddBoard">
+            <p style="margin:0;"><strong>Tarjetas para clasificar</strong></p>
+            <div class="cardsTray" id="tray"></div>
+            <div class="hud">
+              <span class="mini">Aciertos: <span id="ddOk">0</span>/<span id="ddTotal">0</span></span>
+              <span class="mini">Intentos: <span id="ddTry">0</span></span>
+              <span class="mini">Tiempo: <span id="ddTime">0</span>s</span>
+              <button class="btn" id="btnResetDD" type="button">Reiniciar juego</button>
+            </div>
+            <div class="result" id="ddMsg" style="display:none;"></div>
+          </div>
+
+          <div class="ddCols">
+            <div class="dropZone" data-zone="met">
+              <div class="dzTitle">Meteorológica <span>(lluvia)</span></div>
+              <div class="cardsTray" data-list="met"></div>
+            </div>
+            <div class="dropZone" data-zone="sup">
+              <div class="dzTitle">Superficial <span>(ríos, lagos)</span></div>
+              <div class="cardsTray" data-list="sup"></div>
+            </div>
+            <div class="dropZone" data-zone="sub">
+              <div class="dzTitle">Subterránea <span>(acuíferos)</span></div>
+              <div class="cardsTray" data-list="sub"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>Chequeo rápido de comprensión</strong></p>
+            <ul>
+              <li>¿Qué pasa si se extrae demasiada agua de pozos? Puede bajar el nivel del manto freático y reducir manantiales.</li>
+              <li>¿Por qué los bosques ayudan al agua? Mejoran infiltración y protegen el suelo, reduciendo erosión.</li>
+              <li>¿Cómo se alimentan los ríos en temporada de lluvia? Por manantiales y por escorrentía de la precipitación.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Buenas prácticas (acciones concretas)</strong></p>
+            <ul>
+              <li>Proteger nacimientos: cercar, reforestar, evitar ganado y basura.</li>
+              <li>Mantener letrinas/tanques sépticos lejos de fuentes y con buen diseño para evitar filtraciones.</li>
+              <li>Evitar botar aceites, pinturas o químicos al suelo o desagües.</li>
+              <li>En captación pluvial: primer lavado, filtros y depósito con tapa.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap) - API v0.17 corregida
+    // =========================
+    const md = `
+# 3.2 Fuentes de agua
+## Idea central
+- Solo una parte pequeña del agua del planeta es agua dulce
+- Las fuentes se agrupan en meteorológicas, superficiales y subterráneas
+## Fuentes meteorológicas
+- Lluvia
+  - Recarga ríos, lagos y acuíferos
+  - Puede usarse con captación pluvial (limpieza + filtrado + almacenamiento)
+  - Ayuda a limpiar el aire arrastrando partículas
+## Fuentes subterráneas
+- Acuíferos y mantos freáticos
+  - Reserva importante, pero limitada
+  - Extracción por pozos
+  - Sobreexplotación ↓ nivel freático → manantiales se debilitan o se secan
+  - Riesgo de contaminación si hay letrinas o aguas residuales cerca
+## Fuentes superficiales
+- Ríos y quebradas
+  - Nacen en manantiales
+  - Se alimentan por escorrentía de la lluvia
+  - Desembocan en lagos u océanos
+- Lagunas y lagos
+  - Almacenan agua superficial
+  - Sensibles a contaminación y sedimentos
+## Conexión con bosques y cuenca
+- Bosques favorecen infiltración y reducen erosión
+- Suelo y pendiente controlan escorrentía vs recarga
+- Proteger el territorio protege el agua
+    `.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function safeRenderMap(){
+      const fallback = document.getElementById('mapFallback');
+      try{
+        // ✅ Igual que tu HTML que sí funciona (markmap-autoloader)
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+
+        // ✅ FIX: que NO arranque colapsado
+        try { mm.unfoldAll(); } catch(_) {}
+        requestAnimationFrame(() => mm && mm.fit());
+        setTimeout(() => mm && mm.fit(), 250);
+
+        expanded = true;
+        fallback.classList.remove('show');
+        return true;
+      }catch(e){
+        console.error(e);
+        fallback.classList.add('show');
+        // devolvemos true para detener los intentos cuando ya hay un error real
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      const ok = safeRenderMap();
+      if (ok || tries >= 12){
+        clearInterval(t);
+        if (!mm) document.getElementById('mapFallback').classList.add('show');
+      }
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; safeRenderMap(); });
+
+    // =========================
+    // DIAGRAMA CLICABLE
+    // =========================
+    const explain = {
+      lluvia:
+        "<strong>Lluvia (fuente meteorológica):</strong> aporta agua directa al territorio. Recarga ríos, lagos y el agua subterránea. Puede aprovecharse con captación pluvial si se controla la limpieza y el almacenamiento.",
+      acuifero:
+        "<strong>Acuífero / manto freático (fuente subterránea):</strong> agua almacenada bajo el suelo en poros y fracturas. Se recarga por infiltración. Es limitada y puede bajar si se bombea demasiado.",
+      rio:
+        "<strong>Ríos y quebradas (fuente superficial):</strong> corrientes naturales que nacen en manantiales y se alimentan por escorrentía de la lluvia. Transportan agua y (si no hay contaminación) nutrientes, y pueden oxigenarse por su movimiento.",
+      lago:
+        "<strong>Lago / laguna (fuente superficial):</strong> almacena agua en superficie. Su calidad depende del territorio: sedimentos, basura y aguas residuales pueden deteriorarlo con rapidez.",
+      manantial:
+        "<strong>Manantial:</strong> salida natural del agua subterránea a la superficie. Puede disminuir si baja el nivel del manto freático por sobreextracción.",
+      bosque:
+        "<strong>Bosque (protector del agua):</strong> ayuda a capturar lluvia, reducir erosión y aumentar infiltración. Esto favorece la recarga y estabiliza el flujo hacia ríos y manantiales."
+    };
+
+    function setExplain(key){
+      const box = document.getElementById('explainBox');
+      box.className = "result info";
+      box.innerHTML = explain[key] || "Selecciona un elemento del diagrama.";
+    }
+
+    document.querySelectorAll('.node').forEach(n => {
+      n.addEventListener('click', () => setExplain(n.dataset.key));
+    });
+
+    document.querySelectorAll('[data-focus]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const k = btn.getAttribute('data-focus');
+        setExplain(k);
+      });
+    });
+
+    // Mensaje inicial
+    setExplain("lluvia");
+
+    // =========================
+    // JUEGO 1: CAPTACIÓN DE LLUVIA (reto)
+    // =========================
+    const elRainmm = document.getElementById('rainmm');
+    const elRoof   = document.getElementById('roof');
+    const elEff    = document.getElementById('eff');
+    const elPeople = document.getElementById('people');
+    const elLpd    = document.getElementById('lpd');
+
+    const rainmmVal = document.getElementById('rainmmVal');
+    const roofVal   = document.getElementById('roofVal');
+    const effVal    = document.getElementById('effVal');
+    const peopleVal = document.getElementById('peopleVal');
+    const lpdVal    = document.getElementById('lpdVal');
+
+    const kHarvest = document.getElementById('kHarvest');
+    const kDemand  = document.getElementById('kDemand');
+    const kCover   = document.getElementById('kCover');
+    const kDaily   = document.getElementById('kDaily');
+
+    const capMsg   = document.getElementById('capMsg');
+    const capScore = document.getElementById('capScore');
+
+    const capA = document.getElementById('capA');
+    const capB = document.getElementById('capB');
+    const capC = document.getElementById('capC');
+    const capGoal = document.getElementById('capGoal');
+
+    let capScenario = "A";
+    let capPoints = 0;
+
+    const capScenarios = {
+      A: { rain: 1200, roof: 55, eff: 75, people: 5, lpd: 40, goal: 35, name: "Meta: cubrir ≥ 35% de la demanda anual" },
+      B: { rain: 850,  roof: 45, eff: 70, people: 6, lpd: 45, goal: 28, name: "Meta: cubrir ≥ 28% de la demanda anual" },
+      C: { rain: 1600, roof: 35, eff: 65, people: 4, lpd: 35, goal: 45, name: "Meta: cubrir ≥ 45% de la demanda anual" }
+    };
+
+    function setCapScenario(k){
+      capScenario = k;
+      const s = capScenarios[k];
+      elRainmm.value = s.rain;
+      elRoof.value   = s.roof;
+      elEff.value    = s.eff;
+      elPeople.value = s.people;
+      elLpd.value    = s.lpd;
+
+      capA.classList.toggle('active', k==="A");
+      capB.classList.toggle('active', k==="B");
+      capC.classList.toggle('active', k==="C");
+
+      capGoal.textContent = s.name;
+      capMsg.style.display = "none";
+      updateCap();
+    }
+
+    capA.addEventListener('click', () => setCapScenario("A"));
+    capB.addEventListener('click', () => setCapScenario("B"));
+    capC.addEventListener('click', () => setCapScenario("C"));
+
+    function round0(n){ return Math.round(n); }
+
+    function calcHarvestLiters(rain_mm, area_m2, eff_pct){
+      // 1 mm * 1 m² ≈ 1 L
+      const eff = eff_pct / 100;
+      return rain_mm * area_m2 * eff;
+    }
+
+    function calcDemandLiters(people, litersPerDay){
+      return people * litersPerDay * 365;
+    }
+
+    function updateCap(){
+      const rain = Number(elRainmm.value);
+      const roof = Number(elRoof.value);
+      const eff  = Number(elEff.value);
+      const ppl  = Number(elPeople.value);
+      const lpd  = Number(elLpd.value);
+
+      rainmmVal.textContent = `${rain} mm`;
+      roofVal.textContent   = `${roof} m²`;
+      effVal.textContent    = `${eff}%`;
+      peopleVal.textContent = `${ppl}`;
+      lpdVal.textContent    = `${lpd} L/día`;
+
+      const harvest = calcHarvestLiters(rain, roof, eff);
+      const demand  = calcDemandLiters(ppl, lpd);
+      const cover   = demand > 0 ? (harvest / demand) * 100 : 0;
+      const daily   = harvest / 365;
+
+      kHarvest.textContent = round0(harvest).toLocaleString('es-ES');
+      kDemand.textContent  = round0(demand).toLocaleString('es-ES');
+      kCover.textContent   = `${Math.max(0, Math.min(999, round0(cover)))}%`;
+      kDaily.textContent   = round0(daily).toLocaleString('es-ES');
+    }
+
+    [elRainmm, elRoof, elEff, elPeople, elLpd].forEach(el => el.addEventListener('input', updateCap));
+
+    document.getElementById('btnCheckCap').addEventListener('click', () => {
+      const s = capScenarios[capScenario];
+      const harvest = calcHarvestLiters(Number(elRainmm.value), Number(elRoof.value), Number(elEff.value));
+      const demand  = calcDemandLiters(Number(elPeople.value), Number(elLpd.value));
+      const cover   = demand > 0 ? (harvest / demand) * 100 : 0;
+
+      capMsg.style.display = "block";
+      if (cover >= s.goal){
+        capPoints += 1;
+        capScore.textContent = String(capPoints);
+        capMsg.className = "result ok";
+        capMsg.innerHTML = `<strong>Meta lograda.</strong><br>
+          Cobertura: <strong>${Math.round(cover)}%</strong> (meta ≥ ${s.goal}%).<br>
+          Agua recolectada: <strong>${Math.round(harvest).toLocaleString('es-ES')} L/año</strong>.`;
+      } else {
+        capMsg.className = "result no";
+        capMsg.innerHTML = `<strong>Meta no lograda.</strong><br>
+          Cobertura: <strong>${Math.round(cover)}%</strong> (meta ≥ ${s.goal}%).<br>
+          Pista: sube el área del techo o la eficiencia, o baja el consumo por persona.`;
+      }
+    });
+
+    document.getElementById('btnResetCap').addEventListener('click', () => {
+      capPoints = 0;
+      capScore.textContent = "0";
+      setCapScenario("A");
+    });
+
+    // Inicial
+    setCapScenario("A");
+
+    // =========================
+    // JUEGO 2: DRAG & DROP (clasificación)
+    // =========================
+    const ITEMS = [
+      { id:"i1",  label:"Lluvia",                 key:"met" },
+      { id:"i2",  label:"Captación pluvial",      key:"met" },
+      { id:"i3",  label:"Río",                    key:"sup" },
+      { id:"i4",  label:"Quebrada",               key:"sup" },
+      { id:"i5",  label:"Laguna",                 key:"sup" },
+      { id:"i6",  label:"Lago",                   key:"sup" },
+      { id:"i7",  label:"Acuífero",               key:"sub" },
+      { id:"i8",  label:"Manto freático",         key:"sub" },
+      { id:"i9",  label:"Pozo",                   key:"sub" },
+      { id:"i10", label:"Manantial",              key:"sup" } // manantial es salida superficial (aunque proviene de subterránea)
+    ];
+
+    const tray = document.getElementById('tray');
+    const ddOk = document.getElementById('ddOk');
+    const ddTotal = document.getElementById('ddTotal');
+    const ddTry = document.getElementById('ddTry');
+    const ddTime = document.getElementById('ddTime');
+    const ddMsg = document.getElementById('ddMsg');
+
+    let ddTimer = null;
+    let ddSeconds = 0;
+    let ddTries = 0;
+    let ddCorrect = 0;
+    let placed = new Set();
+
+    function startDDTimer(){
+      if (ddTimer) return;
+      ddTimer = setInterval(() => {
+        ddSeconds++;
+        ddTime.textContent = String(ddSeconds);
+      }, 1000);
+    }
+
+    function stopDDTimer(){
+      if (!ddTimer) return;
+      clearInterval(ddTimer);
+      ddTimer = null;
+    }
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function updateDDHud(){
+      ddOk.textContent = String(ddCorrect);
+      ddTry.textContent = String(ddTries);
+      ddTime.textContent = String(ddSeconds);
+      ddTotal.textContent = String(ITEMS.length);
+    }
+
+    function makeChip(item){
+      const el = document.createElement('div');
+      el.className = 'cardChip';
+      el.draggable = true;
+      el.id = item.id;
+      el.dataset.key = item.key;
+      el.innerHTML = `<span>${item.label}</span><small>Arrastra</small>`;
+
+      el.addEventListener('dragstart', (ev) => {
+        startDDTimer();
+        ev.dataTransfer.setData('text/plain', item.id);
+        ev.dataTransfer.effectAllowed = 'move';
+      });
+
+      return el;
+    }
+
+    function resetDD(){
+      stopDDTimer();
+      ddSeconds = 0;
+      ddTries = 0;
+      ddCorrect = 0;
+      placed = new Set();
+      ddMsg.style.display = 'none';
+
+      tray.innerHTML = '';
+      document.querySelectorAll('[data-list]').forEach(list => list.innerHTML = '');
+
+      const shuffled = shuffle(ITEMS);
+      shuffled.forEach((it, idx) => {
+        tray.appendChild(makeChip(it));
+      });
+
+      updateDDHud();
+    }
+
+    document.querySelectorAll('.dropZone').forEach(zone => {
+      zone.addEventListener('dragover', (ev) => {
+        ev.preventDefault();
+        zone.classList.add('over');
+        ev.dataTransfer.dropEffect = 'move';
+      });
+      zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+      zone.addEventListener('drop', (ev) => {
+        ev.preventDefault();
+        zone.classList.remove('over');
+
+        const id = ev.dataTransfer.getData('text/plain');
+        const chip = document.getElementById(id);
+        if (!chip) return;
+
+        // evitar colocar el mismo chip dos veces
+        if (placed.has(id)) return;
+
+        ddTries += 1;
+
+        const target = zone.getAttribute('data-zone');
+        const correctKey = chip.dataset.key;
+
+        const list = zone.querySelector('[data-list]');
+        list.appendChild(chip);
+        placed.add(id);
+
+        if (target === correctKey){
+          ddCorrect += 1;
+          ddMsg.style.display = 'block';
+          ddMsg.className = 'result ok';
+          ddMsg.innerHTML = `<strong>Correcto.</strong> <em>${chip.textContent.replace('Arrastra','').trim()}</em> pertenece a esa categoría.`;
+        } else {
+          ddMsg.style.display = 'block';
+          ddMsg.className = 'result no';
+          ddMsg.innerHTML = `<strong>No coincide.</strong> Esa tarjeta va en otra categoría.`;
+        }
+
+        // cuando termine
+        if (placed.size === ITEMS.length){
+          stopDDTimer();
+          ddMsg.style.display = 'block';
+          ddMsg.className = 'result info';
+          ddMsg.innerHTML = `<strong>Juego completado.</strong><br>
+            Aciertos: <strong>${ddCorrect}/${ITEMS.length}</strong> · Intentos: <strong>${ddTries}</strong> · Tiempo: <strong>${ddSeconds}s</strong>.`;
+        }
+
+        updateDDHud();
+      });
+    });
+
+    document.getElementById('btnResetDD').addEventListener('click', resetDD);
+
+    resetDD();
+  </script>
+</body>
+</html>
