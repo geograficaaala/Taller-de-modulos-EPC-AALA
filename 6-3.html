@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>6.3 Áreas protegidas · EPC AALA</title>
+  <meta name="description" content="Áreas protegidas (SIGAP) y reservas privadas: teoría y juegos para decidir y evaluar acciones." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap autoloader (más estable que cargar lib/view por separado) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.14);
+      --bad: rgba(225,29,72,.12);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(45,160,220,.14);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 96ch;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .hint{ margin: 8px 0 0; font-size: 13px; color: rgba(11,16,32,.72); line-height: 1.55; }
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; }
+    .box li{ margin: 6px 0; }
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.55; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{ display:block; }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.22); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.20); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.20); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+
+    /* Mapa mental */
+    .mapTop{ display:flex; justify-content:space-between; align-items:flex-end; gap:10px; flex-wrap:wrap; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      padding: 10px;
+    }
+    svg#mindmap{ width:100%; height: 520px; display:block; border-radius: 14px; }
+    .fallback{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.74);
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      display:none;
+    }
+    .fallback.show{ display:block; }
+
+    /* Juegos */
+    .gameGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .panel h3{
+      margin:0 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .panel p{ margin:0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.80);
+      cursor:pointer;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+      transition: transform .08s ease, background .12s ease;
+    }
+    .chip:hover{ background: rgba(255,255,255,.82); }
+    .chip:active{ transform: translateY(1px); }
+
+    .list{ display:grid; gap:10px; }
+    .choice{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      text-align:left;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .choice:hover{ background: rgba(255,255,255,.84); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .choice .t{ font-weight: 900; margin:0 0 6px; }
+    .choice .s{ margin:0; color: rgba(11,16,32,.72); font-size: 12.6px; line-height: 1.45; }
+
+    .kpis{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (max-width:520px){ .kpis{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 900; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .meter{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .bar{ height: 12px; border-radius: 999px; background: rgba(11,16,32,.10); overflow:hidden; margin-top:8px; }
+    .bar > div{ height:100%; width: 50%; background: rgba(45,160,220,.45); transition: width .2s ease; }
+    .tiny{ font-size: 12px; color: rgba(11,16,32,.68); line-height: 1.4; margin-top: 8px; }
+
+    canvas.chart{ width:100%; height: 220px; border-radius: 14px; border: 1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.60); }
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 54%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 68px; text-align:right; }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center; }
+
+    /* Sopa de letras */
+    .gridWord{
+      display:grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+      user-select:none;
+      touch-action: none;
+    }
+    .cell{
+      border-radius: 12px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+      height: 34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+    }
+    .cell.sel{ outline: 3px solid rgba(120,210,255,.35); }
+    .cell.hit{ background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.22); }
+    .words{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .wordTag{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      padding: 6px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .wordTag.done{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 6 · Conservación de los bienes y servicios ambientales</div>
+        <h1>6.3 Áreas protegidas</h1>
+        <p class="subtitle">Las áreas protegidas conservan biodiversidad y servicios ambientales. En Guatemala, el SIGAP y el CONAP organizan la gestión, y las reservas naturales privadas complementan la conservación. Juega a elegir la categoría correcta y a inspeccionar acciones permitidas o no.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="6-2.html">Anterior (6.2)</a>
+        <a class="btn primary" href="6-4.html">Siguiente (6.4)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="twoCols">
+  <div class="box">
+    <p>
+      Las <strong>áreas protegidas</strong> son espacios destinados a conservar la biodiversidad, proteger hábitats y
+      asegurar bienes y servicios ambientales (agua, suelo, bosque) con manejo y reglas específicas.
+      En Guatemala, el sistema nacional se conoce como <strong>SIGAP</strong> y su administración fue establecida con la creación del
+      <strong>CONAP (1989)</strong>.
+    </p>
+    <ul>
+      <li>Ayudan a mantener <strong>equilibrio natural</strong> y procesos ecológicos.</li>
+      <li>Son clave para <strong>recarga hídrica</strong>, control de sedimentos y refugio de especies.</li>
+      <li>Permiten investigación, educación y turismo responsable.</li>
+    </ul>
+    <div class="result info show" style="display:block">
+      En cuencas como Atitlán, proteger zonas altas y bosques nubosos reduce erosión y aporta agua más constante.
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>Reservas naturales privadas (RNP): ejemplo de conservación comunitaria/privada</strong></p>
+    <ul>
+      <li>En Guatemala existen <strong>136 asociados</strong> que protegen en conjunto cerca de <strong>80,000 hectáreas</strong>.</li>
+      <li>En Sololá hay RNP como <strong>Atitlán</strong>, <strong>Arca de Noé</strong> y <strong>San Buenaventura</strong>.</li>
+      <li>Ejemplo destacado: <strong>Reserva Natural Privada Los Tarrales</strong> (Suchitepéquez) con <strong>7,580 ha</strong> y gran diversidad:
+        ~<strong>250 especies de aves</strong>, <strong>50 mamíferos</strong>, <strong>35 reptiles</strong>, <strong>15 anfibios</strong> y más de <strong>1,000 plantas</strong>.</li>
+    </ul>
+    <p style="margin-top:10px">
+      Las RNP complementan el SIGAP: conectan corredores biológicos y protegen nacimientos, laderas y bosques.
+    </p>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Manejo</div>
+    <p class="s">No basta declarar: se necesita plan, zonificación, vigilancia y participación local.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Corredores</div>
+    <p class="s">Áreas protegidas conectadas ayudan a especies a moverse y sobrevivir.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Beneficio local</div>
+    <p class="s">Turismo responsable, agua y suelos sanos sostienen economías comunitarias.</p>
+  </div>
+</div>
+
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica tu conexión a internet (scripts de Markmap) y recarga la página.
+          </div>
+        </div>
+      </section>
+
+      
+<section class="card">
+  <h2>Juego 1 · “¿Qué tipo de área protegida necesito?”</h2>
+  <div class="hint">Lee el objetivo y elige la opción más adecuada. (Dificultad media/alta: algunas se parecen.)</div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3 id="apQTitle">Reto 1</h3>
+      <p id="apQText">—</p>
+      <div id="apChoices" class="list"></div>
+      <div class="actions">
+        <button class="btn" type="button" id="apNext" disabled>Siguiente</button>
+        <button class="btn" type="button" id="apReset">Reiniciar</button>
+        <span class="btn" style="cursor:default">Puntos: <span id="apScore">0</span></span>
+      </div>
+      <div class="result" id="apMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Claves para responder</h3>
+      <ul style="margin:8px 0 0 18px; line-height:1.6; font-size:13px; color:rgba(11,16,32,.78);">
+        <li><strong>Parque Nacional:</strong> conservación + turismo/educación con reglas claras.</li>
+        <li><strong>Refugio de vida silvestre:</strong> protección de especies específicas y hábitats críticos.</li>
+        <li><strong>Reserva natural privada:</strong> conservación voluntaria por propietario/comunidad.</li>
+        <li><strong>Reserva de uso múltiple:</strong> conservación + uso regulado (zonificación).</li>
+      </ul>
+      <div class="result info show" style="display:block">
+        En la cuenca de Atitlán, una “reserva de uso múltiple” permite combinar conservación, producción y ordenamiento territorial.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Juego 2 · Inspector/a del área protegida (permitido vs. prohibido)</h2>
+  <div class="hint">Decide si la acción es <strong>apropiada</strong> dentro de un área protegida y explica por qué. Se gana por precisión.</div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3 id="insTitle">Caso 1</h3>
+      <p id="insText">—</p>
+      <div class="chips" style="margin-top:10px;">
+        <div class="chip" id="insYes">✅ Permitido (con manejo)</div>
+        <div class="chip" id="insNo">⛔ No permitido</div>
+      </div>
+      <div class="actions">
+        <button class="btn" type="button" id="insNext" disabled>Siguiente</button>
+        <button class="btn" type="button" id="insReset">Reiniciar</button>
+        <span class="btn" style="cursor:default">Precisión: <span id="insAcc">0</span>%</span>
+      </div>
+      <div class="result" id="insMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Tip</h3>
+      <p>
+        Muchas áreas permiten actividades <strong>solo si</strong> son de bajo impacto y están reguladas:
+        <em>senderos</em>, <em>turismo responsable</em>, <em>investigación</em>, <em>reforestación</em>.
+        Lo que daña hábitat (tala ilegal, cacería, contaminación) debe prohibirse.
+      </p>
+      <div class="result warn show" style="display:block">
+        Si la acción aumenta erosión o contaminación, casi siempre es “No permitido”.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    const MAP_MD = "\n# 6.3 Áreas protegidas\n## ¿Qué son?\n- Espacios para conservar biodiversidad y recursos\n- Protegen hábitats y servicios ambientales\n## Guatemala\n- SIGAP (Sistema Guatemalteco de Áreas Protegidas)\n- CONAP (1989) administra el sistema\n## ¿Para qué sirven?\n- Refugio de especies\n- Recarga hídrica y control de erosión\n- Investigación · educación · turismo responsable\n## Reservas Naturales Privadas (RNP)\n- Conservación desde sector privado/comunitario\n- En Guatemala: 136 asociados · ~80,000 ha protegidas\n- En Sololá: Atitlán · Arca de Noé · San Buenaventura\n- Ejemplo: Los Tarrales (7,580 ha; alta biodiversidad)\n## Mensaje\n- Conservar conectando áreas y cuidando la cuenca\n";
+
+
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = MAP_MD.trim();
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{tries++; const ok=renderMap(); if(ok||tries>=14) clearInterval(it);},300);
+
+    document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+    document.getElementById('btnToggle').onclick=()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    };
+    document.getElementById('btnResetMap').onclick=()=>{ mm=null; expanded=true; renderMap(); };
+
+
+
+    // =========================
+    // Juego 1: tipo de área
+    // =========================
+    const AP_QUEST = [
+      {
+        q:"Quiero conservar una especie muy amenazada y su hábitat crítico (sin explotación).",
+        a:"Refugio de vida silvestre",
+        opts:["Parque Nacional","Refugio de vida silvestre","Reserva de uso múltiple","Reserva natural privada"]
+      },
+      {
+        q:"Necesito un área grande para conservación, educación y turismo responsable con reglas claras.",
+        a:"Parque Nacional",
+        opts:["Parque Nacional","Reserva de uso múltiple","Reserva natural privada","Zona de amortiguamiento"]
+      },
+      {
+        q:"Soy comunidad/propietario y decido proteger bosque y nacimientos voluntariamente, con apoyo técnico.",
+        a:"Reserva natural privada",
+        opts:["Reserva natural privada","Parque Nacional","Refugio de vida silvestre","Área urbana"]
+      },
+      {
+        q:"En una cuenca, quiero conservar pero también permitir usos regulados y zonificados (producción, turismo, conservación).",
+        a:"Reserva de uso múltiple",
+        opts:["Reserva de uso múltiple","Refugio de vida silvestre","Parque Nacional","Área industrial"]
+      },
+    ];
+
+    const apQTitle=document.getElementById('apQTitle');
+    const apQText=document.getElementById('apQText');
+    const apChoices=document.getElementById('apChoices');
+    const apNext=document.getElementById('apNext');
+    const apReset=document.getElementById('apReset');
+    const apScoreEl=document.getElementById('apScore');
+    const apMsg=document.getElementById('apMsg');
+
+    let apI=0, apScore=0, apSel=null;
+
+    function renderAP(){
+      apSel=null;
+      apNext.disabled=true;
+      apMsg.className="result"; apMsg.classList.remove('show');
+
+      const item=AP_QUEST[apI];
+      apQTitle.textContent = `Reto ${apI+1}/${AP_QUEST.length}`;
+      apQText.textContent = item.q;
+
+      apChoices.innerHTML="";
+      item.opts.forEach(opt=>{
+        const b=document.createElement('div');
+        b.className="choice";
+        b.innerHTML = `<p class="t">${opt}</p><p class="s">Toca para elegir.</p>`;
+        b.addEventListener('click', ()=>{
+          [...apChoices.querySelectorAll('.choice')].forEach(x=>x.style.outline='none');
+          b.style.outline="3px solid rgba(120,210,255,.35)";
+          apSel=opt;
+          apNext.disabled=false;
+
+          apMsg.classList.add('show');
+          if(opt===item.a){
+            apMsg.className="result ok show";
+            apMsg.innerHTML = "<strong>Correcto.</strong> Esa categoría encaja mejor con el objetivo.";
+          }else{
+            apMsg.className="result warn show";
+            apMsg.innerHTML = `<strong>Casi.</strong> La opción más adecuada era <strong>${item.a}</strong>.`;
+          }
+        });
+        apChoices.appendChild(b);
+      });
+
+      apScoreEl.textContent=String(apScore);
+    }
+
+    apNext.addEventListener('click', ()=>{
+      const item=AP_QUEST[apI];
+      if(apSel===item.a) apScore+=25;
+      apI++;
+      if(apI>=AP_QUEST.length){
+        apMsg.className="result info show";
+        apMsg.innerHTML = `<strong>Fin del juego.</strong> Puntos: <strong>${apScore}</strong>/100. Reinicia para mejorar.`;
+        apNext.disabled=true;
+      }else{
+        renderAP();
+      }
+      apScoreEl.textContent=String(apScore);
+    });
+
+    apReset.addEventListener('click', ()=>{
+      apI=0; apScore=0;
+      renderAP();
+    });
+
+    renderAP();
+
+    // =========================
+    // Juego 2: Inspector
+    // =========================
+    const INS = [
+      {t:"Una brigada comunitaria reforesta con especies nativas en zona de recarga.", ok:true, why:"Reforestación y manejo restauran cobertura, reducen erosión y mejoran recarga hídrica."},
+      {t:"Turismo con senderos señalizados y regla de “no dejar basura”.", ok:true, why:"Es de bajo impacto si está ordenado, con educación y control de residuos."},
+      {t:"Caza deportiva dentro del bosque nuboso.", ok:false, why:"Reduce poblaciones y rompe equilibrio; además suele ser ilegal en áreas protegidas."},
+      {t:"Tala selectiva sin plan ni permisos en laderas.", ok:false, why:"Aumenta erosión y sedimentos; sin manejo destruye el hábitat."},
+      {t:"Monitoreo científico de aves con permisos y sin perturbación.", ok:true, why:"Aporta información para conservación, si se hace con reglas y mínimo impacto."},
+      {t:"Botar residuos al río “porque se los lleva el agua”.", ok:false, why:"Contamina ríos y lago; afecta salud y biodiversidad."},
+    ];
+
+    const insTitle=document.getElementById('insTitle');
+    const insText=document.getElementById('insText');
+    const insYes=document.getElementById('insYes');
+    const insNo=document.getElementById('insNo');
+    const insNext=document.getElementById('insNext');
+    const insReset=document.getElementById('insReset');
+    const insAcc=document.getElementById('insAcc');
+    const insMsg=document.getElementById('insMsg');
+
+    let insI=0, insOk=0, insTotal=0, insAnswered=false;
+
+    function renderIns(){
+      insAnswered=false;
+      insNext.disabled=true;
+      insMsg.className="result"; insMsg.classList.remove('show');
+
+      insTitle.textContent = `Caso ${insI+1}/${INS.length}`;
+      insText.textContent = INS[insI].t;
+      insAcc.textContent = String(insTotal? Math.round(100*insOk/insTotal) : 0);
+    }
+
+    function answerIns(choice){
+      if(insAnswered) return;
+      insAnswered=true;
+      insTotal++;
+
+      const item=INS[insI];
+      const correct = (choice===item.ok);
+      if(correct) insOk++;
+
+      insMsg.classList.add('show');
+      insMsg.className = `result ${correct?"ok":"no"} show`;
+      insMsg.innerHTML = (correct ? "<strong>¡Bien!</strong> " : "<strong>No.</strong> ") + item.why;
+
+      insAcc.textContent = String(Math.round(100*insOk/insTotal));
+      insNext.disabled=false;
+    }
+
+    insYes.addEventListener('click', ()=>answerIns(true));
+    insNo.addEventListener('click', ()=>answerIns(false));
+
+    insNext.addEventListener('click', ()=>{
+      insI++;
+      if(insI>=INS.length){
+        const acc = Math.round(100*insOk/insTotal);
+        insMsg.className="result info show";
+        insMsg.innerHTML = `<strong>Fin del juego.</strong> Precisión final: <strong>${acc}%</strong>. Reinicia y busca 100%.`;
+        insNext.disabled=true;
+      }else renderIns();
+    });
+
+    insReset.addEventListener('click', ()=>{
+      insI=0; insOk=0; insTotal=0;
+      renderIns();
+    });
+
+    renderIns();
+
+  </script>
+</body>
+</html>

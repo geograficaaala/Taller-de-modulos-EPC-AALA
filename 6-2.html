@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>6.2 Uso sostenible · EPC AALA</title>
+  <meta name="description" content="Uso sostenible de bienes y servicios ambientales en cuencas: simuladores y decisiones." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap autoloader (más estable que cargar lib/view por separado) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.14);
+      --bad: rgba(225,29,72,.12);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(45,160,220,.14);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 96ch;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .hint{ margin: 8px 0 0; font-size: 13px; color: rgba(11,16,32,.72); line-height: 1.55; }
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; }
+    .box li{ margin: 6px 0; }
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.55; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{ display:block; }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.22); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.20); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.20); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+
+    /* Mapa mental */
+    .mapTop{ display:flex; justify-content:space-between; align-items:flex-end; gap:10px; flex-wrap:wrap; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      padding: 10px;
+    }
+    svg#mindmap{ width:100%; height: 520px; display:block; border-radius: 14px; }
+    .fallback{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.74);
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      display:none;
+    }
+    .fallback.show{ display:block; }
+
+    /* Juegos */
+    .gameGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .panel h3{
+      margin:0 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .panel p{ margin:0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.80);
+      cursor:pointer;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+      transition: transform .08s ease, background .12s ease;
+    }
+    .chip:hover{ background: rgba(255,255,255,.82); }
+    .chip:active{ transform: translateY(1px); }
+
+    .list{ display:grid; gap:10px; }
+    .choice{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      text-align:left;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .choice:hover{ background: rgba(255,255,255,.84); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .choice .t{ font-weight: 900; margin:0 0 6px; }
+    .choice .s{ margin:0; color: rgba(11,16,32,.72); font-size: 12.6px; line-height: 1.45; }
+
+    .kpis{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (max-width:520px){ .kpis{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 900; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .meter{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .bar{ height: 12px; border-radius: 999px; background: rgba(11,16,32,.10); overflow:hidden; margin-top:8px; }
+    .bar > div{ height:100%; width: 50%; background: rgba(45,160,220,.45); transition: width .2s ease; }
+    .tiny{ font-size: 12px; color: rgba(11,16,32,.68); line-height: 1.4; margin-top: 8px; }
+
+    canvas.chart{ width:100%; height: 220px; border-radius: 14px; border: 1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.60); }
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 54%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 68px; text-align:right; }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center; }
+
+    /* Sopa de letras */
+    .gridWord{
+      display:grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+      user-select:none;
+      touch-action: none;
+    }
+    .cell{
+      border-radius: 12px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+      height: 34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+    }
+    .cell.sel{ outline: 3px solid rgba(120,210,255,.35); }
+    .cell.hit{ background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.22); }
+    .words{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .wordTag{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      padding: 6px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .wordTag.done{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 6 · Conservación de los bienes y servicios ambientales</div>
+        <h1>6.2 Uso sostenible</h1>
+        <p class="subtitle">El uso sostenible es aprovechar recursos sin superar la regeneración natural. En una cuenca como Atitlán, esto se refleja en infiltración, erosión, sedimentos y calidad del agua. Practica con un simulador de sostenibilidad y un reto de presupuesto verde.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="6-1.html">Anterior (6.1)</a>
+        <a class="btn primary" href="6-3.html">Siguiente (6.3)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="twoCols">
+  <div class="box">
+    <p>
+      El <strong>uso sostenible</strong> significa usar los bienes y servicios ambientales a un ritmo que
+      <strong>no supere la regeneración natural</strong> del ecosistema.
+      Así, los recursos pueden seguir siendo aprovechados por las comunidades <strong>hoy</strong> y <strong>en el futuro</strong>.
+    </p>
+    <ul>
+      <li>Implica <strong>regular</strong> extracción, consumo y prácticas productivas.</li>
+      <li>Reduce degradación: menos erosión, menos contaminación, más recarga hídrica.</li>
+      <li>Ayuda a conservar <strong>hábitats</strong> y <strong>biodiversidad</strong> (la base del equilibrio natural).</li>
+    </ul>
+
+    <div class="result info show" style="display:block">
+      <strong>En una cuenca</strong>, el uso sostenible se ve en el suelo (cobertura), el agua (calidad) y el bosque (estructura).
+      Pequeños cambios en laderas o drenajes pueden causar grandes cambios en el lago.
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>¿Cómo se logra?</strong> (idea práctica)</p>
+    <ul>
+      <li><strong>Normas y acuerdos:</strong> reglas claras para extracción (madera/leña), cacería, pesca, uso de suelo.</li>
+      <li><strong>Manejo del territorio:</strong> terrazas, barreras vivas, reforestación, manejo de caminos.</li>
+      <li><strong>Control de contaminación:</strong> tratamiento de aguas residuales, manejo de basura, menos agroquímicos.</li>
+      <li><strong>Monitoreo:</strong> vigilar cambios (bosque, nacimientos, turbidez, especies) y ajustar decisiones.</li>
+    </ul>
+    <p style="margin-top:10px">
+      El objetivo es mantener un <em>balance</em>: producción y bienestar sin “romper” los procesos ecológicos.
+    </p>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Regeneración</div>
+    <p class="s">Si extraemos más rápido de lo que la naturaleza se recupera, el recurso colapsa.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Prevención</div>
+    <p class="s">Más barato evitar erosión y contaminación que limpiar ríos/lago después.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Comunidad</div>
+    <p class="s">Acuerdos locales + educación ambiental hacen que el cuidado sea continuo, no solo “proyecto”.</p>
+  </div>
+</div>
+
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica tu conexión a internet (scripts de Markmap) y recarga la página.
+          </div>
+        </div>
+      </section>
+
+      
+<section class="card">
+  <h2>Juego 1 · Simulador “¿Sostenible o colapsa?”</h2>
+  <div class="hint">
+    Ajusta la <strong>tasa de extracción</strong> y el <strong>cuidado del ecosistema</strong>. Debes mantener el “stock” de recurso por encima de 30/100 por 20 años.
+  </div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3>Controles</h3>
+      <div class="ctrlRow">
+        <label for="harv">Extracción</label>
+        <input id="harv" type="range" min="0" max="90" step="5" value="45">
+        <div class="val" id="harvVal">45%</div>
+      </div>
+      <div class="ctrlRow">
+        <label for="care">Cuidado (manejo)</label>
+        <input id="care" type="range" min="0" max="100" step="5" value="50">
+        <div class="val" id="careVal">50%</div>
+      </div>
+      <div class="ctrlRow">
+        <label for="poll">Contaminación</label>
+        <input id="poll" type="range" min="0" max="80" step="5" value="25">
+        <div class="val" id="pollVal">25%</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="button" id="runSim">Simular 20 años</button>
+        <button class="btn" type="button" id="resetSim">Reiniciar</button>
+      </div>
+
+      <div class="result" id="sim2Msg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Gráfica del “stock”</h3>
+      <canvas class="chart" id="sim2Chart" width="860" height="360" aria-label="Gráfica del stock"></canvas>
+
+      <div class="kpis" style="margin-top:10px;">
+        <div class="kpi">
+          <div class="k">Stock final</div>
+          <div class="v" id="sFinal">–</div>
+          <div class="u">/100</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Beneficio (aprox.)</div>
+          <div class="v" id="sBen">–</div>
+          <div class="u">puntos</div>
+        </div>
+      </div>
+
+      <div class="tiny">Modelo didáctico: más cuidado aumenta regeneración; más contaminación reduce regeneración y “salud” del recurso.</div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Juego 2 · Presupuesto verde (decisiones difíciles)</h2>
+  <div class="hint">
+    Tienes <strong>100 créditos</strong>. Invierte en acciones para mejorar <strong>agua</strong>, <strong>suelo</strong> y <strong>biodiversidad</strong> en Sololá.
+    El reto: lograr Agua ≥ 75, Suelo ≥ 70 y Biodiversidad ≥ 65.
+  </div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3>Acciones disponibles</h3>
+      <div id="budgetChoices" class="list"></div>
+      <div class="actions">
+        <button class="btn primary" type="button" id="budgetCheck">Evaluar</button>
+        <button class="btn" type="button" id="budgetReset">Reiniciar</button>
+        <span class="btn" style="cursor:default">Créditos: <span id="budgetLeft">100</span></span>
+      </div>
+      <div class="result" id="budgetMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Indicadores</h3>
+      <div class="kpis">
+        <div class="kpi"><div class="k">Agua</div><div class="v" id="bWater">55</div><div class="u">/100</div></div>
+        <div class="kpi"><div class="k">Suelo</div><div class="v" id="bSoil">50</div><div class="u">/100</div></div>
+        <div class="kpi"><div class="k">Biodiversidad</div><div class="v" id="bBio">48</div><div class="u">/100</div></div>
+        <div class="kpi"><div class="k">Riesgo</div><div class="v" id="bRisk">52</div><div class="u">/100</div></div>
+      </div>
+      <div class="tiny">Tip: acciones combinadas (suelo + saneamiento + bosque) suelen dar mejores resultados que una sola acción.</div>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    const MAP_MD = "\n# 6.2 Uso sostenible\n## Definición\n- Usar bienes/servicios sin superar regeneración del ecosistema\n- Permite uso presente y futuro\n## Enfoque de cuenca\n- Laderas y bosques → infiltración y recarga\n- Suelo cubierto → menos erosión/sedimentos\n- Menos contaminación → mejor calidad del agua\n## Herramientas\n- Normas y acuerdos comunitarios\n- Manejo de suelos (terrazas, barreras vivas)\n- Reforestación y protección de nacimientos\n- Monitoreo: turbidez, caudales, cobertura forestal, biodiversidad\n## Meta\n- Producción + bienestar + conservación del equilibrio natural\n";
+
+
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = MAP_MD.trim();
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{tries++; const ok=renderMap(); if(ok||tries>=14) clearInterval(it);},300);
+
+    document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+    document.getElementById('btnToggle').onclick=()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    };
+    document.getElementById('btnResetMap').onclick=()=>{ mm=null; expanded=true; renderMap(); };
+
+
+
+    // =========================
+    // Juego 1: Simulador stock
+    // =========================
+    const harv = document.getElementById('harv');
+    const care = document.getElementById('care');
+    const poll = document.getElementById('poll');
+    const harvVal = document.getElementById('harvVal');
+    const careVal = document.getElementById('careVal');
+    const pollVal = document.getElementById('pollVal');
+
+    const sim2Msg = document.getElementById('sim2Msg');
+    const sFinal = document.getElementById('sFinal');
+    const sBen = document.getElementById('sBen');
+    const ctx2 = document.getElementById('sim2Chart').getContext('2d');
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    function updateLabels(){
+      harvVal.textContent = harv.value + "%";
+      careVal.textContent = care.value + "%";
+      pollVal.textContent = poll.value + "%";
+    }
+    [harv,care,poll].forEach(el=>el.addEventListener('input', updateLabels));
+    updateLabels();
+
+    function drawSeries(series){
+      const W = ctx2.canvas.width, H = ctx2.canvas.height;
+      ctx2.clearRect(0,0,W,H);
+
+      // grid
+      ctx2.globalAlpha = 1;
+      ctx2.lineWidth = 1;
+      ctx2.strokeStyle = "rgba(11,16,32,.10)";
+      for(let i=0;i<=10;i++){
+        const y = 20 + (H-40) * (i/10);
+        ctx2.beginPath(); ctx2.moveTo(30,y); ctx2.lineTo(W-20,y); ctx2.stroke();
+      }
+      // axis labels
+      ctx2.fillStyle = "rgba(11,16,32,.70)";
+      ctx2.font = "12px Inter, system-ui";
+      ctx2.fillText("100", 6, 24);
+      ctx2.fillText("0", 12, H-18);
+
+      // line
+      ctx2.strokeStyle = "rgba(45,160,220,.75)";
+      ctx2.lineWidth = 3;
+      ctx2.beginPath();
+      series.forEach((v,i)=>{
+        const x = 30 + (W-60) * (i/(series.length-1));
+        const y = 20 + (H-40) * (1 - v/100);
+        if(i===0) ctx2.moveTo(x,y); else ctx2.lineTo(x,y);
+      });
+      ctx2.stroke();
+
+      // threshold line (30)
+      const yT = 20 + (H-40) * (1 - 30/100);
+      ctx2.setLineDash([6,6]);
+      ctx2.strokeStyle = "rgba(225,29,72,.45)";
+      ctx2.beginPath(); ctx2.moveTo(30,yT); ctx2.lineTo(W-20,yT); ctx2.stroke();
+      ctx2.setLineDash([]);
+      ctx2.fillStyle = "rgba(225,29,72,.70)";
+      ctx2.fillText("umbral 30", W-90, yT-6);
+    }
+
+    function simulate20(){
+      const H = Number(harv.value)/100;
+      const C = Number(care.value)/100;
+      const P = Number(poll.value)/100;
+
+      let stock = 80; // empieza alto
+      let benefit = 0;
+      const series = [stock];
+
+      for(let year=1; year<=20; year++){
+        const regen = clamp(6 + 14*C - 10*P, 1, 18);  // regeneración anual
+        const take  = clamp(10*H + 3*(P) - 2*C, 0, 14); // extracción + pérdida por degradación
+        stock = clamp(stock + regen - take, 0, 100);
+        benefit += Math.round(8*H*10 + 3*(stock/100)); // beneficio sube con extracción y con stock sano
+        series.push(stock);
+      }
+
+      drawSeries(series);
+      sFinal.textContent = String(Math.round(stock));
+      sBen.textContent = String(Math.round(benefit));
+
+      sim2Msg.classList.add('show');
+      if(series.every(v=>v>=30)){
+        sim2Msg.className = "result ok show";
+        sim2Msg.innerHTML = "<strong>¡Sostenible!</strong> Mantienes el recurso por encima del umbral durante 20 años.";
+      }else{
+        sim2Msg.className = "result warn show";
+        sim2Msg.innerHTML = "<strong>Riesgo de colapso.</strong> En algún momento el stock cayó bajo 30. Prueba bajar extracción o subir cuidado.";
+      }
+    }
+
+    document.getElementById('runSim').addEventListener('click', simulate20);
+    document.getElementById('resetSim').addEventListener('click', ()=>{
+      harv.value=45; care.value=50; poll.value=25;
+      updateLabels();
+      sim2Msg.className="result";
+      sim2Msg.classList.remove('show');
+      sFinal.textContent="–"; sBen.textContent="–";
+      drawSeries([80]);
+    });
+
+    drawSeries([80]);
+
+    // =========================
+    // Juego 2: Presupuesto verde
+    // =========================
+    const budgetChoices = document.getElementById('budgetChoices');
+    const budgetMsg = document.getElementById('budgetMsg');
+    const budgetLeftEl = document.getElementById('budgetLeft');
+
+    const bWater=document.getElementById('bWater');
+    const bSoil=document.getElementById('bSoil');
+    const bBio=document.getElementById('bBio');
+    const bRisk=document.getElementById('bRisk');
+
+    const ACTIONS = [
+      {id:"ww", t:"Saneamiento: mejorar tratamiento de aguas residuales", cost:30, water:+18, soil:+2, bio:+8, risk:-10},
+      {id:"rb", t:"Reforestación con nativas en laderas/zonas de recarga", cost:25, water:+12, soil:+10, bio:+12, risk:-8},
+      {id:"tv", t:"Terrazas y barreras vivas en parcelas", cost:20, water:+8, soil:+14, bio:+4, risk:-8},
+      {id:"rs", t:"Manejo de residuos y reducción de plásticos", cost:15, water:+10, soil:+3, bio:+6, risk:-6},
+      {id:"mon", t:"Monitoreo comunitario (turbidez, nacimientos, aves)", cost:10, water:+6, soil:+2, bio:+4, risk:-5},
+      {id:"edu", t:"Educación ambiental y acuerdos comunitarios", cost:12, water:+5, soil:+5, bio:+7, risk:-6},
+      {id:"pat", t:"Vigilancia contra tala/cacería", cost:18, water:+3, soil:+4, bio:+12, risk:-9},
+    ];
+
+    let budget=100;
+    let state = {water:55, soil:50, bio:48, risk:52};
+    let picked = new Set();
+
+    function renderBudget(){
+      budgetChoices.innerHTML="";
+      ACTIONS.forEach(a=>{
+        const btn=document.createElement('div');
+        btn.className="choice";
+        const active = picked.has(a.id);
+        btn.style.opacity = active ? "0.88" : "1";
+        btn.innerHTML = `
+          <p class="t">${active?"✅ ":""}${a.t}</p>
+          <p class="s">Costo: <strong>${a.cost}</strong> · Agua ${a.water>0?"+":""}${a.water} · Suelo ${a.soil>0?"+":""}${a.soil} · Bio ${a.bio>0?"+":""}${a.bio} · Riesgo ${a.risk}</p>
+        `;
+        btn.addEventListener('click', ()=>{
+          if(active){
+            // unpick
+            picked.delete(a.id);
+            budget += a.cost;
+            state.water -= a.water; state.soil -= a.soil; state.bio -= a.bio; state.risk -= a.risk;
+          }else{
+            if(budget < a.cost) return;
+            picked.add(a.id);
+            budget -= a.cost;
+            state.water += a.water; state.soil += a.soil; state.bio += a.bio; state.risk += a.risk;
+          }
+          updateBudgetUI();
+          renderBudget();
+        });
+        budgetChoices.appendChild(btn);
+      });
+    }
+
+    function clamp01(n){ return Math.max(0, Math.min(100, n)); }
+    function updateBudgetUI(){
+      budgetLeftEl.textContent=String(budget);
+      bWater.textContent=String(clamp01(state.water));
+      bSoil.textContent=String(clamp01(state.soil));
+      bBio.textContent=String(clamp01(state.bio));
+      bRisk.textContent=String(clamp01(state.risk));
+    }
+
+    updateBudgetUI(); renderBudget();
+
+    document.getElementById('budgetCheck').addEventListener('click', ()=>{
+      const w=clamp01(state.water), s=clamp01(state.soil), b=clamp01(state.bio);
+      const ok = w>=75 && s>=70 && b>=65;
+      budgetMsg.classList.add('show');
+      if(ok){
+        budgetMsg.className="result ok show";
+        budgetMsg.innerHTML = `<strong>¡Meta lograda!</strong> Agua ${w}, Suelo ${s}, Biodiversidad ${b}. Excelente combinación.`;
+      }else{
+        budgetMsg.className="result warn show";
+        budgetMsg.innerHTML = `<strong>Aún no.</strong> Agua ${w} (meta 75), Suelo ${s} (meta 70), Bio ${b} (meta 65). Ajusta tu inversión.`;
+      }
+    });
+
+    document.getElementById('budgetReset').addEventListener('click', ()=>{
+      budget=100; picked=new Set();
+      state={water:55, soil:50, bio:48, risk:52};
+      budgetMsg.className="result";
+      budgetMsg.classList.remove('show');
+      updateBudgetUI();
+      renderBudget();
+    });
+
+  </script>
+</body>
+</html>

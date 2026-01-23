@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>6.5 Especies en peligro en la RUMCLA · EPC AALA</title>
+  <meta name="description" content="Especies amenazadas en la RUMCLA: pinabete, quetzal, pavo de cacho. Juegos y acciones de conservación." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap autoloader (más estable que cargar lib/view por separado) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.14);
+      --bad: rgba(225,29,72,.12);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(45,160,220,.14);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 96ch;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .hint{ margin: 8px 0 0; font-size: 13px; color: rgba(11,16,32,.72); line-height: 1.55; }
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; }
+    .box li{ margin: 6px 0; }
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.55; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{ display:block; }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.22); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.20); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.20); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+
+    /* Mapa mental */
+    .mapTop{ display:flex; justify-content:space-between; align-items:flex-end; gap:10px; flex-wrap:wrap; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      padding: 10px;
+    }
+    svg#mindmap{ width:100%; height: 520px; display:block; border-radius: 14px; }
+    .fallback{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.74);
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      display:none;
+    }
+    .fallback.show{ display:block; }
+
+    /* Juegos */
+    .gameGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .panel h3{
+      margin:0 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .panel p{ margin:0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.80);
+      cursor:pointer;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+      transition: transform .08s ease, background .12s ease;
+    }
+    .chip:hover{ background: rgba(255,255,255,.82); }
+    .chip:active{ transform: translateY(1px); }
+
+    .list{ display:grid; gap:10px; }
+    .choice{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      text-align:left;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .choice:hover{ background: rgba(255,255,255,.84); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .choice .t{ font-weight: 900; margin:0 0 6px; }
+    .choice .s{ margin:0; color: rgba(11,16,32,.72); font-size: 12.6px; line-height: 1.45; }
+
+    .kpis{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (max-width:520px){ .kpis{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 900; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .meter{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .bar{ height: 12px; border-radius: 999px; background: rgba(11,16,32,.10); overflow:hidden; margin-top:8px; }
+    .bar > div{ height:100%; width: 50%; background: rgba(45,160,220,.45); transition: width .2s ease; }
+    .tiny{ font-size: 12px; color: rgba(11,16,32,.68); line-height: 1.4; margin-top: 8px; }
+
+    canvas.chart{ width:100%; height: 220px; border-radius: 14px; border: 1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.60); }
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 54%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 68px; text-align:right; }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center; }
+
+    /* Sopa de letras */
+    .gridWord{
+      display:grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+      user-select:none;
+      touch-action: none;
+    }
+    .cell{
+      border-radius: 12px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+      height: 34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+    }
+    .cell.sel{ outline: 3px solid rgba(120,210,255,.35); }
+    .cell.hit{ background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.22); }
+    .words{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .wordTag{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      padding: 6px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .wordTag.done{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 6 · Conservación de los bienes y servicios ambientales</div>
+        <h1>6.5 Especies en peligro en la RUMCLA</h1>
+        <p class="subtitle">En la RUMCLA habitan especies amenazadas que dependen del bosque nuboso y zonas altas. Aprende sobre pinabete, quetzal y pavo de cacho (amenazas y acciones), y juega un ahorcado difícil y un reto de reflejos para proteger el hábitat.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="6-4.html">Anterior (6.4)</a>
+        <a class="btn primary" href="6-6.html">Siguiente (6.6)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="twoCols">
+  <div class="box">
+    <p>
+      La RUMCLA protege bosques y ecosistemas donde habitan especies <strong>amenazadas</strong>.
+      Algunas requieren condiciones muy específicas (bosque nuboso, altitudes altas, alimento y refugio).
+      Cuando se pierde hábitat o hay cacería/venta ilegal, las poblaciones pueden caer rápido.
+    </p>
+    <ul>
+      <li><strong>Pinabete (Abies guatemalensis):</strong> árbol nativo de zonas altas; en Guatemala suele encontrarse entre <strong>2,400–3,000 msnm</strong>.
+        Se asocia a bosques húmedos con lluvias de ~<strong>1,000–2,000 mm</strong>. Amenazas: tala, cambio de uso de suelo y comercio ilegal.</li>
+      <li><strong>Quetzal (Pharomachrus mocinno):</strong> ave símbolo; vive en bosque nuboso <strong>1,500–3,000 msnm</strong>. Se alimenta de frutos (especialmente aguacatillo).
+        Amenazas: deforestación y captura.</li>
+      <li><strong>Pavo de cacho (Oreophasis derbianus):</strong> especie restringida a Guatemala y Chiapas; habita bosque nuboso y se estima en Guatemala una población de <strong>500–1,700</strong> individuos.
+        Amenazas: pérdida de hábitat y cacería.</li>
+    </ul>
+    <div class="result info show" style="display:block">
+      Conservación efectiva = <strong>proteger el hábitat</strong> + <strong>evitar cacería/comercio</strong> + <strong>información y educación</strong> + <strong>corredores</strong>.
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>Acciones prácticas (en Sololá/Atitlán)</strong></p>
+    <ul>
+      <li>Proteger bosques nubosos y zonas de recarga (evitar tala/fragmentación).</li>
+      <li>Reforestar con nativas y dar seguimiento (no solo sembrar).</li>
+      <li>Reducir incendios y quemas (suelo cubierto y brigadas).</li>
+      <li>No comprar especies silvestres ni productos provenientes de fauna.</li>
+      <li>Compartir información: <em>“si está prohibido cazar, hay multas y cárcel”</em> y se pierde biodiversidad.</li>
+    </ul>
+    <p style="margin-top:10px">
+      Cuando estas especies se conservan, también se conservan servicios del ecosistema (agua, suelo, turismo, identidad).
+    </p>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Hábitat</div>
+    <p class="s">Sin bosque nuboso sano, muchas especies no sobreviven aunque “se prohíba” cazarlas.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Amenazas</div>
+    <p class="s">Tala, incendios, expansión agrícola y comercio ilegal reducen poblaciones y diversidad genética.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Corredores</div>
+    <p class="s">Conectar parches de bosque permite movimiento, alimentación y reproducción.</p>
+  </div>
+</div>
+
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica tu conexión a internet (scripts de Markmap) y recarga la página.
+          </div>
+        </div>
+      </section>
+
+      
+<section class="card">
+  <h2>Juego 1 · Ahorcado de especies (modo difícil)</h2>
+  <div class="hint">Adivina el nombre de la especie. Pista: todas aparecen en la RUMCLA. (Sin tildes.)</div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3>Palabra</h3>
+      <div class="meter">
+        <div style="font-family:Outfit,Inter; font-weight:900; font-size:22px; letter-spacing:.25em" id="hangWord">—</div>
+        <div class="tiny">Errores: <span id="hangErr">0</span>/7 · Puntos: <span id="hangScore">0</span></div>
+      </div>
+
+      <div class="words" id="hangKeys" style="margin-top:10px;"></div>
+
+      <div class="actions">
+        <button class="btn primary" type="button" id="hangNew">Nueva palabra</button>
+        <button class="btn" type="button" id="hangHint">Pista</button>
+      </div>
+
+      <div class="result" id="hangMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Mini-lección</h3>
+      <p>
+        Muchas especies amenazadas dependen de <strong>bosque nuboso</strong> y de corredores. Cuando se fragmenta el hábitat,
+        las poblaciones quedan aisladas y baja su supervivencia.
+      </p>
+      <div class="result info show" style="display:block">
+        Consejo: la mejor “pista” en la vida real es observar el hábitat: si hay bosque sano y alimento, la especie puede persistir.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Juego 2 · “Salva el hábitat” (reflejos)</h2>
+  <div class="hint">
+    Toca solo acciones que <strong>protegen</strong> (✅). Evita las que <strong>dañan</strong> (⛔). Gana si logras 20 puntos sin bajar a 0 de “salud del hábitat”.
+  </div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3>Tablero</h3>
+      <div class="kpis">
+        <div class="kpi"><div class="k">Salud del hábitat</div><div class="v" id="habHP">70</div><div class="u">/100</div></div>
+        <div class="kpi"><div class="k">Puntos</div><div class="v" id="habPts">0</div><div class="u">meta 20</div></div>
+      </div>
+
+      <div class="list" id="habStream" style="margin-top:10px;"></div>
+
+      <div class="actions">
+        <button class="btn primary" type="button" id="habStart">Iniciar</button>
+        <button class="btn" type="button" id="habReset">Reiniciar</button>
+      </div>
+
+      <div class="result" id="habMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Regla rápida</h3>
+      <ul style="margin:8px 0 0 18px; line-height:1.6; font-size:13px; color:rgba(11,16,32,.78);">
+        <li>✅ sube puntos y recupera un poco de salud.</li>
+        <li>⛔ quita salud del hábitat (incendios, tala, cacería, basura).</li>
+        <li>Si la salud llega a 0, pierdes.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    const MAP_MD = "\n# 6.5 Especies en peligro en la RUMCLA\n## ¿Por qué están en riesgo?\n- Pérdida/fragmentación de hábitat\n- Cacería y comercio ilegal\n- Incendios y cambio de uso del suelo\n## Especies clave\n- Pinabete (Abies guatemalensis)\n  - 2,400–3,000 msnm · 1,000–2,000 mm de lluvia\n  - Amenazas: tala, cambio de uso, comercio ilegal\n- Quetzal (Pharomachrus mocinno)\n  - Bosque nuboso 1,500–3,000 msnm\n  - Dieta: frutos (aguacatillo)\n  - Amenazas: deforestación, captura\n- Pavo de cacho (Oreophasis derbianus)\n  - Guatemala + Chiapas\n  - Población en Guatemala: 500–1,700\n  - Amenazas: hábitat + cacería\n## ¿Qué hacer?\n- Proteger bosques y nacimientos\n- Reforestar con nativas + seguimiento\n- Evitar quemas e incendios\n- No comprar fauna silvestre\n- Educación y denuncia\n";
+
+
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = MAP_MD.trim();
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{tries++; const ok=renderMap(); if(ok||tries>=14) clearInterval(it);},300);
+
+    document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+    document.getElementById('btnToggle').onclick=()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    };
+    document.getElementById('btnResetMap').onclick=()=>{ mm=null; expanded=true; renderMap(); };
+
+
+
+    // =========================
+    // Juego 1: Ahorcado
+    // =========================
+    const WORDS = [
+      {w:"PINABETE", hint:"Árbol de zonas altas; se usa ilegalmente como árbol navideño."},
+      {w:"QUETZAL", hint:"Ave símbolo; vive en bosque nuboso; come aguacatillo."},
+      {w:"PAVODECACHO", hint:"Ave del bosque nuboso; amenazada por cacería y pérdida de hábitat."},
+      {w:"ALC MUR".replace(" ",""), hint:"Siglas de la Reserva de Uso Múltiple en la cuenca de Atitlán."},
+      {w:"BOSQUENUBOSO".replace(" ",""), hint:"Ecosistema clave para quetzal y pavo de cacho."},
+    ];
+
+    const hangWord=document.getElementById('hangWord');
+    const hangErr=document.getElementById('hangErr');
+    const hangScore=document.getElementById('hangScore');
+    const hangKeys=document.getElementById('hangKeys');
+    const hangMsg=document.getElementById('hangMsg');
+    const hangNew=document.getElementById('hangNew');
+    const hangHint=document.getElementById('hangHint');
+
+    const ALPH="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".replace("Ñ","N"); // para simplificar teclas
+    let secret="", shown=[], used=new Set(), err=0, score=0, curHint="";
+
+    function newHang(){
+      const pick = WORDS[Math.floor(Math.random()*WORDS.length)];
+      secret = pick.w;
+      curHint = pick.hint;
+      shown = secret.split("").map(ch=> ch===" " ? " " : "_");
+      used = new Set();
+      err=0;
+      hangErr.textContent="0";
+      hangMsg.className="result"; hangMsg.classList.remove('show');
+      renderKeys();
+      renderWord();
+    }
+
+    function renderWord(){
+      hangWord.textContent = shown.join(" ");
+    }
+
+    function renderKeys(){
+      hangKeys.innerHTML="";
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(ch=>{
+        const b=document.createElement('div');
+        b.className="chip";
+        b.textContent=ch;
+        b.style.padding="10px 12px";
+        b.style.minWidth="38px";
+        if(used.has(ch)) b.style.opacity="0.45";
+        b.addEventListener('click', ()=>press(ch));
+        hangKeys.appendChild(b);
+      });
+    }
+
+    function press(ch){
+      if(used.has(ch) || !secret) return;
+      used.add(ch);
+
+      let hit=false;
+      for(let i=0;i<secret.length;i++){
+        if(secret[i]===ch){
+          shown[i]=ch; hit=true;
+        }
+      }
+
+      if(!hit){
+        err++;
+        hangErr.textContent=String(err);
+      }
+
+      renderKeys();
+      renderWord();
+
+      if(!shown.includes("_")){
+        score += Math.max(5, 20-err*2);
+        hangScore.textContent=String(score);
+        hangMsg.classList.add('show');
+        hangMsg.className="result ok show";
+        hangMsg.innerHTML = `<strong>¡Correcto!</strong> ${curHint} (+${Math.max(5,20-err*2)})`;
+        secret="";
+      }else if(err>=7){
+        hangMsg.classList.add('show');
+        hangMsg.className="result no show";
+        hangMsg.innerHTML = `<strong>Se acabaron los intentos.</strong> La palabra era <strong>${secret}</strong>.`;
+        secret="";
+      }
+    }
+
+    hangNew.addEventListener('click', newHang);
+    hangHint.addEventListener('click', ()=>{
+      hangMsg.classList.add('show');
+      hangMsg.className="result info show";
+      hangMsg.innerHTML = `<strong>Pista:</strong> ${curHint}`;
+    });
+    newHang();
+
+    // =========================
+    // Juego 2: Salva el hábitat
+    // =========================
+    const habHP=document.getElementById('habHP');
+    const habPts=document.getElementById('habPts');
+    const habStream=document.getElementById('habStream');
+    const habMsg=document.getElementById('habMsg');
+    const habStart=document.getElementById('habStart');
+    const habReset=document.getElementById('habReset');
+
+    const EVENTS = [
+      {t:"✅ Reforestar con nativas y dar seguimiento", dHP:+6, dP:+2},
+      {t:"✅ Proteger nacimientos y riberas", dHP:+5, dP:+2},
+      {t:"✅ Educación ambiental y acuerdos comunitarios", dHP:+4, dP:+2},
+      {t:"✅ Denunciar cacería y comercio ilegal", dHP:+4, dP:+2},
+      {t:"⛔ Quema en época seca", dHP:-10, dP:-1},
+      {t:"⛔ Tala sin permisos", dHP:-12, dP:-1},
+      {t:"⛔ Cacería de especies amenazadas", dHP:-14, dP:-2},
+      {t:"⛔ Basura y aguas residuales al río", dHP:-9, dP:-1},
+      {t:"⛔ Incendio forestal", dHP:-16, dP:-2},
+    ];
+
+    let hp=70, pts=0, running=false, timer=null;
+
+    function updateHab(){
+      hp = Math.max(0, Math.min(100, hp));
+      habHP.textContent=String(hp);
+      habPts.textContent=String(pts);
+    }
+
+    function pushEvent(){
+      if(!running) return;
+      const e = EVENTS[Math.floor(Math.random()*EVENTS.length)];
+      const btn=document.createElement('div');
+      btn.className="choice";
+      btn.innerHTML = `<p class="t">${e.t}</p><p class="s">Toca rápido para responder.</p>`;
+      btn.addEventListener('click', ()=>{
+        // apply
+        hp += e.dHP;
+        pts += e.dP;
+        updateHab();
+        btn.remove();
+
+        if(hp<=0){
+          endHab(false);
+        }else if(pts>=20){
+          endHab(true);
+        }
+      });
+      habStream.prepend(btn);
+
+      // auto-expire
+      setTimeout(()=>{
+        if(!btn.isConnected) return;
+        // si no tocan, se considera “no actuar”: daño pequeño si era negativo; ganancia cero si era positivo
+        if(e.dHP<0) hp += Math.round(e.dHP/3);
+        updateHab();
+        btn.remove();
+        if(hp<=0) endHab(false);
+      }, 2200);
+
+      // limitar lista
+      const kids=[...habStream.children];
+      if(kids.length>5) kids.slice(5).forEach(k=>k.remove());
+    }
+
+    function startHab(){
+      if(running) return;
+      running=true;
+      habMsg.className="result"; habMsg.classList.remove('show');
+      timer=setInterval(pushEvent, 900);
+      pushEvent();
+    }
+
+    function endHab(win){
+      running=false;
+      if(timer) clearInterval(timer);
+      timer=null;
+      habStream.innerHTML="";
+      habMsg.classList.add('show');
+      if(win){
+        habMsg.className="result ok show";
+        habMsg.innerHTML = "<strong>¡Ganaste!</strong> Mantienes el hábitat y alcanzas la meta de acciones positivas.";
+      }else{
+        habMsg.className="result no show";
+        habMsg.innerHTML = "<strong>Perdiste.</strong> La salud del hábitat cayó a 0. Reinicia e intenta actuar más rápido.";
+      }
+    }
+
+    habStart.addEventListener('click', startHab);
+    habReset.addEventListener('click', ()=>{
+      
+      if(timer) clearInterval(timer);
+      timer=null;
+      running=false;
+      hp=70; pts=0;
+      updateHab();
+      habStream.innerHTML="";
+      habMsg.className="result"; habMsg.classList.remove('show');
+    });
+    updateHab();
+
+  </script>
+</body>
+</html>

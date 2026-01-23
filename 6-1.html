@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>6.1 Bienes y servicios ambientales · EPC AALA</title>
+  <meta name="description" content="Definición y categorías de bienes y servicios ambientales con actividades lúdicas." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap autoloader (más estable que cargar lib/view por separado) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.14);
+      --bad: rgba(225,29,72,.12);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(45,160,220,.14);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 96ch;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .hint{ margin: 8px 0 0; font-size: 13px; color: rgba(11,16,32,.72); line-height: 1.55; }
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; }
+    .box li{ margin: 6px 0; }
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.55; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{ display:block; }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.22); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.20); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.20); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+
+    /* Mapa mental */
+    .mapTop{ display:flex; justify-content:space-between; align-items:flex-end; gap:10px; flex-wrap:wrap; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      padding: 10px;
+    }
+    svg#mindmap{ width:100%; height: 520px; display:block; border-radius: 14px; }
+    .fallback{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.74);
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      display:none;
+    }
+    .fallback.show{ display:block; }
+
+    /* Juegos */
+    .gameGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .panel h3{
+      margin:0 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .panel p{ margin:0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.80);
+      cursor:pointer;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+      transition: transform .08s ease, background .12s ease;
+    }
+    .chip:hover{ background: rgba(255,255,255,.82); }
+    .chip:active{ transform: translateY(1px); }
+
+    .list{ display:grid; gap:10px; }
+    .choice{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      text-align:left;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .choice:hover{ background: rgba(255,255,255,.84); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .choice .t{ font-weight: 900; margin:0 0 6px; }
+    .choice .s{ margin:0; color: rgba(11,16,32,.72); font-size: 12.6px; line-height: 1.45; }
+
+    .kpis{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (max-width:520px){ .kpis{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 900; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .meter{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .bar{ height: 12px; border-radius: 999px; background: rgba(11,16,32,.10); overflow:hidden; margin-top:8px; }
+    .bar > div{ height:100%; width: 50%; background: rgba(45,160,220,.45); transition: width .2s ease; }
+    .tiny{ font-size: 12px; color: rgba(11,16,32,.68); line-height: 1.4; margin-top: 8px; }
+
+    canvas.chart{ width:100%; height: 220px; border-radius: 14px; border: 1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.60); }
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 54%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 68px; text-align:right; }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center; }
+
+    /* Sopa de letras */
+    .gridWord{
+      display:grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+      user-select:none;
+      touch-action: none;
+    }
+    .cell{
+      border-radius: 12px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+      height: 34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+    }
+    .cell.sel{ outline: 3px solid rgba(120,210,255,.35); }
+    .cell.hit{ background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.22); }
+    .words{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .wordTag{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      padding: 6px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .wordTag.done{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 6 · Conservación de los bienes y servicios ambientales</div>
+        <h1>6.1 Bienes y servicios ambientales</h1>
+        <p class="subtitle">En la cuenca de Atitlán (Sololá), conservar bienes y servicios ambientales significa asegurar agua, suelo, biodiversidad y bienestar. Aprende a distinguir bienes (tangibles) y servicios (procesos y beneficios), y practica con juegos sobre clasificación e impactos en la cuenca.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-10.html">Anterior (5.10)</a>
+        <a class="btn primary" href="6-2.html">Siguiente (6.2)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="twoCols">
+  <div class="box">
+    <p>
+      En una cuenca como la del lago de Atitlán (Sololá), la naturaleza no solo “se ve bonita”: también <strong>produce bienes</strong> (cosas tangibles)
+      y <strong>presta servicios ambientales</strong> (beneficios que sostienen la vida y la economía local).
+      Estos aportes ocurren a escala <strong>local</strong> (comunidades), <strong>regional</strong> (departamentos) y <strong>global</strong> (clima del planeta).
+    </p>
+    <ul>
+      <li><strong>Bienes ambientales:</strong> productos que obtenemos directamente (alimentos, agua, madera, plantas medicinales).</li>
+      <li><strong>Servicios ambientales:</strong> funciones y procesos del ecosistema que nos benefician (regulación hídrica, control de erosión, polinización, paisajes, recreación, cultura).</li>
+    </ul>
+    <div class="result info show">
+      <strong>Idea clave:</strong> si un bosque se degrada o el lago se contamina, se pierden bienes (menos agua limpia, menos pesca)
+      y servicios (más inundaciones, más sedimentos, menos turismo y bienestar).
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>Categorías clásicas de servicios (para estudiar y tomar decisiones)</strong></p>
+    <ul>
+      <li><strong>Aprovisionamiento:</strong> agua, alimentos, leña/madera, fibras.</li>
+      <li><strong>Regulación:</strong> recarga hídrica, captura de carbono, control de erosión y sedimentos, regulación climática local.</li>
+      <li><strong>Culturales:</strong> turismo, recreación, identidad, espiritualidad, educación.</li>
+      <li><strong>Soporte:</strong> formación de suelo, ciclos de nutrientes, hábitat para biodiversidad (base de los demás servicios).</li>
+    </ul>
+    <p style="margin-top:10px">
+      En Sololá, la relación “bosque–suelo–agua” es central: la cobertura vegetal mejora infiltración, reduce escorrentía y
+      ayuda a mantener nacimientos y caudales más constantes.
+    </p>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Enfoque de cuenca</div>
+    <p class="s">Lo que ocurre arriba (laderas y bosques) se refleja abajo (ríos, lago, sedimentos, calidad del agua).</p>
+  </div>
+  <div class="pill">
+    <div class="t">Servicios “invisibles”</div>
+    <p class="s">Aunque no se compren en una tienda, sostienen agricultura, turismo, salud y seguridad frente a inundaciones.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Conservación práctica</div>
+    <p class="s">Proteger recarga hídrica, evitar quemas, mantener suelos cubiertos y gestionar residuos reduce contaminación.</p>
+  </div>
+</div>
+
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica tu conexión a internet (scripts de Markmap) y recarga la página.
+          </div>
+        </div>
+      </section>
+
+      
+<!-- JUEGO 1 -->
+<section class="card">
+  <h2>Juego 1 · Clasificador de servicios ambientales</h2>
+  <div class="hint">Objetivo: clasifica ejemplos en <strong>Aprovisionamiento</strong>, <strong>Regulación</strong>, <strong>Culturales</strong> o <strong>Soporte</strong>. (Funciona en teléfono y PC.)</div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3>Ejemplo a clasificar</h3>
+      <div class="result info show" id="svcCard" style="display:block"></div>
+
+      <div class="chips" style="margin-top:10px;">
+        <div class="chip" data-cat="A">Aprovisionamiento</div>
+        <div class="chip" data-cat="R">Regulación</div>
+        <div class="chip" data-cat="C">Culturales</div>
+        <div class="chip" data-cat="S">Soporte</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="button" id="svcSkip">Cambiar ejemplo</button>
+        <span class="btn" style="cursor:default">Puntos: <span id="svcScore">0</span></span>
+        <span class="btn" style="cursor:default">Racha: <span id="svcStreak">0</span></span>
+      </div>
+
+      <div class="result" id="svcMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Guía rápida</h3>
+      <p>Piensa así:</p>
+      <ul style="margin:8px 0 0 18px; line-height:1.6; font-size:13px; color:rgba(11,16,32,.78);">
+        <li><strong>A</strong>: “me lo llevo” (agua, alimentos, leña).</li>
+        <li><strong>R</strong>: “me protege” (erosión, clima, recarga).</li>
+        <li><strong>C</strong>: “me inspira / enseña” (turismo, cultura).</li>
+        <li><strong>S</strong>: “lo hace posible” (suelo, nutrientes, hábitat).</li>
+      </ul>
+      <div class="result warn show" style="display:block">
+        Tip: si el ejemplo menciona <em>suelo</em>, <em>nutrientes</em> o <em>hábitat</em>, casi siempre es <strong>Soporte</strong>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JUEGO 2 -->
+<section class="card">
+  <h2>Juego 2 · Cadena de impactos en la cuenca</h2>
+  <div class="hint">Ordena la cadena desde la <strong>causa</strong> hasta el <strong>impacto final</strong>. Usa ↑ ↓ (o toca) para mover.</div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3>Ordena los pasos</h3>
+      <div id="chainList" class="list"></div>
+      <div class="actions">
+        <button class="btn" type="button" id="chainCheck">Verificar</button>
+        <button class="btn" type="button" id="chainShuffle">Barajar</button>
+        <span class="btn" style="cursor:default">Intentos: <span id="chainTry">0</span></span>
+      </div>
+      <div class="result" id="chainMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Aprendizaje</h3>
+      <p>
+        En una cuenca, muchas veces el “problema” se ve abajo (río/lago), pero la causa empieza arriba:
+        <strong>cobertura del suelo</strong>, <strong>pendiente</strong>, <strong>prácticas agrícolas</strong> y <strong>manejo de caminos</strong>.
+      </p>
+      <div class="result info show" style="display:block">
+        Consejo: piensa en energía/agua/suelo: si se pierde cobertura, la lluvia golpea el suelo, se lo lleva, y ese material termina en el lago.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    const MAP_MD = "\n# 6.1 Bienes y servicios ambientales\n## Conceptos\n- Bienes: productos tangibles del ecosistema\n- Servicios: beneficios por procesos ecológicos\n- Escalas: local · regional · global\n## Servicios (categorías)\n- Aprovisionamiento\n  - Agua · alimentos · madera · plantas medicinales\n- Regulación\n  - Recarga hídrica · control de erosión/sedimentos\n  - Regulación del clima · captura de carbono\n- Culturales\n  - Turismo · recreación · identidad · educación\n- Soporte\n  - Formación de suelo · ciclos de nutrientes\n  - Hábitat para biodiversidad\n## En Sololá (Atitlán)\n- Bosque → infiltración → nacimientos → ríos → lago\n- Menos bosque → más escorrentía → más sedimentos → peor calidad del agua\n## Mensaje clave\n- Conservar = asegurar bienestar humano y futuro de la cuenca\n";
+
+
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = MAP_MD.trim();
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{tries++; const ok=renderMap(); if(ok||tries>=14) clearInterval(it);},300);
+
+    document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+    document.getElementById('btnToggle').onclick=()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    };
+    document.getElementById('btnResetMap').onclick=()=>{ mm=null; expanded=true; renderMap(); };
+
+
+
+    // =========================
+    // Juego 1: Clasificador
+    // =========================
+    const SVC_ITEMS = [
+      {t:"Agua limpia para consumo y riego", c:"A"},
+      {t:"Leña/madera para cocinar o construir", c:"A"},
+      {t:"Alimentos (maíz, frijol, hortalizas, pesca)", c:"A"},
+      {t:"Control de erosión y sedimentos en ríos", c:"R"},
+      {t:"Recarga hídrica (más infiltración, nacimientos)", c:"R"},
+      {t:"Regulación del clima local y captura de carbono", c:"R"},
+      {t:"Turismo y recreación alrededor del lago", c:"C"},
+      {t:"Identidad cultural y espiritualidad ligada al paisaje", c:"C"},
+      {t:"Educación ambiental y ciencia ciudadana", c:"C"},
+      {t:"Formación de suelo (humus, estructura)", c:"S"},
+      {t:"Ciclo de nutrientes (N, P) para vida del ecosistema", c:"S"},
+      {t:"Hábitat para biodiversidad (aves, anfibios, plantas)", c:"S"},
+    ];
+
+    const svcCard = document.getElementById('svcCard');
+    const svcMsg = document.getElementById('svcMsg');
+    const svcScoreEl = document.getElementById('svcScore');
+    const svcStreakEl = document.getElementById('svcStreak');
+    const svcSkip = document.getElementById('svcSkip');
+
+    let svcIdx = 0, svcScore = 0, svcStreak = 0;
+    function pickSvc(){
+      svcIdx = Math.floor(Math.random()*SVC_ITEMS.length);
+      svcCard.textContent = "• " + SVC_ITEMS[svcIdx].t;
+      svcMsg.className = "result";
+      svcMsg.textContent = "";
+      svcMsg.classList.remove('show');
+    }
+    function svcFeedback(ok, correct){
+      svcMsg.classList.add('show');
+      if(ok){
+        svcScore += 10; svcStreak += 1;
+        svcMsg.className = "result ok show";
+        svcMsg.innerHTML = `<strong>¡Bien!</strong> Eso es <strong>${correct}</strong>. (+10)`;
+      }else{
+        svcStreak = 0;
+        svcMsg.className = "result no show";
+        svcMsg.innerHTML = `<strong>No.</strong> La categoría correcta era <strong>${correct}</strong>.`;
+      }
+      svcScoreEl.textContent = String(svcScore);
+      svcStreakEl.textContent = String(svcStreak);
+      setTimeout(pickSvc, 650);
+    }
+    const catName = {A:"Aprovisionamiento", R:"Regulación", C:"Culturales", S:"Soporte"};
+    document.querySelectorAll('.chip[data-cat]').forEach(ch=>{
+      ch.addEventListener('click', ()=>{
+        const chosen = ch.getAttribute('data-cat');
+        const item = SVC_ITEMS[svcIdx];
+        svcFeedback(chosen===item.c, catName[item.c]);
+      });
+    });
+    svcSkip.addEventListener('click', pickSvc);
+    pickSvc();
+
+    // =========================
+    // Juego 2: Cadena de impactos
+    // =========================
+    const chainBase = [
+      "Se pierde cobertura vegetal en ladera",
+      "La lluvia impacta suelo desnudo (más erosión)",
+      "Aumenta escorrentía y arrastre de sedimentos",
+      "Los ríos llevan más lodo al lago",
+      "Baja calidad de agua y afecta vida acuática/turismo"
+    ];
+
+    const chainList = document.getElementById('chainList');
+    const chainMsg = document.getElementById('chainMsg');
+    const chainTryEl = document.getElementById('chainTry');
+    let chainTry = 0;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    let chain = shuffle(chainBase);
+    function renderChain(){
+      chainList.innerHTML = "";
+      chain.forEach((txt, i)=>{
+        const row = document.createElement('div');
+        row.className = "choice";
+        row.innerHTML = `
+          <p class="t">${i+1}. ${txt}</p>
+          <p class="s">Mueve: <button class="btn" style="padding:6px 10px" data-m="up" data-i="${i}">↑</button>
+          <button class="btn" style="padding:6px 10px" data-m="dn" data-i="${i}">↓</button></p>
+        `;
+        chainList.appendChild(row);
+      });
+
+      chainList.querySelectorAll('button[data-m]').forEach(b=>{
+        b.addEventListener('click', (e)=>{
+          const i = Number(b.getAttribute('data-i'));
+          const dir = b.getAttribute('data-m');
+          const j = dir==="up" ? i-1 : i+1;
+          if(j<0 || j>=chain.length) return;
+          [chain[i], chain[j]] = [chain[j], chain[i]];
+          renderChain();
+        });
+      });
+    }
+
+    function checkChain(){
+      chainTry++;
+      chainTryEl.textContent = String(chainTry);
+
+      const ok = chain.every((v,i)=>v===chainBase[i]);
+      chainMsg.classList.add('show');
+      if(ok){
+        chainMsg.className = "result ok show";
+        chainMsg.innerHTML = "<strong>¡Correcto!</strong> Esa es una cadena típica de degradación en cuencas: cobertura → erosión → sedimentos → lago.";
+      }else{
+        chainMsg.className = "result warn show";
+        chainMsg.innerHTML = "<strong>Aún no.</strong> Pista: primero ocurre el cambio en la ladera, luego la erosión, después el transporte y por último el impacto en el lago.";
+      }
+    }
+
+    document.getElementById('chainCheck').addEventListener('click', checkChain);
+    document.getElementById('chainShuffle').addEventListener('click', ()=>{
+      chain = shuffle(chainBase);
+      chainMsg.className="result";
+      chainMsg.classList.remove('show');
+      renderChain();
+    });
+
+    renderChain();
+
+  </script>
+</body>
+</html>

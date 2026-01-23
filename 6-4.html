@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>6.4 RUMCLA (ALCMUR) · EPC AALA</title>
+  <meta name="description" content="Reserva de Uso Múltiple de la Cuenca del Lago de Atitlán (RUMCLA): zonificación, gestión y juegos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap autoloader (más estable que cargar lib/view por separado) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.14);
+      --bad: rgba(225,29,72,.12);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(45,160,220,.14);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 96ch;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .hint{ margin: 8px 0 0; font-size: 13px; color: rgba(11,16,32,.72); line-height: 1.55; }
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; }
+    .box li{ margin: 6px 0; }
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.55; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{ display:block; }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.22); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.20); }
+    .info{ background: var(--info); border-color: rgba(45,160,220,.20); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+
+    /* Mapa mental */
+    .mapTop{ display:flex; justify-content:space-between; align-items:flex-end; gap:10px; flex-wrap:wrap; }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      padding: 10px;
+    }
+    svg#mindmap{ width:100%; height: 520px; display:block; border-radius: 14px; }
+    .fallback{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.74);
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      display:none;
+    }
+    .fallback.show{ display:block; }
+
+    /* Juegos */
+    .gameGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .panel h3{
+      margin:0 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .panel p{ margin:0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.80);
+      cursor:pointer;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+      transition: transform .08s ease, background .12s ease;
+    }
+    .chip:hover{ background: rgba(255,255,255,.82); }
+    .chip:active{ transform: translateY(1px); }
+
+    .list{ display:grid; gap:10px; }
+    .choice{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      text-align:left;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .choice:hover{ background: rgba(255,255,255,.84); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .choice .t{ font-weight: 900; margin:0 0 6px; }
+    .choice .s{ margin:0; color: rgba(11,16,32,.72); font-size: 12.6px; line-height: 1.45; }
+
+    .kpis{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (max-width:520px){ .kpis{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 900; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .meter{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.62);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .bar{ height: 12px; border-radius: 999px; background: rgba(11,16,32,.10); overflow:hidden; margin-top:8px; }
+    .bar > div{ height:100%; width: 50%; background: rgba(45,160,220,.45); transition: width .2s ease; }
+    .tiny{ font-size: 12px; color: rgba(11,16,32,.68); line-height: 1.4; margin-top: 8px; }
+
+    canvas.chart{ width:100%; height: 220px; border-radius: 14px; border: 1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.60); }
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 54%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 68px; text-align:right; }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center; }
+
+    /* Sopa de letras */
+    .gridWord{
+      display:grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+      user-select:none;
+      touch-action: none;
+    }
+    .cell{
+      border-radius: 12px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+      height: 34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: 0 8px 18px rgba(11,16,32,.06);
+    }
+    .cell.sel{ outline: 3px solid rgba(120,210,255,.35); }
+    .cell.hit{ background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.22); }
+    .words{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .wordTag{
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      padding: 6px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .wordTag.done{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 6 · Conservación de los bienes y servicios ambientales</div>
+        <h1>6.4 RUMCLA (ALCMUR)</h1>
+        <p class="subtitle">La RUMCLA (ALCMUR) es una reserva de uso múltiple para manejar la cuenca del lago de Atitlán. Incluye zonificación (primitiva, recuperación, uso extensivo e intensivo) y coordinación institucional. Practica con un zonificador y un laboratorio de decisiones hidrológicas.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="6-3.html">Anterior (6.3)</a>
+        <a class="btn primary" href="6-5.html">Siguiente (6.5)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="twoCols">
+  <div class="box">
+    <p>
+      La <strong>Reserva de Uso Múltiple de la Cuenca del Lago de Atitlán (RUMCLA / ALCMUR)</strong> fue declarada por el <strong>Decreto 64-95</strong>.
+      Su objetivo es conservar y manejar la cuenca, combinando protección y uso regulado.
+    </p>
+    <ul>
+      <li><strong>Extensión:</strong> ~<strong>1,247.22 km²</strong> de cuenca.</li>
+      <li><strong>Incluye</strong> municipios alrededor del lago (Sololá) y áreas de Sacatepéquez, Suchitepéquez, Quiché y Chimaltenango.</li>
+      <li>Cuenta con <strong>Plan Maestro (2016–2020)</strong> como guía de gestión.</li>
+    </ul>
+    <div class="result info show" style="display:block">
+      En una reserva de uso múltiple, <strong>la zonificación</strong> es clave: no todo se usa igual; hay zonas de conservación estricta y zonas de uso controlado.
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>Zonificación (resumen de áreas)</strong></p>
+    <ul>
+      <li><strong>Zona Primitiva:</strong> 83.21 km² (6.67%)</li>
+      <li><strong>Zona de Recuperación:</strong> 571.21 km² (45.80%)</li>
+      <li><strong>Zona de Uso Extensivo:</strong> 450.71 km² (36.13%)</li>
+      <li><strong>Zona de Uso Intensivo:</strong> 141.52 km² (11.34%)</li>
+    </ul>
+    <p style="margin-top:10px">
+      Instituciones vinculadas al manejo: <strong>AALA</strong>, <strong>AMSA</strong>, <strong>INAB</strong>, <strong>MAGA</strong>, <strong>MARN</strong> y municipalidades.
+    </p>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Primitiva</div>
+    <p class="s">Conservación estricta: mínima intervención humana.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Recuperación</div>
+    <p class="s">Restauración ecológica: reforestación, control de erosión, recuperación de hábitats.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Extensivo e intensivo</div>
+    <p class="s">Uso permitido con reglas: producción, turismo y asentamientos deben reducir impactos y contaminación.</p>
+  </div>
+</div>
+
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica tu conexión a internet (scripts de Markmap) y recarga la página.
+          </div>
+        </div>
+      </section>
+
+      
+<section class="card">
+  <h2>Juego 1 · Zonificador RUMCLA (actividad → zona)</h2>
+  <div class="hint">Elige en qué zona es más adecuada cada actividad: <strong>Primitiva</strong>, <strong>Recuperación</strong>, <strong>Uso extensivo</strong>, <strong>Uso intensivo</strong>.</div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3 id="zTitle">Reto 1</h3>
+      <p id="zTask">—</p>
+      <div class="chips" style="margin-top:10px;">
+        <div class="chip" data-z="P">Primitiva</div>
+        <div class="chip" data-z="R">Recuperación</div>
+        <div class="chip" data-z="E">Uso extensivo</div>
+        <div class="chip" data-z="I">Uso intensivo</div>
+      </div>
+      <div class="actions">
+        <button class="btn" type="button" id="zSkip">Cambiar</button>
+        <span class="btn" style="cursor:default">Aciertos: <span id="zOk">0</span></span>
+        <span class="btn" style="cursor:default">Intentos: <span id="zTry">0</span></span>
+      </div>
+      <div class="result" id="zMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Mapa rápido (esquema)</h3>
+      <div class="svgWrap" style="border-radius:18px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);padding:10px;overflow:hidden">
+        <svg viewBox="0 0 960 420" width="100%" height="auto" role="img" aria-label="Esquema de cuenca y zonas">
+          <defs>
+            <linearGradient id="sky6" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="rgba(180,235,255,.78)"/>
+              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+            <linearGradient id="lake6" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="rgba(120,210,255,.55)"/>
+              <stop offset="1" stop-color="rgba(60,170,235,.35)"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="960" height="420" fill="url(#sky6)"/>
+          <path d="M0 280 C140 250, 240 230, 340 250 C470 280, 590 270, 740 250 C840 235, 915 250, 960 265 L960 420 L0 420 Z" fill="url(#lake6)"/>
+          <path d="M0 280 L180 120 L360 280 Z" fill="rgba(180,220,255,.45)"/>
+          <path d="M280 280 L520 90 L760 280 Z" fill="rgba(160,210,255,.38)"/>
+          <path d="M660 280 L820 140 L960 280 Z" fill="rgba(180,220,255,.34)"/>
+          <!-- bands -->
+          <rect x="40" y="70" width="250" height="44" rx="14" fill="rgba(255,255,255,.72)" stroke="rgba(11,16,32,.12)"/>
+          <text x="165" y="98" text-anchor="middle" font-family="Outfit, Inter" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Primitiva</text>
+
+          <rect x="340" y="60" width="290" height="44" rx="14" fill="rgba(255,255,255,.72)" stroke="rgba(11,16,32,.12)"/>
+          <text x="485" y="88" text-anchor="middle" font-family="Outfit, Inter" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Recuperación</text>
+
+          <rect x="140" y="150" width="280" height="44" rx="14" fill="rgba(255,255,255,.72)" stroke="rgba(11,16,32,.12)"/>
+          <text x="280" y="178" text-anchor="middle" font-family="Outfit, Inter" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Uso extensivo</text>
+
+          <rect x="520" y="170" width="310" height="44" rx="14" fill="rgba(255,255,255,.72)" stroke="rgba(11,16,32,.12)"/>
+          <text x="675" y="198" text-anchor="middle" font-family="Outfit, Inter" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Uso intensivo</text>
+        </svg>
+      </div>
+
+      <div class="result info show" style="display:block">
+        Pista: “Primitiva” = casi sin intervención; “Recuperación” = restaurar; “Extensivo” = uso de baja intensidad; “Intensivo” = uso mayor (pero con control).
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Juego 2 · Laboratorio de cuenca: decisiones y efecto hídrico</h2>
+  <div class="hint">Ajusta decisiones y observa cómo cambian <strong>escorrentía</strong>, <strong>sedimentos</strong> y <strong>calidad del agua</strong>.</div>
+
+  <div class="gameGrid">
+    <div class="panel">
+      <h3>Decisiones</h3>
+
+      <div class="ctrlRow">
+        <label for="cov">Cobertura forestal</label>
+        <input id="cov" type="range" min="10" max="90" step="5" value="55">
+        <div class="val" id="covVal">55%</div>
+      </div>
+      <div class="ctrlRow">
+        <label for="soilM">Manejo de suelo</label>
+        <input id="soilM" type="range" min="0" max="100" step="5" value="50">
+        <div class="val" id="soilMVal">50%</div>
+      </div>
+      <div class="ctrlRow">
+        <label for="wwM">Saneamiento</label>
+        <input id="wwM" type="range" min="0" max="100" step="5" value="40">
+        <div class="val" id="wwMVal">40%</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="button" id="labEval">Evaluar</button>
+        <button class="btn" type="button" id="labReset">Reiniciar</button>
+      </div>
+
+      <div class="result" id="labMsg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Indicadores</h3>
+      <div class="kpis">
+        <div class="kpi"><div class="k">Escorrentía</div><div class="v" id="labQ">–</div><div class="u">0–100</div></div>
+        <div class="kpi"><div class="k">Sedimentos</div><div class="v" id="labSed">–</div><div class="u">0–100</div></div>
+        <div class="kpi"><div class="k">Calidad de agua</div><div class="v" id="labWq">–</div><div class="u">0–100</div></div>
+        <div class="kpi"><div class="k">Recarga hídrica</div><div class="v" id="labR">–</div><div class="u">0–100</div></div>
+      </div>
+
+      <div class="meter" style="margin-top:10px">
+        <div style="font-weight:900">Índice de cuenca</div>
+        <div class="bar"><div id="labFill"></div></div>
+        <div class="tiny" id="labLevel">—</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    const MAP_MD = "\n# 6.4 RUMCLA (ALCMUR)\n## ¿Qué es?\n- Reserva de Uso Múltiple en la cuenca del Lago de Atitlán\n- Decreto 64-95\n- Plan Maestro 2016–2020\n## Tamaño y alcance\n- ~1,247.22 km² de cuenca\n- Municipios de Sololá + partes de Sacatepéquez, Suchitepéquez, Quiché, Chimaltenango\n## Zonificación\n- Zona Primitiva (6.67%)\n- Zona de Recuperación (45.80%)\n- Zona de Uso Extensivo (36.13%)\n- Zona de Uso Intensivo (11.34%)\n## Instituciones\n- AALA · AMSA · INAB · MAGA · MARN · Municipalidades\n## Meta\n- Conservar bienes/servicios ambientales + uso regulado\n";
+
+
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = MAP_MD.trim();
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{tries++; const ok=renderMap(); if(ok||tries>=14) clearInterval(it);},300);
+
+    document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+    document.getElementById('btnToggle').onclick=()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    };
+    document.getElementById('btnResetMap').onclick=()=>{ mm=null; expanded=true; renderMap(); };
+
+
+
+    // =========================
+    // Juego 1: Zonificador
+    // =========================
+    const Z_ITEMS = [
+      {t:"Investigación científica con mínima perturbación", z:"P"},
+      {t:"Sendero interpretativo de baja intensidad (controlado)", z:"E"},
+      {t:"Restauración: reforestación y control de cárcavas", z:"R"},
+      {t:"Vivienda y servicios urbanos (con control de aguas residuales)", z:"I"},
+      {t:"Turismo comunitario con reglas de basura/capacidad de carga", z:"E"},
+      {t:"Extracción sin permiso (tala/caza) para venta", z:"X"}, // ninguna
+      {t:"Recuperar riberas: barreras vivas y protección de nacimientos", z:"R"},
+      {t:"Agricultura intensiva sin barreras ni manejo del suelo", z:"X"},
+      {t:"Producción de baja intensidad con buenas prácticas", z:"E"},
+      {t:"Infraestructura mayor (carreteras) sin mitigación", z:"X"},
+    ];
+    const zTitle=document.getElementById('zTitle');
+    const zTask=document.getElementById('zTask');
+    const zSkip=document.getElementById('zSkip');
+    const zOkEl=document.getElementById('zOk');
+    const zTryEl=document.getElementById('zTry');
+    const zMsg=document.getElementById('zMsg');
+
+    const zName={P:"Primitiva",R:"Recuperación",E:"Uso extensivo",I:"Uso intensivo",X:"Ninguna (no permitido)"};
+    let zIdx=0, zOk=0, zTry=0;
+
+    function pickZ(){
+      zIdx = Math.floor(Math.random()*Z_ITEMS.length);
+      zTitle.textContent = `Reto ${zTry+1}`;
+      zTask.textContent = Z_ITEMS[zIdx].t;
+      zMsg.className="result"; zMsg.classList.remove('show');
+    }
+
+    function zAnswer(chosen){
+      zTry++;
+      zTryEl.textContent=String(zTry);
+
+      const item=Z_ITEMS[zIdx];
+      const correct = item.z;
+      const ok = chosen===correct;
+
+      zMsg.classList.add('show');
+      if(ok){
+        zOk++;
+        zMsg.className="result ok show";
+        zMsg.innerHTML = `<strong>Correcto.</strong> Lo más adecuado es <strong>${zName[correct]}</strong>.`;
+      }else{
+        zMsg.className="result warn show";
+        zMsg.innerHTML = `<strong>No.</strong> La mejor respuesta es <strong>${zName[correct]}</strong>.`;
+      }
+      zOkEl.textContent=String(zOk);
+      setTimeout(pickZ, 650);
+    }
+
+    document.querySelectorAll('.chip[data-z]').forEach(b=>{
+      b.addEventListener('click', ()=>zAnswer(b.getAttribute('data-z')));
+    });
+    zSkip.addEventListener('click', pickZ);
+    pickZ();
+
+    // =========================
+    // Juego 2: Laboratorio de cuenca
+    // =========================
+    const cov=document.getElementById('cov');
+    const soilM=document.getElementById('soilM');
+    const wwM=document.getElementById('wwM');
+    const covVal=document.getElementById('covVal');
+    const soilMVal=document.getElementById('soilMVal');
+    const wwMVal=document.getElementById('wwMVal');
+
+    const labQ=document.getElementById('labQ');
+    const labSed=document.getElementById('labSed');
+    const labWq=document.getElementById('labWq');
+    const labR=document.getElementById('labR');
+    const labFill=document.getElementById('labFill');
+    const labLevel=document.getElementById('labLevel');
+    const labMsg=document.getElementById('labMsg');
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+    function updLabLabels(){
+      covVal.textContent=cov.value+"%";
+      soilMVal.textContent=soilM.value+"%";
+      wwMVal.textContent=wwM.value+"%";
+    }
+    [cov,soilM,wwM].forEach(el=>el.addEventListener('input', updLabLabels));
+    updLabLabels();
+
+    function evalLab(){
+      const C=Number(cov.value);     // cobertura
+      const S=Number(soilM.value);   // manejo suelo
+      const W=Number(wwM.value);     // saneamiento
+
+      // indicadores didácticos
+      const Q = clamp(80 - 0.55*C - 0.25*S + 0.10*(100-W), 5, 95);  // escorrentía baja con cobertura/suelo
+      const Sed = clamp(85 - 0.60*C - 0.35*S + 0.15*(100-W), 5, 98);
+      const Wq = clamp(25 + 0.25*C + 0.10*S + 0.55*W - 0.25*Sed, 0, 100);
+      const R = clamp(20 + 0.60*C + 0.35*S - 0.15*(100-W), 0, 100);
+
+      labQ.textContent=Math.round(Q);
+      labSed.textContent=Math.round(Sed);
+      labWq.textContent=Math.round(Wq);
+      labR.textContent=Math.round(R);
+
+      const idx = clamp((Wq + R + (100-Q) + (100-Sed))/4, 0, 100);
+      labFill.style.width = idx + "%";
+
+      let label="En camino 💧";
+      if(idx>=80) label="Cuenca saludable 💧✨";
+      else if(idx>=60) label="Buen manejo 💧";
+      else if(idx>=40) label="Riesgo moderado ⚠️";
+      else label="Riesgo alto 🚨";
+      labLevel.textContent = `Índice: ${Math.round(idx)}/100 · ${label}`;
+
+      labMsg.classList.add('show');
+      if(idx>=75){
+        labMsg.className="result ok show";
+        labMsg.innerHTML="<strong>¡Excelente!</strong> Tus decisiones reducen sedimentos y mejoran calidad del agua.";
+      }else if(idx>=55){
+        labMsg.className="result info show";
+        labMsg.innerHTML="<strong>Bien.</strong> Aún puedes mejorar aumentando cobertura, manejo de suelo o saneamiento.";
+      }else{
+        labMsg.className="result warn show";
+        labMsg.innerHTML="<strong>Alerta.</strong> Hay mucha escorrentía y sedimentos. Sube cobertura forestal y manejo de suelo, y mejora saneamiento.";
+      }
+    }
+
+    document.getElementById('labEval').addEventListener('click', evalLab);
+    document.getElementById('labReset').addEventListener('click', ()=>{
+      cov.value=55; soilM.value=50; wwM.value=40;
+      updLabLabels();
+      labMsg.className="result"; labMsg.classList.remove('show');
+      [labQ,labSed,labWq,labR].forEach(el=>el.textContent="–");
+      labFill.style.width="50%";
+      labLevel.textContent="—";
+    });
+
+    evalLab();
+
+  </script>
+</body>
+</html>
