@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.10 Cuidemos el agua en la cuenca · EPC AALA</title>
+  <meta name="description" content="Módulo 3.10: conservación del agua en la cuenca. Teoría ampliada + mapa mental + 3 juegos difíciles e interactivos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap autoloader (igual al que sí te funciona) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --warn: rgba(245,158,11,.16);
+      --info: rgba(56,189,248,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 96ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .grid2{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.26); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+      white-space: nowrap;
+    }
+
+    /* ===== Mapa mental ===== */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .mapStage{
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.60);
+      border-radius:18px;
+      padding:10px;
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      border-radius:14px;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px dashed rgba(11,16,32,.18);
+      background:rgba(255,255,255,.55);
+      color:rgba(11,16,32,.72);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .fallback.show{ display:block; }
+
+    /* ===== Juego 1: Laboratorio ===== */
+    .labGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .labGrid{ grid-template-columns: 1fr; } }
+
+    .ctrlRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 54%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 84px; text-align:right; }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .bars{
+      margin-top: 10px;
+      display:grid;
+      gap: 10px;
+    }
+    .bar{
+      border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);
+      border-radius: 16px;
+      padding:10px;
+      box-shadow: var(--shadow-soft);
+    }
+    .bar .top{
+      display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+      font-weight:900;
+      color: rgba(11,16,32,.82);
+      font-size: 12.8px;
+    }
+    .track{
+      margin-top:8px;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(11,16,32,.12);
+      overflow:hidden;
+    }
+    .fill{
+      height:100%;
+      width:40%;
+      background: rgba(35,140,210,.45);
+      transition: width .18s ease;
+    }
+    .fill.good{ background: rgba(34,197,94,.42); }
+    .fill.warn{ background: rgba(245,158,11,.42); }
+    .fill.bad{ background: rgba(225,29,72,.42); }
+
+    /* ===== Juego 2: Detective (lógico) ===== */
+    .caseGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .caseGrid{ grid-template-columns: 1fr; } }
+
+    .cardList{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .cardList h3{
+      margin: 0 0 8px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .evi{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      text-align:left;
+      font-family: Inter, system-ui;
+      color: rgba(11,16,32,.92);
+      font-weight: 900;
+      margin: 8px 0;
+    }
+    .evi:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .evi:active{ transform: translateY(1px); }
+    .evi.selected{ outline: 3px solid rgba(120,210,255,.35); }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(120,210,255,.20);
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(11,16,32,.80);
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+    .small{
+      margin: 6px 0 0;
+      color: rgba(11,16,32,.72);
+      font-size: 12.8px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    .suspects{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; align-items:center;
+    }
+    .susBtn{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 900;
+      cursor:pointer;
+      box-shadow: var(--shadow-soft);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      color: rgba(11,16,32,.86);
+    }
+    .susBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .susBtn.active{ background: rgba(120,210,255,.26); border-color: rgba(35, 140, 210, .22); }
+
+    /* ===== Juego 3: Reto de cálculo ===== */
+    .mathGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .mathGrid{ grid-template-columns: 1fr; } }
+
+    .qCard{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .qTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+    .qTitle{ font-family: Outfit, Inter, system-ui; font-weight: 900; letter-spacing:.2px; }
+    .timer{
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      color: rgba(11,16,32,.78);
+      white-space: nowrap;
+    }
+
+    .equation{
+      margin-top: 10px;
+      font-weight: 900;
+      font-size: 14px;
+      color: rgba(11,16,32,.84);
+      line-height: 1.45;
+    }
+    .equation code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(11,16,32,.10);
+      border-radius: 10px;
+      padding: 2px 6px;
+      box-shadow: var(--shadow-soft);
+    }
+    .ansRow{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .ansRow input{
+      flex: 1 1 220px;
+      border: 1px solid rgba(11,16,32,.14);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 800;
+      font-size: 14px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow-soft);
+      outline: none;
+    }
+    .ansRow input:focus{
+      border-color: rgba(35, 140, 210, .30);
+      box-shadow: 0 0 0 4px rgba(120,210,255,.25), var(--shadow-soft);
+    }
+
+    .hud{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.10 Cuidemos el agua en la cuenca (calidad + decisiones)</h1>
+        <p class="subtitle">
+          En una cuenca, el agua conecta montaña–río–lago. La cantidad importa, pero también la <strong>calidad</strong>:
+          sedimentos, basura, agroquímicos y aguas residuales cambian el ecosistema.
+          En esta sección vas a practicar cómo las decisiones del territorio se reflejan en el agua.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-9.html">Anterior (3.9)</a>
+        <a class="btn primary" href="4-1.html">Siguiente (4.1)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              Para cuidar el agua de una cuenca, conviene pensar en <strong>tres cosas a la vez</strong>:
+              <strong>(1) fuentes</strong> de contaminación, <strong>(2) rutas</strong> por donde viaja (suelo, drenajes, ríos)
+              y <strong>(3) efectos</strong> en la vida acuática y en las personas.
+            </p>
+            <ul>
+              <li><strong>Sedimentos:</strong> suelo que llega al río por erosión (laderas, caminos, riberas sin vegetación).</li>
+              <li><strong>Nutrientes (N y P):</strong> exceso de fertilizantes y aguas grises → crece demasiada alga.</li>
+              <li><strong>Patógenos:</strong> aguas residuales y animales cerca de nacimientos → riesgo para la salud.</li>
+              <li><strong>Basura/plásticos:</strong> tapan drenajes, dañan fauna y empeoran paisaje.</li>
+            </ul>
+            <div class="result info">
+              <strong>Idea clave:</strong> “Lo que pasa arriba, se siente abajo”: prácticas en la parte alta y media
+              controlan el agua que llega a ríos y lagos.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Señales de alerta en el agua</strong></p>
+            <ul>
+              <li><strong>Agua turbia/café</strong> después de lluvia: erosión + sedimento.</li>
+              <li><strong>Mal olor/espuma</strong>: detergentes o aguas residuales.</li>
+              <li><strong>Algas</strong> en exceso: demasiados nutrientes.</li>
+              <li><strong>Peces boqueando</strong>: baja oxigenación (especialmente con materia orgánica).</li>
+            </ul>
+            <p><strong>Acciones que ayudan</strong></p>
+            <ul>
+              <li>Protección de <strong>riberas</strong> con vegetación (barrera natural).</li>
+              <li>Manejo de <strong>caminos</strong> (cunetas, drenajes) para no soltar sedimento.</li>
+              <li>Reducir vertidos: <strong>tratamiento</strong> o manejo de aguas grises.</li>
+              <li>Separar residuos y evitar plásticos en ríos y nacimientos.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Ruta 1: superficie</div>
+            <p class="s">Lluvia → escorrentía → cunetas/caminos → río → lago.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Ruta 2: subsuelo</div>
+            <p class="s">Infiltración → suelo → acuífero → nacimientos (agua más filtrada).</p>
+          </div>
+          <div class="pill">
+            <div class="t">Ruta 3: ribera</div>
+            <p class="s">Vegetación ribereña reduce sedimento y filtra parte de contaminantes.</p>
+          </div>
+        </div>
+
+        <div class="result warn" style="margin-top:12px;">
+          <strong>Reto de pensamiento:</strong> a veces “mejorar” un lugar (más cemento, más drenajes directos)
+          puede empeorar el agua si no se controla el sedimento y la basura.
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="nav">
+            <button class="btn" id="btnFit" type="button">Ajustar</button>
+            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental: cuidado del agua en la cuenca"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica conexión o recarga la página.
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · Laboratorio de calidad del agua (difícil)</h2>
+        <div class="hint">
+          Ajusta fuentes de contaminación y decisiones del territorio. Tu meta: mantener <strong>Oxígeno</strong> alto,
+          <strong>Turbidez</strong> baja y <strong>Riesgo sanitario</strong> bajo. El sistema es didáctico (simplificado) pero coherente.
+        </div>
+
+        <div class="labGrid">
+          <div class="box">
+            <div class="result info" style="margin-top:0">
+              <strong>Meta:</strong> Oxígeno ≥ 70 · Turbidez ≤ 35 · Riesgo sanitario ≤ 30 (escala 0–100).
+            </div>
+
+            <div class="ctrlRow">
+              <label for="slErosion">Erosión (laderas/caminos)</label>
+              <input id="slErosion" type="range" min="0" max="100" step="5" value="55">
+              <div class="val" id="vErosion">55</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="slSewage">Aguas residuales</label>
+              <input id="slSewage" type="range" min="0" max="100" step="5" value="40">
+              <div class="val" id="vSewage">40</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="slFert">Fertilizantes/escorrentía agrícola</label>
+              <input id="slFert" type="range" min="0" max="100" step="5" value="45">
+              <div class="val" id="vFert">45</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="slRip">Protección ribereña</label>
+              <input id="slRip" type="range" min="0" max="100" step="5" value="35">
+              <div class="val" id="vRip">35</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="slTreat">Tratamiento (fosas/filtros)</label>
+              <input id="slTreat" type="range" min="0" max="100" step="5" value="30">
+              <div class="val" id="vTreat">30</div>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn primary" id="btnLabCheck" type="button">Evaluar meta</button>
+              <button class="btn" id="btnLabReset" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="labScore">0</span></span>
+            </div>
+
+            <div class="result" id="labMsg" style="display:none;"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>Indicadores (0–100)</strong></p>
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Oxígeno (DO)</div>
+                <div class="v" id="kDO">0</div>
+                <div class="u">alto = mejor</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Turbidez</div>
+                <div class="v" id="kTUR">0</div>
+                <div class="u">bajo = mejor</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Algas (riesgo)</div>
+                <div class="v" id="kALG">0</div>
+                <div class="u">bajo = mejor</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Riesgo sanitario</div>
+                <div class="v" id="kSAN">0</div>
+                <div class="u">bajo = mejor</div>
+              </div>
+            </div>
+
+            <div class="bars" aria-label="Barras de estado">
+              <div class="bar">
+                <div class="top"><span>Oxígeno</span><span id="bDOt">—</span></div>
+                <div class="track"><div class="fill" id="bDO"></div></div>
+              </div>
+              <div class="bar">
+                <div class="top"><span>Turbidez</span><span id="bTURt">—</span></div>
+                <div class="track"><div class="fill" id="bTUR"></div></div>
+              </div>
+              <div class="bar">
+                <div class="top"><span>Algas</span><span id="bALGt">—</span></div>
+                <div class="track"><div class="fill" id="bALG"></div></div>
+              </div>
+              <div class="bar">
+                <div class="top"><span>Riesgo sanitario</span><span id="bSANt">—</span></div>
+                <div class="track"><div class="fill" id="bSAN"></div></div>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Lectura rápida:</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li>Más <strong>erosión</strong> → sube turbidez.</li>
+                <li>Más <strong>aguas residuales</strong> → sube riesgo sanitario y baja oxígeno.</li>
+                <li>Más <strong>fertilizantes</strong> → sube algas, y si es alto, baja oxígeno.</li>
+                <li>Más <strong>ribera</strong> + <strong>tratamiento</strong> → amortiguan impactos.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · Detective de la cuenca (lógica)</h2>
+        <div class="hint">
+          Tienes un “caso” con datos. Debes escoger <strong>3 evidencias</strong> y luego acusar a un sospechoso.
+          Es difícil: si eliges evidencias que no se conectan, te faltará una pieza clave.
+        </div>
+
+        <div class="caseGrid">
+          <div class="cardList">
+            <h3>Evidencias disponibles (elige 3)</h3>
+            <div id="eviList"></div>
+            <div class="result info" id="eviHint">
+              Selecciona 3 evidencias. Luego elige el sospechoso.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Caso</strong></p>
+            <p>
+              Después de dos semanas, una quebrada aparece con espuma, mal olor y peces boqueando. El agua también
+              se ve más turbia tras lluvias fuertes. La comunidad quiere saber <strong>qué fuente principal</strong>
+              explica el problema para actuar primero donde más importa.
+            </p>
+
+            <p style="margin-top:10px;"><strong>Sospechosos</strong></p>
+            <div class="suspects">
+              <button class="susBtn" data-sus="A" type="button">A) Taller mecánico</button>
+              <button class="susBtn" data-sus="B" type="button">B) Descarga de aguas residuales</button>
+              <button class="susBtn" data-sus="C" type="button">C) Erosión por caminos y laderas</button>
+              <button class="susBtn" data-sus="D" type="button">D) Exceso de fertilizantes</button>
+            </div>
+
+            <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn primary" id="btnCaseCheck" type="button">Resolver caso</button>
+              <button class="btn" id="btnCaseReset" type="button">Reiniciar</button>
+              <span class="mini">Racha: <span id="caseStreak">0</span></span>
+            </div>
+
+            <div class="result" id="caseMsg" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 3 -->
+      <section class="card">
+        <h2>Juego 3 · Reto de cálculo rápido (balance en cuenca)</h2>
+        <div class="hint">
+          Te saldrán <strong>8 preguntas</strong> con números distintos. Debes calcular en segundos.
+          Si te equivocas, te muestra dónde fallaste. (Usa el teclado, no calculadora 😅)
+        </div>
+
+        <div class="mathGrid">
+          <div class="qCard">
+            <div class="qTop">
+              <div class="qTitle" id="qTitle">Pregunta 1/8</div>
+              <div class="timer">⏱️ <span id="qTime">45</span>s</div>
+            </div>
+
+            <div class="equation" id="qText"></div>
+
+            <div class="ansRow">
+              <input id="qAns" type="number" inputmode="decimal" placeholder="Escribe tu respuesta numérica…" />
+              <button class="btn primary" id="btnSubmit" type="button">Enviar</button>
+              <button class="btn" id="btnSkipQ" type="button">Saltar</button>
+            </div>
+
+            <div class="hud">
+              <span class="mini">Aciertos: <span id="qOk">0</span></span>
+              <span class="mini">Errores: <span id="qBad">0</span></span>
+              <span class="mini">Puntos: <span id="qPts">0</span></span>
+              <button class="btn" id="btnRestartQ" type="button">Reiniciar</button>
+            </div>
+
+            <div class="result" id="qMsg" style="display:none;"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>Fórmulas del reto</strong> (se usan tal cual)</p>
+            <ul>
+              <li><strong>Balance:</strong> <code>P = ET + Q + R</code> (mm) donde <code>R</code> es recarga.</li>
+              <li><strong>Escorrentía:</strong> <code>Q = P × C</code> (C: coeficiente 0–1).</li>
+              <li><strong>Recarga:</strong> <code>R = (P − ET − Q)</code> (si da negativo, se toma 0).</li>
+              <li><strong>% de cambio:</strong> <code>% = (nuevo − viejo)/viejo × 100</code>.</li>
+            </ul>
+
+            <div class="result warn">
+              <strong>Consejo:</strong> redondea al entero más cercano cuando te lo pida el ejercicio.
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Puntos:</strong> cada acierto da +2, pero si respondes en menos de 10s te da +3.
+              Si te equivocas, −1 (mínimo 0).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap) — usando autoloader (como tu ejemplo que sí funciona)
+    // =========================
+    const md = `
+# 3.10 Cuidemos el agua en la cuenca
+## Qué significa “cuidar”
+- Cantidad (agua disponible)
+- Calidad (limpia y segura)
+- Continuidad (no solo en invierno)
+## Fuentes de problema
+- Sedimentos (erosión)
+- Nutrientes (fertilizantes / aguas grises)
+- Aguas residuales (patógenos)
+- Basura y plásticos
+## Rutas en la cuenca
+- Superficie: escorrentía → río → lago
+- Subsuelo: infiltración → acuífero → nacimientos
+- Ribera: vegetación filtra y amortigua
+## Señales de alerta
+- Turbidez (agua café)
+- Espuma / olor
+- Algas en exceso
+- Peces boqueando (bajo oxígeno)
+## Acciones clave
+- Proteger riberas con vegetación
+- Manejo de caminos y drenajes
+- Tratamiento de aguas grises/residuales
+- Reducir fertilizantes y mantener suelo cubierto
+- Limpieza y separación de residuos
+`.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function renderMap(){
+      const fb = document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const t = new Transformer();
+        const { root } = t.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        expanded = true;
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const it = setInterval(() => {
+      tries++;
+      const ok = renderMap();
+      if (ok || tries > 12) clearInterval(it);
+    }, 300);
+
+    document.getElementById('btnFit').onclick = () => mm && mm.fit();
+    document.getElementById('btnToggle').onclick = () => {
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded = !expanded;
+    };
+    document.getElementById('btnResetMap').onclick = () => { mm = null; expanded = true; renderMap(); };
+
+    // =========================
+    // JUEGO 1: LABORATORIO (modelo didáctico)
+    // =========================
+    const slErosion = document.getElementById('slErosion');
+    const slSewage  = document.getElementById('slSewage');
+    const slFert    = document.getElementById('slFert');
+    const slRip     = document.getElementById('slRip');
+    const slTreat   = document.getElementById('slTreat');
+
+    const vErosion = document.getElementById('vErosion');
+    const vSewage  = document.getElementById('vSewage');
+    const vFert    = document.getElementById('vFert');
+    const vRip     = document.getElementById('vRip');
+    const vTreat   = document.getElementById('vTreat');
+
+    const kDO  = document.getElementById('kDO');
+    const kTUR = document.getElementById('kTUR');
+    const kALG = document.getElementById('kALG');
+    const kSAN = document.getElementById('kSAN');
+
+    const bDO  = document.getElementById('bDO');
+    const bTUR = document.getElementById('bTUR');
+    const bALG = document.getElementById('bALG');
+    const bSAN = document.getElementById('bSAN');
+
+    const bDOt  = document.getElementById('bDOt');
+    const bTURt = document.getElementById('bTURt');
+    const bALGt = document.getElementById('bALGt');
+    const bSANt = document.getElementById('bSANt');
+
+    const labMsg   = document.getElementById('labMsg');
+    const labScore = document.getElementById('labScore');
+    let labPts = 0;
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    // Modelo simplificado:
+    // - Turbidez: erosión menos ribera (filtra) y un poco menos por "buen tratamiento" (menos basura en drenajes)
+    // - Sanitario: aguas residuales amortiguadas por tratamiento y por ribera (menos acceso directo)
+    // - Algas: fertilizantes amortiguados por ribera; si hay aguas residuales también aportan nutrientes.
+    // - Oxígeno: baja si hay muchas algas y mucha carga orgánica (residuales). sube si hay ribera (sombra) y tratamiento.
+    function calcLab(E, S, F, R, T){
+      // E,S,F,R,T en 0..100
+      const turb = clamp( 10 + (0.72*E) - (0.38*R) - (0.10*T), 0, 100 );
+      const san  = clamp( 8  + (0.86*S) - (0.62*T) - (0.18*R), 0, 100 );
+      const alg  = clamp( 10 + (0.70*F) + (0.25*S) - (0.42*R), 0, 100 );
+
+      const doDrop = (0.55*alg) + (0.55*san);     // demanda de oxígeno
+      const doGain = (0.35*R) + (0.55*T);         // amortiguación/condiciones
+      const oxi = clamp( 92 - doDrop + doGain, 0, 100 );
+
+      return { turb, san, alg, oxi };
+    }
+
+    function fillClassBetterLow(x){
+      if (x <= 35) return "good";
+      if (x <= 55) return "warn";
+      return "bad";
+    }
+    function fillClassBetterHigh(x){
+      if (x >= 70) return "good";
+      if (x >= 50) return "warn";
+      return "bad";
+    }
+
+    function setBar(el, val, mode){
+      el.style.width = `${clamp(val,0,100)}%`;
+      el.classList.remove('good','warn','bad');
+      if(mode === "low"){
+        el.classList.add(fillClassBetterLow(val));
+      }else{
+        el.classList.add(fillClassBetterHigh(val));
+      }
+    }
+
+    function updateLab(){
+      const E = Number(slErosion.value);
+      const S = Number(slSewage.value);
+      const F = Number(slFert.value);
+      const R = Number(slRip.value);
+      const T = Number(slTreat.value);
+
+      vErosion.textContent = String(E);
+      vSewage.textContent  = String(S);
+      vFert.textContent    = String(F);
+      vRip.textContent     = String(R);
+      vTreat.textContent   = String(T);
+
+      const out = calcLab(E,S,F,R,T);
+
+      kDO.textContent  = Math.round(out.oxi);
+      kTUR.textContent = Math.round(out.turb);
+      kALG.textContent = Math.round(out.alg);
+      kSAN.textContent = Math.round(out.san);
+
+      bDOt.textContent  = `${Math.round(out.oxi)}`;
+      bTURt.textContent = `${Math.round(out.turb)}`;
+      bALGt.textContent = `${Math.round(out.alg)}`;
+      bSANt.textContent = `${Math.round(out.san)}`;
+
+      setBar(bDO,  out.oxi,  "high");
+      setBar(bTUR, out.turb, "low");
+      setBar(bALG, out.alg,  "low");
+      setBar(bSAN, out.san,  "low");
+    }
+
+    [slErosion, slSewage, slFert, slRip, slTreat].forEach(el => el.addEventListener('input', updateLab));
+
+    document.getElementById('btnLabCheck').addEventListener('click', () => {
+      const out = calcLab(
+        Number(slErosion.value),
+        Number(slSewage.value),
+        Number(slFert.value),
+        Number(slRip.value),
+        Number(slTreat.value)
+      );
+
+      const okO = out.oxi >= 70;
+      const okT = out.turb <= 35;
+      const okS = out.san <= 30;
+
+      labMsg.style.display = "block";
+      if (okO && okT && okS){
+        labPts += 1;
+        labScore.textContent = String(labPts);
+        labMsg.className = "result ok";
+        labMsg.innerHTML =
+          `<strong>✅ Meta lograda.</strong><br>` +
+          `Oxígeno: <strong>${Math.round(out.oxi)}</strong> · Turbidez: <strong>${Math.round(out.turb)}</strong> · Riesgo sanitario: <strong>${Math.round(out.san)}</strong>.`;
+      } else {
+        labMsg.className = "result no";
+        labMsg.innerHTML =
+          `<strong>❌ Meta no lograda.</strong><br>` +
+          `Oxígeno: <strong>${Math.round(out.oxi)}</strong> (≥70) · Turbidez: <strong>${Math.round(out.turb)}</strong> (≤35) · Riesgo sanitario: <strong>${Math.round(out.san)}</strong> (≤30).` +
+          `<div style="margin-top:6px;color:rgba(11,16,32,.78)"><strong>Pista:</strong> sube <em>ribera</em> y <em>tratamiento</em>, y baja <em>erosión</em> y <em>residuales</em>.</div>`;
+      }
+    });
+
+    document.getElementById('btnLabReset').addEventListener('click', () => {
+      labPts = 0;
+      labScore.textContent = "0";
+      slErosion.value = 55;
+      slSewage.value  = 40;
+      slFert.value    = 45;
+      slRip.value     = 35;
+      slTreat.value   = 30;
+      labMsg.style.display = "none";
+      updateLab();
+    });
+
+    updateLab();
+
+    // =========================
+    // JUEGO 2: DETECTIVE (lógico)
+    // =========================
+    const EVIDENCES = [
+      { id:"e1", t:"Espuma persistente", s:"Se observa espuma blanca incluso sin lluvia.", tag:"Señal", hint:"Detergentes o aguas grises" },
+      { id:"e2", t:"Mal olor tipo “cloaca”", s:"Se intensifica al atardecer y cerca de viviendas.", tag:"Olor", hint:"Materia orgánica/aguas residuales" },
+      { id:"e3", t:"Peces boqueando", s:"En pozas lentas, especialmente por la noche.", tag:"Fauna", hint:"Bajo oxígeno" },
+      { id:"e4", t:"Agua café tras lluvia", s:"La turbidez sube fuerte con tormenta.", tag:"Sedimento", hint:"Erosión y escorrentía" },
+      { id:"e5", t:"Algas verdes en orillas", s:"Crecimiento más fuerte con sol.", tag:"Nutrientes", hint:"Exceso de N y P" },
+      { id:"e6", t:"Zanja que llega directo al río", s:"Un tubo descarga cerca del puente.", tag:"Ruta", hint:"Entrada puntual" },
+      { id:"e7", t:"Manchas aceitosas", s:"Arco iris en superficie cerca de taller.", tag:"Aceite", hint:"Hidrocarburos" },
+      { id:"e8", t:"Lluvia no cambia el olor", s:"Aunque llueva, el olor sigue igual.", tag:"Patrón", hint:"Fuente constante" }
+    ];
+
+    // Solución lógica deseada: principal = aguas residuales (B)
+    // Evidencias clave: e1 (espuma), e2 (mal olor), e6 (descarga directa) o e8 (constante) y e3 (bajo oxígeno)
+    // Sedimento y fertilizantes aparecen como secundarios (e4/e5), pero no explican espuma + olor + patógeno.
+    const KEY_SET = new Set(["e1","e2","e3","e6","e8"]); // cualquiera 3 de aquí da “fuerte”
+    const eviList = document.getElementById('eviList');
+    const eviHint = document.getElementById('eviHint');
+    const caseMsg = document.getElementById('caseMsg');
+    const caseStreak = document.getElementById('caseStreak');
+
+    let chosen = new Set();
+    let suspect = null;
+    let streak = 0;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function renderEvi(){
+      eviList.innerHTML = "";
+      caseMsg.style.display = "none";
+      suspect = null;
+      document.querySelectorAll('.susBtn').forEach(b => b.classList.remove('active'));
+
+      const sh = shuffle(EVIDENCES);
+      sh.forEach((ev, idx) => {
+        const b = document.createElement('button');
+        b.type="button";
+        b.className="evi";
+        b.dataset.id = ev.id;
+        b.innerHTML = `<div>
+            <div>${ev.t}</div>
+            <div class="small">${ev.s}</div>
+          </div>
+          <span class="tag">${ev.tag}</span>`;
+        b.addEventListener('click', () => {
+          const id = ev.id;
+
+          if (chosen.has(id)){
+            chosen.delete(id);
+            b.classList.remove('selected');
+          } else {
+            if (chosen.size >= 3) return;
+            chosen.add(id);
+            b.classList.add('selected');
+          }
+
+          const left = 3 - chosen.size;
+          eviHint.className = "result info";
+          eviHint.innerHTML = left > 0
+            ? `Seleccionadas: <strong>${chosen.size}/3</strong>. Elige <strong>${left}</strong> más.`
+            : `Seleccionadas: <strong>3/3</strong>. Ahora elige un sospechoso y resuelve.`;
+
+          if (chosen.size < 3){
+            caseMsg.style.display = "none";
+          }
+        });
+
+        eviList.appendChild(b);
+
+        // Bloquecito de “pista oculta”: aparece si se mantiene presionado (mouse) o long press (touch)
+        b.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          eviHint.className = "result warn";
+          eviHint.innerHTML = `<strong>Pista técnica:</strong> ${ev.hint}`;
+        });
+      });
+
+      eviHint.className = "result info";
+      eviHint.innerHTML = "Selecciona 3 evidencias. (Tip: clic derecho sobre una evidencia para ver una pista técnica.)";
+    }
+
+    document.querySelectorAll('.susBtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        suspect = btn.dataset.sus;
+        document.querySelectorAll('.susBtn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        caseMsg.style.display = "none";
+      });
+    });
+
+    document.getElementById('btnCaseCheck').addEventListener('click', () => {
+      caseMsg.style.display = "block";
+
+      if (chosen.size < 3){
+        caseMsg.className = "result warn";
+        caseMsg.innerHTML = "<strong>Falta evidencia.</strong> Debes elegir 3 evidencias antes de acusar.";
+        return;
+      }
+      if (!suspect){
+        caseMsg.className = "result warn";
+        caseMsg.innerHTML = "<strong>Falta sospechoso.</strong> Elige A, B, C o D.";
+        return;
+      }
+
+      // Puntaje de evidencia: contar cuántas están en el set clave
+      let keyCount = 0;
+      chosen.forEach(id => { if (KEY_SET.has(id)) keyCount++; });
+
+      // Regla difícil:
+      // - Para acusar B (correcto), necesitas al menos 2 evidencias clave, y una debe ser olor o descarga (e2 o e6 o e8).
+      // - C y D “pueden” parecer correctos si seleccionas solo e4/e5 pero te faltará espuma/olor.
+      const hasStrong = chosen.has("e2") || chosen.has("e6") || chosen.has("e8");
+
+      const correct = (suspect === "B") && (keyCount >= 2) && hasStrong;
+
+      if (correct){
+        streak += 1;
+        caseStreak.textContent = String(streak);
+        caseMsg.className = "result ok";
+        caseMsg.innerHTML =
+          `<strong>✅ Caso resuelto.</strong><br>
+           La evidencia apunta a <strong>descarga de aguas residuales</strong>: espuma/olor + entrada puntual/constante + bajo oxígeno.` +
+          `<div style="margin-top:6px;color:rgba(11,16,32,.78)">
+            <strong>Acción prioritaria:</strong> detener vertido directo y mejorar tratamiento (fosas/filtrado), además de protección ribereña.
+          </div>`;
+      } else {
+        streak = 0;
+        caseStreak.textContent = "0";
+        caseMsg.className = "result no";
+        let msg = "No encaja del todo. ";
+        if (suspect === "C"){
+          msg += "La erosión explica turbidez tras lluvia, pero no explica espuma + olor constante.";
+        } else if (suspect === "D"){
+          msg += "Fertilizantes explican algas, pero faltan señales claras de aguas residuales.";
+        } else if (suspect === "A"){
+          msg += "Un taller puede causar manchas aceitosas, pero aquí la pista fuerte es olor/espuma.";
+        } else {
+          msg += "Elegiste B, pero faltó la evidencia clave (olor/descarga/constancia) o no juntaste suficientes señales.";
+        }
+        caseMsg.innerHTML =
+          `<strong>❌ No resuelto.</strong><br>${msg}` +
+          `<div style="margin-top:6px;color:rgba(11,16,32,.78)">
+            <strong>Pista:</strong> combina señales de <em>olor/espuma</em> + <em>entrada puntual/constante</em> + <em>bajo oxígeno</em>.
+          </div>`;
+      }
+    });
+
+    document.getElementById('btnCaseReset').addEventListener('click', () => {
+      chosen = new Set();
+      suspect = null;
+      caseMsg.style.display = "none";
+      renderEvi();
+    });
+
+    renderEvi();
+
+    // =========================
+    // JUEGO 3: RETO DE CÁLCULO
+    // =========================
+    const qTitle = document.getElementById('qTitle');
+    const qText  = document.getElementById('qText');
+    const qAns   = document.getElementById('qAns');
+    const qMsg   = document.getElementById('qMsg');
+    const qTime  = document.getElementById('qTime');
+    const qOkEl  = document.getElementById('qOk');
+    const qBadEl = document.getElementById('qBad');
+    const qPtsEl = document.getElementById('qPts');
+
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnSkipQ  = document.getElementById('btnSkipQ');
+    const btnRestartQ = document.getElementById('btnRestartQ');
+
+    let qIdx = 0;
+    let qOk = 0;
+    let qBad = 0;
+    let qPts = 0;
+    let timer = null;
+    let secondsLeft = 45;
+    let startedAt = 0;
+
+    function rndInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+    function nearInt(x){ return Math.round(x); }
+    function pct(n){ return Math.round(n*10)/10; }
+
+    function makeQuestion(){
+      // 4 tipos: balance, escorrentía, recarga, % cambio
+      const type = rndInt(1,4);
+      if (type === 1){
+        // P = ET + Q + R  => pedir R
+        const P = rndInt(600, 1400);
+        const ET = rndInt(200, 650);
+        const C = rndInt(18, 55) / 100;   // coef de escorrentía
+        const Q = nearInt(P * C);
+        const R = Math.max(0, nearInt(P - ET - Q));
+        return {
+          type,
+          prompt: `Con <code>P=${P}</code> mm, <code>ET=${ET}</code> mm y coeficiente <code>C=${C.toFixed(2)}</code>, calcula <strong>Q</strong> y luego <strong>R</strong> con <code>R=P-ET-Q</code>. Responde solo <strong>R</strong> (entero).`,
+          answer: R,
+          explain: `Q = P×C = ${P}×${C.toFixed(2)} ≈ ${Q}. Luego R = P−ET−Q = ${P}−${ET}−${Q} = ${R}.`
+        };
+      }
+      if (type === 2){
+        // Q = P×C, pedir Q
+        const P = rndInt(400, 1600);
+        const C = rndInt(10, 65)/100;
+        const Q = nearInt(P*C);
+        return {
+          type,
+          prompt: `En una cuenca, <code>Q=P×C</code>. Si <code>P=${P}</code> mm y <code>C=${C.toFixed(2)}</code>, ¿cuál es <strong>Q</strong>? (redondea al entero).`,
+          answer: Q,
+          explain: `Q = ${P}×${C.toFixed(2)} ≈ ${Q}.`
+        };
+      }
+      if (type === 3){
+        // R = P - ET - Q (si negativo, 0) pedir R con Q dado
+        const P = rndInt(500, 1500);
+        const ET = rndInt(250, 800);
+        const Q = rndInt(120, 620);
+        const R = Math.max(0, nearInt(P - ET - Q));
+        return {
+          type,
+          prompt: `Balance: <code>R=P−ET−Q</code> (si da negativo, usa 0). Con <code>P=${P}</code> mm, <code>ET=${ET}</code> mm y <code>Q=${Q}</code> mm, ¿cuál es <strong>R</strong>?`,
+          answer: R,
+          explain: `R = ${P}−${ET}−${Q} = ${P-ET-Q}. Si es negativo, R=0. Resultado: ${R}.`
+        };
+      }
+      // type 4: % cambio
+      const oldV = rndInt(30, 85);
+      const newV = rndInt(20, 95);
+      const pctCh = pct(((newV-oldV)/oldV)*100);
+      return {
+        type,
+        prompt: `Cambio porcentual: <code>%=(nuevo−viejo)/viejo×100</code>. Si “vegetación ribereña” pasa de <code>${oldV}%</code> a <code>${newV}%</code>, ¿cuál es el cambio en %? (redondea a 1 decimal)`,
+        answer: pctCh,
+        explain: `% = (${newV}−${oldV})/${oldV}×100 = ${pctCh}%.`
+      };
+    }
+
+    let questions = [];
+
+    function resetQuiz(){
+      qIdx = 0; qOk = 0; qBad = 0; qPts = 0;
+      qOkEl.textContent = "0";
+      qBadEl.textContent = "0";
+      qPtsEl.textContent = "0";
+      questions = Array.from({length: 8}, () => makeQuestion());
+      loadQ();
+    }
+
+    function setTimer(on){
+      if (timer){ clearInterval(timer); timer = null; }
+      if (!on) return;
+      timer = setInterval(() => {
+        secondsLeft--;
+        qTime.textContent = String(secondsLeft);
+        if (secondsLeft <= 0){
+          // auto-fail
+          clearInterval(timer); timer = null;
+          qMsg.style.display = "block";
+          qMsg.className = "result no";
+          qMsg.innerHTML = `<strong>⏱️ Tiempo.</strong> Respuesta correcta: <strong>${questions[qIdx].answer}</strong>.`;
+          qBad++; qBadEl.textContent = String(qBad);
+          qPts = Math.max(0, qPts - 1);
+          qPtsEl.textContent = String(qPts);
+          btnSubmit.disabled = true;
+          setTimeout(nextQ, 650);
+        }
+      }, 1000);
+    }
+
+    function loadQ(){
+      qAns.value = "";
+      qAns.focus();
+      qMsg.style.display = "none";
+      btnSubmit.disabled = false;
+
+      secondsLeft = 45;
+      qTime.textContent = String(secondsLeft);
+      startedAt = Date.now();
+      setTimer(true);
+
+      qTitle.textContent = `Pregunta ${qIdx+1}/8`;
+      qText.innerHTML = questions[qIdx].prompt;
+    }
+
+    function scoreFast(){
+      const elapsedSec = (Date.now() - startedAt) / 1000;
+      // +3 si < 10s, si no +2
+      return elapsedSec < 10 ? 3 : 2;
+    }
+
+    function normalizeAnswer(val, target){
+      // Para tipo 4 aceptamos una tolerancia pequeña (0.1)
+      const q = questions[qIdx];
+      if (q.type === 4){
+        const v = Number(val);
+        if (Number.isFinite(v) && Math.abs(v - target) <= 0.11) return true;
+        return false;
+      }
+      // enteros exactos para los demás
+      return Number(val) === Number(target);
+    }
+
+    function submit(){
+      const q = questions[qIdx];
+      const ansRaw = qAns.value;
+      const ans = ansRaw === "" ? NaN : Number(ansRaw);
+
+      const ok = normalizeAnswer(ans, q.answer);
+
+      clearInterval(timer); timer = null;
+      btnSubmit.disabled = true;
+
+      qMsg.style.display = "block";
+      if (ok){
+        qOk++; qOkEl.textContent = String(qOk);
+        qPts += scoreFast();
+        qPtsEl.textContent = String(qPts);
+        qMsg.className = "result ok";
+        qMsg.innerHTML = `<strong>✅ Correcto.</strong> ${q.explain}`;
+      } else {
+        qBad++; qBadEl.textContent = String(qBad);
+        qPts = Math.max(0, qPts - 1);
+        qPtsEl.textContent = String(qPts);
+        qMsg.className = "result no";
+        qMsg.innerHTML = `<strong>❌ Incorrecto.</strong><br>Tu respuesta: <strong>${ansRaw || "—"}</strong> · Correcta: <strong>${q.answer}</strong>.<br>${q.explain}`;
+      }
+
+      setTimeout(nextQ, 900);
+    }
+
+    function nextQ(){
+      qIdx++;
+      if (qIdx >= 8){
+        // end
+        qTitle.textContent = "Reto completado";
+        qText.innerHTML = `Resultados: <strong>${qOk}/8</strong> aciertos · <strong>${qBad}</strong> errores · <strong>${qPts}</strong> puntos.`;
+
+        qMsg.style.display = "block";
+        qMsg.className = (qOk >= 7 ? "result ok" : qOk >= 5 ? "result warn" : "result no");
+        qMsg.innerHTML =
+          (qOk >= 7
+            ? "<strong>🔥 Nivel experto.</strong> Ya manejas balance hídrico y porcentajes con rapidez."
+            : qOk >= 5
+            ? "<strong>💧 Buen nivel.</strong> Repite para subir precisión y velocidad."
+            : "<strong>⚠️ Reto duro.</strong> Repite y revisa fórmulas con calma antes de correr."
+          ) + `<div style="margin-top:6px;color:rgba(11,16,32,.78)"><strong>Tip:</strong> calcula primero lo que te piden (ej: Q) y luego R.</div>`;
+
+        qAns.blur();
+        setTimer(false);
+        return;
+      }
+      loadQ();
+    }
+
+    btnSubmit.addEventListener('click', submit);
+    btnSkipQ.addEventListener('click', () => {
+      clearInterval(timer); timer = null;
+      qBad++; qBadEl.textContent = String(qBad);
+      qPts = Math.max(0, qPts - 1);
+      qPtsEl.textContent = String(qPts);
+      qMsg.style.display = "block";
+      qMsg.className = "result warn";
+      qMsg.innerHTML = `<strong>Saltaste.</strong> Correcta: <strong>${questions[qIdx].answer}</strong>.`;
+      btnSubmit.disabled = true;
+      setTimeout(nextQ, 650);
+    });
+
+    btnRestartQ.addEventListener('click', () => {
+      setTimer(false);
+      resetQuiz();
+    });
+
+    // enter = enviar
+    qAns.addEventListener('keydown', (e) => {
+      if (e.key === "Enter") submit();
+    });
+
+    resetQuiz();
+  </script>
+</body>
+</html>
