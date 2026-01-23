@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.5 Aprovechamiento de residuos y desechos sólidos · EPC AALA</title>
+  <meta name="description" content="Economía circular, separación en origen, compostaje y reciclaje. Actividades interactivas + arcade." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+
+/* Extra game styles (module 5.5–5.10) */
+.gameGrid{ margin-top: 10px; display:grid; grid-template-columns: 1.1fr .9fr; gap: 12px; align-items:start; }
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+.stage{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.60);
+  box-shadow: var(--shadow-soft);
+  padding: 12px;
+  overflow:hidden;
+}
+.stage h3{ margin:0 0 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 14px; letter-spacing:.2px; }
+.stage p{ margin: 0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+canvas.gameCanvas{
+  width: 100%;
+  height: 360px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.66);
+  box-shadow: 0 10px 22px rgba(11,16,32,.08);
+  touch-action: none;
+}
+.controlsRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+.pad{
+  display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:10px;
+}
+.pad .btn{ width:100%; justify-content:center; padding: 12px 12px; font-size: 13px; }
+.smallMuted{ color: rgba(11,16,32,.68); font-size: 12.5px; line-height: 1.45; }
+
+.dragGrid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+@media (max-width: 980px){ .dragGrid{ grid-template-columns: 1fr; } }
+.dropZone{
+  border-radius: 18px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  min-height: 140px;
+}
+.dropZone h4{ margin:0 0 8px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 13px; }
+.draggables{ display:flex; flex-wrap:wrap; gap:10px; }
+.dragItem{
+  user-select:none;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.72);
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 12.5px;
+  cursor: grab;
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+}
+.dragItem:active{ cursor: grabbing; transform: translateY(1px); }
+.zoneList{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.zoneList .mini{ margin:0; }
+.kv{
+  display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;
+}
+@media (max-width: 520px){ .kv{ grid-template-columns: 1fr; } }
+.kv .kpi{ padding: 12px; }
+.bigNum{ font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 22px; letter-spacing:.2px; }
+table.tiny{
+  width:100%;
+  border-collapse: collapse;
+  overflow:hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.62);
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+  margin-top: 10px;
+}
+table.tiny th, table.tiny td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(11,16,32,.10);
+  text-align:left;
+  font-size: 13px;
+  color: rgba(11,16,32,.82);
+}
+table.tiny th{
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 12.8px;
+  background: rgba(120,210,255,.18);
+}
+table.tiny tr:last-child td{ border-bottom:none; }
+
+.gridPuzzle{
+  display:grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap:6px;
+  margin-top:10px;
+}
+@media (max-width: 520px){ .gridPuzzle{ grid-template-columns: repeat(8, 1fr); } }
+.cell{
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  border: 1px solid rgba(11,16,32,.14);
+  background: rgba(255,255,255,.70);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  color: rgba(11,16,32,.78);
+  user-select:none;
+  cursor:pointer;
+}
+.cell.on{ background: rgba(120,210,255,.26); border-color: rgba(35,140,210,.20); }
+.cell.bad{ background: rgba(225,29,72,.14); border-color: rgba(225,29,72,.22); }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.5 Aprovechamiento de residuos y desechos sólidos</h1>
+        <p class="subtitle">Aprovechar residuos significa <strong>reducir la basura</strong>, recuperar materiales y transformar lo orgánico en abono (compost). Esto disminuye contaminación, costos de manejo y presión sobre botaderos y rellenos, algo especialmente importante en una cuenca como la de <strong>Atitlán–Sololá</strong>.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-4.html">Anterior (5.4)</a>
+        <a class="btn primary" href="5-6.html">Siguiente (5.6)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <section class="card">
+        <h2>Teoría ampliada y contexto local</h2>
+        
+        <div class="twoCols" style="margin-top:10px;">
+          <div class="box">
+<p><strong>Idea central:</strong> “Aprovechar” es pasar de un modelo lineal (usar–botar) a uno de <strong>economía circular</strong>:
+prevenir residuos, reusar, reciclar y devolver nutrientes al suelo.</p>
+<ul>
+  <li><strong>Prevención:</strong> comprar menos desechables, elegir productos durables.</li>
+  <li><strong>Reuso:</strong> reparar, rellenar, donar, reusar envases.</li>
+  <li><strong>Reciclaje:</strong> separar materiales limpios (papel, cartón, vidrio, metales, plásticos).</li>
+  <li><strong>Valorización orgánica:</strong> compostaje o lombricompost para volver <em>nutrientes</em> al suelo.</li>
+</ul>
+<div class="result info" style="margin-top:10px;">
+  <strong>En cuencas hidrográficas:</strong> cuando la basura llega a quebradas y ríos, aumenta el riesgo de inundaciones
+  (taponamientos), contamina el agua y afecta fauna.
+</div>
+</div>
+          <div class="box">
+<p><strong>Separación en origen (la regla de oro)</strong></p>
+<ul>
+  <li><strong>Orgánico:</strong> restos de cocina, cáscaras, hojas secas, poda (sin plástico).</li>
+  <li><strong>Reciclable:</strong> materiales <em>secos y limpios</em> (evitar grasa/mezclas).</li>
+  <li><strong>No aprovechable:</strong> pañales, toallas sanitarias, colillas, empaques sucios.</li>
+  <li><strong>Especial/peligroso:</strong> pilas, electrónicos, aceites, medicinas (no al basurero común).</li>
+</ul>
+<div class="result warn" style="margin-top:10px;">
+  <strong>Tip práctico:</strong> “Si está sucio de comida o aceite, ya no es buen reciclaje”.
+  Mejor <em>lavar</em> o pasarlo a la fracción no aprovechable (según material).
+</div>
+</div>
+        </div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Compostaje (rápido)</div>
+    <p class="s">Mezcla “verdes” (húmedos) + “cafés” (secos), airea y controla humedad. Resultado: abono para huertos y suelos.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Lombricompost</div>
+    <p class="s">Usa lombrices para transformar residuos orgánicos suaves. Produce humus de alta calidad y lixiviado (usar diluido).</p>
+  </div>
+  <div class="pill">
+    <div class="t">Reciclaje responsable</div>
+    <p class="s">Separación limpia + acopio/centros + rutas de recolección. Lo mezclado pierde valor y termina en botaderos.</p>
+  </div>
+</div>
+
+<div class="twoCols" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Compostaje: pasos claros</strong></p>
+    <ul>
+      <li><strong>1) Preparar:</strong> triturar un poco (acelera) y evitar carnes/grasas (olores).</li>
+      <li><strong>2) Proporción:</strong> alternar capas de “verde” (cocina) y “café” (hojas secas/cartón sin tinta brillante).</li>
+      <li><strong>3) Humedad:</strong> como “esponja exprimida”: húmedo, sin chorrear.</li>
+      <li><strong>4) Aireación:</strong> voltear cada 1–2 semanas para que no se “ahogue”.</li>
+      <li><strong>5) Madurez:</strong> cuando huele a tierra, ya no se distinguen restos y baja temperatura.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <p><strong>Aplicación en Sololá (cuenca del lago)</strong></p>
+    <ul>
+      <li>Reducir residuos en calles y playas evita que el viento/lluvia los lleve al lago.</li>
+      <li>Compost en huertos y terrazas ayuda a <strong>mejorar suelo</strong> y aumentar infiltración en laderas.</li>
+      <li>Separación por hogares, mercados y turismo (hoteles/restaurantes) es clave: generan grandes volúmenes de orgánicos.</li>
+      <li>El aceite usado debe recolectarse aparte: un vertido pequeño contamina mucha agua y daña drenajes.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="result info" style="margin-top:12px;">
+  <strong>Mini‑glosario:</strong>
+  <ul style="margin:8px 0 0 18px;">
+    <li><strong>Valorización:</strong> convertir un residuo en material útil (abono, reciclaje, energía).</li>
+    <li><strong>Material “contaminado”:</strong> reciclable con grasa/mezcla, pierde valor y complica el proceso.</li>
+    <li><strong>Fracción orgánica:</strong> parte biodegradable; al separarla se reduce el peso del camión y el olor en botaderos.</li>
+  </ul>
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Economía circular · separación · compostaje · acciones en cuenca</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental del tema"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Verifica conexión o recarga.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · Arcade “Clasifica rápido” (aprovechamiento)</h2>
+        <div class="hint">
+          En cada ronda cae un residuo. Antes de que llegue al fondo, toca la categoría correcta:
+          <strong>Compost</strong>, <strong>Reciclaje</strong> o <strong>Basura</strong>. Aumenta la velocidad con tu puntaje.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Arcade</h3>
+            <p>Meta: 20 aciertos sin perder 3 vidas.</p>
+            <canvas class="gameCanvas" id="tsCanvas"></canvas>
+
+            <div class="pad" aria-label="Controles de clasificación">
+              <button class="btn" type="button" id="btnCompost">Compost</button>
+              <button class="btn" type="button" id="btnRecycle">Reciclaje</button>
+              <button class="btn" type="button" id="btnTrash">Basura</button>
+            </div>
+
+            <div class="controlsRow">
+              <button class="btn" type="button" id="tsStart">Iniciar</button>
+              <button class="btn" type="button" id="tsPause">Pausa</button>
+              <button class="btn" type="button" id="tsReset">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="tsScore">0</span></span>
+              <span class="mini">Vidas: <span id="tsLives">3</span></span>
+              <span class="mini">Racha: <span id="tsStreak">0</span></span>
+            </div>
+
+            <div class="result info" id="tsMsg" style="display:none;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Aprendizaje</h3>
+            <p class="smallMuted">
+              Regla rápida: reciclaje es <strong>seco y limpio</strong>. Si está grasoso o contaminado con comida,
+              suele pasar a “basura” (según material) o requiere lavado.
+            </p>
+
+            <div class="result warn">
+              <strong>Trampas comunes:</strong> cartón con grasa, servilletas sucias, bolsas con restos de comida,
+              envases con aceite y pañales.
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Consejo de cuenca:</strong> en época de lluvia, la basura en calles se mueve por escorrentía
+              hacia tragantes y ríos. Separar y asegurar bolsas reduce fugas al ambiente.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Laboratorio de compost (simulador)</h2>
+        <div class="hint">
+          Ajusta el equilibrio para lograr un compost “maduro”: buena <strong>aireación</strong>, <strong>humedad</strong> adecuada
+          y un C:N razonable. Si te pasas, aparecerán problemas (olor, moscas, lento).
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Controles</h3>
+
+            <div class="ctrlRow">
+              <label for="cn">Relación C:N</label>
+              <input id="cn" type="range" min="10" max="40" step="1" value="28">
+              <div class="val" id="cnVal">28</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="hum">Humedad</label>
+              <input id="hum" type="range" min="25" max="75" step="1" value="55">
+              <div class="val" id="humVal">55%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="air">Aireación (volteo)</label>
+              <input id="air" type="range" min="0" max="10" step="1" value="6">
+              <div class="val" id="airVal">6/10</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="size">Tamaño del material</label>
+              <input id="size" type="range" min="0" max="2" step="1" value="1">
+              <div class="val" id="sizeVal">Medio</div>
+            </div>
+
+            <div class="controlsRow">
+              <button class="btn" type="button" id="compGoal">Evaluar meta</button>
+              <button class="btn" type="button" id="compReset">Reiniciar</button>
+              <span class="mini">Meta: Calidad ≥ 80</span>
+            </div>
+
+            <div class="result" id="compMsg" style="display:none;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Resultado</h3>
+            <div class="kv">
+              <div class="kpi">
+                <div class="k">Calidad estimada</div>
+                <div class="v bigNum" id="qVal">0</div>
+                <div class="u">/100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Tiempo de maduración</div>
+                <div class="v bigNum" id="tVal">0</div>
+                <div class="u">semanas (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Riesgo de olor</div>
+                <div class="v bigNum" id="oVal">—</div>
+                <div class="u">bajo / medio / alto</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Riesgo de moscas</div>
+                <div class="v bigNum" id="mVal">—</div>
+                <div class="u">bajo / medio / alto</div>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Pistas técnicas:</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li>C:N muy bajo (mucho “verde”) → exceso de nitrógeno y olor.</li>
+                <li>Humedad muy alta + poca aireación → “se pudre”.</li>
+                <li>Material muy grande → tarda más; muy fino → se compacta.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 3 · Cadena circular (secuencia difícil)</h2>
+        <div class="hint">
+          Toca los pasos en el orden correcto para que un material “vuelva al sistema” con el menor desperdicio posible.
+          Cada error resta puntos.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Tu secuencia</h3>
+            <p class="smallMuted">Selecciona 7 pasos. Consejo: empieza por la casa/mercado y termina en el consumo responsable.</p>
+            <div class="hud">
+              <span class="mini">Puntaje: <span id="seqScore">100</span></span>
+              <span class="mini">Errores: <span id="seqErr">0</span></span>
+              <button class="btn" type="button" id="seqReset">Reiniciar</button>
+            </div>
+            <div style="margin-top:10px;" id="seqPick"></div>
+            <div class="result info" id="seqMsg" style="margin-top:10px; display:none;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Pasos disponibles</h3>
+            <div id="seqPool"></div>
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Ojo:</strong> algunos pasos son “fugas” (mezclar todo, tirar al río). Si los eliges, pierdes.
+            </div>
+          </div>
+        </div>
+      </section>
+<script>
+
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function fmt(n){ return (Math.round(n*10)/10).toString(); }
+
+
+// ===== MAPA (Markmap) =====
+const md = `
+# 5.5 Aprovechamiento de residuos
+## Por qué importa (cuenca)
+- Menos basura en ríos/quebradas → menos taponamientos e inundaciones
+- Menos contaminación del lago y playas
+- Menos costos de recolección y disposición
+## Jerarquía de manejo
+- Prevenir (reducir)
+- Reusar / reparar
+- Reciclar (separación limpia)
+- Valorización orgánica (compost / lombricompost)
+- Disposición final (lo mínimo posible)
+## Separación en origen
+- Orgánico
+- Reciclable (seco y limpio)
+- No aprovechable
+- Especial/peligroso (pilas, electrónicos, aceites)
+## Compostaje
+- Verdes + cafés (equilibrio)
+- Humedad “esponja”
+- Aireación (volteo)
+- Madurez: huele a tierra
+## Acciones en Sololá
+- Separación en hogares/mercados/turismo
+- Puntos de acopio y rutas diferenciadas
+- Compost para huertos, terrazas y viveros
+- Educación y acuerdos comunitarios
+`.trim();
+
+let mm=null, expanded=true;
+
+function renderMap(){
+  const fb = document.getElementById('fallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const { Transformer, Markmap } = window.markmap;
+    const transformer = new Transformer();
+    const { root } = transformer.transform(md);
+    const svg = document.getElementById('mindmap');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+    expanded = true;
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+
+// reintentos por si el script carga tarde
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok = renderMap();
+  if(ok || tries>=12) clearInterval(it);
+}, 250);
+
+document.getElementById('fit').addEventListener('click', ()=> mm && mm.fit());
+document.getElementById('toggle').addEventListener('click', ()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded = !expanded;
+});
+document.getElementById('resetMap').addEventListener('click', ()=>{ mm=null; expanded=true; renderMap(); });
+
+
+// ===== Juego 1: Tap‑Sort =====
+(function(){
+  const canvas = document.getElementById('tsCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function fitCanvas(){
+    const r = canvas.getBoundingClientRect();
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    canvas.width = Math.floor(r.width * dpr);
+    canvas.height = Math.floor(r.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize', fitCanvas);
+  setTimeout(fitCanvas, 0);
+
+  const ITEMS = [
+    {n:"Cáscaras de fruta", t:"compost", tip:"Orgánico → compost"},
+    {n:"Restos de verduras", t:"compost", tip:"Orgánico → compost"},
+    {n:"Hojas secas", t:"compost", tip:"‘Café’ → compost"},
+    {n:"Cartón limpio", t:"recycle", tip:"Seco y limpio → reciclaje"},
+    {n:"Botella PET (lavada)", t:"recycle", tip:"Reciclable si está limpia"},
+    {n:"Lata de aluminio", t:"recycle", tip:"Alto valor reciclable"},
+    {n:"Pañal", t:"trash", tip:"No aprovechable"},
+    {n:"Servilleta sucia", t:"trash", tip:"Contaminada con comida"},
+    {n:"Cartón con grasa", t:"trash", tip:"Grasa = se arruina reciclaje"},
+    {n:"Bolsa con restos", t:"trash", tip:"Mezcla/contaminación"}
+  ];
+
+  let running=false, paused=false;
+  let score=0, lives=3, streak=0;
+  let item=null;
+  let y=0, speed=90;
+
+  const elScore = document.getElementById('tsScore');
+  const elLives = document.getElementById('tsLives');
+  const elStreak = document.getElementById('tsStreak');
+  const msg = document.getElementById('tsMsg');
+
+  function pick(){
+    item = ITEMS[Math.floor(Math.random()*ITEMS.length)];
+    y = -10;
+    speed = 90 + score*4;
+  }
+
+  function ui(){
+    elScore.textContent = String(score);
+    elLives.textContent = String(lives);
+    elStreak.textContent = String(streak);
+  }
+
+  function banner(kind, htmlText){
+    msg.className = "result " + kind;
+    msg.innerHTML = htmlText;
+    msg.style.display = "block";
+  }
+
+  function reset(){
+    running=false; paused=false;
+    score=0; lives=3; streak=0;
+    msg.style.display="none";
+    pick();
+    ui();
+    draw();
+  }
+
+  function start(){
+    if(running) return;
+    running=true; paused=false;
+    last=performance.now();
+    requestAnimationFrame(loop);
+  }
+
+  function togglePause(){
+    if(!running) return;
+    paused=!paused;
+    if(!paused){ last=performance.now(); requestAnimationFrame(loop); }
+  }
+
+  function answer(type){
+    if(!running || paused) return;
+    const correct = item.t === type;
+    if(correct){
+      score++; streak++;
+      banner("ok", `<strong>✅ Correcto.</strong> ${item.tip}`);
+      if(score===20) banner("info", `<strong>¡Nivel 20!</strong> Ya dominas separación básica. Sigue para más dificultad.`);
+    } else {
+      lives--; streak=0;
+      banner("no", `<strong>❌ Incorrecto.</strong> Era: <strong>${item.t==="compost"?"Compost":item.t==="recycle"?"Reciclaje":"Basura"}</strong>. ${item.tip}`);
+      if(lives<=0){
+        running=false;
+        banner("warn", `<strong>Fin del juego.</strong> Puntaje: <strong>${score}</strong>. Reinicia e intenta mejorar.`);
+      }
+    }
+    ui();
+    if(running) pick();
+  }
+
+  document.getElementById('btnCompost').addEventListener('click', ()=>answer("compost"));
+  document.getElementById('btnRecycle').addEventListener('click', ()=>answer("recycle"));
+  document.getElementById('btnTrash').addEventListener('click', ()=>answer("trash"));
+  document.getElementById('tsStart').addEventListener('click', start);
+  document.getElementById('tsPause').addEventListener('click', togglePause);
+  document.getElementById('tsReset').addEventListener('click', reset);
+
+  function roundRect(ctx, x, y, width, height, radius, fill, stroke){
+    const r = (typeof radius === "number") ? {tl:radius,tr:radius,br:radius,bl:radius} : radius;
+    ctx.beginPath();
+    ctx.moveTo(x + r.tl, y);
+    ctx.lineTo(x + width - r.tr, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + r.tr);
+    ctx.lineTo(x + width, y + height - r.br);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - r.br, y + height);
+    ctx.lineTo(x + r.bl, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - r.bl);
+    ctx.lineTo(x, y + r.tl);
+    ctx.quadraticCurveTo(x, y, x + r.tl, y);
+    ctx.closePath();
+    if(fill) ctx.fill();
+    if(stroke) ctx.stroke();
+  }
+
+  function draw(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = "rgba(180,235,255,.20)";
+    ctx.fillRect(0,0,w,h);
+
+    ctx.fillStyle = "rgba(11,16,32,.06)";
+    ctx.fillRect(w*0.08, 10, w*0.84, h-20);
+
+    ctx.fillStyle = "rgba(255,255,255,.92)";
+    ctx.strokeStyle = "rgba(11,16,32,.10)";
+    ctx.lineWidth = 2;
+    const bx = w/2, by = y;
+    const bw = Math.min(w*0.78, 420), bh = 62;
+    const x0 = bx - bw/2, y0 = by;
+    roundRect(ctx, x0, y0, bw, bh, {tl:16,tr:16,br:16,bl:16}, true, true);
+
+    ctx.fillStyle = "rgba(11,16,32,.86)";
+    ctx.font = "800 16px Inter, system-ui";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(item ? item.n : "—", bx, y0 + bh/2);
+
+    ctx.strokeStyle = "rgba(225,29,72,.25)";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(w*0.10, h-20);
+    ctx.lineTo(w*0.90, h-20);
+    ctx.stroke();
+
+    ctx.fillStyle = "rgba(11,16,32,.62)";
+    ctx.font = "700 12px Inter, system-ui";
+    ctx.textAlign = "left";
+    ctx.fillText(`Puntaje: ${score}  Vidas: ${lives}  Racha: ${streak}`, 12, 14);
+  }
+
+  let last=0;
+  function loop(ts){
+    if(!running || paused) return;
+    const dt = (ts-last)/1000;
+    last = ts;
+    y += speed*dt;
+
+    if(item && y + 62 >= canvas.clientHeight - 20){
+      lives--; streak=0; ui();
+      if(lives<=0){
+        running=false;
+        banner("warn", `<strong>Se te fue.</strong> Era <strong>${item.t==="compost"?"Compost":item.t==="recycle"?"Reciclaje":"Basura"}</strong>. Fin del juego. Puntaje: <strong>${score}</strong>.`);
+      } else {
+        banner("no", `<strong>⏱️ Tarde.</strong> Era <strong>${item.t==="compost"?"Compost":item.t==="recycle"?"Reciclaje":"Basura"}</strong>. ${item.tip}`);
+        pick();
+      }
+    }
+
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  reset();
+})();
+
+// ===== Juego 2: Compost Lab =====
+(function(){
+  const cn = document.getElementById('cn');
+  const hum = document.getElementById('hum');
+  const air = document.getElementById('air');
+  const size = document.getElementById('size');
+
+  const cnVal = document.getElementById('cnVal');
+  const humVal = document.getElementById('humVal');
+  const airVal = document.getElementById('airVal');
+  const sizeVal = document.getElementById('sizeVal');
+
+  const qVal = document.getElementById('qVal');
+  const tVal = document.getElementById('tVal');
+  const oVal = document.getElementById('oVal');
+  const mVal = document.getElementById('mVal');
+
+  const msg = document.getElementById('compMsg');
+
+  function sizeName(v){
+    return v==0 ? "Grande" : v==1 ? "Medio" : "Pequeño";
+  }
+
+  function calc(){
+    const CN = Number(cn.value);
+    const H = Number(hum.value);
+    const A = Number(air.value);
+    const S = Number(size.value);
+
+    cnVal.textContent = String(CN);
+    humVal.textContent = `${H}%`;
+    airVal.textContent = `${A}/10`;
+    sizeVal.textContent = sizeName(S);
+
+    let q = 100;
+    q -= Math.abs(CN-28)*2.2;
+    q -= Math.abs(H-56)*1.4;
+    q -= Math.max(0, 6-A)*5;
+    q -= Math.max(0, A-9)*3;
+    q -= (S==0? 10 : S==2 ? 3 : 0);
+    q = clamp(q, 0, 100);
+
+    let t = 14;
+    t += (S==0? 6 : S==2 ? -2 : 0);
+    t += Math.abs(CN-28)*0.35;
+    t += Math.abs(H-56)*0.18;
+    t += Math.max(0, 5-A)*0.9;
+    t = clamp(t, 6, 30);
+
+    let odor = "bajo";
+    if(H>65 && A<5) odor="alto";
+    else if(H>62 || A<5 || CN<20) odor="medio";
+
+    let flies = "bajo";
+    if(H>65 && CN<22) flies="alto";
+    else if(H>60 || CN<22) flies="medio";
+
+    qVal.textContent = String(Math.round(q));
+    tVal.textContent = String(Math.round(t));
+    oVal.textContent = odor;
+    mVal.textContent = flies;
+
+    return {q,t,odor,flies};
+  }
+
+  function evaluate(){
+    const out = calc();
+    msg.style.display = "block";
+    if(out.q >= 80){
+      msg.className = "result ok";
+      msg.innerHTML = `<strong>¡Compost saludable!</strong> Calidad: <strong>${Math.round(out.q)}</strong>. Tiempo aprox: <strong>${Math.round(out.t)} semanas</strong>.`;
+    } else {
+      msg.className = "result warn";
+      msg.innerHTML = `<strong>Aún se puede mejorar.</strong> Calidad: <strong>${Math.round(out.q)}</strong>. Ajusta C:N, humedad o aireación.`;
+    }
+  }
+
+  function reset(){
+    cn.value=28; hum.value=55; air.value=6; size.value=1;
+    msg.style.display="none";
+    calc();
+  }
+
+  [cn,hum,air,size].forEach(el => el.addEventListener('input', calc));
+  document.getElementById('compGoal').addEventListener('click', evaluate);
+  document.getElementById('compReset').addEventListener('click', reset);
+  reset();
+})();
+
+// ===== Juego 3: Secuencia circular =====
+(function(){
+  const correct = [
+    "Separación en origen",
+    "Recolección diferenciada",
+    "Acopio/Clasificación",
+    "Transformación (reciclaje/compost)",
+    "Producción de nuevos productos",
+    "Consumo responsable",
+    "Educación y acuerdos"
+  ];
+
+  const pool = [
+    ...correct,
+    "Mezclar todo en una bolsa",
+    "Tirar al río/quebrada",
+    "Quemar basura"
+  ];
+
+  const pickEl = document.getElementById('seqPick');
+  const poolEl = document.getElementById('seqPool');
+  const scoreEl = document.getElementById('seqScore');
+  const errEl = document.getElementById('seqErr');
+  const msg = document.getElementById('seqMsg');
+
+  let picks = [];
+  let score = 100;
+  let errs = 0;
+
+  function render(){
+    pickEl.innerHTML = "";
+    const box = document.createElement('div');
+    box.className = "result info";
+    box.style.display = "block";
+    box.innerHTML = `<strong>Elegidos (${picks.length}/7):</strong><br>` + (picks.length ? picks.map((x,i)=>`${i+1}. ${x}`).join("<br>") : "—");
+    pickEl.appendChild(box);
+
+    poolEl.innerHTML = "";
+    shuffle(pool).forEach(step => {
+      if(picks.includes(step)) return;
+      const b = document.createElement('button');
+      b.type="button";
+      b.className="btn";
+      b.style.margin="6px 8px 0 0";
+      b.textContent = step;
+      b.addEventListener('click', ()=>choose(step));
+      poolEl.appendChild(b);
+    });
+
+    scoreEl.textContent = String(score);
+    errEl.textContent = String(errs);
+  }
+
+  function choose(step){
+    if(picks.length>=7) return;
+
+    if(step.includes("río") || step.includes("Quemar") || step.includes("Mezclar")){
+      errs++; score = Math.max(0, score-18);
+      msg.style.display="block";
+      msg.className="result no";
+      msg.innerHTML = `<strong>Fuga del sistema.</strong> Ese paso aumenta contaminación y no es circular.`;
+      render();
+      return;
+    }
+
+    const expected = correct[picks.length];
+    if(step !== expected){
+      errs++; score = Math.max(0, score-10);
+      msg.style.display="block";
+      msg.className="result warn";
+      msg.innerHTML = `<strong>Casi.</strong> En este reto, el paso #${picks.length+1} debía ser: <strong>${expected}</strong>.`;
+    }
+    picks.push(step);
+
+    if(picks.length===7){
+      const ok = picks.every((x,i)=>x===correct[i]);
+      msg.style.display="block";
+      msg.className = ok ? "result ok" : "result info";
+      msg.innerHTML = ok
+        ? `<strong>¡Perfecto!</strong> Secuencia circular completa. Puntaje: <strong>${score}</strong>.`
+        : `<strong>Secuencia completada.</strong> Repite e intenta lograr el orden ideal. Puntaje: <strong>${score}</strong>.`;
+    }
+    render();
+  }
+
+  function reset(){
+    picks=[]; score=100; errs=0;
+    msg.style.display="none";
+    render();
+  }
+
+  document.getElementById('seqReset').addEventListener('click', reset);
+  reset();
+})();
+</script>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+</body>
+</html>

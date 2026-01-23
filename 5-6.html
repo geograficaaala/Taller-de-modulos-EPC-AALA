@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.6 Manejo, tratamiento y disposición final de los residuos sólidos · EPC AALA</title>
+  <meta name="description" content="Gestión integral: separación, recolección, transporte, tratamiento y disposición final. Juegos arcade + planificación." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+
+/* Extra game styles (module 5.5–5.10) */
+.gameGrid{ margin-top: 10px; display:grid; grid-template-columns: 1.1fr .9fr; gap: 12px; align-items:start; }
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+.stage{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.60);
+  box-shadow: var(--shadow-soft);
+  padding: 12px;
+  overflow:hidden;
+}
+.stage h3{ margin:0 0 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 14px; letter-spacing:.2px; }
+.stage p{ margin: 0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+canvas.gameCanvas{
+  width: 100%;
+  height: 360px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.66);
+  box-shadow: 0 10px 22px rgba(11,16,32,.08);
+  touch-action: none;
+}
+.controlsRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+.pad{
+  display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:10px;
+}
+.pad .btn{ width:100%; justify-content:center; padding: 12px 12px; font-size: 13px; }
+.smallMuted{ color: rgba(11,16,32,.68); font-size: 12.5px; line-height: 1.45; }
+
+.dragGrid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+@media (max-width: 980px){ .dragGrid{ grid-template-columns: 1fr; } }
+.dropZone{
+  border-radius: 18px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  min-height: 140px;
+}
+.dropZone h4{ margin:0 0 8px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 13px; }
+.draggables{ display:flex; flex-wrap:wrap; gap:10px; }
+.dragItem{
+  user-select:none;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.72);
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 12.5px;
+  cursor: grab;
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+}
+.dragItem:active{ cursor: grabbing; transform: translateY(1px); }
+.zoneList{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.zoneList .mini{ margin:0; }
+.kv{
+  display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;
+}
+@media (max-width: 520px){ .kv{ grid-template-columns: 1fr; } }
+.kv .kpi{ padding: 12px; }
+.bigNum{ font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 22px; letter-spacing:.2px; }
+table.tiny{
+  width:100%;
+  border-collapse: collapse;
+  overflow:hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.62);
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+  margin-top: 10px;
+}
+table.tiny th, table.tiny td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(11,16,32,.10);
+  text-align:left;
+  font-size: 13px;
+  color: rgba(11,16,32,.82);
+}
+table.tiny th{
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 12.8px;
+  background: rgba(120,210,255,.18);
+}
+table.tiny tr:last-child td{ border-bottom:none; }
+
+.gridPuzzle{
+  display:grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap:6px;
+  margin-top:10px;
+}
+@media (max-width: 520px){ .gridPuzzle{ grid-template-columns: repeat(8, 1fr); } }
+.cell{
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  border: 1px solid rgba(11,16,32,.14);
+  background: rgba(255,255,255,.70);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  color: rgba(11,16,32,.78);
+  user-select:none;
+  cursor:pointer;
+}
+.cell.on{ background: rgba(120,210,255,.26); border-color: rgba(35,140,210,.20); }
+.cell.bad{ background: rgba(225,29,72,.14); border-color: rgba(225,29,72,.22); }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.6 Manejo, tratamiento y disposición final de los residuos sólidos</h1>
+        <p class="subtitle">El manejo integral busca que los residuos pasen por un <strong>ciclo ordenado</strong>: separación, almacenamiento, recolección, transporte, tratamiento y, por último, disposición final segura. En una cuenca, un manejo débil termina en ríos, tragantes y el lago.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-5_v2.html">Anterior (5.5)</a>
+        <a class="btn primary" href="5-7.html">Siguiente (5.7)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <section class="card">
+        <h2>Teoría ampliada (con enfoque de cuenca)</h2>
+        
+        <div class="twoCols" style="margin-top:10px;">
+          <div class="box">
+<p><strong>Gestión integral</strong> = decisiones técnicas + hábitos + acuerdos comunitarios para que el residuo
+no se convierta en contaminación.</p>
+<ul>
+  <li><strong>Separación en origen:</strong> reduce mezcla y riesgos sanitarios.</li>
+  <li><strong>Almacenamiento seguro:</strong> recipientes cerrados, horarios, evitar animales.</li>
+  <li><strong>Recolección y transporte:</strong> rutas, frecuencia, camiones adecuados, EPP (guantes, botas, mascarilla).</li>
+  <li><strong>Tratamiento:</strong> reciclaje, compostaje, centros de clasificación, valorización.</li>
+  <li><strong>Disposición final:</strong> lo no aprovechable debe ir a un sitio controlado.</li>
+</ul>
+<div class="result info" style="margin-top:10px;">
+  <strong>Principio clave:</strong> si mezclas todo, <em>todo se vuelve basura</em>. Si separas bien, aumenta el aprovechamiento
+  y disminuye lo que llega al botadero.
+</div>
+</div>
+          <div class="box">
+<p><strong>Botadero vs. relleno sanitario</strong></p>
+<ul>
+  <li><strong>Botadero a cielo abierto:</strong> sin control de lixiviados, gases, vectores, incendios; alto riesgo de contaminación.</li>
+  <li><strong>Relleno sanitario:</strong> impermeabilización, drenaje y tratamiento de lixiviados, control de biogás, compactación y cobertura diaria.</li>
+</ul>
+<div class="result warn" style="margin-top:10px;">
+  <strong>Riesgos típicos del mal manejo:</strong> moscas/roedores, malos olores, quema, lixiviados que llegan a quebradas,
+  y plástico que el viento lleva a barrancos y ríos.
+</div>
+<p class="smallMuted" style="margin-top:10px;">
+  En Sololá, las pendientes y las lluvias intensas hacen que una mala disposición se convierta rápido en contaminación aguas abajo.
+</p>
+</div>
+        </div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Ruta eficiente</div>
+    <p class="s">Menos viajes = menos gasto y emisiones. Pero sin mezclar residuos: la eficiencia no debe destruir el aprovechamiento.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Puntos críticos</div>
+    <p class="s">Mercados, escuelas y turismo generan picos. Planifica contenedores, horarios y educación para evitar “fugas”.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Cierre del ciclo</div>
+    <p class="s">Sin sitio final seguro, todo el esfuerzo se pierde. Un relleno con control es salud pública.</p>
+  </div>
+</div>
+
+<div class="twoCols" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Checklist de una recolección segura</strong></p>
+    <ul>
+      <li>Contenedores cerrados y resistentes.</li>
+      <li>Horarios definidos y comunicación comunitaria.</li>
+      <li>EPP para el personal (guantes, botas, chaleco reflectivo).</li>
+      <li>Lavado/limpieza de puntos de acumulación.</li>
+      <li>Separación visible: orgánico, reciclaje y no aprovechable.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <p><strong>Buenas prácticas en cuencas</strong></p>
+    <ul>
+      <li>Evitar depósitos cerca de ríos, quebradas o zonas de recarga.</li>
+      <li>Controlar “basura voladora” con mallas y cobertura.</li>
+      <li>Manejo de lixiviados: si “chorrea”, va directo al agua.</li>
+      <li>No quemas: humo tóxico + ceniza + incendios.</li>
+      <li>Monitorear en época de lluvia: las escorrentías multiplican impactos.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="result info" style="margin-top:12px;">
+  <strong>Preguntas guía (para tu comunidad):</strong>
+  <ul style="margin:8px 0 0 18px;">
+    <li>¿Qué porcentaje de residuos orgánicos podría convertirse en compost?</li>
+    <li>¿Dónde están los puntos donde se fuga basura al ambiente (calles, barrancos, riberas)?</li>
+    <li>¿Existe un plan para lixiviados y control de incendios en el sitio final?</li>
+  </ul>
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Ciclo de manejo · disposición final · riesgos en cuenca · acciones</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental del tema"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Verifica conexión o recarga.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · “Ruta del camión” (planeación + presión)</h2>
+        <div class="hint">
+          Estás a cargo de una ruta de recolección en un municipio con pendientes. Selecciona el orden de paradas para
+          <strong>cubrir más</strong> con <strong>menos combustible</strong> y evitar derrames en la lluvia.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Elige la ruta</h3>
+            <p>Completa 6 rondas. Cada ronda te da 3 rutas posibles.</p>
+            <div class="hud">
+              <span class="mini">Ronda: <span id="rtRound">1</span>/6</span>
+              <span class="mini">Cobertura: <span id="rtCov">0</span>%</span>
+              <span class="mini">Combustible: <span id="rtFuel">100</span></span>
+              <span class="mini">Riesgo lluvia: <span id="rtRisk">0</span></span>
+              <button class="btn" type="button" id="rtReset">Reiniciar</button>
+            </div>
+            <div id="rtChoices" style="margin-top:10px;"></div>
+            <div class="result info" id="rtMsg" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Cómo se puntúa (difícil)</h3>
+            <ul>
+              <li><strong>+Cobertura</strong>: barrios atendidos / total.</li>
+              <li><strong>–Combustible</strong>: rutas largas o con subidas fuertes.</li>
+              <li><strong>+Riesgo</strong>: pasar cerca de quebradas en lluvia o llevar carga sin separación (más derrame).</li>
+            </ul>
+            <div class="result warn">
+              <strong>Meta:</strong> cobertura ≥ 85% con combustible ≥ 25 y riesgo ≤ 45.
+            </div>
+            <p class="smallMuted" style="margin-top:10px;">
+              Consejo: una ruta “rápida” que mezcla todo puede subir el riesgo y bajar el aprovechamiento.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Arcade “Control del sitio final”</h2>
+        <div class="hint">
+          Problemas aparecen en el botadero/relleno: <strong>lixiviado</strong>, <strong>incendio</strong>, <strong>plástico volando</strong>,
+          <strong>animales</strong>. Tócalos rápido para controlarlos antes de que se acumulen.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Arcade de reacción</h3>
+            <canvas class="gameCanvas" id="dumpCanvas"></canvas>
+            <div class="controlsRow">
+              <button class="btn" type="button" id="dumpStart">Iniciar</button>
+              <button class="btn" type="button" id="dumpPause">Pausa</button>
+              <button class="btn" type="button" id="dumpReset">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="dumpScore">0</span></span>
+              <span class="mini">Fallas: <span id="dumpMiss">0</span></span>
+              <span class="mini">Nivel: <span id="dumpLvl">1</span></span>
+            </div>
+            <div class="result warn" id="dumpMsg" style="display:none; margin-top:10px;"></div>
+          </div>
+          <div class="stage">
+            <h3>Aprendizaje</h3>
+            <div class="result info">
+              <strong>¿Qué representa cada problema?</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li><strong>Lixiviado:</strong> líquido oscuro que se forma al “lavarse” la basura; puede contaminar ríos.</li>
+                <li><strong>Incendio:</strong> humo tóxico y pérdida de control; además, derretimiento de plásticos.</li>
+                <li><strong>Plástico volando:</strong> llega a barrancos y lago; afecta fauna.</li>
+                <li><strong>Animales:</strong> vectores y dispersión de residuos.</li>
+              </ul>
+            </div>
+            <p class="smallMuted" style="margin-top:10px;">
+              En un relleno sanitario se controla con cobertura diaria, cercos, drenajes, manejo de biogás y vigilancia.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 3 · Quiz avanzado (gestión de residuos)</h2>
+        <div class="hint">12 preguntas con tiempo. Tu meta es 10/12. Algunas son “trampa” (mezclas, grasa, lixiviados).</div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Preguntas</h3>
+            <div class="hud">
+              <span class="mini">Tiempo: <span id="qTime">90</span>s</span>
+              <span class="mini">Puntaje: <span id="qScore">0</span></span>
+              <button class="btn" type="button" id="qStart">Iniciar</button>
+              <button class="btn" type="button" id="qReset">Reiniciar</button>
+            </div>
+            <div class="result info" id="qBox" style="display:none; margin-top:10px;"></div>
+            <div id="qOpts" style="margin-top:10px;"></div>
+            <div class="result" id="qEnd" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Pistas</h3>
+            <ul>
+              <li>“Reciclable” casi siempre implica <strong>limpio</strong>.</li>
+              <li>En cuencas, el riesgo mayor son <strong>fugas</strong>: viento + lluvia + pendientes.</li>
+              <li>Lixiviado no es “agua sucia normal”: concentra contaminantes.</li>
+            </ul>
+            <div class="result warn">Si fallas, te muestra explicación corta para aprender.</div>
+          </div>
+        </div>
+      </section>
+<script>
+
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function fmt(n){ return (Math.round(n*10)/10).toString(); }
+
+
+// ===== MAPA (Markmap) =====
+const md = `
+# 5.6 Manejo integral de residuos sólidos
+## Ciclo (de la casa al sitio final)
+- Separación en origen
+- Almacenamiento seguro
+- Recolección
+- Transporte / transferencia
+- Tratamiento (reciclaje, compost)
+- Disposición final segura
+## Disposición final
+- Botadero: alto riesgo (lixiviados, humo, vectores)
+- Relleno sanitario: control de lixiviados, biogás, cobertura
+## Riesgos en cuencas
+- Basura en quebradas → taponamientos e inundaciones
+- Plástico volador → barrancos y riberas
+- Lixiviados → contaminación del agua
+## Acciones
+- Rutas y horarios
+- Puntos de acopio y educación
+- Sitio final con control
+- Cero quemas
+`.trim();
+
+let mm=null, expanded=true;
+
+function renderMap(){
+  const fb = document.getElementById('fallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const { Transformer, Markmap } = window.markmap;
+    const transformer = new Transformer();
+    const { root } = transformer.transform(md);
+    const svg = document.getElementById('mindmap');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+    expanded = true;
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+
+// reintentos por si el script carga tarde
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok = renderMap();
+  if(ok || tries>=12) clearInterval(it);
+}, 250);
+
+document.getElementById('fit').addEventListener('click', ()=> mm && mm.fit());
+document.getElementById('toggle').addEventListener('click', ()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded = !expanded;
+});
+document.getElementById('resetMap').addEventListener('click', ()=>{ mm=null; expanded=true; renderMap(); });
+
+
+// ===== Juego 1: Ruta del camión (decisiones) =====
+(function(){
+  const choicesEl = document.getElementById('rtChoices');
+  const roundEl = document.getElementById('rtRound');
+  const covEl = document.getElementById('rtCov');
+  const fuelEl = document.getElementById('rtFuel');
+  const riskEl = document.getElementById('rtRisk');
+  const msgEl = document.getElementById('rtMsg');
+
+  let round=1, coverage=0, fuel=100, risk=0;
+
+  const ROUTES = [
+    {name:"Ruta A", cov:+18, fuel:-16, risk:+6, note:"Calles principales, separación parcial."},
+    {name:"Ruta B", cov:+15, fuel:-10, risk:+3, note:"Corta, pero deja un barrio pendiente."},
+    {name:"Ruta C", cov:+20, fuel:-22, risk:+10, note:"Incluye laderas y barranco cercano."},
+    {name:"Ruta D", cov:+14, fuel:-8,  risk:+2, note:"Recolección diferenciada (mejor control)."},
+    {name:"Ruta E", cov:+22, fuel:-20, risk:+7, note:"Mercado + turismo (mucho orgánico)."},
+    {name:"Ruta F", cov:+12, fuel:-6,  risk:+1, note:"Micro‑ruta de refuerzo (bajo riesgo)."},
+    {name:"Ruta G", cov:+19, fuel:-18, risk:+8, note:"Lluvia fuerte: aumenta derrame si hay mezcla."},
+    {name:"Ruta H", cov:+16, fuel:-12, risk:+4, note:"Incluye punto de acopio: mejora control."}
+  ];
+
+  function ui(){
+    roundEl.textContent = String(round);
+    covEl.textContent = String(clamp(Math.round(coverage),0,100));
+    fuelEl.textContent = String(Math.max(0, Math.round(fuel)));
+    riskEl.textContent = String(Math.max(0, Math.round(risk)));
+  }
+
+  function banner(kind, htmlText){
+    msgEl.className = "result " + kind;
+    msgEl.innerHTML = htmlText;
+    msgEl.style.display = "block";
+  }
+
+  function renderChoices(){
+    msgEl.style.display="none";
+    choicesEl.innerHTML = "";
+    const opts = shuffle(ROUTES).slice(0,3);
+    opts.forEach(r=>{
+      const b=document.createElement('button');
+      b.type="button";
+      b.className="choice";
+      b.innerHTML = `<p class="t">${r.name}</p><p class="s">${r.note}<br><strong>+${r.cov}%</strong> cobertura · <strong>${r.fuel}</strong> fuel · <strong>+${r.risk}</strong> riesgo</p>`;
+      b.addEventListener('click', ()=>choose(r));
+      choicesEl.appendChild(b);
+    });
+  }
+
+  function choose(r){
+    // Ajuste didáctico: si “mezcla” (ruta A/C/G) y ya hay lluvia (risk alto), penaliza más
+    let extraRisk = 0;
+    if(r.name==="Ruta C" || r.name==="Ruta G"){
+      extraRisk = (risk>18) ? 6 : 2;
+    }
+
+    coverage += r.cov;
+    fuel += r.fuel;
+    risk += r.risk + extraRisk;
+
+    ui();
+    banner(risk>55 ? "warn" : "ok", `<strong>Decisión aplicada:</strong> ${r.name}. ${extraRisk?`<br>⚠️ Lluvia + ladera: +${extraRisk} riesgo.`:""}`);
+
+    round++;
+    if(round>6) end();
+    else setTimeout(renderChoices, 650);
+  }
+
+  function end(){
+    choicesEl.innerHTML = "";
+    const cov = clamp(Math.round(coverage),0,100);
+    const ok = (cov>=85 && fuel>=25 && risk<=45);
+    banner(ok ? "ok" : "warn",
+      ok
+        ? `<strong>¡Ruta excelente!</strong> Cobertura ${cov}% · Fuel ${Math.round(fuel)} · Riesgo ${Math.round(risk)}.`
+        : `<strong>Ruta mejorable.</strong> Cobertura ${cov}% · Fuel ${Math.round(fuel)} · Riesgo ${Math.round(risk)}.<br>Intenta rutas con menor riesgo y mejor separación.`
+    );
+  }
+
+  function reset(){
+    round=1; coverage=0; fuel=100; risk=0;
+    ui(); renderChoices();
+  }
+
+  document.getElementById('rtReset').addEventListener('click', reset);
+  reset();
+})();
+
+// ===== Juego 2: Arcade control del sitio final (toca‑reacciona) =====
+(function(){
+  const canvas = document.getElementById('dumpCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function fitCanvas(){
+    const r = canvas.getBoundingClientRect();
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    canvas.width = Math.floor(r.width * dpr);
+    canvas.height = Math.floor(r.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize', fitCanvas);
+  setTimeout(fitCanvas, 0);
+
+  const scoreEl = document.getElementById('dumpScore');
+  const missEl = document.getElementById('dumpMiss');
+  const lvlEl = document.getElementById('dumpLvl');
+  const msgEl = document.getElementById('dumpMsg');
+
+  const TYPES = [
+    {k:"Lixiviado", pts:3, ttl:2400},
+    {k:"Incendio", pts:4, ttl:2100},
+    {k:"Plástico", pts:2, ttl:1800},
+    {k:"Animales", pts:2, ttl:1700}
+  ];
+
+  let running=false, paused=false;
+  let score=0, miss=0, lvl=1;
+  let hazards=[];
+
+  function ui(){
+    scoreEl.textContent=String(score);
+    missEl.textContent=String(miss);
+    lvlEl.textContent=String(lvl);
+  }
+
+  function banner(text){
+    msgEl.style.display="block";
+    msgEl.textContent=text;
+  }
+
+  function spawn(){
+    const w=canvas.clientWidth, h=canvas.clientHeight;
+    const t = TYPES[Math.floor(Math.random()*TYPES.length)];
+    hazards.push({
+      type:t,
+      x: 20 + Math.random()*(w-40),
+      y: 24 + Math.random()*(h-80),
+      r: 18 + Math.random()*10,
+      born: performance.now()
+    });
+  }
+
+  function reset(){
+    running=false; paused=false;
+    score=0; miss=0; lvl=1;
+    hazards=[];
+    msgEl.style.display="none";
+    ui(); draw();
+  }
+
+  function start(){
+    if(running) return;
+    running=true; paused=false;
+    last=performance.now();
+    nextSpawn=last+600;
+    requestAnimationFrame(loop);
+  }
+
+  function togglePause(){
+    if(!running) return;
+    paused=!paused;
+    if(!paused){ last=performance.now(); requestAnimationFrame(loop); }
+  }
+
+  function difficulty(){
+    lvl = 1 + Math.floor(score/15);
+    // more spawns per time
+    return clamp(700 - lvl*60, 240, 700);
+  }
+
+  function draw(){
+    const w=canvas.clientWidth, h=canvas.clientHeight;
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle="rgba(210,245,255,.24)";
+    ctx.fillRect(0,0,w,h);
+
+    // ground strip
+    ctx.fillStyle="rgba(11,16,32,.06)";
+    ctx.fillRect(0,h*0.68,w,h*0.32);
+
+    // hazards
+    hazards.forEach(o=>{
+      const age = performance.now()-o.born;
+      const life = o.type.ttl;
+      const a = clamp(1 - age/life, 0, 1);
+
+      ctx.beginPath();
+      ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${0.85*a + 0.08})`;
+      ctx.fill();
+      ctx.strokeStyle = "rgba(11,16,32,.12)";
+      ctx.lineWidth=2;
+      ctx.stroke();
+
+      ctx.fillStyle="rgba(11,16,32,.86)";
+      ctx.font="900 12px Inter, system-ui";
+      ctx.textAlign="center";
+      ctx.textBaseline="middle";
+      ctx.fillText(o.type.k, o.x, o.y);
+    });
+
+    // HUD
+    ctx.fillStyle="rgba(11,16,32,.62)";
+    ctx.font="700 12px Inter, system-ui";
+    ctx.textAlign="left";
+    ctx.fillText(`Toca los problemas antes que se acumulen · Puntaje ${score} · Fallas ${miss}`, 12, 14);
+  }
+
+  function hit(x,y){
+    for(let i=hazards.length-1;i>=0;i--){
+      const o=hazards[i];
+      const dx=x-o.x, dy=y-o.y;
+      if(Math.sqrt(dx*dx+dy*dy) <= o.r){
+        hazards.splice(i,1);
+        score += o.type.pts;
+        ui();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function pointer(evt){
+    const r=canvas.getBoundingClientRect();
+    const x=(evt.clientX - r.left);
+    const y=(evt.clientY - r.top);
+    if(!hit(x,y) && running && !paused){
+      miss++;
+      ui();
+      if(miss>=10){
+        running=false;
+        banner("Fin: demasiadas fallas. Reinicia e intenta mantener el control.");
+      }
+    }
+  }
+  canvas.addEventListener('pointerdown', pointer);
+
+  let last=0, nextSpawn=0;
+  function loop(ts){
+    if(!running || paused) return;
+    const dt = ts-last; last=ts;
+
+    if(ts>=nextSpawn){
+      spawn();
+      nextSpawn = ts + difficulty();
+    }
+
+    // remove expired
+    hazards = hazards.filter(o=>{
+      const age = ts - o.born;
+      if(age > o.type.ttl){
+        miss++; ui();
+        return false;
+      }
+      return true;
+    });
+
+    if(miss>=10){
+      running=false;
+      banner("Fin: se acumularon problemas. Intenta reaccionar más rápido.");
+    }
+
+    ui();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  document.getElementById('dumpStart').addEventListener('click', start);
+  document.getElementById('dumpPause').addEventListener('click', togglePause);
+  document.getElementById('dumpReset').addEventListener('click', reset);
+  reset();
+})();
+
+// ===== Juego 3: Quiz con tiempo =====
+(function(){
+  const qTimeEl=document.getElementById('qTime');
+  const qScoreEl=document.getElementById('qScore');
+  const qBox=document.getElementById('qBox');
+  const qOpts=document.getElementById('qOpts');
+  const qEnd=document.getElementById('qEnd');
+
+  const Q = [
+    {q:"¿Cuál es el mayor problema de un botadero a cielo abierto en una cuenca?", a:0, o:[
+      "Lixiviados y basura que llegan al agua",
+      "Que el camión gaste más gasolina",
+      "Que el vidrio se rompa"
+    ], e:"Lixiviados + lluvia + pendientes = contaminación rápida aguas abajo."},
+    {q:"Para que un envase sea reciclable, lo más importante es que esté…", a:1, o:[
+      "Aplastado",
+      "Limpio y seco",
+      "Pintado"
+    ], e:"Si está con grasa/comida, se contamina el lote de reciclaje."},
+    {q:"¿Qué controla un relleno sanitario que un botadero normalmente NO controla?", a:2, o:[
+      "El color de las bolsas",
+      "El ruido del camión",
+      "Lixiviados, biogás y cobertura"
+    ], e:"Incluye impermeabilización, drenajes y manejo de gases."},
+    {q:"En época de lluvia, una fuga crítica de residuos suele ocurrir por…", a:0, o:[
+      "Escorrentía que arrastra basura a tragantes y ríos",
+      "El sol y el calor",
+      "La música en el mercado"
+    ], e:"Lluvia + calles = transporte rápido al sistema de drenaje y ríos."},
+    {q:"Una práctica que aumenta incendios y contaminación del aire es…", a:1, o:[
+      "Separar orgánicos",
+      "Quemar basura",
+      "Reusar envases"
+    ], e:"La quema produce humo tóxico y puede generar incendios mayores."},
+    {q:"¿Cuál acción sube el aprovechamiento sin grandes inversiones?", a:2, o:[
+      "Mezclar todo para ‘llenar rápido’ el camión",
+      "Tirar residuos a un barranco",
+      "Separación en origen + puntos de acopio"
+    ], e:"Separación visible y acopio ordenado cambia todo el sistema."},
+    {q:"Los lixiviados se forman principalmente por…", a:0, o:[
+      "Agua de lluvia que atraviesa la basura + descomposición",
+      "Solo por plástico",
+      "Solo por vidrio"
+    ], e:"Son el “juguito” concentrado que sale del residuo mezclado y mojado."},
+    {q:"Un EPP básico para recolección incluye…", a:1, o:[
+      "Sandalias",
+      "Guantes y botas",
+      "Sombrero de fiesta"
+    ], e:"Protege contra cortes, infecciones y contacto con residuos peligrosos."},
+    {q:"¿Qué medida reduce ‘basura voladora’?", a:2, o:[
+      "No usar contenedor",
+      "Tirar al suelo",
+      "Cobertura y mallas/cercos"
+    ], e:"Cobertura y cercos reducen dispersión por viento."},
+    {q:"Si el reciclaje está ‘contaminado’ con comida, lo más probable es que…", a:0, o:[
+      "Pierda valor y termine como basura",
+      "Valga más",
+      "Se convierta en agua"
+    ], e:"La mezcla arruina el material, aumenta olores y plagas."},
+    {q:"¿Qué mejora el control en un sitio final?", a:2, o:[
+      "Dejar residuos sin compactar",
+      "No cubrir nunca",
+      "Compactación + cobertura diaria"
+    ], e:"Reduce olores, plagas y contacto con lluvia (menos lixiviado)."},
+    {q:"¿Cuál es un riesgo sanitario directo del mal manejo?", a:1, o:[
+      "Más estrellas en el cielo",
+      "Moscas/roedores y enfermedades",
+      "Menos árboles"
+    ], e:"Vectores y patógenos afectan salud pública."}
+  ];
+
+  let time=90, timer=null, i=0, score=0, running=false;
+
+  function showQ(){
+    const item = Q[i];
+    qBox.style.display="block";
+    qBox.className="result info";
+    qBox.innerHTML = `<strong>${i+1}/${Q.length}</strong> · ${item.q}`;
+    qOpts.innerHTML="";
+    item.o.forEach((opt,idx)=>{
+      const b=document.createElement('button');
+      b.type="button";
+      b.className="choice";
+      b.innerHTML = `<p class="t">${opt}</p><p class="s">Toca para responder.</p>`;
+      b.addEventListener('click', ()=>answer(idx));
+      qOpts.appendChild(b);
+    });
+  }
+
+  function answer(idx){
+    if(!running) return;
+    const item = Q[i];
+    const ok = idx===item.a;
+    if(ok) score++;
+    qBox.className = "result " + (ok?"ok":"warn");
+    qBox.innerHTML = (ok? "✅ Correcto. ":"⚠️ Incorrecto. ") + item.e;
+
+    i++;
+    if(i>=Q.length){ end(); }
+    else setTimeout(showQ, 550);
+    qScoreEl.textContent = String(score);
+  }
+
+  function tick(){
+    time--;
+    qTimeEl.textContent = String(time);
+    if(time<=0) end();
+  }
+
+  function start(){
+    if(running) return;
+    running=true;
+    time=90; i=0; score=0;
+    qScoreEl.textContent="0";
+    qEnd.style.display="none";
+    showQ();
+    qTimeEl.textContent=String(time);
+    timer=setInterval(tick, 1000);
+  }
+
+  function end(){
+    if(!running) return;
+    running=false;
+    clearInterval(timer);
+    qOpts.innerHTML="";
+    qEnd.style.display="block";
+    qEnd.className = "result " + (score>=10?"ok":score>=7?"warn":"no");
+    qEnd.innerHTML = `<strong>Resultado:</strong> ${score}/${Q.length}. ` +
+      (score>=10 ? "¡Excelente! " : score>=7 ? "Bien, pero mejora. " : "Repite y estudia las explicaciones. ") +
+      `Tiempo restante: <strong>${time}</strong>s.`;
+  }
+
+  function reset(){
+    running=false;
+    clearInterval(timer);
+    time=90; i=0; score=0;
+    qTimeEl.textContent="90";
+    qScoreEl.textContent="0";
+    qBox.style.display="none";
+    qOpts.innerHTML="";
+    qEnd.style.display="none";
+  }
+
+  document.getElementById('qStart').addEventListener('click', start);
+  document.getElementById('qReset').addEventListener('click', reset);
+  reset();
+})();
+</script>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+</body>
+</html>

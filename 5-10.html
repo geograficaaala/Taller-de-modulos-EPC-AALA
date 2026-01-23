@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.10 Efluentes (descargas tratadas y su control) · EPC AALA</title>
+  <meta name="description" content="Qué es un efluente, riesgos si no se controla y cómo monitorear. Juegos: inspector, mezclador y plan de reutilización." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+
+/* Extra game styles (module 5.5–5.10) */
+.gameGrid{ margin-top: 10px; display:grid; grid-template-columns: 1.1fr .9fr; gap: 12px; align-items:start; }
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+.stage{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.60);
+  box-shadow: var(--shadow-soft);
+  padding: 12px;
+  overflow:hidden;
+}
+.stage h3{ margin:0 0 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 14px; letter-spacing:.2px; }
+.stage p{ margin: 0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+canvas.gameCanvas{
+  width: 100%;
+  height: 360px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.66);
+  box-shadow: 0 10px 22px rgba(11,16,32,.08);
+  touch-action: none;
+}
+.controlsRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+.pad{
+  display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:10px;
+}
+.pad .btn{ width:100%; justify-content:center; padding: 12px 12px; font-size: 13px; }
+.smallMuted{ color: rgba(11,16,32,.68); font-size: 12.5px; line-height: 1.45; }
+
+.dragGrid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+@media (max-width: 980px){ .dragGrid{ grid-template-columns: 1fr; } }
+.dropZone{
+  border-radius: 18px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  min-height: 140px;
+}
+.dropZone h4{ margin:0 0 8px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 13px; }
+.draggables{ display:flex; flex-wrap:wrap; gap:10px; }
+.dragItem{
+  user-select:none;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.72);
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 12.5px;
+  cursor: grab;
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+}
+.dragItem:active{ cursor: grabbing; transform: translateY(1px); }
+.zoneList{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.zoneList .mini{ margin:0; }
+.kv{
+  display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;
+}
+@media (max-width: 520px){ .kv{ grid-template-columns: 1fr; } }
+.kv .kpi{ padding: 12px; }
+.bigNum{ font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 22px; letter-spacing:.2px; }
+table.tiny{
+  width:100%;
+  border-collapse: collapse;
+  overflow:hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.62);
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+  margin-top: 10px;
+}
+table.tiny th, table.tiny td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(11,16,32,.10);
+  text-align:left;
+  font-size: 13px;
+  color: rgba(11,16,32,.82);
+}
+table.tiny th{
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 12.8px;
+  background: rgba(120,210,255,.18);
+}
+table.tiny tr:last-child td{ border-bottom:none; }
+
+.gridPuzzle{
+  display:grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap:6px;
+  margin-top:10px;
+}
+@media (max-width: 520px){ .gridPuzzle{ grid-template-columns: repeat(8, 1fr); } }
+.cell{
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  border: 1px solid rgba(11,16,32,.14);
+  background: rgba(255,255,255,.70);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  color: rgba(11,16,32,.78);
+  user-select:none;
+  cursor:pointer;
+}
+.cell.on{ background: rgba(120,210,255,.26); border-color: rgba(35,140,210,.20); }
+.cell.bad{ background: rgba(225,29,72,.14); border-color: rgba(225,29,72,.22); }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.10 Efluentes</h1>
+        <p class="subtitle">El <strong>efluente</strong> es el agua que sale de un sistema de tratamiento (o de una descarga) hacia un río, lago o suelo. Su calidad define el impacto: si aún lleva DBO, nutrientes o patógenos, puede romper el equilibrio del ecosistema.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-9.html">Anterior (5.9)</a>
+        <a class="btn primary" href="index.html">Volver al inicio</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <section class="card">
+        <h2>Teoría ampliada (control de efluentes)</h2>
+        
+        <div class="twoCols" style="margin-top:10px;">
+          <div class="box">
+<p><strong>¿Qué se evalúa en un efluente?</strong> Parámetros que indican contaminación y riesgo.</p>
+<ul>
+  <li><strong>DBO/DQO:</strong> si está alta, consume oxígeno en el cuerpo de agua.</li>
+  <li><strong>SST:</strong> sólidos que enturbian, sedimentan y transportan contaminantes.</li>
+  <li><strong>N y P:</strong> nutrientes que pueden causar eutrofización.</li>
+  <li><strong>Coliformes/patógenos:</strong> riesgo sanitario.</li>
+  <li><strong>Aceites/grasas:</strong> espuma, olor y obstrucciones.</li>
+</ul>
+<div class="result info" style="margin-top:10px;">
+  <strong>Concepto clave:</strong> “Tratar” no es solo quitar lo visible; es bajar carga orgánica, nutrientes y patógenos.
+</div>
+</div>
+          <div class="box">
+<p><strong>Buenas prácticas para reducir el impacto</strong></p>
+<ul>
+  <li><strong>Operación continua:</strong> no “apagar” procesos por falta de energía o personal.</li>
+  <li><strong>Pretratamiento:</strong> rejillas, desarenador y <strong>trampas de grasa</strong>.</li>
+  <li><strong>Monitoreo:</strong> caudal y calidad (aunque sea básico) + bitácora.</li>
+  <li><strong>Gestión de lodos:</strong> retiro y disposición adecuada (si no, la PTAR pierde eficiencia).</li>
+  <li><strong>Control de conexiones:</strong> evitar que lluvia se meta al drenaje sanitario.</li>
+</ul>
+<div class="result warn" style="margin-top:10px;">
+  <strong>Trampa común:</strong> “Diluir” con agua no elimina nutrientes o patógenos. Solo los dispersa.
+</div>
+</div>
+        </div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Efluente aceptable</div>
+    <p class="s">Baja DBO, SST y patógenos. Menor riesgo para oxígeno y salud pública.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Efluente problemático</div>
+    <p class="s">Alta carga orgánica o nutrientes: algas, olor, OD bajo. Si hay patógenos: riesgo sanitario.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Reutilización segura</div>
+    <p class="s">En algunos casos, efluente bien tratado puede usarse para riego o limpieza, con controles y precauciones.</p>
+  </div>
+</div>
+
+<div class="twoCols" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Señales de un efluente malo</strong></p>
+    <ul>
+      <li>Olor fuerte o persistente.</li>
+      <li>Espuma y color oscuro.</li>
+      <li>Sólidos visibles o “nata”.</li>
+      <li>Algas cerca del punto de descarga.</li>
+      <li>Quejas y presencia de moscas.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <p><strong>Plan comunitario (simple)</strong></p>
+    <ul>
+      <li>Mapa de descargas (puntos puntuales).</li>
+      <li>Reglas: no aceite, no químicos al drenaje.</li>
+      <li>Puntos de control en mercados y turismo.</li>
+      <li>Bitácora: caudal y observación (olor, turbidez).</li>
+      <li>Gestión de lodos y mantenimiento programado.</li>
+    </ul>
+  </div>
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Definición · parámetros · impactos · control · reutilización</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental del tema"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Verifica conexión o recarga.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · Inspector de efluentes (decisión difícil)</h2>
+        <div class="hint">
+          Te llegan reportes con 5 parámetros. Decide si el efluente es <strong>Aceptable</strong>, <strong>Mejorable</strong> o <strong>Peligroso</strong>.
+          Luego elige la acción prioritaria. 10 rondas.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Rondas</h3>
+            <div class="hud">
+              <span class="mini">Ronda: <span id="insR">1</span>/10</span>
+              <span class="mini">Aciertos: <span id="insOk">0</span></span>
+              <button class="btn" type="button" id="insReset">Reiniciar</button>
+            </div>
+            <div class="box" id="insBox" style="margin-top:10px;"></div>
+            <div id="insOpts" style="margin-top:10px;"></div>
+            <div class="result" id="insMsg" style="display:none; margin-top:10px;"></div>
+            <div class="result" id="insEnd" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Reglas rápidas</h3>
+            <ul>
+              <li>Si <strong>patógenos</strong> altos → riesgo sanitario (prioridad).</li>
+              <li>Si <strong>DBO</strong> alta → OD baja (prioridad).</li>
+              <li>Si <strong>N y P</strong> altos → algas (prioridad).</li>
+              <li>Si <strong>grasa</strong> alta → obstrucción y espuma (prioridad de pretratamiento).</li>
+              <li>SST alto → turbidez y sedimentación (prioridad de rejillas/arenas).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Mezclador de río (dilución vs carga)</h2>
+        <div class="hint">
+          Ajusta caudal del río y carga del efluente. Observa por qué “diluir” NO siempre resuelve (nutrientes/patógenos).
+          Meta: lograr impacto bajo sin depender solo de caudal.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Controles</h3>
+
+            <div class="ctrlRow">
+              <label for="rf">Caudal del río</label>
+              <input id="rf" type="range" min="10" max="200" step="1" value="90">
+              <div class="val" id="rfV">90</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="ef">Caudal del efluente</label>
+              <input id="ef" type="range" min="5" max="120" step="1" value="40">
+              <div class="val" id="efV">40</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="load">Carga del efluente (0–100)</label>
+              <input id="load" type="range" min="0" max="100" step="1" value="55">
+              <div class="val" id="loadV">55</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="tEff">Eficiencia de tratamiento</label>
+              <input id="tEff" type="range" min="0" max="95" step="1" value="55">
+              <div class="val" id="tEffV">55%</div>
+            </div>
+
+            <div class="controlsRow">
+              <button class="btn" type="button" id="mixGoal">Evaluar meta</button>
+              <button class="btn" type="button" id="mixReset">Reiniciar</button>
+            </div>
+
+            <div class="result" id="mixMsg" style="display:none;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Resultado</h3>
+            <div class="kv">
+              <div class="kpi">
+                <div class="k">Concentración final</div>
+                <div class="v bigNum" id="cFinal">0</div>
+                <div class="u">/100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Impacto estimado</div>
+                <div class="v bigNum" id="iFinal">—</div>
+                <div class="u">bajo / medio / alto</div>
+              </div>
+              <div class="kpi">
+                <div class="k">“Dependencia de dilución”</div>
+                <div class="v bigNum" id="dilDep">0</div>
+                <div class="u">%</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Consejo</div>
+                <div class="v" id="mixTip" style="font-size:14px;">—</div>
+              </div>
+            </div>
+            <div class="result info" style="margin-top:10px;">
+              Mejorar tratamiento baja la carga <em>antes</em> de mezclar, que es más seguro que depender solo del caudal del río.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 3 · Plan de reutilización segura (elige el uso)</h2>
+        <div class="hint">
+          Según la calidad del efluente, elige el uso más adecuado: <strong>Riego de áreas verdes</strong>, <strong>Limpieza de calles</strong>,
+          <strong>Descarga controlada</strong> o <strong>No apto</strong>. 8 rondas.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Rondas</h3>
+            <div class="hud">
+              <span class="mini">Ronda: <span id="reR">1</span>/8</span>
+              <span class="mini">Aciertos: <span id="reOk">0</span></span>
+              <button class="btn" type="button" id="reReset">Reiniciar</button>
+            </div>
+
+            <div class="box" id="reBox" style="margin-top:10px;"></div>
+            <div id="reOpts" style="margin-top:10px;"></div>
+            <div class="result" id="reMsg" style="display:none; margin-top:10px;"></div>
+            <div class="result" id="reEnd" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Regla simple</h3>
+            <ul>
+              <li>Si hay patógenos altos → <strong>No apto</strong> (riesgo sanitario).</li>
+              <li>Si calidad es buena pero no perfecta → usos de <strong>bajo contacto</strong> (limpieza, descarga controlada).</li>
+              <li>Riego requiere mejor control (evitar contacto con alimentos, horario y señalización).</li>
+            </ul>
+            <div class="result warn">Este juego es didáctico: en la vida real se siguen normas y monitoreo.</div>
+          </div>
+        </div>
+      </section>
+<script>
+
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function fmt(n){ return (Math.round(n*10)/10).toString(); }
+
+
+// ===== MAPA (Markmap) =====
+const md = `
+# 5.10 Efluentes
+## Qué es
+- Agua que sale del tratamiento (o descarga) hacia ambiente
+## Parámetros clave
+- DBO/DQO (orgánicos)
+- SST (sólidos)
+- N y P (nutrientes)
+- Patógenos (coliformes)
+- Aceites/grasas
+## Impactos
+- OD bajo → fauna afectada
+- Eutrofización → algas
+- Riesgo sanitario
+## Control
+- Operación continua + energía
+- Pretratamiento (grasa/sólidos)
+- Monitoreo + bitácora
+- Gestión de lodos
+- Control de conexiones (pluvial)
+## Reutilización
+- Solo con calidad adecuada y precauciones
+`.trim();
+
+let mm=null, expanded=true;
+
+function renderMap(){
+  const fb = document.getElementById('fallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const { Transformer, Markmap } = window.markmap;
+    const transformer = new Transformer();
+    const { root } = transformer.transform(md);
+    const svg = document.getElementById('mindmap');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+    expanded = true;
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+
+// reintentos por si el script carga tarde
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok = renderMap();
+  if(ok || tries>=12) clearInterval(it);
+}, 250);
+
+document.getElementById('fit').addEventListener('click', ()=> mm && mm.fit());
+document.getElementById('toggle').addEventListener('click', ()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded = !expanded;
+});
+document.getElementById('resetMap').addEventListener('click', ()=>{ mm=null; expanded=true; renderMap(); });
+
+
+// ===== Juego 1: Inspector de efluentes =====
+(function(){
+  const rEl=document.getElementById('insR');
+  const okEl=document.getElementById('insOk');
+  const boxEl=document.getElementById('insBox');
+  const optsEl=document.getElementById('insOpts');
+  const msgEl=document.getElementById('insMsg');
+  const endEl=document.getElementById('insEnd');
+
+  function genSample(){
+    // parameters 0..100, higher = worse
+    const pat = Math.round(15 + Math.random()*85);
+    const dbo = Math.round(10 + Math.random()*90);
+    const nut = Math.round(10 + Math.random()*90);
+    const sst = Math.round(10 + Math.random()*90);
+    const grs = Math.round(10 + Math.random()*90);
+
+    // classify
+    let level="Mejorable";
+    if(pat>75 || dbo>80) level="Peligroso";
+    if(pat<40 && dbo<45 && nut<55 && sst<55 && grs<55) level="Aceptable";
+
+    // primary action
+    let act="Mantenimiento general";
+    // priority based on worst driver
+    const worst = [
+      {k:"Patógenos", v:pat, a:"Desinfección y control sanitario"},
+      {k:"DBO", v:dbo, a:"Mejorar proceso biológico (aireación/operación)"},
+      {k:"Nutrientes", v:nut, a:"Reducir N y P (control de fuentes/etapas)"},
+      {k:"SST", v:sst, a:"Mejorar rejillas/desarenador y sedimentación"},
+      {k:"Grasas", v:grs, a:"Trampas de grasa y pretratamiento"}
+    ].sort((a,b)=>b.v-a.v)[0];
+    act = worst.a;
+
+    return {pat,dbo,nut,sst,grs, level, act, worst:worst.k};
+  }
+
+  const ACTIONS = [
+    "Desinfección y control sanitario",
+    "Mejorar proceso biológico (aireación/operación)",
+    "Reducir N y P (control de fuentes/etapas)",
+    "Mejorar rejillas/desarenador y sedimentación",
+    "Trampas de grasa y pretratamiento",
+    "Mantenimiento general"
+  ];
+
+  let i=0, ok=0, phase=1;
+  let cur=null;
+
+  function ui(){
+    rEl.textContent=String(i+1);
+    okEl.textContent=String(ok);
+  }
+
+  function show(){
+    ui();
+    msgEl.style.display="none";
+    endEl.style.display="none";
+    optsEl.innerHTML="";
+    cur = genSample();
+
+    boxEl.innerHTML = `
+      <p><strong>Reporte</strong></p>
+      <ul>
+        <li>Patógenos: <strong>${cur.pat}</strong>/100</li>
+        <li>DBO: <strong>${cur.dbo}</strong>/100</li>
+        <li>N y P: <strong>${cur.nut}</strong>/100</li>
+        <li>SST: <strong>${cur.sst}</strong>/100</li>
+        <li>Aceites/grasas: <strong>${cur.grs}</strong>/100</li>
+      </ul>
+      <p class="smallMuted">Nota: valores altos indican más riesgo (didáctico).</p>
+    `;
+
+    phase=1;
+    msgEl.style.display="block";
+    msgEl.className="result info";
+    msgEl.textContent="Paso 1: clasifica el efluente.";
+    ["Aceptable","Mejorable","Peligroso"].forEach(label=>{
+      const b=document.createElement('button');
+      b.type="button"; b.className="choice";
+      b.innerHTML = `<p class="t">${label}</p><p class="s">Clasificación.</p>`;
+      b.addEventListener('click', ()=>ans1(label));
+      optsEl.appendChild(b);
+    });
+  }
+
+  function ans1(label){
+    const good = label===cur.level;
+    if(good) ok++;
+    msgEl.className = "result " + (good?"ok":"warn");
+    msgEl.innerHTML = (good?"✅ ":"⚠️ ") + `Nivel correcto: <strong>${cur.level}</strong>. Driver: <strong>${cur.worst}</strong>.`;
+    optsEl.innerHTML="";
+    phase=2;
+    setTimeout(()=>{
+      msgEl.className="result info";
+      msgEl.textContent="Paso 2: elige la acción prioritaria.";
+      ACTIONS.forEach(a=>{
+        const b=document.createElement('button');
+        b.type="button"; b.className="choice";
+        b.innerHTML = `<p class="t">${a}</p><p class="s">Acción.</p>`;
+        b.addEventListener('click', ()=>ans2(a));
+        optsEl.appendChild(b);
+      });
+    }, 650);
+  }
+
+  function ans2(a){
+    const good = a===cur.act;
+    if(good) ok++;
+    msgEl.className = "result " + (good?"ok":"warn");
+    msgEl.innerHTML = (good?"✅ ":"⚠️ ") + `Acción correcta: <strong>${cur.act}</strong>.`;
+    optsEl.innerHTML="";
+    i++;
+    if(i>=10){
+      endEl.style.display="block";
+      endEl.className = "result " + (ok>=16?"ok":ok>=13?"warn":"no");
+      endEl.innerHTML = `<strong>Resultado:</strong> ${ok}/20. `+(ok>=16?"¡Excelente criterio!":"Repite para afinar prioridades.");
+    } else {
+      setTimeout(show, 850);
+    }
+    ui();
+  }
+
+  function reset(){
+    i=0; ok=0;
+    show();
+  }
+
+  document.getElementById('insReset').addEventListener('click', reset);
+  reset();
+})();
+
+// ===== Juego 2: Mezclador de río =====
+(function(){
+  const rf=document.getElementById('rf');
+  const ef=document.getElementById('ef');
+  const load=document.getElementById('load');
+  const tEff=document.getElementById('tEff');
+
+  const rfV=document.getElementById('rfV');
+  const efV=document.getElementById('efV');
+  const loadV=document.getElementById('loadV');
+  const tEffV=document.getElementById('tEffV');
+
+  const cFinal=document.getElementById('cFinal');
+  const iFinal=document.getElementById('iFinal');
+  const dilDep=document.getElementById('dilDep');
+  const tip=document.getElementById('mixTip');
+  const msg=document.getElementById('mixMsg');
+
+  function calc(){
+    const R=Number(rf.value);
+    const E=Number(ef.value);
+    const L=Number(load.value);
+    const T=Number(tEff.value)/100;
+
+    rfV.textContent=String(R);
+    efV.textContent=String(E);
+    loadV.textContent=String(L);
+    tEffV.textContent=`${Math.round(T*100)}%`;
+
+    // remaining load after treatment
+    const L2 = L * (1 - T);
+
+    // mixing concentration (simple): weighted by flow
+    const C = (L2*E) / (R+E);
+    const Cn = clamp(C, 0, 100);
+
+    // dependence on dilution = how much reduction comes from R vs treatment
+    const noTreatC = (L*E)/(R+E);
+    const fromTreat = (noTreatC - Cn);
+    const dep = clamp((noTreatC>0 ? (1 - (fromTreat/noTreatC)) : 0) * 100, 0, 100);
+
+    let impact="medio";
+    if(Cn<18) impact="bajo";
+    if(Cn>35) impact="alto";
+
+    cFinal.textContent=String(Math.round(Cn));
+    iFinal.textContent=impact;
+    dilDep.textContent=String(Math.round(dep));
+
+    let tipText="Sube eficiencia de tratamiento o baja carga del efluente.";
+    if(dep>70) tipText="Dependes mucho del caudal del río: mejora tratamiento (reduce carga antes de mezclar).";
+    if(impact==="bajo" && dep<55) tipText="Bien: impacto bajo sin depender demasiado de dilución.";
+    tip.textContent=tipText;
+
+    return {Cn, impact, dep};
+  }
+
+  function evaluate(){
+    const out=calc();
+    msg.style.display="block";
+    const ok = (out.impact==="bajo" && out.dep<55);
+    msg.className="result " + (ok ? "ok" : out.impact==="alto" ? "warn" : "info");
+    msg.innerHTML = ok
+      ? "<strong>¡Meta lograda!</strong> Impacto bajo con control real (tratamiento)."
+      : "<strong>Evaluación:</strong> Ajusta para bajar concentración final y reducir dependencia de dilución.";
+  }
+
+  function reset(){
+    rf.value=90; ef.value=40; load.value=55; tEff.value=55;
+    msg.style.display="none";
+    calc();
+  }
+
+  [rf,ef,load,tEff].forEach(x=>x.addEventListener('input', calc));
+  document.getElementById('mixGoal').addEventListener('click', evaluate);
+  document.getElementById('mixReset').addEventListener('click', reset);
+  reset();
+})();
+
+// ===== Juego 3: Reutilización segura =====
+(function(){
+  const rEl=document.getElementById('reR');
+  const okEl=document.getElementById('reOk');
+  const boxEl=document.getElementById('reBox');
+  const optsEl=document.getElementById('reOpts');
+  const msgEl=document.getElementById('reMsg');
+  const endEl=document.getElementById('reEnd');
+
+  const USES = ["Riego de áreas verdes","Limpieza de calles","Descarga controlada","No apto"];
+
+  function sample(){
+    const qual = Math.round(20 + Math.random()*80); // higher better
+    const pat = Math.round(Math.random()*100); // higher worse
+    const turb = Math.round(Math.random()*100); // higher worse
+    const nut = Math.round(Math.random()*100); // higher worse
+
+    // determine recommended use (didáctico)
+    let use="Descarga controlada";
+    if(pat>70) use="No apto";
+    else if(qual>=80 && pat<30 && turb<50) use="Riego de áreas verdes";
+    else if(qual>=60 && pat<45) use="Limpieza de calles";
+    else if(qual<45 || turb>80) use="Descarga controlada";
+
+    // explanation
+    let why="Uso de bajo contacto por seguridad.";
+    if(use==="No apto") why="Patógenos altos: riesgo sanitario.";
+    if(use==="Riego de áreas verdes") why="Buena calidad y bajo riesgo; aun así, evitar contacto con alimentos.";
+    if(use==="Limpieza de calles") why="Calidad aceptable para usos de bajo contacto.";
+    if(use==="Descarga controlada") why="Calidad limitada: mejor descargar con control y seguir mejorando tratamiento.";
+
+    return {qual, pat, turb, nut, use, why};
+  }
+
+  let i=0, ok=0, cur=null;
+
+  function ui(){
+    rEl.textContent=String(i+1);
+    okEl.textContent=String(ok);
+  }
+
+  function show(){
+    ui();
+    msgEl.style.display="none";
+    endEl.style.display="none";
+    optsEl.innerHTML="";
+    cur = sample();
+    boxEl.innerHTML = `
+      <p><strong>Reporte de calidad</strong></p>
+      <ul>
+        <li>Calidad general: <strong>${cur.qual}</strong>/100 (más alto = mejor)</li>
+        <li>Patógenos: <strong>${cur.pat}</strong>/100 (más alto = peor)</li>
+        <li>Turbidez/SST: <strong>${cur.turb}</strong>/100 (más alto = peor)</li>
+        <li>Nutrientes: <strong>${cur.nut}</strong>/100 (más alto = peor)</li>
+      </ul>
+      <p class="smallMuted">Elige el uso más seguro (didáctico).</p>
+    `;
+
+    USES.forEach(u=>{
+      const b=document.createElement('button');
+      b.type="button"; b.className="choice";
+      b.innerHTML = `<p class="t">${u}</p><p class="s">Selecciona.</p>`;
+      b.addEventListener('click', ()=>ans(u));
+      optsEl.appendChild(b);
+    });
+  }
+
+  function ans(u){
+    const good = u===cur.use;
+    if(good) ok++;
+    msgEl.style.display="block";
+    msgEl.className = "result " + (good?"ok":"warn");
+    msgEl.innerHTML = (good?"✅ ":"⚠️ ") + cur.why + ` (Recomendado: <strong>${cur.use}</strong>)`;
+    optsEl.innerHTML="";
+    i++;
+    if(i>=8){
+      endEl.style.display="block";
+      endEl.className = "result " + (ok>=7?"ok":ok>=5?"warn":"no");
+      endEl.innerHTML = `<strong>Resultado:</strong> ${ok}/8. ` + (ok>=7?"¡Excelente!":"Repite para mejorar criterio.");
+    } else {
+      setTimeout(show, 900);
+    }
+    ui();
+  }
+
+  function reset(){
+    i=0; ok=0;
+    show();
+  }
+
+  document.getElementById('reReset').addEventListener('click', reset);
+  reset();
+})();
+</script>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+</body>
+</html>

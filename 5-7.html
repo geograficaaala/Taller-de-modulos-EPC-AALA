@@ -1,0 +1,1100 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.7 Situación del tratamiento de desechos en Sololá · EPC AALA</title>
+  <meta name="description" content="Aguas residuales en la cuenca: cobertura de tratamiento, plantas y retos operativos. Simulación y arcade." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+
+/* Extra game styles (module 5.5–5.10) */
+.gameGrid{ margin-top: 10px; display:grid; grid-template-columns: 1.1fr .9fr; gap: 12px; align-items:start; }
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+.stage{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.60);
+  box-shadow: var(--shadow-soft);
+  padding: 12px;
+  overflow:hidden;
+}
+.stage h3{ margin:0 0 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 14px; letter-spacing:.2px; }
+.stage p{ margin: 0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+canvas.gameCanvas{
+  width: 100%;
+  height: 360px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.66);
+  box-shadow: 0 10px 22px rgba(11,16,32,.08);
+  touch-action: none;
+}
+.controlsRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+.pad{
+  display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:10px;
+}
+.pad .btn{ width:100%; justify-content:center; padding: 12px 12px; font-size: 13px; }
+.smallMuted{ color: rgba(11,16,32,.68); font-size: 12.5px; line-height: 1.45; }
+
+.dragGrid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+@media (max-width: 980px){ .dragGrid{ grid-template-columns: 1fr; } }
+.dropZone{
+  border-radius: 18px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  min-height: 140px;
+}
+.dropZone h4{ margin:0 0 8px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 13px; }
+.draggables{ display:flex; flex-wrap:wrap; gap:10px; }
+.dragItem{
+  user-select:none;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.72);
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 12.5px;
+  cursor: grab;
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+}
+.dragItem:active{ cursor: grabbing; transform: translateY(1px); }
+.zoneList{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.zoneList .mini{ margin:0; }
+.kv{
+  display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;
+}
+@media (max-width: 520px){ .kv{ grid-template-columns: 1fr; } }
+.kv .kpi{ padding: 12px; }
+.bigNum{ font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 22px; letter-spacing:.2px; }
+table.tiny{
+  width:100%;
+  border-collapse: collapse;
+  overflow:hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.62);
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+  margin-top: 10px;
+}
+table.tiny th, table.tiny td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(11,16,32,.10);
+  text-align:left;
+  font-size: 13px;
+  color: rgba(11,16,32,.82);
+}
+table.tiny th{
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 12.8px;
+  background: rgba(120,210,255,.18);
+}
+table.tiny tr:last-child td{ border-bottom:none; }
+
+.gridPuzzle{
+  display:grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap:6px;
+  margin-top:10px;
+}
+@media (max-width: 520px){ .gridPuzzle{ grid-template-columns: repeat(8, 1fr); } }
+.cell{
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  border: 1px solid rgba(11,16,32,.14);
+  background: rgba(255,255,255,.70);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  color: rgba(11,16,32,.78);
+  user-select:none;
+  cursor:pointer;
+}
+.cell.on{ background: rgba(120,210,255,.26); border-color: rgba(35,140,210,.20); }
+.cell.bad{ background: rgba(225,29,72,.14); border-color: rgba(225,29,72,.22); }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.7 Situación del tratamiento de desechos en Sololá</h1>
+        <p class="subtitle">En la cuenca del lago, se estima que se descargan alrededor de <strong>20,726.96 m³/día</strong> de aguas residuales hacia cuerpos de agua, y cerca del <strong>21%</strong> llega a plantas de tratamiento. Esto vuelve clave la operación, el mantenimiento y la cobertura del saneamiento.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-6.html">Anterior (5.6)</a>
+        <a class="btn primary" href="5-8.html">Siguiente (5.8)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <section class="card">
+        <h2>Teoría ampliada + datos locales</h2>
+        
+        <div class="twoCols" style="margin-top:10px;">
+          <div class="box">
+<p><strong>¿Qué significa “tratar” aguas residuales?</strong> Es reducir contaminantes (orgánicos, sólidos, nutrientes y patógenos)
+antes de descargar al ambiente.</p>
+<ul>
+  <li><strong>Beneficio directo:</strong> menos enfermedades y menos contaminación del lago y ríos.</li>
+  <li><strong>Beneficio ecosistémico:</strong> reduce eutrofización (exceso de nutrientes) y mejora oxígeno para vida acuática.</li>
+  <li><strong>Beneficio económico:</strong> protege turismo, pesca y costos de potabilización.</li>
+</ul>
+<div class="result info" style="margin-top:10px;">
+  <strong>Dato de cuenca:</strong> el volumen descargado se estima en <strong>20,726.96 m³/día</strong> y solo ~<strong>21%</strong>
+  llega a plantas. El reto no es solo construir, sino <em>operar bien</em>.
+</div>
+</div>
+          <div class="box">
+<p><strong>Por qué una planta puede volverse “deficiente”</strong></p>
+<ul>
+  <li>Entradas con <strong>grasas</strong> (restaurantes) que tapan y dañan procesos.</li>
+  <li>Variaciones fuertes por <strong>lluvia</strong> (entra agua pluvial al drenaje) y sobrecarga.</li>
+  <li>Falta de electricidad, reactivos, personal o mantenimiento.</li>
+  <li>No retiro de lodos (se pierde volumen útil y se generan olores).</li>
+</ul>
+<div class="result warn" style="margin-top:10px;">
+  <strong>Idea clave:</strong> una PTAR sin operación constante es como un “filtro apagado”: la descarga sigue, pero con
+  menos protección para el lago.
+</div>
+</div>
+        </div>
+
+<table class="tiny" aria-label="Plantas de tratamiento en el departamento de Sololá (capacidad y estado)">
+  <thead>
+    <tr>
+      <th>Municipio</th>
+      <th>Tipo</th>
+      <th>Capacidad (m³/día)</th>
+      <th>Estado reportado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Panajachel</td><td>Aguas residuales</td><td>7,647.68</td><td>Operación regular</td></tr>
+    <tr><td>Santiago Atitlán</td><td>Aguas residuales</td><td>6,700.80</td><td>Operación regular</td></tr>
+    <tr><td>San Pedro La Laguna</td><td>Aguas residuales</td><td>5,477.76</td><td>Operación deficiente</td></tr>
+    <tr><td>Santa Lucía Utatlán</td><td>Aguas residuales</td><td>900.72</td><td>Operación deficiente</td></tr>
+  </tbody>
+</table>
+<p class="smallMuted" style="margin-top:8px;">
+  Nota: Datos de referencia reportados para la cuenca (capacidad y estado). “Deficiente” suele asociarse a fallas de operación, mantenimiento
+  insuficiente, sobrecarga o problemas de energía/insumos.
+</p>
+
+<div class="twoCols" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Señales de alerta (operación)</strong></p>
+    <ul>
+      <li>Olores intensos persistentes y espuma.</li>
+      <li>Descarga con color oscuro o sólidos visibles.</li>
+      <li>Canales/pozos con grasa acumulada.</li>
+      <li>Vegetación quemada o “manchas” alrededor del efluente.</li>
+      <li>Quejas comunitarias, moscas y obstrucciones frecuentes.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <p><strong>Acciones de mejora (realistas)</strong></p>
+    <ul>
+      <li>Trampas de grasa en restaurantes y mercados.</li>
+      <li>Separar pluvial del drenaje sanitario cuando sea posible.</li>
+      <li>Plan de mantenimiento: limpieza, repuestos, control de lodos.</li>
+      <li>Monitoreo básico: caudal, olor, turbidez y bitácora de operación.</li>
+      <li>Educación: “no tirar aceite, pañales, químicos” al drenaje.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="result info" style="margin-top:12px;">
+  <strong>Actividad sugerida:</strong> dibuja el camino del agua (casa → drenaje → colector → PTAR → descarga) e identifica
+  “puntos de fuga” donde se mezclan residuos o entra agua de lluvia.
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Panorama · plantas · causas de fallas · mejoras</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental del tema"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Verifica conexión o recarga.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · Simulador “Administra la PTAR”</h2>
+        <div class="hint">
+          Tienes 100 puntos de presupuesto. Distribúyelos para aumentar el <strong>% tratado</strong> y la <strong>calidad del efluente</strong>.
+          Si descuidas mantenimiento o energía, la planta cae.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Asignación</h3>
+
+            <div class="ctrlRow">
+              <label for="bOps">Operadores (turnos y capacitación)</label>
+              <input id="bOps" type="range" min="0" max="40" step="1" value="18">
+              <div class="val" id="bOpsV">18</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="bMaint">Mantenimiento (limpieza, repuestos, lodos)</label>
+              <input id="bMaint" type="range" min="0" max="40" step="1" value="22">
+              <div class="val" id="bMaintV">22</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="bEnergy">Energía / operación continua</label>
+              <input id="bEnergy" type="range" min="0" max="40" step="1" value="20">
+              <div class="val" id="bEnergyV">20</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="bPre">Pretratamiento (rejillas, desarenador, trampas de grasa)</label>
+              <input id="bPre" type="range" min="0" max="40" step="1" value="18">
+              <div class="val" id="bPreV">18</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="bEdu">Educación y control de conexiones (lluvia/grasas)</label>
+              <input id="bEdu" type="range" min="0" max="40" step="1" value="22">
+              <div class="val" id="bEduV">22</div>
+            </div>
+
+            <div class="controlsRow">
+              <span class="mini">Presupuesto usado: <span id="bSum">0</span>/100</span>
+              <button class="btn" type="button" id="bEval">Evaluar</button>
+              <button class="btn" type="button" id="bReset">Reiniciar</button>
+            </div>
+
+            <div class="result" id="bMsg" style="display:none;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Resultado</h3>
+            <div class="kv">
+              <div class="kpi">
+                <div class="k">% que llega a tratamiento</div>
+                <div class="v bigNum" id="bTreat">21</div>
+                <div class="u">%</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Calidad del efluente</div>
+                <div class="v bigNum" id="bQual">0</div>
+                <div class="u">/100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Riesgo de falla</div>
+                <div class="v bigNum" id="bFail">—</div>
+                <div class="u">bajo / medio / alto</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Impacto al lago</div>
+                <div class="v bigNum" id="bImpact">—</div>
+                <div class="u">mejor / igual / peor</div>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Truco:</strong> para subir el % que llega a PTAR, necesitas educación/control (evitar pluvial mezclado)
+              y buen pretratamiento (grasas).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Reto de datos (Sololá)</h2>
+        <div class="hint">Responde usando la tabla de plantas y los datos del texto. Son preguntas de lectura “nivel difícil”.</div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Preguntas</h3>
+            <div class="hud">
+              <span class="mini">Puntaje: <span id="dScore">0</span>/8</span>
+              <button class="btn" type="button" id="dReset">Reiniciar</button>
+            </div>
+            <div class="result info" id="dQ" style="display:none; margin-top:10px;"></div>
+            <div id="dOpts" style="margin-top:10px;"></div>
+            <div class="result" id="dEnd" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Tabla rápida</h3>
+            
+<table class="tiny" aria-label="Plantas de tratamiento en el departamento de Sololá (capacidad y estado)">
+  <thead>
+    <tr>
+      <th>Municipio</th>
+      <th>Tipo</th>
+      <th>Capacidad (m³/día)</th>
+      <th>Estado reportado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Panajachel</td><td>Aguas residuales</td><td>7,647.68</td><td>Operación regular</td></tr>
+    <tr><td>Santiago Atitlán</td><td>Aguas residuales</td><td>6,700.80</td><td>Operación regular</td></tr>
+    <tr><td>San Pedro La Laguna</td><td>Aguas residuales</td><td>5,477.76</td><td>Operación deficiente</td></tr>
+    <tr><td>Santa Lucía Utatlán</td><td>Aguas residuales</td><td>900.72</td><td>Operación deficiente</td></tr>
+  </tbody>
+</table>
+<p class="smallMuted" style="margin-top:8px;">
+  Nota: Datos de referencia reportados para la cuenca (capacidad y estado). “Deficiente” suele asociarse a fallas de operación, mantenimiento
+  insuficiente, sobrecarga o problemas de energía/insumos.
+</p>
+
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 3 · Arcade “Desvía el caudal” (red de saneamiento)</h2>
+        <div class="hint">
+          Un desvío decide si el flujo llega a PTAR o se desborda. Presiona <strong>Válvula A</strong> o <strong>Válvula B</strong>
+          para mantener el sistema estable. Aumenta la velocidad con el tiempo.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Arcade</h3>
+            <canvas class="gameCanvas" id="sewCanvas"></canvas>
+            <div class="pad">
+              <button class="btn" type="button" id="va">Válvula A</button>
+              <button class="btn" type="button" id="vb">Válvula B</button>
+              <button class="btn" type="button" id="sewReset">Reiniciar</button>
+            </div>
+            <div class="controlsRow">
+              <span class="mini">Puntaje: <span id="sewScore">0</span></span>
+              <span class="mini">Desbordes: <span id="sewOver">0</span></span>
+              <span class="mini">Nivel: <span id="sewLvl">1</span></span>
+            </div>
+            <div class="result warn" id="sewMsg" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Qué estás practicando</h3>
+            <ul>
+              <li>Si entra demasiada agua (lluvia mezclada), el sistema se <strong>sobrecarga</strong>.</li>
+              <li>Si no “diriges” a tratamiento, aumenta la descarga directa al lago.</li>
+              <li>Operación = decisiones repetidas y rápidas (como en la vida real).</li>
+            </ul>
+            <div class="result info">Meta: mantener desbordes ≤ 6 durante 90 segundos.</div>
+          </div>
+        </div>
+      </section>
+<script>
+
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function fmt(n){ return (Math.round(n*10)/10).toString(); }
+
+
+// ===== MAPA (Markmap) =====
+const md = `
+# 5.7 Tratamiento en Sololá (cuenca)
+## Panorama
+- Descarga estimada: 20,726.96 m³/día
+- ~21% llega a PTAR
+## PTAR (qué hacen)
+- Remueven sólidos y materia orgánica
+- Reducen patógenos
+- Disminuyen nutrientes (según tecnología)
+## Plantas registradas (ejemplos)
+- Panajachel (7,647.68 m³/d) · regular
+- Santiago Atitlán (6,700.80 m³/d) · regular
+- San Pedro La Laguna (5,477.76 m³/d) · deficiente
+- Santa Lucía Utatlán (900.72 m³/d) · deficiente
+## Por qué fallan
+- Grasas y sólidos → obstrucciones
+- Sobrecarga por lluvia (pluvial mezclado)
+- Falta de mantenimiento y energía
+- Lodos sin retirar
+## Mejora
+- Trampas de grasa
+- Mantenimiento + bitácora
+- Educación y control de conexiones
+- Monitoreo de caudal y calidad
+`.trim();
+
+let mm=null, expanded=true;
+
+function renderMap(){
+  const fb = document.getElementById('fallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const { Transformer, Markmap } = window.markmap;
+    const transformer = new Transformer();
+    const { root } = transformer.transform(md);
+    const svg = document.getElementById('mindmap');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+    expanded = true;
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+
+// reintentos por si el script carga tarde
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok = renderMap();
+  if(ok || tries>=12) clearInterval(it);
+}, 250);
+
+document.getElementById('fit').addEventListener('click', ()=> mm && mm.fit());
+document.getElementById('toggle').addEventListener('click', ()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded = !expanded;
+});
+document.getElementById('resetMap').addEventListener('click', ()=>{ mm=null; expanded=true; renderMap(); });
+
+
+// ===== Juego 1: Simulador de presupuesto PTAR =====
+(function(){
+  const ids = ["bOps","bMaint","bEnergy","bPre","bEdu"];
+  const els = Object.fromEntries(ids.map(id=>[id, document.getElementById(id)]));
+  const vals = {
+    bOpsV: document.getElementById('bOpsV'),
+    bMaintV: document.getElementById('bMaintV'),
+    bEnergyV: document.getElementById('bEnergyV'),
+    bPreV: document.getElementById('bPreV'),
+    bEduV: document.getElementById('bEduV'),
+  };
+  const sumEl = document.getElementById('bSum');
+  const msg = document.getElementById('bMsg');
+
+  const treatEl = document.getElementById('bTreat');
+  const qualEl = document.getElementById('bQual');
+  const failEl = document.getElementById('bFail');
+  const impactEl = document.getElementById('bImpact');
+
+  function read(){
+    const v = Object.fromEntries(ids.map(id=>[id, Number(els[id].value)]));
+    vals.bOpsV.textContent = v.bOps;
+    vals.bMaintV.textContent = v.bMaint;
+    vals.bEnergyV.textContent = v.bEnergy;
+    vals.bPreV.textContent = v.bPre;
+    vals.bEduV.textContent = v.bEdu;
+    const sum = v.bOps + v.bMaint + v.bEnergy + v.bPre + v.bEdu;
+    sumEl.textContent = String(sum);
+    return {v,sum};
+  }
+
+  function model(v){
+    // Model didáctico:
+    // - % que llega a PTAR depende sobre todo de educación/control (evitar pluvial) y pretratamiento (grasas)
+    let treat = 21 + v.bEdu*0.55 + v.bPre*0.25 - Math.max(0, (10 - v.bEdu))*0.4;
+    treat = clamp(treat, 10, 85);
+
+    // - calidad depende de mantenimiento, energía y operadores; se castiga si pretratamiento es bajo
+    let qual = 20 + v.bMaint*1.25 + v.bEnergy*0.95 + v.bOps*0.75 - Math.max(0, 18 - v.bPre)*0.8;
+    qual = clamp(qual, 0, 100);
+
+    // - riesgo de falla alto si energía o mantenimiento bajos
+    let fail = "bajo";
+    const riskScore = (40 - v.bMaint) + (40 - v.bEnergy) + (30 - v.bOps);
+    if(riskScore > 70) fail = "alto";
+    else if(riskScore > 45) fail = "medio";
+
+    // impacto: mejora si suben ambos
+    let impact = "igual";
+    if(treat>=45 && qual>=70) impact="mejor";
+    if(treat<25 || qual<40) impact="peor";
+    return {treat, qual, fail, impact};
+  }
+
+  function evaluate(){
+    const {v,sum} = read();
+    msg.style.display="block";
+    if(sum>100){
+      msg.className="result no";
+      msg.innerHTML = `<strong>Te pasaste del presupuesto.</strong> Usaste ${sum}/100. Ajusta para evaluar.`;
+      return;
+    }
+    const out = model(v);
+
+    treatEl.textContent = String(Math.round(out.treat));
+    qualEl.textContent = String(Math.round(out.qual));
+    failEl.textContent = out.fail;
+    impactEl.textContent = out.impact;
+
+    const ok = (out.treat>=45 && out.qual>=70 && out.fail!=="alto");
+    msg.className = "result " + (ok ? "ok" : out.impact==="peor" ? "warn" : "info");
+    msg.innerHTML = ok
+      ? `<strong>¡Buen plan!</strong> Subiste cobertura y calidad sin disparar el riesgo.`
+      : `<strong>Plan evaluado.</strong> Ajusta para mejorar: sube mantenimiento/energía o educación/control, y cuida pretratamiento.`;
+  }
+
+  function reset(){
+    els.bOps.value=18;
+    els.bMaint.value=22;
+    els.bEnergy.value=20;
+    els.bPre.value=18;
+    els.bEdu.value=22;
+    msg.style.display="none";
+    const {v} = read();
+    const out = model(v);
+    treatEl.textContent = String(Math.round(out.treat));
+    qualEl.textContent = String(Math.round(out.qual));
+    failEl.textContent = out.fail;
+    impactEl.textContent = out.impact;
+  }
+
+  ids.forEach(id=>els[id].addEventListener('input', ()=>{ read(); }));
+  document.getElementById('bEval').addEventListener('click', evaluate);
+  document.getElementById('bReset').addEventListener('click', reset);
+  reset();
+})();
+
+// ===== Juego 2: Reto de datos =====
+(function(){
+  const qEl = document.getElementById('dQ');
+  const optsEl = document.getElementById('dOpts');
+  const endEl = document.getElementById('dEnd');
+  const scoreEl = document.getElementById('dScore');
+
+  const Q = [
+    {q:"¿Cuál planta tiene mayor capacidad reportada?", a:0, o:["Panajachel","Santa Lucía Utatlán","San Pedro La Laguna"], e:"Panajachel: 7,647.68 m³/d."},
+    {q:"¿Qué dos plantas están en operación regular?", a:2, o:["San Pedro + Santa Lucía","Ninguna","Panajachel + Santiago Atitlán"], e:"Panajachel y Santiago Atitlán se reportan en operación regular."},
+    {q:"El porcentaje aproximado que llega a plantas de tratamiento es…", a:1, o:["70%","21%","5%"], e:"Se reporta cerca del 21%."},
+    {q:"Si se mezcla agua de lluvia con drenaje sanitario, lo más probable es…", a:0, o:["Sobrecarga y fallas","Mejor calidad","Menos caudal"], e:"La planta recibe más caudal del que fue diseñada a tratar."},
+    {q:"Una medida clave para restaurantes/mercados es…", a:2, o:["Tirar aceite al drenaje","No usar agua","Instalar trampas de grasa"], e:"Reduce obstrucciones y protege procesos."},
+    {q:"San Pedro La Laguna se reporta como…", a:1, o:["Regular","Deficiente","Fuera de servicio"], e:"Se indica “operación deficiente”."},
+    {q:"¿Qué variable es más crítica para operación continua?", a:0, o:["Energía y personal","Decoración","Altura del edificio"], e:"Sin energía y operadores, el sistema no funciona."},
+    {q:"Un signo de alerta frecuente es…", a:2, o:["Olor a flores","Descarga clara siempre","Espuma/olor fuerte y sólidos"], e:"Espuma/olor/sólidos pueden indicar falla."}
+  ];
+
+  let i=0, score=0;
+
+  function show(){
+    endEl.style.display="none";
+    qEl.style.display="block";
+    const item = Q[i];
+    qEl.className="result info";
+    qEl.innerHTML = `<strong>${i+1}/8</strong> · ${item.q}`;
+    optsEl.innerHTML="";
+    item.o.forEach((opt,idx)=>{
+      const b=document.createElement('button');
+      b.type="button";
+      b.className="choice";
+      b.innerHTML = `<p class="t">${opt}</p><p class="s">Toca para responder.</p>`;
+      b.addEventListener('click', ()=>ans(idx));
+      optsEl.appendChild(b);
+    });
+  }
+
+  function ans(idx){
+    const item = Q[i];
+    const ok = idx===item.a;
+    if(ok) score++;
+    scoreEl.textContent=String(score);
+    qEl.className = "result " + (ok?"ok":"warn");
+    qEl.innerHTML = (ok?"✅ Correcto. ":"⚠️ Incorrecto. ") + item.e;
+
+    i++;
+    if(i>=Q.length){
+      optsEl.innerHTML="";
+      endEl.style.display="block";
+      endEl.className = "result " + (score>=7?"ok":score>=5?"warn":"no");
+      endEl.innerHTML = `<strong>Resultado:</strong> ${score}/8. ` + (score>=7?"¡Excelente lectura!":"Repite y mejora.");
+    } else {
+      setTimeout(show, 650);
+    }
+  }
+
+  function reset(){
+    i=0; score=0;
+    scoreEl.textContent="0";
+    qEl.style.display="none";
+    optsEl.innerHTML="";
+    endEl.style.display="none";
+    show();
+  }
+
+  document.getElementById('dReset').addEventListener('click', reset);
+  reset();
+})();
+
+// ===== Juego 3: Arcade de válvulas =====
+(function(){
+  const canvas = document.getElementById('sewCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function fitCanvas(){
+    const r = canvas.getBoundingClientRect();
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    canvas.width = Math.floor(r.width * dpr);
+    canvas.height = Math.floor(r.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize', fitCanvas);
+  setTimeout(fitCanvas, 0);
+
+  const scoreEl=document.getElementById('sewScore');
+  const overEl=document.getElementById('sewOver');
+  const lvlEl=document.getElementById('sewLvl');
+  const msgEl=document.getElementById('sewMsg');
+
+  let score=0, over=0, lvl=1;
+  let valve = "A"; // route to treatment
+  let running=true;
+  let t=0;
+
+  function ui(){
+    scoreEl.textContent=String(score);
+    overEl.textContent=String(over);
+    lvlEl.textContent=String(lvl);
+  }
+
+  function reset(){
+    score=0; over=0; lvl=1; valve="A"; running=true; t=0;
+    msgEl.style.display="none";
+    ui(); draw();
+  }
+
+  function press(v){
+    if(!running) return;
+    valve = v;
+  }
+
+  function draw(){
+    const w=canvas.clientWidth, h=canvas.clientHeight;
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle="rgba(200,245,255,.22)";
+    ctx.fillRect(0,0,w,h);
+
+    // pipes
+    ctx.strokeStyle="rgba(11,16,32,.12)";
+    ctx.lineWidth=10;
+    ctx.lineCap="round";
+    ctx.beginPath();
+    ctx.moveTo(w*0.15, h*0.25);
+    ctx.lineTo(w*0.85, h*0.25);
+    ctx.moveTo(w*0.15, h*0.55);
+    ctx.lineTo(w*0.85, h*0.55);
+    ctx.stroke();
+
+    // plant box
+    ctx.fillStyle="rgba(255,255,255,.90)";
+    ctx.strokeStyle="rgba(11,16,32,.12)";
+    ctx.lineWidth=2;
+    ctx.fillRect(w*0.80, h*0.16, w*0.16, h*0.18);
+    ctx.strokeRect(w*0.80, h*0.16, w*0.16, h*0.18);
+    ctx.fillStyle="rgba(11,16,32,.86)";
+    ctx.font="900 12px Inter, system-ui";
+    ctx.textAlign="center";
+    ctx.fillText("PTAR", w*0.88, h*0.25);
+
+    // lake warning zone
+    ctx.fillStyle="rgba(225,29,72,.10)";
+    ctx.fillRect(w*0.80, h*0.46, w*0.16, h*0.18);
+    ctx.strokeStyle="rgba(225,29,72,.22)";
+    ctx.strokeRect(w*0.80, h*0.46, w*0.16, h*0.18);
+    ctx.fillStyle="rgba(11,16,32,.86)";
+    ctx.fillText("Descarga", w*0.88, h*0.55);
+
+    // diverter at left
+    ctx.fillStyle="rgba(255,255,255,.92)";
+    ctx.strokeStyle="rgba(11,16,32,.12)";
+    ctx.fillRect(w*0.10, h*0.20, w*0.08, h*0.40);
+    ctx.strokeRect(w*0.10, h*0.20, w*0.08, h*0.40);
+    ctx.fillStyle="rgba(11,16,32,.86)";
+    ctx.font="900 12px Inter, system-ui";
+    ctx.fillText("VÁLVULA", w*0.14, h*0.18);
+
+    // flow particles
+    const speed = 90 + lvl*18;
+    for(let i=0;i<10;i++){
+      const px = (t*speed + i*70) % (w*0.70);
+      const x = w*0.18 + px;
+      const y = (valve==="A") ? h*0.25 : h*0.55;
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, Math.PI*2);
+      ctx.fillStyle="rgba(35,140,210,.55)";
+      ctx.fill();
+    }
+
+    // HUD
+    ctx.fillStyle="rgba(11,16,32,.62)";
+    ctx.font="700 12px Inter, system-ui";
+    ctx.textAlign="left";
+    ctx.fillText("Mantén el flujo hacia PTAR (A). Cambia a B solo si ‘lluvia’ lo exige.", 12, 14);
+
+    // valve indicator
+    ctx.textAlign="center";
+    ctx.font="900 14px Inter, system-ui";
+    ctx.fillStyle = valve==="A" ? "rgba(22,163,74,.90)" : "rgba(225,29,72,.90)";
+    ctx.fillText("Actual: " + valve, w*0.50, h*0.85);
+  }
+
+  function step(dt){
+    if(!running) return;
+
+    t += dt;
+
+    // eventos de lluvia: obliga a cambiar a B temporalmente
+    const rain = (Math.sin(t*0.8) + Math.sin(t*1.7)) > 1.3; // raro
+    if(rain && valve==="A"){
+      over++;
+      if(over%2===0){
+        msgEl.style.display="block";
+        msgEl.textContent="⚠️ Lluvia: entró caudal extra y se desbordó por no aliviar. A veces conviene derivar momentáneamente.";
+      }
+    }
+    if(rain && valve==="B"){
+      score += 2;
+    }
+    if(!rain && valve==="A"){
+      score += 1;
+    }
+    if(!rain && valve==="B"){
+      // derivar sin necesidad = descarga
+      over += 0.4;
+    }
+
+    lvl = 1 + Math.floor(score/140);
+    if(over>=7){
+      running=false;
+      msgEl.style.display="block";
+      msgEl.textContent="Fin: demasiados desbordes/descarga. Reinicia y busca equilibrio.";
+    }
+
+    ui();
+    draw();
+  }
+
+  let last=performance.now();
+  function loop(now){
+    const dt = (now-last)/1000;
+    last=now;
+    step(dt);
+    requestAnimationFrame(loop);
+  }
+
+  document.getElementById('va').addEventListener('click', ()=>press("A"));
+  document.getElementById('vb').addEventListener('click', ()=>press("B"));
+  document.getElementById('sewReset').addEventListener('click', reset);
+  reset();
+  requestAnimationFrame(loop);
+})();
+</script>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+</body>
+</html>

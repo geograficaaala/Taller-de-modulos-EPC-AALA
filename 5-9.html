@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.9 Equilibrio en lagos y ríos · EPC AALA</title>
+  <meta name="description" content="Eutrofización, oxígeno disuelto, nutrientes y dinámica de cuenca. Simulación del lago + arcade + caso." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+
+/* Extra game styles (module 5.5–5.10) */
+.gameGrid{ margin-top: 10px; display:grid; grid-template-columns: 1.1fr .9fr; gap: 12px; align-items:start; }
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+.stage{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.60);
+  box-shadow: var(--shadow-soft);
+  padding: 12px;
+  overflow:hidden;
+}
+.stage h3{ margin:0 0 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 14px; letter-spacing:.2px; }
+.stage p{ margin: 0 0 10px; color: rgba(11,16,32,.72); font-size: 13px; line-height: 1.55; }
+
+canvas.gameCanvas{
+  width: 100%;
+  height: 360px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.66);
+  box-shadow: 0 10px 22px rgba(11,16,32,.08);
+  touch-action: none;
+}
+.controlsRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+.pad{
+  display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:10px;
+}
+.pad .btn{ width:100%; justify-content:center; padding: 12px 12px; font-size: 13px; }
+.smallMuted{ color: rgba(11,16,32,.68); font-size: 12.5px; line-height: 1.45; }
+
+.dragGrid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+@media (max-width: 980px){ .dragGrid{ grid-template-columns: 1fr; } }
+.dropZone{
+  border-radius: 18px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  min-height: 140px;
+}
+.dropZone h4{ margin:0 0 8px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 13px; }
+.draggables{ display:flex; flex-wrap:wrap; gap:10px; }
+.dragItem{
+  user-select:none;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.72);
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 12.5px;
+  cursor: grab;
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+}
+.dragItem:active{ cursor: grabbing; transform: translateY(1px); }
+.zoneList{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.zoneList .mini{ margin:0; }
+.kv{
+  display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;
+}
+@media (max-width: 520px){ .kv{ grid-template-columns: 1fr; } }
+.kv .kpi{ padding: 12px; }
+.bigNum{ font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 22px; letter-spacing:.2px; }
+table.tiny{
+  width:100%;
+  border-collapse: collapse;
+  overflow:hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.62);
+  box-shadow: 0 10px 22px rgba(11,16,32,.06);
+  margin-top: 10px;
+}
+table.tiny th, table.tiny td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(11,16,32,.10);
+  text-align:left;
+  font-size: 13px;
+  color: rgba(11,16,32,.82);
+}
+table.tiny th{
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 12.8px;
+  background: rgba(120,210,255,.18);
+}
+table.tiny tr:last-child td{ border-bottom:none; }
+
+.gridPuzzle{
+  display:grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap:6px;
+  margin-top:10px;
+}
+@media (max-width: 520px){ .gridPuzzle{ grid-template-columns: repeat(8, 1fr); } }
+.cell{
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  border: 1px solid rgba(11,16,32,.14);
+  background: rgba(255,255,255,.70);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  color: rgba(11,16,32,.78);
+  user-select:none;
+  cursor:pointer;
+}
+.cell.on{ background: rgba(120,210,255,.26); border-color: rgba(35,140,210,.20); }
+.cell.bad{ background: rgba(225,29,72,.14); border-color: rgba(225,29,72,.22); }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.9 Equilibrio en lagos y ríos</h1>
+        <p class="subtitle">Un lago o río está en equilibrio cuando la entrada de contaminantes y nutrientes no supera su capacidad de asimilación. Si aumentan <strong>N y P</strong>, la materia orgánica y los patógenos, el sistema puede perder oxígeno, crecer algas y afectar salud y biodiversidad.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-8.html">Anterior (5.8)</a>
+        <a class="btn primary" href="5-10.html">Siguiente (5.10)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <section class="card">
+        <h2>Teoría ampliada (equilibrio, eutrofización y oxígeno)</h2>
+        
+        <div class="twoCols" style="margin-top:10px;">
+          <div class="box">
+<p><strong>Equilibrio ecológico</strong> en cuerpos de agua = balance entre entradas (nutrientes, orgánicos, sedimentos)
+y procesos naturales (dilución, degradación biológica, fotosíntesis, intercambio con atmósfera).</p>
+<ul>
+  <li><strong>Oxígeno disuelto (OD):</strong> indispensable para peces y organismos acuáticos.</li>
+  <li><strong>DBO:</strong> si sube la materia orgánica, microbios consumen OD.</li>
+  <li><strong>N y P:</strong> fertilizan el agua y pueden disparar crecimiento de algas.</li>
+  <li><strong>Turbidez/sedimentos:</strong> reducen luz, afectan hábitats y transportan contaminantes.</li>
+</ul>
+<div class="result info" style="margin-top:10px;">
+  <strong>En cuencas volcánicas y de pendiente:</strong> lluvias pueden arrastrar sedimentos; si además hay descargas,
+  el impacto se multiplica.
+</div>
+</div>
+          <div class="box">
+<p><strong>Eutrofización (explicación simple)</strong></p>
+<ul>
+  <li>Entra exceso de <strong>nutrientes</strong> (N y P) desde aguas residuales y fertilizantes.</li>
+  <li>Suben algas y plantas acuáticas → el agua se pone verde.</li>
+  <li>Cuando algas mueren, se descomponen y consumen OD.</li>
+  <li>Si el OD baja mucho, peces y fauna sufren; aparecen malos olores.</li>
+</ul>
+<div class="result warn" style="margin-top:10px;">
+  <strong>Trampa:</strong> no basta con “más agua” o “más lluvia”. Si siguen entrando nutrientes, el problema vuelve.
+</div>
+</div>
+        </div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Cargas puntuales</div>
+    <p class="s">Descargas directas (tuberías, colectores) que entran en un punto específico.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Cargas difusas</div>
+    <p class="s">Aporte disperso: escorrentía agrícola, calles con basura, erosión y sedimentos.</p>
+  </div>
+  <div class="pill">
+    <div class="t">Resiliencia</div>
+    <p class="s">Capacidad del ecosistema de recuperarse. Se debilita con cargas constantes y pérdida de vegetación ribereña.</p>
+  </div>
+</div>
+
+<div class="twoCols" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Indicadores rápidos (observables)</strong></p>
+    <ul>
+      <li>Color verde/azulado (algas), espuma o manchas.</li>
+      <li>Olor fuerte, peces en superficie, mortandades (alerta).</li>
+      <li>Turbidez alta tras lluvia (sedimentos).</li>
+      <li>Basura flotante y descargas visibles.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <p><strong>Acciones que mejoran el equilibrio</strong></p>
+    <ul>
+      <li>Aumentar cobertura y calidad de tratamiento.</li>
+      <li>Control de fertilizantes y erosión (barreras vivas, terrazas).</li>
+      <li>Vegetación ribereña y protección de nacimientos.</li>
+      <li>Manejo de residuos sólidos (menos plástico al agua).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="result info" style="margin-top:12px;">
+  <strong>Regla de oro:</strong> para mejorar el equilibrio, se debe reducir la <em>carga total</em> (orgánicos + nutrientes + sedimentos),
+  no solo “mover” la contaminación de lugar.
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Variables · eutrofización · fuentes · acciones</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental del tema"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Verifica conexión o recarga.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · Simulación del lago (equilibrio)</h2>
+        <div class="hint">
+          Ajusta las entradas al lago y observa: <strong>algas</strong>, <strong>oxígeno</strong> y <strong>salud del ecosistema</strong>.
+          Tu meta es mantener salud ≥ 75 durante 12 “meses” simulados.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Controles</h3>
+
+            <div class="ctrlRow">
+              <label for="nIn">Nitrógeno (N) entrante</label>
+              <input id="nIn" type="range" min="0" max="100" step="1" value="55">
+              <div class="val" id="nInV">55</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="pIn">Fósforo (P) entrante</label>
+              <input id="pIn" type="range" min="0" max="100" step="1" value="60">
+              <div class="val" id="pInV">60</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="dboIn">Materia orgánica (DBO)</label>
+              <input id="dboIn" type="range" min="0" max="100" step="1" value="50">
+              <div class="val" id="dboInV">50</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="sedIn">Sedimentos (turbidez)</label>
+              <input id="sedIn" type="range" min="0" max="100" step="1" value="45">
+              <div class="val" id="sedInV">45</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="treat">Cobertura de tratamiento</label>
+              <input id="treat" type="range" min="0" max="100" step="1" value="25">
+              <div class="val" id="treatV">25%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="veg">Vegetación ribereña</label>
+              <input id="veg" type="range" min="0" max="100" step="1" value="40">
+              <div class="val" id="vegV">40%</div>
+            </div>
+
+            <div class="controlsRow">
+              <button class="btn" type="button" id="lakeRun">Simular 12 meses</button>
+              <button class="btn" type="button" id="lakeReset">Reiniciar</button>
+            </div>
+
+            <div class="result" id="lakeMsg" style="display:none;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Indicadores</h3>
+            <div class="kv">
+              <div class="kpi">
+                <div class="k">Índice de algas</div>
+                <div class="v bigNum" id="algae">0</div>
+                <div class="u">/100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Oxígeno (OD)</div>
+                <div class="v bigNum" id="oxy">0</div>
+                <div class="u">/100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Transparencia</div>
+                <div class="v bigNum" id="clar">0</div>
+                <div class="u">/100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Salud del ecosistema</div>
+                <div class="v bigNum" id="health">0</div>
+                <div class="u">/100</div>
+              </div>
+            </div>
+            <div class="result info" style="margin-top:10px;">
+              <strong>Lectura:</strong> más tratamiento + más vegetación ribereña reduce cargas. N y P disparan algas; DBO baja oxígeno.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Arcade “Defiende el nacimiento”</h2>
+        <div class="hint">
+          Contaminantes bajan por la ladera hacia un nacimiento. Tócalos para removerlos antes de que lleguen.
+          Cada contaminante representa una <strong>carga</strong>: basura, detergente, estiércol, sedimento.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Arcade</h3>
+            <canvas class="gameCanvas" id="springCanvas"></canvas>
+            <div class="controlsRow">
+              <button class="btn" type="button" id="spStart">Iniciar</button>
+              <button class="btn" type="button" id="spPause">Pausa</button>
+              <button class="btn" type="button" id="spReset">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="spScore">0</span></span>
+              <span class="mini">Impactos: <span id="spHit">0</span></span>
+              <span class="mini">Nivel: <span id="spLvl">1</span></span>
+            </div>
+            <div class="result warn" id="spMsg" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Aprendizaje</h3>
+            <ul>
+              <li>Las cargas difusas llegan con lluvia: sedimentos y nutrientes.</li>
+              <li>Basura y detergentes llegan por calles y quebradas.</li>
+              <li>Vegetación y barreras vivas reducen velocidad del agua y capturan sedimento.</li>
+            </ul>
+            <div class="result info">Meta: impactos ≤ 12 durante 90 segundos.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 3 · Caso difícil: ¿qué está rompiendo el equilibrio?</h2>
+        <div class="hint">
+          Lee el caso y elige la explicación más probable. Luego elige la intervención más efectiva.
+          Son 6 rondas, con retroalimentación.
+        </div>
+
+        <div class="gameGrid">
+          <div class="stage">
+            <h3>Rondas</h3>
+            <div class="hud">
+              <span class="mini">Ronda: <span id="csR">1</span>/6</span>
+              <span class="mini">Aciertos: <span id="csOk">0</span></span>
+              <button class="btn" type="button" id="csReset">Reiniciar</button>
+            </div>
+            <div class="result info" id="csBox" style="display:none; margin-top:10px;"></div>
+            <div id="csOpts" style="margin-top:10px;"></div>
+            <div class="result" id="csEnd" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="stage">
+            <h3>Pistas</h3>
+            <div class="result info">
+              <strong>Si el agua está verde:</strong> piensa en N y P.<br>
+              <strong>Si hay olor a “podrido”:</strong> OD bajo y DBO alta.<br>
+              <strong>Si hay turbidez:</strong> sedimentos y erosión.
+            </div>
+            <div class="result warn" style="margin-top:10px;">La intervención debe atacar la <em>causa principal</em>, no el síntoma.</div>
+          </div>
+        </div>
+      </section>
+<script>
+
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function fmt(n){ return (Math.round(n*10)/10).toString(); }
+
+
+// ===== MAPA (Markmap) =====
+const md = `
+# 5.9 Equilibrio en lagos y ríos
+## Variables clave
+- Oxígeno disuelto (OD)
+- Materia orgánica (DBO)
+- Nutrientes (N y P)
+- Sedimentos / turbidez
+- Temperatura y mezcla del agua
+## Eutrofización
+- Exceso de N y P → algas
+- Descomposición consume OD
+- Olores, pérdida de biodiversidad
+## Fuentes de carga
+- Puntuales: descargas directas
+- Difusas: escorrentía agrícola, erosión, calles con basura
+## Acciones
+- Tratamiento eficaz
+- Control de erosión y fertilizantes
+- Vegetación ribereña
+- Manejo de residuos sólidos
+`.trim();
+
+let mm=null, expanded=true;
+
+function renderMap(){
+  const fb = document.getElementById('fallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const { Transformer, Markmap } = window.markmap;
+    const transformer = new Transformer();
+    const { root } = transformer.transform(md);
+    const svg = document.getElementById('mindmap');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+    expanded = true;
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+
+// reintentos por si el script carga tarde
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok = renderMap();
+  if(ok || tries>=12) clearInterval(it);
+}, 250);
+
+document.getElementById('fit').addEventListener('click', ()=> mm && mm.fit());
+document.getElementById('toggle').addEventListener('click', ()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded = !expanded;
+});
+document.getElementById('resetMap').addEventListener('click', ()=>{ mm=null; expanded=true; renderMap(); });
+
+
+// ===== Juego 1: Simulador del lago =====
+(function(){
+  const ids = ["nIn","pIn","dboIn","sedIn","treat","veg"];
+  const el = Object.fromEntries(ids.map(id=>[id, document.getElementById(id)]));
+  const vEl = {
+    nInV: document.getElementById('nInV'),
+    pInV: document.getElementById('pInV'),
+    dboInV: document.getElementById('dboInV'),
+    sedInV: document.getElementById('sedInV'),
+    treatV: document.getElementById('treatV'),
+    vegV: document.getElementById('vegV'),
+  };
+  const algaeEl=document.getElementById('algae');
+  const oxyEl=document.getElementById('oxy');
+  const clarEl=document.getElementById('clar');
+  const healthEl=document.getElementById('health');
+  const msgEl=document.getElementById('lakeMsg');
+
+  function read(){
+    const v = Object.fromEntries(ids.map(id=>[id, Number(el[id].value)]));
+    vEl.nInV.textContent=v.nIn;
+    vEl.pInV.textContent=v.pIn;
+    vEl.dboInV.textContent=v.dboIn;
+    vEl.sedInV.textContent=v.sedIn;
+    vEl.treatV.textContent=`${v.treat}%`;
+    vEl.vegV.textContent=`${v.veg}%`;
+    return v;
+  }
+
+  function simulate(v){
+    // Effective loads reduced by treatment and vegetation (buffer)
+    const treatEff = v.treat/100;
+    const vegEff = v.veg/100;
+
+    // Nutrients after controls
+    const N = v.nIn * (1 - 0.45*treatEff) * (1 - 0.30*vegEff);
+    const P = v.pIn * (1 - 0.55*treatEff) * (1 - 0.35*vegEff);
+
+    const DBO = v.dboIn * (1 - 0.60*treatEff) * (1 - 0.10*vegEff);
+    const SED = v.sedIn * (1 - 0.15*treatEff) * (1 - 0.55*vegEff);
+
+    // Algae index grows with N,P, decreases with clarity
+    let algae = 0.55*(N*0.6 + P*0.9) - 0.25*(100-SED);
+    algae = clamp(algae, 0, 100);
+
+    // Oxygen decreases with DBO and algae decay; increases with veg buffer
+    let oxy = 90 - 0.55*DBO - 0.25*algae + 0.18*(v.veg);
+    oxy = clamp(oxy, 0, 100);
+
+    // Clarity declines with sediment and algae
+    let clar = 95 - 0.55*SED - 0.35*algae;
+    clar = clamp(clar, 0, 100);
+
+    // Health summary
+    let health = 0.45*oxy + 0.35*clar + 0.20*(100-algae);
+    health = clamp(health, 0, 100);
+
+    return {algae, oxy, clar, health};
+  }
+
+  function run12(){
+    const v = read();
+    // simulate 12 months with slight seasonality (didáctico)
+    let out = {algae:0, oxy:0, clar:0, health:0};
+    for(let m=1;m<=12;m++){
+      const season = 1 + 0.08*Math.sin(m/12*2*Math.PI); // small seasonal
+      const vv = {...v, nIn: v.nIn*season, pIn: v.pIn*season, sedIn: v.sedIn*(1+0.12*Math.cos(m/12*2*Math.PI))};
+      const o = simulate(vv);
+      // average
+      out.algae += o.algae/12;
+      out.oxy += o.oxy/12;
+      out.clar += o.clar/12;
+      out.health += o.health/12;
+    }
+
+    algaeEl.textContent=String(Math.round(out.algae));
+    oxyEl.textContent=String(Math.round(out.oxy));
+    clarEl.textContent=String(Math.round(out.clar));
+    healthEl.textContent=String(Math.round(out.health));
+
+    msgEl.style.display="block";
+    const ok = out.health>=75;
+    msgEl.className="result " + (ok ? "ok" : out.health>=60 ? "warn" : "no");
+    msgEl.innerHTML = ok
+      ? "<strong>¡Buen equilibrio!</strong> Salud ≥ 75. Mantén tratamiento y control de nutrientes/sedimentos."
+      : "<strong>Equilibrio frágil.</strong> Reduce N y P, aumenta tratamiento y vegetación ribereña, y controla erosión.";
+  }
+
+  function reset(){
+    el.nIn.value=55; el.pIn.value=60; el.dboIn.value=50; el.sedIn.value=45; el.treat.value=25; el.veg.value=40;
+    msgEl.style.display="none";
+    read();
+    const out = simulate(read());
+    algaeEl.textContent=String(Math.round(out.algae));
+    oxyEl.textContent=String(Math.round(out.oxy));
+    clarEl.textContent=String(Math.round(out.clar));
+    healthEl.textContent=String(Math.round(out.health));
+  }
+
+  ids.forEach(id=>el[id].addEventListener('input', ()=>{
+    const out=simulate(read());
+    algaeEl.textContent=String(Math.round(out.algae));
+    oxyEl.textContent=String(Math.round(out.oxy));
+    clarEl.textContent=String(Math.round(out.clar));
+    healthEl.textContent=String(Math.round(out.health));
+  }));
+
+  document.getElementById('lakeRun').addEventListener('click', run12);
+  document.getElementById('lakeReset').addEventListener('click', reset);
+  reset();
+})();
+
+// ===== Juego 2: Arcade Defiende el nacimiento =====
+(function(){
+  const canvas=document.getElementById('springCanvas');
+  const ctx=canvas.getContext('2d');
+
+  function fitCanvas(){
+    const r=canvas.getBoundingClientRect();
+    const dpr=Math.max(1, window.devicePixelRatio||1);
+    canvas.width=Math.floor(r.width*dpr);
+    canvas.height=Math.floor(r.height*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize', fitCanvas);
+  setTimeout(fitCanvas, 0);
+
+  const scoreEl=document.getElementById('spScore');
+  const hitEl=document.getElementById('spHit');
+  const lvlEl=document.getElementById('spLvl');
+  const msgEl=document.getElementById('spMsg');
+
+  const TYPES = [
+    {k:"Basura", pts:2, v:70},
+    {k:"Detergente", pts:3, v:80},
+    {k:"Estiércol", pts:3, v:85},
+    {k:"Sedimento", pts:2, v:95}
+  ];
+
+  let running=false, paused=false;
+  let score=0, hits=0, lvl=1;
+  let objs=[];
+
+  function ui(){
+    scoreEl.textContent=String(score);
+    hitEl.textContent=String(hits);
+    lvlEl.textContent=String(lvl);
+  }
+
+  function banner(text){
+    msgEl.style.display="block";
+    msgEl.textContent=text;
+  }
+
+  function spawn(){
+    const w=canvas.clientWidth, h=canvas.clientHeight;
+    const t=TYPES[Math.floor(Math.random()*TYPES.length)];
+    objs.push({
+      type:t,
+      x: 20 + Math.random()*(w-40),
+      y: -20,
+      r: 16 + Math.random()*10
+    });
+  }
+
+  function reset(){
+    running=false; paused=false;
+    score=0; hits=0; lvl=1;
+    objs=[];
+    msgEl.style.display="none";
+    ui(); draw();
+  }
+
+  function start(){
+    if(running) return;
+    running=true; paused=false;
+    last=performance.now();
+    next=last+600;
+    requestAnimationFrame(loop);
+  }
+
+  function togglePause(){
+    if(!running) return;
+    paused=!paused;
+    if(!paused){ last=performance.now(); requestAnimationFrame(loop); }
+  }
+
+  function difficulty(){
+    lvl = 1 + Math.floor(score/25);
+    return clamp(700 - lvl*55, 260, 700);
+  }
+
+  function draw(){
+    const w=canvas.clientWidth, h=canvas.clientHeight;
+    ctx.clearRect(0,0,w,h);
+    // hillside
+    ctx.fillStyle="rgba(210,245,255,.24)";
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="rgba(11,16,32,.05)";
+    ctx.beginPath();
+    ctx.moveTo(0,h*0.15);
+    ctx.lineTo(w,h*0.45);
+    ctx.lineTo(w,h);
+    ctx.lineTo(0,h);
+    ctx.closePath();
+    ctx.fill();
+
+    // spring zone
+    ctx.fillStyle="rgba(35,140,210,.10)";
+    ctx.fillRect(w*0.10, h*0.78, w*0.80, h*0.18);
+    ctx.strokeStyle="rgba(35,140,210,.25)";
+    ctx.strokeRect(w*0.10, h*0.78, w*0.80, h*0.18);
+    ctx.fillStyle="rgba(11,16,32,.86)";
+    ctx.font="900 12px Inter, system-ui";
+    ctx.textAlign="center";
+    ctx.fillText("NACIMIENTO", w*0.50, h*0.88);
+
+    objs.forEach(o=>{
+      ctx.beginPath();
+      ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+      ctx.fillStyle="rgba(255,255,255,.92)";
+      ctx.fill();
+      ctx.strokeStyle="rgba(11,16,32,.12)";
+      ctx.lineWidth=2;
+      ctx.stroke();
+
+      ctx.fillStyle="rgba(11,16,32,.86)";
+      ctx.font="900 12px Inter, system-ui";
+      ctx.fillText(o.type.k, o.x, o.y);
+    });
+
+    ctx.fillStyle="rgba(11,16,32,.62)";
+    ctx.font="700 12px Inter, system-ui";
+    ctx.textAlign="left";
+    ctx.fillText("Toca contaminantes antes de que entren al nacimiento.", 12, 14);
+  }
+
+  function hit(x,y){
+    for(let i=objs.length-1;i>=0;i--){
+      const o=objs[i];
+      const dx=x-o.x, dy=y-o.y;
+      if(Math.sqrt(dx*dx+dy*dy) <= o.r){
+        score += o.type.pts;
+        objs.splice(i,1);
+        ui();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  canvas.addEventListener('pointerdown', (evt)=>{
+    if(!running || paused) return;
+    const r=canvas.getBoundingClientRect();
+    const x=(evt.clientX-r.left), y=(evt.clientY-r.top);
+    if(!hit(x,y)){
+      hits++;
+      ui();
+      if(hits>=12){
+        running=false;
+        banner("Fin: demasiados impactos al nacimiento. Reinicia y mejora tu reacción.");
+      }
+    }
+  });
+
+  let last=0, next=0;
+  function loop(ts){
+    if(!running || paused) return;
+    const dt=(ts-last)/1000;
+    last=ts;
+
+    if(ts>=next){
+      spawn();
+      next = ts + difficulty();
+    }
+
+    // move objects down the slope
+    const w=canvas.clientWidth, h=canvas.clientHeight;
+    objs.forEach(o=>{
+      o.y += (o.type.v + lvl*10)*dt;
+      o.x += 12*dt; // drift right
+    });
+
+    // impact if reach spring
+    objs = objs.filter(o=>{
+      if(o.y >= h*0.78){
+        hits++;
+        return false;
+      }
+      return true;
+    });
+
+    if(hits>=12){
+      running=false;
+      banner("Fin: el nacimiento recibió demasiada carga.");
+    }
+
+    ui();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  document.getElementById('spStart').addEventListener('click', start);
+  document.getElementById('spPause').addEventListener('click', togglePause);
+  document.getElementById('spReset').addEventListener('click', reset);
+
+  reset();
+})();
+
+// ===== Juego 3: Caso difícil =====
+(function(){
+  const rEl=document.getElementById('csR');
+  const okEl=document.getElementById('csOk');
+  const boxEl=document.getElementById('csBox');
+  const optsEl=document.getElementById('csOpts');
+  const endEl=document.getElementById('csEnd');
+
+  const CASES = [
+    {t:"Agua verde y espuma cerca de descargas", q:"¿Causa principal más probable?", a:0, o:["N y P altos (nutrientes) + detergentes","Solo sedimentos","Solo temperatura"], e:"Verde + espuma sugiere nutrientes/detergentes; eutrofización." , nextQ:"¿Intervención más efectiva?", a2:1, o2:["Aumentar basura en calles","Mejorar tratamiento + control de nutrientes","Pintar el muelle"], e2:"Se reduce carga total (nutrientes y orgánicos)."},
+    {t:"Peces boqueando al amanecer", q:"¿Qué está pasando?", a:1, o:["OD muy alto","OD bajo por DBO y respiración nocturna","Agua pura"], e:"Al amanecer suele bajar el OD; si hay mucha DBO, peor.", nextQ:"¿Intervención?", a2:2, o2:["Más fertilizante","Descarga directa","Reducir DBO: tratar aguas residuales"], e2:"Menos orgánicos = más oxígeno disponible."},
+    {t:"Río café tras lluvia fuerte", q:"¿Causa principal?", a:2, o:["Nutrientes","Patógenos","Sedimentos/erosión"], e:"Lluvia arrastra suelo y sedimentos.", nextQ:"¿Intervención?", a2:0, o2:["Barreras vivas/terrazas y reforestación","Más detergente","Cerrar PTAR"], e2:"Control de erosión reduce turbidez."},
+    {t:"Olor a ‘podrido’ en bahía", q:"¿Qué indicador estaría peor?", a:0, o:["OD (oxígeno)","Temperatura","Altura"], e:"Olor sugiere procesos anaerobios por OD bajo.", nextQ:"¿Intervención?", a2:1, o2:["Más descarga","Reducir DBO + mejorar tratamiento","Tirar plástico"], e2:"Menos DBO y nutrientes mejora OD."},
+    {t:"Algas crecen cerca de agricultura", q:"¿Fuente dominante?", a:1, o:["Puntual (tubería)","Difusa (escorrentía)","Ninguna"], e:"Agricultura suele ser carga difusa.", nextQ:"¿Intervención?", a2:2, o2:["Más quema","Más plástico","Manejo de fertilizantes + barreras vivas"], e2:"Reduce N y P que entran al agua."},
+    {t:"Basura flotante en desembocadura", q:"¿Tipo de problema?", a:2, o:["Solo químico","Solo nutrientes","Residuos sólidos + manejo deficiente"], e:"Basura = residuos sólidos y fugas del sistema.", nextQ:"¿Intervención?", a2:0, o2:["Mejorar recolección y puntos de acopio","Agregar N y P","Romper tuberías"], e2:"Evita que llegue basura al río/lago."}
+  ];
+
+  let i=0, ok=0, phase=1;
+
+  function ui(){
+    rEl.textContent=String(i+1);
+    okEl.textContent=String(ok);
+  }
+
+  function show(){
+    ui();
+    endEl.style.display="none";
+    boxEl.style.display="block";
+    optsEl.innerHTML="";
+    const c=CASES[i];
+
+    if(phase===1){
+      boxEl.className="result info";
+      boxEl.innerHTML=`<strong>Caso:</strong> ${c.t}<br><strong>Pregunta:</strong> ${c.q}`;
+      c.o.forEach((opt,idx)=>{
+        const b=document.createElement('button');
+        b.type="button"; b.className="choice";
+        b.innerHTML=`<p class="t">${opt}</p><p class="s">Toca para elegir.</p>`;
+        b.addEventListener('click', ()=>ans1(idx));
+        optsEl.appendChild(b);
+      });
+    } else {
+      boxEl.className="result info";
+      boxEl.innerHTML=`<strong>Caso:</strong> ${c.t}<br><strong>Pregunta:</strong> ${c.nextQ}`;
+      c.o2.forEach((opt,idx)=>{
+        const b=document.createElement('button');
+        b.type="button"; b.className="choice";
+        b.innerHTML=`<p class="t">${opt}</p><p class="s">Toca para elegir.</p>`;
+        b.addEventListener('click', ()=>ans2(idx));
+        optsEl.appendChild(b);
+      });
+    }
+  }
+
+  function ans1(idx){
+    const c=CASES[i];
+    const good = idx===c.a;
+    if(good) ok++;
+    boxEl.className="result " + (good?"ok":"warn");
+    boxEl.innerHTML=(good?"✅ ":"⚠️ ")+c.e;
+    optsEl.innerHTML="";
+    phase=2;
+    setTimeout(show, 700);
+  }
+
+  function ans2(idx){
+    const c=CASES[i];
+    const good = idx===c.a2;
+    if(good) ok++;
+    boxEl.className="result " + (good?"ok":"warn");
+    boxEl.innerHTML=(good?"✅ ":"⚠️ ")+c.e2;
+    optsEl.innerHTML="";
+    i++; phase=1;
+    if(i>=CASES.length){
+      endEl.style.display="block";
+      endEl.className="result " + (ok>=10?"ok":ok>=8?"warn":"no");
+      endEl.innerHTML=`<strong>Resultado:</strong> ${ok}/12. `+(ok>=10?"¡Muy bien!":"Repite y mejora el razonamiento.");
+    } else {
+      setTimeout(show, 750);
+    }
+    ui();
+  }
+
+  function reset(){
+    i=0; ok=0; phase=1;
+    boxEl.style.display="none";
+    optsEl.innerHTML="";
+    endEl.style.display="none";
+    show();
+  }
+
+  document.getElementById('csReset').addEventListener('click', reset);
+  reset();
+})();
+</script>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+</body>
+</html>
