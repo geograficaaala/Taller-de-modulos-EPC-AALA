@@ -1,0 +1,1162 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.8 Fuentes de contaminación y soluciones en la cuenca · EPC AALA</title>
+  <meta name="description" content="Fuentes de contaminación en una cuenca (aguas residuales, nutrientes, sedimentos, basura) y soluciones prácticas. Incluye mapa mental y 2 juegos nuevos: simulador de calidad del agua y mini-juego de limpiar el río." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap (mapa mental) — autoloader (más confiable para sitios estáticos) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --info: rgba(56,189,248,.16);
+      --warn: rgba(245,158,11,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 92ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.25); }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* ===== MAPA MENTAL ===== */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .mapStage{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    svg#mindmap{
+      width:100%;
+      height: 520px;
+      display:block;
+      border-radius: 14px;
+      background:
+        radial-gradient(900px 420px at 18% 6%, rgba(56,189,248,.12), transparent 55%),
+        radial-gradient(900px 420px at 88% 12%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      display:none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.72);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .fallback.show{ display:block; }
+
+    /* ===== JUEGO 1: SIMULADOR ===== */
+    .simGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .simGrid{ grid-template-columns: 1fr; } }
+
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 56%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 72px; text-align:right; }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .lakeWrap{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .legend{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .dot{ width:10px; height:10px; border-radius:999px; display:inline-block; }
+    .legend span{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.58); font-weight:800; font-size:12px; color: rgba(11,16,32,.78); }
+
+    /* ===== JUEGO 2: ARCADE ===== */
+    .arcadeGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .arcadeGrid{ grid-template-columns: 1fr; } }
+
+    .canvasWrap{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    canvas#river{ width:100%; height:auto; display:block; border-radius: 14px; }
+
+    .hud{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+    .stat{ display:inline-flex; gap:8px; align-items:center; padding: 8px 10px; border-radius: 999px; border:1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.58); font-weight:900; font-size:12px; color: rgba(11,16,32,.78); }
+    .keys{ font-size: 12.6px; color: rgba(11,16,32,.74); line-height: 1.5; }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.8 Fuentes de contaminación y soluciones en la cuenca</h1>
+        <p class="subtitle">
+          En una cuenca, todo lo que hacemos “arriba” termina influyendo “abajo”: los ríos llevan agua, pero también pueden llevar
+          <strong>nutrientes</strong>, <strong>sedimentos</strong>, <strong>microorganismos</strong> y <strong>basura</strong>.
+          Aquí verás las <strong>fuentes de contaminación</strong> más comunes y <strong>soluciones</strong> para proteger el agua y el Lago de Atitlán.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-7.html">Anterior (3.7)</a>
+        <a class="btn primary" href="index.html">Volver al índice</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              La <strong>calidad del agua</strong> se afecta cuando entran a los ríos y al lago sustancias o elementos que cambian sus
+              propiedades físicas, químicas o biológicas. En una cuenca, las principales fuentes de contaminación suelen ser:
+            </p>
+            <ul>
+              <li><strong>Aguas residuales</strong> sin tratamiento: traen materia orgánica y microorganismos (riesgo sanitario).</li>
+              <li><strong>Nutrientes</strong> (nitrógeno y fósforo) desde detergentes y fertilizantes: pueden causar <em>eutrofización</em> (exceso de algas).</li>
+              <li><strong>Sedimentos</strong> por erosión: enturbian el agua y tapan hábitats de vida acuática.</li>
+              <li><strong>Basura</strong> y plásticos: afectan fauna y terminan en el lago.</li>
+            </ul>
+
+            <div class="result info">
+              <strong>Idea clave:</strong> proteger el agua es una mezcla de <em>educación</em>, <em>infraestructura</em> (saneamiento),
+              y <em>manejo del territorio</em> (suelo, bosques y prácticas agrícolas).
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>¿Qué se mide para saber si el agua está bien?</strong></p>
+            <ul>
+              <li><strong>Turbidez:</strong> qué tan “clara” o “barrosa” está el agua (sube con sedimentos).</li>
+              <li><strong>Oxígeno disuelto (OD):</strong> necesario para peces e insectos acuáticos (baja con mucha materia orgánica).</li>
+              <li><strong>pH:</strong> acidez o alcalinidad (cambios fuertes estresan a la vida acuática).</li>
+              <li><strong>Nutrientes:</strong> nitratos y fosfatos (alto = riesgo de proliferación de algas).</li>
+              <li><strong>Coliformes:</strong> indicador de contaminación fecal (riesgo para salud).</li>
+            </ul>
+            <div class="result warn">
+              <strong>Ojo:</strong> una sola medida no cuenta toda la historia. Lo mejor es ver varias señales y el lugar de muestreo.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">¿De dónde viene el problema?</div>
+            <p class="s">De acciones en casas, calles y cultivos; y de cómo el agua corre por la cuenca (escorrentía) o entra al suelo (infiltración).</p>
+          </div>
+          <div class="pill">
+            <div class="t">¿Qué lo empeora?</div>
+            <p class="s">Suelo desnudo, pendientes sin protección, basura, drenajes directos al río y exceso de fertilizantes/detergentes.</p>
+          </div>
+          <div class="pill">
+            <div class="t">¿Qué lo mejora?</div>
+            <p class="s">Tratamiento de aguas, barreras vivas, reforestación, manejo de caminos, y buena separación y recolección de residuos.</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>Soluciones por “capas” (lo que más ayuda)</strong></p>
+            <ul>
+              <li><strong>Casa / escuela:</strong> no tirar basura; reducir plásticos; usar detergentes con menos fosfatos; cuidar drenajes.</li>
+              <li><strong>Comunidad:</strong> rutas de recolección; puntos limpios; jornadas de limpieza; protección de nacimientos.</li>
+              <li><strong>Municipio:</strong> plantas de tratamiento; control de descargas; educación ambiental; ordenamiento territorial.</li>
+              <li><strong>Cuenca:</strong> conservar bosques, terrazas y barreras vivas; reducir erosión y sedimentos.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>“Camino” típico de la contaminación</strong></p>
+            <ul>
+              <li>Llueve → el agua baja por calles o laderas → arrastra tierra, basura o químicos.</li>
+              <li>Entra al río → viaja río abajo → llega al lago.</li>
+              <li>En el lago, nutrientes altos pueden aumentar algas; sedimentos reducen luz y hábitats.</li>
+            </ul>
+            <div class="result info">
+              <strong>Mini reto:</strong> en los juegos de abajo, intenta bajar <em>nutrientes</em> y <em>sedimentos</em> sin “secar” la cuenca.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="nav">
+            <button class="btn" type="button" id="btnFit">Ajustar</button>
+            <button class="btn" type="button" id="btnToggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="btnResetMap">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de fuentes de contaminación y soluciones"></svg>
+          <div class="fallback" id="mapFallback">No se pudo cargar el mapa. Revisa tu conexión a internet o recarga la página.</div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · Simulador de calidad del agua en la cuenca</h2>
+        <div class="hint">
+          Ajusta decisiones de la cuenca. Tu meta es llegar a un <strong>Índice de Calidad ≥ 80</strong> y mantener
+          <strong>Oxígeno ≥ 7</strong>. (Modelo didáctico, no es medición real).
+        </div>
+
+        <div class="simGrid">
+          <div class="box">
+            <div class="mini">Meta: Calidad ≥ 80 · Oxígeno ≥ 7</div>
+
+            <div class="ctrlRow">
+              <label for="ww">Aguas residuales sin tratar</label>
+              <input id="ww" type="range" min="0" max="100" step="5" value="55">
+              <div class="val" id="wwVal">55%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="fert">Fertilizantes / detergentes</label>
+              <input id="fert" type="range" min="0" max="100" step="5" value="45">
+              <div class="val" id="fertVal">45%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="forest">Cobertura de bosque</label>
+              <input id="forest" type="range" min="0" max="100" step="5" value="50">
+              <div class="val" id="forestVal">50%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="roads">Manejo de caminos</label>
+              <input id="roads" type="range" min="0" max="100" step="5" value="40">
+              <div class="val" id="roadsVal">40%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="trash">Gestión de residuos</label>
+              <input id="trash" type="range" min="0" max="100" step="5" value="45">
+              <div class="val" id="trashVal">45%</div>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn" id="btnTarget" type="button">Evaluar meta</button>
+              <button class="btn" id="btnResetSim" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="simScore">0</span></span>
+            </div>
+
+            <div class="result info" id="simMsg" style="display:none;"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>Indicadores (modelo)</strong></p>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Índice de calidad</div>
+                <div class="v" id="kWQI">0</div>
+                <div class="u">0–100 (alto = mejor)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Oxígeno disuelto (OD)</div>
+                <div class="v" id="kDO">0</div>
+                <div class="u">mg/L (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Turbidez</div>
+                <div class="v" id="kTurb">0</div>
+                <div class="u">NTU (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Nutrientes</div>
+                <div class="v" id="kNut">0</div>
+                <div class="u">riesgo 0–100</div>
+              </div>
+            </div>
+
+            <div class="lakeWrap" style="margin-top:10px;">
+              <svg viewBox="0 0 900 420" width="100%" height="auto" role="img" aria-label="Esquema de cuenca y lago (indicativo)">
+                <defs>
+                  <linearGradient id="lk" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="rgba(120,210,255,.60)"/>
+                    <stop offset="1" stop-color="rgba(60,170,235,.35)"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- Montañas -->
+                <path d="M0 250 L140 120 L280 250 Z" fill="rgba(180,220,255,.45)"/>
+                <path d="M220 250 L420 90 L620 250 Z" fill="rgba(160,210,255,.38)"/>
+                <path d="M560 250 L720 140 L900 250 Z" fill="rgba(180,220,255,.34)"/>
+                <!-- Suelo -->
+                <rect x="0" y="250" width="900" height="35" fill="rgba(185, 210, 230, .35)"/>
+                <!-- Lago -->
+                <path d="M140 285 C240 260, 320 270, 450 300 C590 335, 700 330, 760 320 C820 310, 860 310, 900 325 L900 420 L0 420 L0 330 C40 305, 90 295, 140 285 Z"
+                      fill="url(#lk)" opacity=".96"/>
+                <!-- Ríos -->
+                <path id="r1" d="M220 245 C260 255, 300 270, 340 300" fill="none" stroke="rgba(35,140,210,.55)" stroke-width="7" stroke-linecap="round"/>
+                <path id="r2" d="M500 245 C520 265, 560 290, 610 315" fill="none" stroke="rgba(35,140,210,.45)" stroke-width="7" stroke-linecap="round"/>
+                <path id="r3" d="M720 245 C700 270, 690 290, 680 310" fill="none" stroke="rgba(35,140,210,.35)" stroke-width="7" stroke-linecap="round"/>
+
+                <!-- Iconos -->
+                <g opacity=".9">
+                  <circle cx="120" cy="210" r="16" fill="rgba(255,255,255,.80)" stroke="rgba(11,16,32,.10)"/>
+                  <text x="120" y="215" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="12" fill="rgba(11,16,32,.78)">🏠</text>
+
+                  <circle cx="420" cy="190" r="16" fill="rgba(255,255,255,.80)" stroke="rgba(11,16,32,.10)"/>
+                  <text x="420" y="195" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="12" fill="rgba(11,16,32,.78)">🌽</text>
+
+                  <circle cx="760" cy="205" r="16" fill="rgba(255,255,255,.80)" stroke="rgba(11,16,32,.10)"/>
+                  <text x="760" y="210" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="12" fill="rgba(11,16,32,.78)">🛣️</text>
+                </g>
+
+                <text x="40" y="40" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="16" fill="rgba(11,16,32,.78)">Cuenca</text>
+                <text x="40" y="64" font-family="Inter, system-ui" font-weight="700" font-size="12" fill="rgba(11,16,32,.62)">Cambios se reflejan en turbidez, nutrientes y oxígeno.</text>
+
+                <!-- Indicadores visuales -->
+                <g id="viz">
+                  <circle id="bloom" cx="520" cy="350" r="26" fill="rgba(34,197,94,.20)" stroke="rgba(34,197,94,.22)"/>
+                  <text x="520" y="354" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="12" fill="rgba(11,16,32,.78)">algas</text>
+
+                  <circle id="mud" cx="300" cy="360" r="26" fill="rgba(245,158,11,.18)" stroke="rgba(245,158,11,.22)"/>
+                  <text x="300" y="364" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="12" fill="rgba(11,16,32,.78)">lodo</text>
+                </g>
+              </svg>
+
+              <div class="legend">
+                <span><i class="dot" id="dotGood"></i> Mejor</span>
+                <span><i class="dot" id="dotWarn"></i> Riesgo</span>
+                <span><i class="dot" id="dotBad"></i> Crítico</span>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Reglas del modelo:</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li>Más <strong>aguas residuales</strong> baja OD y sube riesgo sanitario.</li>
+                <li>Más <strong>nutrientes</strong> sube riesgo de algas.</li>
+                <li>Más <strong>bosque</strong> y buen <strong>manejo de caminos</strong> reducen sedimentos (turbidez).</li>
+                <li>Mejor <strong>gestión de residuos</strong> reduce basura y taponamientos.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · Mini arcade: limpia el río antes de que llegue al lago</h2>
+        <div class="hint">
+          Mueve la “lancha” y recoge basura. Evita chocar con peces.
+          Objetivo: <strong>15 puntos</strong> en 30 segundos.
+        </div>
+
+        <div class="arcadeGrid">
+          <div class="canvasWrap">
+            <canvas id="river" width="900" height="420" aria-label="Juego de limpiar el río"></canvas>
+
+            <div class="hud">
+              <span class="stat">⏱️ Tiempo: <span id="tLeft">30</span>s</span>
+              <span class="stat">🧺 Basura: <span id="scoreArc">0</span></span>
+              <span class="stat">🐟 Golpes: <span id="hitsArc">0</span>/3</span>
+              <button class="btn primary" id="btnStartArc" type="button">Iniciar</button>
+              <button class="btn" id="btnResetArc" type="button">Reiniciar</button>
+            </div>
+
+            <p class="keys" style="margin:10px 0 0;">
+              Controles: <strong>←</strong> y <strong>→</strong> (teclado) o desliza (móvil). Recoge: 🧴 🥫 🧃 🛍️.
+            </p>
+
+            <div class="result info" id="arcMsg" style="display:none;"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>¿Qué estás practicando?</strong></p>
+            <ul>
+              <li>La basura en calles y ríos termina en el lago si no se recoge.</li>
+              <li>Los ríos son “carreteras de agua”: lo que cae cerca del cauce se mueve rápido.</li>
+              <li>Una acción comunitaria simple (jornadas de limpieza + separación) reduce mucho el problema.</li>
+            </ul>
+
+            <div class="result warn">
+              <strong>Reto extra:</strong> después del juego, vuelve al simulador y mejora <em>gestión de residuos</em> y <em>manejo de caminos</em>.
+              ¿Puedes lograr calidad ≥ 80 <em>y</em> 15 puntos en el arcade?
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // ==========================================================
+    // MAPA MENTAL (Markmap) — patrón “funciona” (como el ejemplo)
+    // ==========================================================
+    const md = `
+# 3.8 Fuentes de contaminación y soluciones (cuenca)
+## Fuentes principales
+- Aguas residuales sin tratar
+  - Coliformes y riesgo sanitario
+  - Materia orgánica → baja oxígeno
+- Nutrientes (N y P)
+  - Detergentes y fertilizantes
+  - Eutrofización / algas
+- Sedimentos
+  - Erosión en laderas y caminos
+  - Agua turbia y pérdida de hábitat
+- Basura y plásticos
+  - Tapan drenajes y ríos
+  - Afectan fauna y paisaje
+## Señales y parámetros
+- Turbidez (claridad)
+- Oxígeno disuelto (OD)
+- pH
+- Nutrientes (nitratos/fosfatos)
+- Coliformes (contaminación fecal)
+## Soluciones (capas)
+- Hogar/escuela
+  - Reducir plásticos, separar residuos
+  - No tirar aceite/medicinas al drenaje
+- Comunidad
+  - Jornadas de limpieza, puntos limpios
+  - Protección de nacimientos
+- Municipio
+  - Plantas de tratamiento
+  - Control de descargas y educación ambiental
+- Cuenca/territorio
+  - Bosque y barreras vivas
+  - Terrazas y manejo de caminos
+  - Reducir erosión = menos sedimento
+## Mensaje final
+- Lo que pasa “arriba” afecta “abajo”
+- Cuidar la cuenca = cuidar el lago
+`.trim();
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer, Markmap} = window.markmap;
+        const t = new Transformer();
+        const {root} = t.transform(md);
+        const svg = document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{
+      tries++;
+      const ok = renderMap();
+      if(ok || tries>12) clearInterval(it);
+    }, 300);
+
+    document.getElementById('btnFit').onclick = ()=> mm && mm.fit();
+    document.getElementById('btnToggle').onclick = ()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded = !expanded;
+    };
+    document.getElementById('btnResetMap').onclick = ()=>{ mm=null; expanded=true; renderMap(); };
+
+    // ==========================================================
+    // JUEGO 1: SIMULADOR (Índice de calidad)
+    // ==========================================================
+    const elWW = document.getElementById('ww');
+    const elF  = document.getElementById('fert');
+    const elB  = document.getElementById('forest');
+    const elR  = document.getElementById('roads');
+    const elTr = document.getElementById('trash');
+
+    const wwVal = document.getElementById('wwVal');
+    const fVal  = document.getElementById('fertVal');
+    const bVal  = document.getElementById('forestVal');
+    const rVal  = document.getElementById('roadsVal');
+    const trVal = document.getElementById('trashVal');
+
+    const kWQI  = document.getElementById('kWQI');
+    const kDO   = document.getElementById('kDO');
+    const kTurb = document.getElementById('kTurb');
+    const kNut  = document.getElementById('kNut');
+
+    const simMsg = document.getElementById('simMsg');
+    const simScore = document.getElementById('simScore');
+    let score = 0;
+
+    const dotGood = document.getElementById('dotGood');
+    const dotWarn = document.getElementById('dotWarn');
+    const dotBad  = document.getElementById('dotBad');
+    dotGood.style.background = "rgba(34,197,94,.45)";
+    dotWarn.style.background = "rgba(245,158,11,.45)";
+    dotBad.style.background  = "rgba(225,29,72,.42)";
+
+    const bloom = document.getElementById('bloom');
+    const mud   = document.getElementById('mud');
+    const r1 = document.getElementById('r1');
+    const r2 = document.getElementById('r2');
+    const r3 = document.getElementById('r3');
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    function calcModel(ww, fert, forest, roads, trash){
+      // 0-100 inputs (ww, fert are "presión"; forest/roads/trash are "protección")
+      const sed = clamp( 65 + (30 - forest*0.35) + (30 - roads*0.35), 5, 95 ); // "riesgo sedimentos"
+      const turb = clamp( 10 + sed*0.85, 5, 95 ); // NTU aprox.
+      const nut = clamp( 20 + fert*0.75 - forest*0.18 - roads*0.10, 0, 100 );
+      const doVal = clamp( 10.2 - ww*0.045 - nut*0.018 + forest*0.010 + roads*0.006, 2.5, 10.5 );
+      const litter = clamp( 70 - trash*0.70, 0, 70 );
+
+      let wqi = 100
+        - (ww*0.38)
+        - (nut*0.26)
+        - (turb*0.22)
+        - (litter*0.14);
+
+      wqi = clamp(wqi, 0, 100);
+      return { wqi, doVal, turb, nut, sed, litter };
+    }
+
+    function updateViz(out){
+      const bloomR = 12 + (out.nut/100)*26;
+      bloom.setAttribute('r', String(bloomR));
+      bloom.setAttribute('fill', out.nut>70 ? "rgba(34,197,94,.26)" : out.nut>40 ? "rgba(245,158,11,.18)" : "rgba(56,189,248,.14)");
+      bloom.setAttribute('stroke', out.nut>70 ? "rgba(34,197,94,.30)" : out.nut>40 ? "rgba(245,158,11,.28)" : "rgba(56,189,248,.24)");
+
+      const mudR = 12 + (out.turb/100)*26;
+      mud.setAttribute('r', String(mudR));
+      mud.setAttribute('fill', out.turb>70 ? "rgba(245,158,11,.22)" : out.turb>40 ? "rgba(56,189,248,.16)" : "rgba(34,197,94,.14)");
+      mud.setAttribute('stroke', out.turb>70 ? "rgba(245,158,11,.30)" : out.turb>40 ? "rgba(56,189,248,.24)" : "rgba(34,197,94,.22)");
+
+      const press = clamp( (Number(elWW.value) + Number(elF.value) + out.sed + out.litter) / 4, 0, 100);
+      const op = clamp(0.25 + press/120, 0.25, 0.95);
+      [r1,r2,r3].forEach(p => p.style.opacity = String(op));
+    }
+
+    function updateSim(){
+      const ww = Number(elWW.value);
+      const fert = Number(elF.value);
+      const forest = Number(elB.value);
+      const roads = Number(elR.value);
+      const trash = Number(elTr.value);
+
+      wwVal.textContent = ww + "%";
+      fVal.textContent  = fert + "%";
+      bVal.textContent  = forest + "%";
+      rVal.textContent  = roads + "%";
+      trVal.textContent = trash + "%";
+
+      const out = calcModel(ww,fert,forest,roads,trash);
+
+      kWQI.textContent  = Math.round(out.wqi);
+      kDO.textContent   = out.doVal.toFixed(1);
+      kTurb.textContent = Math.round(out.turb);
+      kNut.textContent  = Math.round(out.nut);
+
+      kWQI.style.color = out.wqi>=80 ? "rgba(34,197,94,.85)" : out.wqi>=60 ? "rgba(245,158,11,.85)" : "rgba(225,29,72,.85)";
+      updateViz(out);
+      return out;
+    }
+
+    [elWW, elF, elB, elR, elTr].forEach(el => el.addEventListener('input', ()=>{
+      simMsg.style.display="none";
+      updateSim();
+    }));
+
+    updateSim();
+
+    document.getElementById('btnTarget').addEventListener('click', ()=>{
+      const out = updateSim();
+      const okW = out.wqi >= 80;
+      const okO = out.doVal >= 7.0;
+
+      simMsg.style.display = "block";
+      if(okW && okO){
+        score += 1;
+        simScore.textContent = String(score);
+        simMsg.className = "result ok";
+        simMsg.innerHTML =
+          `<strong>¡Meta lograda!</strong><br>
+           Calidad: <strong>${Math.round(out.wqi)}</strong> · OD: <strong>${out.doVal.toFixed(1)}</strong> · Turbidez: <strong>${Math.round(out.turb)}</strong> · Nutrientes: <strong>${Math.round(out.nut)}</strong>.`;
+      }else{
+        simMsg.className = "result no";
+        simMsg.innerHTML =
+          `<strong>Aún no.</strong><br>
+           Calidad: <strong>${Math.round(out.wqi)}</strong> (meta ≥ 80) · OD: <strong>${out.doVal.toFixed(1)}</strong> (meta ≥ 7).<br>
+           Pista: baja <em>aguas residuales</em> y <em>nutrientes</em>; sube <em>bosque</em> y <em>manejo de caminos</em>.`;
+      }
+    });
+
+    document.getElementById('btnResetSim').addEventListener('click', ()=>{
+      score = 0;
+      simScore.textContent = "0";
+      elWW.value = 55;
+      elF.value  = 45;
+      elB.value  = 50;
+      elR.value  = 40;
+      elTr.value = 45;
+      simMsg.style.display="none";
+      updateSim();
+    });
+
+    // ==========================================================
+    // JUEGO 2: MINI ARCADE — “Limpia el río”
+    // ==========================================================
+    const canvas = document.getElementById('river');
+    const ctx = canvas.getContext('2d');
+
+    const tLeft = document.getElementById('tLeft');
+    const scoreArc = document.getElementById('scoreArc');
+    const hitsArc = document.getElementById('hitsArc');
+    const arcMsg = document.getElementById('arcMsg');
+
+    const btnStartArc = document.getElementById('btnStartArc');
+    const btnResetArc = document.getElementById('btnResetArc');
+
+    let running=false;
+    let timeLeft=30;
+    let sArc=0;
+    let hits=0;
+
+    const boat = {
+      x: canvas.width/2,
+      y: canvas.height-55,
+      w: 80,
+      h: 26,
+      vx: 0
+    };
+
+    const items = [];
+    const fishes = [];
+    let spawnTick=0;
+    let fishTick=0;
+    let last = 0;
+    let timerInt=null;
+
+    function rand(a,b){ return a + Math.random()*(b-a); }
+
+    function resetArc(){
+      running=false;
+      timeLeft=30;
+      sArc=0;
+      hits=0;
+      boat.x = canvas.width/2;
+      boat.vx = 0;
+      items.length=0;
+      fishes.length=0;
+      spawnTick=0;
+      fishTick=0;
+      last=performance.now();
+      scoreArc.textContent="0";
+      hitsArc.textContent="0";
+      tLeft.textContent="30";
+      arcMsg.style.display="none";
+      btnStartArc.textContent="Iniciar";
+      if(timerInt){ clearInterval(timerInt); timerInt=null; }
+      draw();
+    }
+
+    function startArc(){
+      if(running) return;
+      running=true;
+      arcMsg.style.display="none";
+      btnStartArc.textContent="Jugando…";
+      if(timerInt) clearInterval(timerInt);
+      timerInt=setInterval(()=>{
+        if(!running) return;
+        timeLeft--;
+        tLeft.textContent=String(timeLeft);
+        if(timeLeft<=0) endArc();
+      }, 1000);
+      last=performance.now();
+      requestAnimationFrame(loop);
+    }
+
+    function endArc(){
+      running=false;
+      btnStartArc.textContent="Iniciar";
+      if(timerInt){ clearInterval(timerInt); timerInt=null; }
+
+      arcMsg.style.display="block";
+      if(sArc>=15 && hits<3){
+        arcMsg.className="result ok";
+        arcMsg.innerHTML = `<strong>¡Excelente!</strong> Limpiaste <strong>${sArc}</strong> objetos. Golpes: <strong>${hits}</strong>.<br>Mensaje: menos basura = menos contaminación en el lago.`;
+      }else if(hits>=3){
+        arcMsg.className="result no";
+        arcMsg.innerHTML = `<strong>¡Cuidado con la fauna!</strong> Tuviste <strong>${hits}</strong> golpes. Basura recogida: <strong>${sArc}</strong>.<br>Intenta moverte con calma y evitar peces.`;
+      }else{
+        arcMsg.className="result warn";
+        arcMsg.innerHTML = `<strong>¡Vas bien!</strong> Recogiste <strong>${sArc}</strong> (meta 15). Golpes: <strong>${hits}</strong>.<br>Pista: céntrate y no persigas todo: prioriza lo que cae cerca.`;
+      }
+    }
+
+    function spawnTrash(){
+      const types = ["🧴","🥫","🧃","🛍️"];
+      items.push({
+        x: rand(30, canvas.width-30),
+        y: -20,
+        r: rand(14, 18),
+        v: rand(95, 145),
+        t: types[Math.floor(Math.random()*types.length)]
+      });
+    }
+
+    function spawnFish(){
+      const dir = Math.random()<0.5 ? 1 : -1;
+      fishes.push({
+        x: dir===1 ? -60 : canvas.width+60,
+        y: rand(100, canvas.height-120),
+        r: rand(18, 26),
+        v: rand(110, 170)*dir
+      });
+    }
+
+    function collideCircleRect(cx, cy, cr, rx, ry, rw, rh){
+      const closestX = Math.max(rx, Math.min(cx, rx+rw));
+      const closestY = Math.max(ry, Math.min(cy, ry+rh));
+      const dx = cx - closestX;
+      const dy = cy - closestY;
+      return (dx*dx + dy*dy) <= cr*cr;
+    }
+
+    function drawBackground(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      const g = ctx.createLinearGradient(0,0,0,canvas.height);
+      g.addColorStop(0,"rgba(180,235,255,.55)");
+      g.addColorStop(1,"rgba(60,170,235,.25)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      ctx.fillStyle="rgba(180,220,255,.25)";
+      ctx.beginPath();
+      ctx.moveTo(0,canvas.height);
+      ctx.lineTo(0,260);
+      ctx.quadraticCurveTo(160,250,260,285);
+      ctx.quadraticCurveTo(340,315,420,300);
+      ctx.quadraticCurveTo(520,280,610,305);
+      ctx.quadraticCurveTo(730,340,canvas.width,320);
+      ctx.lineTo(canvas.width,canvas.height);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.strokeStyle="rgba(255,255,255,.22)";
+      ctx.lineWidth=2;
+      for(let y=50;y<canvas.height;y+=44){
+        ctx.beginPath();
+        for(let x=0;x<=canvas.width;x+=40){
+          ctx.lineTo(x, y + Math.sin((x+y)*0.02)*6);
+        }
+        ctx.stroke();
+      }
+
+      ctx.fillStyle="rgba(11,16,32,.65)";
+      ctx.font="900 16px Outfit, Inter, system-ui";
+      ctx.fillText("Río → Lago", 16, 28);
+      ctx.font="700 12px Inter, system-ui";
+      ctx.fillText("Recoge basura y evita peces", 16, 46);
+    }
+
+    function drawBoat(){
+      ctx.save();
+      ctx.translate(boat.x, boat.y);
+
+      ctx.fillStyle="rgba(255,255,255,.82)";
+      ctx.strokeStyle="rgba(11,16,32,.12)";
+      ctx.lineWidth=2;
+
+      const w=boat.w, h=boat.h;
+      ctx.beginPath();
+      ctx.roundRect(-w/2, -h/2, w, h, 10);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle="rgba(120,210,255,.35)";
+      ctx.beginPath();
+      ctx.roundRect(-18, -h/2-12, 36, 18, 8);
+      ctx.fill();
+
+      ctx.font="900 16px Outfit, Inter, system-ui";
+      ctx.fillStyle="rgba(11,16,32,.72)";
+      ctx.fillText("🚤", -12, 6);
+
+      ctx.restore();
+    }
+
+    function draw(){
+      drawBackground();
+
+      items.forEach(it=>{
+        ctx.font="900 22px Outfit, Inter, system-ui";
+        ctx.fillText(it.t, it.x-10, it.y+8);
+      });
+
+      fishes.forEach(f=>{
+        ctx.font="900 22px Outfit, Inter, system-ui";
+        ctx.fillText("🐟", f.x-10, f.y+8);
+      });
+
+      drawBoat();
+
+      if(!running){
+        ctx.fillStyle="rgba(255,255,255,.55)";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        ctx.fillStyle="rgba(11,16,32,.78)";
+        ctx.font="900 22px Outfit, Inter, system-ui";
+        ctx.fillText("Presiona Iniciar", 320, 190);
+
+        ctx.font="700 13px Inter, system-ui";
+        ctx.fillText("Meta: 15 puntos en 30s · Máx. 3 golpes", 285, 215);
+      }
+    }
+
+    function step(dt){
+      boat.x += boat.vx * dt;
+      boat.x = clamp(boat.x, boat.w/2+6, canvas.width-boat.w/2-6);
+
+      spawnTick += dt;
+      fishTick += dt;
+      if(spawnTick>0.55){ spawnTick=0; spawnTrash(); }
+      if(fishTick>1.25){ fishTick=0; spawnFish(); }
+
+      for(let i=items.length-1;i>=0;i--){
+        const it=items[i];
+        it.y += it.v*dt;
+
+        const hit = collideCircleRect(it.x,it.y,it.r, boat.x-boat.w/2, boat.y-boat.h/2, boat.w, boat.h);
+        if(hit){
+          items.splice(i,1);
+          sArc++;
+          scoreArc.textContent=String(sArc);
+          continue;
+        }
+        if(it.y>canvas.height+30) items.splice(i,1);
+      }
+
+      for(let i=fishes.length-1;i>=0;i--){
+        const f=fishes[i];
+        f.x += f.v*dt;
+
+        const hit = collideCircleRect(f.x,f.y,f.r, boat.x-boat.w/2, boat.y-boat.h/2, boat.w, boat.h);
+        if(hit){
+          fishes.splice(i,1);
+          hits++;
+          hitsArc.textContent=String(hits);
+          if(hits>=3) endArc();
+          continue;
+        }
+
+        if(f.x<-80 || f.x>canvas.width+80) fishes.splice(i,1);
+      }
+    }
+
+    function loop(now){
+      if(!running) return;
+      const dt = Math.min(0.033, (now-last)/1000);
+      last = now;
+      step(dt);
+      draw();
+      if(running) requestAnimationFrame(loop);
+    }
+
+    const keys = { left:false, right:false };
+    function updateV(){
+      boat.vx = (keys.right? 360:0) + (keys.left? -360:0);
+    }
+    window.addEventListener('keydown', (e)=>{
+      if(e.key==="ArrowLeft"){ keys.left=true; updateV(); }
+      if(e.key==="ArrowRight"){ keys.right=true; updateV(); }
+    });
+    window.addEventListener('keyup', (e)=>{
+      if(e.key==="ArrowLeft"){ keys.left=false; updateV(); }
+      if(e.key==="ArrowRight"){ keys.right=false; updateV(); }
+    });
+
+    let touchId=null;
+    canvas.addEventListener('pointerdown', (e)=>{
+      touchId=e.pointerId;
+      canvas.setPointerCapture(touchId);
+    });
+    canvas.addEventListener('pointermove', (e)=>{
+      if(touchId===null) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+      boat.x = x;
+    });
+    canvas.addEventListener('pointerup', (e)=>{
+      if(e.pointerId===touchId){
+        touchId=null;
+      }
+    });
+
+    btnStartArc.addEventListener('click', ()=>{
+      if(running) return;
+      startArc();
+      draw();
+    });
+
+    btnResetArc.addEventListener('click', resetArc);
+
+    // init
+    resetArc();
+  </script>
+</body>
+</html>

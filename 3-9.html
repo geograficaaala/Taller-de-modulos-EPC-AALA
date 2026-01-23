@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.9 Pesca artesanal de cangrejos de agua dulce · EPC AALA</title>
+  <meta name="description" content="Pesca artesanal de cangrejos de agua dulce en el Lago de Atitlán: cultura, amenazas y manejo. Teoría + mapa mental + 2 juegos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap (mapa mental) - autoloader (más estable) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(56,189,248,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 95ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; }
+    .box li{ margin: 6px 0; }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{ display:block; }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+      white-space:nowrap;
+    }
+
+    /* ====== MAPA MENTAL ====== */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .mapStage{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      border-radius: 14px;
+      background:
+        radial-gradient(900px 460px at 18% 0%, rgba(56,189,248,.13), transparent 58%),
+        radial-gradient(900px 460px at 82% 8%, rgba(34,197,94,.10), transparent 58%);
+    }
+    .fallback{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      color: rgba(11,16,32,.72);
+      font-size: 13px;
+      line-height:1.5;
+    }
+    .fallback.show{ display:block; }
+
+    /* ====== VISTA RÁPIDA (SVG) ====== */
+    .vizGrid{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .vizGrid{ grid-template-columns: 1fr; } }
+
+    .svgWrap{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .chipRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+    .chip button{
+      border:none;
+      background: transparent;
+      font: inherit;
+      color: inherit;
+      cursor:pointer;
+      padding:0;
+    }
+
+    /* ====== JUEGO 1: SIMULADOR ====== */
+    .simGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .simGrid{ grid-template-columns: 1fr; } }
+
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 55%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 88px; text-align:right; }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 560px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .canvasWrap{
+      margin-top:10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    canvas{ width:100%; height:220px; display:block; }
+
+    /* ====== JUEGO 2: TRAMPAS / REGLAS ====== */
+    .game2Grid{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .game2Grid{ grid-template-columns: 1fr; } }
+    .choiceBtn{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      text-align:left;
+      font-family: Inter, system-ui;
+      color: rgba(11,16,32,.92);
+      font-weight: 900;
+      margin: 8px 0;
+    }
+    .choiceBtn:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); }
+    .choiceBtn:active{ transform: translateY(1px); }
+    .choiceBtn small{ display:block; font-weight:700; color: rgba(11,16,32,.70); line-height:1.45; margin-top:4px; }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(120,210,255,.20);
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(11,16,32,.80);
+      flex: 0 0 auto;
+      white-space:nowrap;
+    }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.9 La pesca artesanal de cangrejos de agua dulce en el Lago de Atitlán</h1>
+        <p class="subtitle">
+          En el Lago de Atitlán existe una práctica muy especial: la <strong>pesca artesanal de cangrejos de agua dulce</strong>.
+          En mercados locales se comercializan dos tipos conocidos como <strong>“canchito”</strong> (<em>Raddaus bocourti</em>)
+          y <strong>“negrito”</strong> (<em>Potamocarcinus guatemalensis</em>).
+          Esta pesca es parte del <strong>patrimonio cultural</strong> de los pueblos del lago, pero enfrenta amenazas como
+          <strong>especies exóticas</strong>, <strong>contaminación</strong> y <strong>sobrepesca</strong>.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-8.html">Anterior (3.8)</a>
+        <a class="btn primary" href="3-10.html">Siguiente (3.10)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              La pesca artesanal de cangrejos en el Lago de Atitlán es única en la región y se mantiene gracias al conocimiento
+              transmitido entre generaciones. Los cangrejos cumplen funciones importantes:
+            </p>
+            <ul>
+              <li><strong>Reciclaje de materia orgánica:</strong> consumen restos y ayudan a “limpiar” el fondo.</li>
+              <li><strong>Parte de la red alimentaria:</strong> son alimento de otros organismos y conectan energía entre niveles tróficos.</li>
+              <li><strong>Indicadores del ecosistema:</strong> si baja su población, suele ser señal de presión o degradación ambiental.</li>
+            </ul>
+
+            <div class="pill" style="margin-top:12px;">
+              <div class="t">Idea clave</div>
+              <p class="s">
+                La pesca sostenible busca mantener la tradición <strong>sin agotar</strong> las poblaciones: capturar “lo necesario”,
+                evitar capturas de juveniles y proteger hábitats (orillas, rocas, vegetación acuática).
+              </p>
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Principales amenazas (resumen técnico)</strong></p>
+            <ul>
+              <li><strong>Especies exóticas (invasoras):</strong> depredación/competencia (ej. lobina negra) puede reducir cangrejos y peces nativos.</li>
+              <li><strong>Contaminación:</strong> aguas residuales y basura disminuyen oxígeno y afectan reproducción y supervivencia.</li>
+              <li><strong>Sobrepesca:</strong> capturar demasiados o capturar “pequeños” reduce la capacidad de recuperación.</li>
+              <li><strong>Pérdida de hábitat:</strong> erosión y sedimentos cubren refugios; cambios en orilla afectan zonas de cría.</li>
+            </ul>
+
+            <div class="result info show" style="margin-top:10px;">
+              <strong>En la cuenca, todo se conecta:</strong> lo que pasa en el suelo (desechos, drenajes, agricultura)
+              llega por ríos y quebradas al lago, y termina afectando la vida acuática.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">“Canchito”</div>
+            <p class="s"><strong>Raddaus bocourti</strong>. Nombre local usado en mercados; parte importante del consumo y la cultura.</p>
+          </div>
+          <div class="pill">
+            <div class="t">“Negrito”</div>
+            <p class="s"><strong>Potamocarcinus guatemalensis</strong>. Especie local; vulnerable si hay sobrepesca y baja calidad del agua.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Manejo sostenible</div>
+            <p class="s">Proteger zonas de refugio, respetar tallas, reducir contaminación, evitar técnicas destructivas y acordar reglas comunitarias.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="nav">
+            <button class="btn" id="btnFit" type="button">Ajustar</button>
+            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de pesca artesanal de cangrejos"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Revisa tu conexión o recarga la página.
+          </div>
+        </div>
+      </section>
+
+      <!-- VISUAL + INFO -->
+      <section class="card">
+        <h2>Vista rápida: del “territorio” al cangrejo</h2>
+        <div class="hint">Toca un elemento del dibujo para ver su explicación.</div>
+
+        <div class="vizGrid">
+          <div class="svgWrap">
+            <svg viewBox="0 0 980 520" width="100%" height="auto" role="img" aria-label="Cuenca y lago con cangrejos (diagrama)">
+              <defs>
+                <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(180,235,255,.78)"/>
+                  <stop offset="1" stop-color="rgba(255,255,255,.0)"/>
+                </linearGradient>
+                <linearGradient id="lake" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="rgba(120,210,255,.55)"/>
+                  <stop offset="1" stop-color="rgba(60,170,235,.38)"/>
+                </linearGradient>
+              </defs>
+
+              <rect x="0" y="0" width="980" height="520" fill="url(#sky)"/>
+              <rect x="0" y="340" width="980" height="180" fill="url(#lake)" opacity=".95"/>
+
+              <!-- montañas / cuenca -->
+              <path d="M0 340 L200 200 L360 340 Z" fill="rgba(180,220,255,.45)"/>
+              <path d="M260 340 L460 170 L680 340 Z" fill="rgba(160,210,255,.38)"/>
+              <path d="M610 340 L780 230 L980 340 Z" fill="rgba(180,220,255,.34)"/>
+
+              <!-- ríos -->
+              <path d="M220 255 C270 280, 310 300, 350 338" fill="none" stroke="rgba(35,140,210,.55)" stroke-width="7" stroke-linecap="round"/>
+              <path d="M520 235 C560 270, 610 300, 640 340" fill="none" stroke="rgba(35,140,210,.45)" stroke-width="7" stroke-linecap="round"/>
+
+              <!-- “desechos” / escorrentía -->
+              <g class="node" data-key="escorrentia" style="cursor:pointer">
+                <circle cx="170" cy="235" r="16" fill="rgba(245,158,11,.28)" stroke="rgba(11,16,32,.12)"/>
+                <circle cx="195" cy="260" r="12" fill="rgba(225,29,72,.20)" stroke="rgba(11,16,32,.12)"/>
+                <text x="200" y="215" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.82)">Arrastre</text>
+              </g>
+
+              <!-- “agua limpia” -->
+              <g class="node" data-key="bosque" style="cursor:pointer">
+                <circle cx="760" cy="235" r="16" fill="rgba(34,197,94,.20)" stroke="rgba(11,16,32,.12)"/>
+                <circle cx="785" cy="260" r="12" fill="rgba(34,197,94,.16)" stroke="rgba(11,16,32,.12)"/>
+                <text x="780" y="215" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="13" fill="rgba(11,16,32,.82)">Cobertura</text>
+              </g>
+
+              <!-- zona de pesca -->
+              <g class="node" data-key="pesca" style="cursor:pointer">
+                <rect x="690" y="380" width="250" height="90" rx="18" fill="rgba(255,255,255,.55)" stroke="rgba(11,16,32,.12)"/>
+                <text x="815" y="415" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Zona de pesca artesanal</text>
+                <text x="815" y="440" text-anchor="middle" font-family="Inter, system-ui" font-weight="700" font-size="12.5" fill="rgba(11,16,32,.72)">Trampas · tallas · cuidado</text>
+              </g>
+
+              <!-- cangrejo simplificado -->
+              <g class="node" data-key="cangrejo" style="cursor:pointer">
+                <ellipse cx="250" cy="440" rx="62" ry="30" fill="rgba(11,16,32,.10)" />
+                <ellipse cx="250" cy="430" rx="58" ry="26" fill="rgba(90, 70, 60, .22)" stroke="rgba(11,16,32,.12)" stroke-width="2"/>
+                <circle cx="225" cy="422" r="4" fill="rgba(11,16,32,.60)"/>
+                <circle cx="275" cy="422" r="4" fill="rgba(11,16,32,.60)"/>
+                <path d="M205 432 C185 420, 175 416, 160 418" fill="none" stroke="rgba(11,16,32,.34)" stroke-width="4" stroke-linecap="round"/>
+                <path d="M295 432 C315 420, 325 416, 340 418" fill="none" stroke="rgba(11,16,32,.34)" stroke-width="4" stroke-linecap="round"/>
+                <text x="250" y="482" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Cangrejo</text>
+              </g>
+
+              <!-- invasora -->
+              <g class="node" data-key="invasora" style="cursor:pointer">
+                <path d="M520 420 C565 395, 605 390, 650 415 C610 448, 560 450, 520 420 Z"
+                      fill="rgba(11,16,32,.10)" stroke="rgba(11,16,32,.12)"/>
+                <circle cx="610" cy="415" r="4" fill="rgba(11,16,32,.60)"/>
+                <text x="585" y="470" text-anchor="middle" font-family="Outfit, Inter, system-ui" font-weight="900" font-size="14" fill="rgba(11,16,32,.82)">Especie exótica</text>
+              </g>
+            </svg>
+
+            <div class="chipRow">
+              <span class="chip"><button type="button" data-focus="cangrejo">Cangrejo</button></span>
+              <span class="chip"><button type="button" data-focus="pesca">Pesca artesanal</button></span>
+              <span class="chip"><button type="button" data-focus="invasora">Especie exótica</button></span>
+              <span class="chip"><button type="button" data-focus="escorrentia">Arrastre/contaminación</button></span>
+              <span class="chip"><button type="button" data-focus="bosque">Cobertura/recarga</button></span>
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Explicación del elemento seleccionado</strong></p>
+            <div class="result info show" id="explainBox" style="margin-top:10px;">
+              Haz clic en un elemento del diagrama para ver una explicación.
+            </div>
+
+            <p style="margin-top:12px;"><strong>Pistas para cuidar la pesca</strong></p>
+            <ul>
+              <li>Evitar tirar basura y aguas residuales al drenaje o barrancos (todo llega al lago).</li>
+              <li>Respetar tallas mínimas: dejar crecer juveniles para que se reproduzcan.</li>
+              <li>Usar trampas que permitan escapar a los pequeños (malla adecuada).</li>
+              <li>Acuerdos comunitarios: zonas, temporadas y reglas claras para todos.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · Simulador de población de cangrejos (10 años)</h2>
+        <div class="hint">
+          Ajusta presiones y soluciones. Tu meta: mantener una población <strong>estable</strong> (sin colapsar) y con una
+          <strong>pesca</strong> que siga siendo posible.
+        </div>
+
+        <div class="simGrid">
+          <div class="box">
+            <div class="ctrlRow">
+              <label for="harvest">Esfuerzo de pesca</label>
+              <input id="harvest" type="range" min="0" max="100" step="5" value="40">
+              <div class="val" id="harvestVal">40%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="pollution">Contaminación</label>
+              <input id="pollution" type="range" min="0" max="100" step="5" value="35">
+              <div class="val" id="pollutionVal">35%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="invasive">Especies exóticas</label>
+              <input id="invasive" type="range" min="0" max="100" step="5" value="30">
+              <div class="val" id="invasiveVal">30%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="restoration">Acciones de cuidado</label>
+              <input id="restoration" type="range" min="0" max="100" step="5" value="45">
+              <div class="val" id="restorationVal">45%</div>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn" id="btnResetSim" type="button">Reiniciar</button>
+              <button class="btn primary" id="btnGoalSim" type="button">¿Voy bien?</button>
+              <span class="mini">Meta: Población final ≥ 55</span>
+            </div>
+
+            <div class="result" id="simMsg"></div>
+
+            <div class="canvasWrap">
+              <canvas id="chart" width="980" height="220" aria-label="Gráfica de población"></canvas>
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Indicadores</strong></p>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Población inicial</div>
+                <div class="v" id="kP0">70</div>
+                <div class="u">índice (0-100)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Población final</div>
+                <div class="v" id="kPf">0</div>
+                <div class="u">índice (0-100)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Riesgo de colapso</div>
+                <div class="v" id="kRisk">—</div>
+                <div class="u">bajo/medio/alto</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Sostenibilidad</div>
+                <div class="v" id="kSus">—</div>
+                <div class="u">puntos (0-100)</div>
+              </div>
+            </div>
+
+            <div class="result info show" style="margin-top:10px;">
+              <strong>Cómo piensa el modelo (didáctico):</strong>
+              <ul style="margin:8px 0 0 18px;">
+                <li>Más pesca, contaminación e invasoras → baja la población.</li>
+                <li>Más acciones de cuidado → mejora supervivencia y recuperación.</li>
+                <li>Si la población cae demasiado, tarda más en recuperarse.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · Diseña una pesca sostenible (elige el plan)</h2>
+        <div class="hint">
+          Elige un plan. Algunos planes se ven “productivos” hoy, pero dañan la población mañana.
+          Objetivo: lograr <strong>cultura + alimento</strong> sin agotar el recurso.
+        </div>
+
+        <div class="game2Grid">
+          <div class="box">
+            <p><strong>Planes de pesca</strong></p>
+
+            <button class="choiceBtn" type="button" data-plan="A">
+              <div>
+                Plan A: <span class="badge">Sostenible</span>
+                <small>Trampas moderadas · malla que deja escapar pequeños · limpieza de orillas · reporte comunitario.</small>
+              </div>
+              <span class="badge">+</span>
+            </button>
+
+            <button class="choiceBtn" type="button" data-plan="B">
+              <div>
+                Plan B: <span class="badge">Riesgo</span>
+                <small>Muchas trampas · captura de pequeños · sin acuerdo de temporada · “lo que salga”.</small>
+              </div>
+              <span class="badge">!</span>
+            </button>
+
+            <button class="choiceBtn" type="button" data-plan="C">
+              <div>
+                Plan C: <span class="badge">Mejorable</span>
+                <small>Pocas trampas · pero sin mejorar contaminación ni hábitat (la población sigue estresada).</small>
+              </div>
+              <span class="badge">~</span>
+            </button>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn" id="btnResetPlan" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="planScore">0</span>/3</span>
+            </div>
+
+            <div class="result" id="planMsg"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>Checklist de “buena pesca”</strong></p>
+            <ul>
+              <li><strong>Regla de talla:</strong> si es juvenil, se deja ir.</li>
+              <li><strong>Trampa amigable:</strong> malla/aberturas para escape de pequeños.</li>
+              <li><strong>Esfuerzo moderado:</strong> no demasiadas trampas por pescador.</li>
+              <li><strong>Acuerdo comunitario:</strong> zonas y temporadas claras.</li>
+              <li><strong>Calidad del agua:</strong> reducir aguas residuales y basura (sin agua sana, no hay pesca sana).</li>
+            </ul>
+
+            <div class="result info show" style="margin-top:10px;">
+              <strong>Tip:</strong> Si el lago se contamina, baja oxígeno y sube estrés: los cangrejos y peces se vuelven más vulnerables.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = `
+# 3.9 Pesca artesanal de cangrejos (Atitlán)
+## Qué es
+- Práctica artesanal y cultural
+- Conocimiento transmitido entre generaciones
+- Comercialización local (mercados)
+## Tipos locales
+- “Canchito” (Raddaus bocourti)
+- “Negrito” (Potamocarcinus guatemalensis)
+## Importancia ecológica
+- Reciclan materia orgánica
+- Parte de la red alimentaria
+- Indicadores del ecosistema
+## Amenazas
+- Especies exóticas (depredación/competencia)
+- Contaminación (aguas residuales, basura)
+- Sobrepesca (captura excesiva y de juveniles)
+- Pérdida de hábitat (sedimentos, erosión)
+## Manejo sostenible
+- Respetar tallas mínimas
+- Trampas que dejen escapar pequeños
+- Acuerdos comunitarios (zonas/temporadas)
+- Reducir contaminación en la cuenca
+- Educación y monitoreo
+`.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function renderMap(){
+      const fb = document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const t = new Transformer();
+        const { root } = t.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const it = setInterval(() => {
+      tries++;
+      const ok = renderMap();
+      if (ok || tries > 12) clearInterval(it);
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; renderMap(); });
+
+    // =========================
+    // DIAGRAMA CLICABLE
+    // =========================
+    const explain = {
+      cangrejo:
+        "<strong>Cangrejo de agua dulce:</strong> vive en zonas con refugios (rocas, orillas, vegetación). Ayuda a reciclar materia orgánica y es parte de la red alimentaria.",
+      pesca:
+        "<strong>Pesca artesanal:</strong> puede ser sostenible si el esfuerzo es moderado, se respetan tallas y se usan trampas que dejen escapar juveniles.",
+      invasora:
+        "<strong>Especies exóticas:</strong> pueden depredar o competir con especies nativas (por ejemplo, la lobina negra). Esto cambia la red alimentaria y reduce poblaciones locales.",
+      escorrentia:
+        "<strong>Arrastre/contaminación:</strong> basura, sedimentos y aguas residuales llegan por ríos y quebradas. Disminuyen la calidad del agua y el oxígeno, afectando reproducción y supervivencia.",
+      bosque:
+        "<strong>Cobertura vegetal:</strong> protege el suelo, reduce erosión y ayuda a infiltrar. Menos arrastre → mejor calidad del agua → más vida acuática."
+    };
+
+    function setExplain(key){
+      const box = document.getElementById('explainBox');
+      box.className = "result info show";
+      box.innerHTML = explain[key] || "Selecciona un elemento del diagrama.";
+    }
+
+    document.querySelectorAll('.node').forEach(n => {
+      n.addEventListener('click', () => setExplain(n.dataset.key));
+    });
+    document.querySelectorAll('[data-focus]').forEach(btn => {
+      btn.addEventListener('click', () => setExplain(btn.getAttribute('data-focus')));
+    });
+
+    // =========================
+    // JUEGO 1: SIMULADOR DE POBLACIÓN (didáctico)
+    // =========================
+    const elHarvest = document.getElementById('harvest');
+    const elPollution = document.getElementById('pollution');
+    const elInvasive = document.getElementById('invasive');
+    const elRestoration = document.getElementById('restoration');
+
+    const harvestVal = document.getElementById('harvestVal');
+    const pollutionVal = document.getElementById('pollutionVal');
+    const invasiveVal = document.getElementById('invasiveVal');
+    const restorationVal = document.getElementById('restorationVal');
+
+    const kP0 = document.getElementById('kP0');
+    const kPf = document.getElementById('kPf');
+    const kRisk = document.getElementById('kRisk');
+    const kSus = document.getElementById('kSus');
+
+    const simMsg = document.getElementById('simMsg');
+    const canvas = document.getElementById('chart');
+    const ctx = canvas.getContext('2d');
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    function simulate(harv, pol, inv, rest){
+      // Índice de población 0..100
+      let P = 70;
+      const series = [P];
+
+      // Convertimos sliders (0..100) a presiones 0..1
+      const H = harv/100, C = pol/100, X = inv/100, R = rest/100;
+
+      for(let year=1; year<=10; year++){
+        // Crecimiento base (logístico): depende de P (capacidad de carga ~ 100)
+        const growth = 0.18 * P * (1 - P/105);
+
+        // Mortalidad / presión: pesca + contaminación + invasoras
+        // (peso mayor a pesca, y contaminación penaliza más cuando P es bajo)
+        const press =
+          (0.38 * H * P) +
+          (0.26 * C * (P + (100-P)*0.35)) +
+          (0.22 * X * (P * 0.9));
+
+        // Restauración: mejora supervivencia, hábitat, y reduce presión efectiva
+        const help = (0.22 * R * (100 - P)) + (0.10 * R * P);
+
+        // Sinergia: si hay mucha contaminación + invasoras, baja más
+        const synergy = (C*X) * 10;
+
+        P = P + growth - press/100 + help/100 - synergy/100;
+        P = clamp(P, 0, 100);
+        series.push(P);
+      }
+
+      // métricas
+      const finalP = series[series.length-1];
+      const risk = finalP < 35 ? "alto" : finalP < 55 ? "medio" : "bajo";
+      // sostenibilidad: preferimos final alto y presiones no extremas
+      const sus = clamp(
+        (finalP*0.9) + (rest*0.25) - (harv*0.35) - (pol*0.25) - (inv*0.22),
+        0, 100
+      );
+      return { series, finalP, risk, sus };
+    }
+
+    function drawChart(series){
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0,0,w,h);
+
+      // Fondo suave
+      ctx.fillStyle = "rgba(255,255,255,.35)";
+      ctx.fillRect(0,0,w,h);
+
+      // Grid
+      ctx.strokeStyle = "rgba(11,16,32,.10)";
+      ctx.lineWidth = 1;
+      for(let i=0;i<=10;i++){
+        const x = 40 + i*( (w-60)/10 );
+        ctx.beginPath(); ctx.moveTo(x, 12); ctx.lineTo(x, h-28); ctx.stroke();
+      }
+      for(let j=0;j<=5;j++){
+        const y = 12 + j*( (h-40)/5 );
+        ctx.beginPath(); ctx.moveTo(40, y); ctx.lineTo(w-20, y); ctx.stroke();
+      }
+
+      // Axes labels (mínimo)
+      ctx.fillStyle = "rgba(11,16,32,.72)";
+      ctx.font = "12px Inter, system-ui";
+      ctx.fillText("Años →", w-80, h-8);
+      ctx.save();
+      ctx.translate(14, h/2);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText("Población (índice)", 0, 0);
+      ctx.restore();
+
+      // Line
+      const x0=40, x1=w-20, y0=h-28, y1=12;
+      const n=series.length-1; // 10
+      ctx.strokeStyle = "rgba(35,140,210,.75)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      for(let i=0;i<series.length;i++){
+        const x = x0 + (i/n)*(x1-x0);
+        const y = y0 - (series[i]/100)*(y0-y1);
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+
+      // Points
+      ctx.fillStyle = "rgba(11,16,32,.55)";
+      for(let i=0;i<series.length;i++){
+        const x = x0 + (i/n)*(x1-x0);
+        const y = y0 - (series[i]/100)*(y0-y1);
+        ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+      }
+
+      // Threshold line (55)
+      ctx.strokeStyle = "rgba(34,197,94,.35)";
+      ctx.setLineDash([6,6]);
+      const yThr = y0 - (55/100)*(y0-y1);
+      ctx.beginPath(); ctx.moveTo(x0,yThr); ctx.lineTo(x1,yThr); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = "rgba(34,197,94,.65)";
+      ctx.fillText("Meta 55", x0+6, yThr-6);
+    }
+
+    function updateSim(){
+      const H = Number(elHarvest.value);
+      const C = Number(elPollution.value);
+      const X = Number(elInvasive.value);
+      const R = Number(elRestoration.value);
+
+      harvestVal.textContent = `${H}%`;
+      pollutionVal.textContent = `${C}%`;
+      invasiveVal.textContent = `${X}%`;
+      restorationVal.textContent = `${R}%`;
+
+      const out = simulate(H,C,X,R);
+      kP0.textContent = "70";
+      kPf.textContent = String(Math.round(out.finalP));
+      kRisk.textContent = out.risk;
+      kSus.textContent = String(Math.round(out.sus));
+
+      drawChart(out.series);
+
+      simMsg.className = "result info show";
+      simMsg.innerHTML = `<strong>Estado actual:</strong> población final <strong>${Math.round(out.finalP)}</strong> · riesgo <strong>${out.risk}</strong> · sostenibilidad <strong>${Math.round(out.sus)}</strong>.`;
+    }
+
+    [elHarvest, elPollution, elInvasive, elRestoration].forEach(el => el.addEventListener('input', updateSim));
+
+    document.getElementById('btnResetSim').addEventListener('click', () => {
+      elHarvest.value = 40;
+      elPollution.value = 35;
+      elInvasive.value = 30;
+      elRestoration.value = 45;
+      updateSim();
+    });
+
+    document.getElementById('btnGoalSim').addEventListener('click', () => {
+      const H = Number(elHarvest.value);
+      const C = Number(elPollution.value);
+      const X = Number(elInvasive.value);
+      const R = Number(elRestoration.value);
+      const out = simulate(H,C,X,R);
+
+      simMsg.classList.add('show');
+
+      if(out.finalP >= 55){
+        simMsg.className = "result ok show";
+        simMsg.innerHTML = `✅ <strong>Vas bien.</strong> Mantienes la población (final: <strong>${Math.round(out.finalP)}</strong>).<br>
+          Consejo: conserva acciones de cuidado y evita subir demasiado la pesca.`;
+      }else if(out.finalP >= 35){
+        simMsg.className = "result warn show";
+        simMsg.innerHTML = `⚠️ <strong>En riesgo.</strong> La población baja (final: <strong>${Math.round(out.finalP)}</strong>).<br>
+          Sube <strong>acciones de cuidado</strong> y baja un poco <strong>pesca/contaminación</strong>.`;
+      }else{
+        simMsg.className = "result no show";
+        simMsg.innerHTML = `⛔ <strong>Colapso.</strong> La población cae demasiado (final: <strong>${Math.round(out.finalP)}</strong>).<br>
+          Baja fuerte la pesca y la contaminación; aumenta cuidado y protege hábitats.`;
+      }
+    });
+
+    // Inicial
+    updateSim();
+
+    // =========================
+    // JUEGO 2: PLANES
+    // =========================
+    const planScoreEl = document.getElementById('planScore');
+    const planMsg = document.getElementById('planMsg');
+    let score = 0;
+    let picked = false;
+
+    const feedback = {
+      A: {
+        ok: true,
+        title: "Plan A",
+        cls: "ok",
+        text: "Excelente: reduces captura de juveniles, moderas el esfuerzo y además cuidas la cuenca (menos contaminación)."
+      },
+      B: {
+        ok: false,
+        title: "Plan B",
+        cls: "no",
+        text: "Riesgoso: al capturar muchos (y pequeños) la población no se repone; sin temporada ni reglas el recurso se agota."
+      },
+      C: {
+        ok: "mid",
+        title: "Plan C",
+        cls: "warn",
+        text: "Mejorable: bajar trampas ayuda, pero si no se reduce contaminación y no se protegen hábitats, la población sigue bajando."
+      }
+    };
+
+    function resetPlan(){
+      score = 0;
+      picked = false;
+      planScoreEl.textContent = "0";
+      planMsg.className = "result info";
+      planMsg.textContent = "Elige un plan para ver el resultado.";
+      planMsg.classList.add('show');
+      document.querySelectorAll('[data-plan]').forEach(b => b.disabled = false);
+    }
+
+    document.querySelectorAll('[data-plan]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(picked) return;
+        picked = true;
+        const k = btn.getAttribute('data-plan');
+        const f = feedback[k];
+
+        if(f.ok === true) score = 3;
+        else if(f.ok === "mid") score = 2;
+        else score = 1;
+
+        planScoreEl.textContent = String(score);
+        planMsg.className = `result ${f.cls} show`;
+        planMsg.innerHTML = `<strong>${f.title}:</strong> ${f.text}`;
+
+        document.querySelectorAll('[data-plan]').forEach(b => b.disabled = true);
+        btn.disabled = false;
+      });
+    });
+
+    document.getElementById('btnResetPlan').addEventListener('click', resetPlan);
+    resetPlan();
+  </script>
+</body>
+</html>
