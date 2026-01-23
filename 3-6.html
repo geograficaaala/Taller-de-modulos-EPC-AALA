@@ -1,0 +1,1540 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.6 Vida acuática · EPC AALA</title>
+  <meta name="description" content="Vida acuática del Lago de Atitlán: macrófitas, plancton, peces y calidad del agua. Mapa mental + 3 juegos sobre vida acuática." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap autoloader (más robusto que cargar lib+view por separado) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --info: rgba(56,189,248,.16);
+      --warn: rgba(120, 190, 255, .18);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex; gap:8px; align-items:center;
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 800; font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 92ch;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .hint{ font-size: 12.8px; color: rgba(11,16,32,.72); line-height: 1.5; margin: 8px 0 0; }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.84); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+    .warn{ background: var(--warn); border-color: rgba(120,190,255,.24); }
+
+    /* Tabla */
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      box-shadow: var(--shadow-soft);
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    th, td{ padding: 10px 10px; text-align:left; border-bottom:1px solid rgba(11,16,32,.08); }
+    th{ font-family: Outfit, Inter, system-ui; font-weight: 900; background: rgba(180,235,255,.32); }
+    tr:last-child td{ border-bottom:none; }
+    .muted{ color: rgba(11,16,32,.70); }
+
+    /* MAPA mental */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      position:relative;
+      padding: 10px;
+    }
+    svg#mindmap{
+      width:100%;
+      height: 520px;
+      display:block;
+      border-radius: 14px;
+      background:
+        radial-gradient(900px 420px at 15% 0%, rgba(56,189,248,.12), transparent 55%),
+        radial-gradient(900px 420px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      padding: 10px 12px;
+      color: rgba(11,16,32,.72);
+      display:none;
+    }
+    .fallback.show{ display:block; }
+
+    /* ====== JUEGO 1: BALANCE PLANCTON ====== */
+    .gameGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .ctrlRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .ctrlRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 52%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 64px; text-align:right; }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    .lakeViz{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      position:relative;
+      padding: 10px;
+    }
+    .lakeHeader{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+      white-space:nowrap;
+    }
+
+    .lakeCanvas{
+      width:100%;
+      height: 220px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.10);
+      background:
+        linear-gradient(180deg, rgba(180,235,255,.70) 0%, rgba(120,210,255,.35) 55%, rgba(60,170,235,.22) 100%);
+      display:block;
+      margin-top: 10px;
+    }
+
+    /* ====== JUEGO 2: RED TRÓFICA ====== */
+    .webGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.0fr 1.0fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .webGrid{ grid-template-columns: 1fr; } }
+
+    .nodeBank{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .bankRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .nodeBtn{
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 999px;
+      padding: 9px 10px;
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 12.8px;
+      color: rgba(11,16,32,.84);
+      box-shadow: var(--shadow-soft);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    .nodeBtn:hover{ background: rgba(255,255,255,.84); border-color: rgba(11,16,32,.18); }
+    .nodeBtn:active{ transform: translateY(1px); }
+    .nodeBtn.sel{ outline: 3px solid rgba(120,210,255,.35); }
+
+    .webStage{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    #webCanvas{
+      width:100%;
+      height: 340px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.10);
+      background:
+        radial-gradient(900px 420px at 30% 20%, rgba(56,189,248,.10), transparent 55%),
+        radial-gradient(900px 420px at 70% 15%, rgba(34,197,94,.08), transparent 55%),
+        rgba(255,255,255,.48);
+      display:block;
+    }
+    .webHelp{ margin-top: 8px; font-size: 12.6px; color: rgba(11,16,32,.72); line-height:1.5; }
+    .webActions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+
+    /* ====== JUEGO 3: ALIMENTA AL CRUSTÁCEO (canvas) ====== */
+    .arcadeGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.0fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .arcadeGrid{ grid-template-columns: 1fr; } }
+
+    .arcadeStage{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      overflow:hidden;
+    }
+    #arcade{
+      width:100%;
+      height: 360px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.10);
+      background:
+        linear-gradient(180deg, rgba(180,235,255,.78) 0%, rgba(120,210,255,.38) 60%, rgba(60,170,235,.22) 100%);
+      display:block;
+    }
+    .kbd{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      white-space:nowrap;
+    }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.6 Vida acuática</h1>
+        <p class="subtitle">
+          Los lagos y ríos están llenos de organismos: plantas acuáticas, plancton, crustáceos, peces y aves.
+          En el Lago de Atitlán, esta vida forma una red conectada: lo que pasa en la <strong>cuenca</strong>
+          (suelo, basura, aguas residuales) cambia la <strong>calidad del agua</strong>, y eso afecta a toda la vida acuática.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-5.html">Anterior (3.5)</a>
+        <a class="btn primary" href="3-7.html">Siguiente (3.7)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="twoCols">
+          <div class="box">
+            <p>
+              La vida acuática depende de tres ideas clave:
+              <strong>hábitat</strong> (dónde vivir), <strong>alimento</strong> (qué comer) y <strong>condiciones del agua</strong>
+              (luz, temperatura, oxígeno y nutrientes).
+            </p>
+            <ul>
+              <li><strong>Macrófitas (vegetación acuática):</strong> plantas visibles (tules, plantas flotantes) que sirven de refugio y “guardería” para peces, aves y otros organismos.</li>
+              <li><strong>Plancton:</strong> microorganismos que flotan en el agua. El <strong>fitoplancton</strong> produce oxígeno con la fotosíntesis y alimenta al <strong>zooplancton</strong>.</li>
+              <li><strong>Fauna:</strong> incluye zooplancton, insectos, caracoles, crustáceos (cangrejos), peces y aves. La red trófica conecta a todos.</li>
+            </ul>
+
+            <div class="result info">
+              <strong>Conexión cuenca–lago:</strong> más nutrientes (por aguas residuales o fertilizantes) pueden disparar crecimiento excesivo de algas; eso reduce transparencia, cambia el oxígeno y afecta a peces y crustáceos.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Condiciones del agua que importan</strong></p>
+            <ul>
+              <li><strong>Transparencia:</strong> indica cuánta luz entra (se mide con un disco Secchi). Más luz ayuda a la fotosíntesis.</li>
+              <li><strong>Temperatura:</strong> afecta el metabolismo. En Atitlán, la capa superficial suele estar aprox. entre <strong>20–24&nbsp;°C</strong>.</li>
+              <li><strong>Oxígeno disuelto:</strong> vital para peces y otras formas de vida. Valores alrededor de <strong>5–8&nbsp;mg/L</strong> suelen ser aptos; menos oxígeno = estrés.</li>
+              <li><strong>Nutrientes (N y P):</strong> alimentan plantas y algas; en exceso, pueden causar “florecimientos” de algas.</li>
+            </ul>
+            <div class="result warn">
+              <strong>Pista:</strong> en los juegos de abajo, verás cómo nutrientes, luz y mezcla del agua pueden cambiar el equilibrio entre oxígeno, plancton y fauna.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Macrófitas</div>
+            <p class="s">Reducen erosión de la orilla, retienen basura, dan refugio, y ayudan a mejorar condiciones del agua cerca de la costa.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Fitoplancton</div>
+            <p class="s">Productores: usan luz para fotosíntesis. En exceso, pueden bajar transparencia y alterar el oxígeno.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Zooplancton</div>
+            <p class="s">Consumidores microscópicos: comen fitoplancton y son alimento importante para peces y crustáceos.</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>Plantas acuáticas y tules (ejemplo local)</strong></p>
+            <ul>
+              <li>Los <strong>tulares</strong> (tul hembra y tul macho) se usan en artesanías y tienen valor cultural.</li>
+              <li>Actúan como “esponja”: sus raíces pueden captar nutrientes en sedimentos, y ayudan a proteger orillas de olas y viento.</li>
+              <li>También son hábitat para aves y muchas especies pequeñas (juveniles de peces, insectos acuáticos, etc.).</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Peces y pesca</strong></p>
+            <ul>
+              <li>Los peces pueden vivir muchos años y funcionan como <strong>indicadores</strong> de cambios a largo plazo en el ecosistema.</li>
+              <li>La pesca artesanal es parte de la cultura local y depende de mantener agua con buena calidad y hábitats sanos.</li>
+              <li>Cuando baja el oxígeno o suben bacterias/contaminantes, la vida acuática sufre (y también la economía).</li>
+            </ul>
+          </div>
+        </div>
+
+        <table aria-label="Ejemplos de peces reportados en el Lago de Atitlán">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre común</th>
+              <th class="muted">Nombre científico (referencia)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Bluegill</td><td class="muted">Lepomis macrochirus</td></tr>
+            <tr><td>2</td><td>Crappie</td><td class="muted">Pomoxis nigromaculatus</td></tr>
+            <tr><td>3</td><td>Lobina</td><td class="muted">Micropterus salmoides</td></tr>
+            <tr><td>4</td><td>Tilapia</td><td class="muted">Oreochromis niloticus</td></tr>
+            <tr><td>5</td><td>Pepesca</td><td class="muted">Astyanax aeneus</td></tr>
+            <tr><td>6</td><td>Bute</td><td class="muted">Profundulus guatemalensis</td></tr>
+            <tr><td>7</td><td>Pupo</td><td class="muted">Poecilia sphenops / Poecilia gracilis</td></tr>
+            <tr><td>8</td><td>Carpa</td><td class="muted">Cyprinus carpio</td></tr>
+            <tr><td>9</td><td>Mojarra negra</td><td class="muted">Amphilophus macracanthus</td></tr>
+          </tbody>
+        </table>
+
+        <div class="result info">
+          <strong>Mini idea:</strong> si protegemos la cuenca (suelo cubierto, menos aguas residuales, menos basura), cuidamos la transparencia, el oxígeno y el hábitat del lago.
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de vida acuática"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica que el dispositivo tenga acceso al script de Markmap (CDN).
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · “Equilibrio del plancton” (nutrientes, luz y oxígeno)</h2>
+        <div class="hint">
+          Objetivo: lograr <strong>agua clara</strong>, <strong>oxígeno suficiente</strong> y un <strong>plancton equilibrado</strong>.
+          Ajusta factores típicos de una cuenca (nutrientes por descargas, vegetación costera, mezcla por viento).
+        </div>
+
+        <div class="gameGrid">
+          <div class="box">
+            <div class="ctrlRow">
+              <label for="nut">Nutrientes (N+P)</label>
+              <input id="nut" type="range" min="0" max="100" step="5" value="45">
+              <div class="val" id="nutVal">45%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="shade">Sombra / vegetación</label>
+              <input id="shade" type="range" min="0" max="100" step="5" value="35">
+              <div class="val" id="shadeVal">35%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="wind">Mezcla por viento</label>
+              <input id="wind" type="range" min="0" max="100" step="5" value="40">
+              <div class="val" id="windVal">40%</div>
+            </div>
+
+            <div class="ctrlRow">
+              <label for="temp">Temperatura</label>
+              <input id="temp" type="range" min="18" max="28" step="1" value="22">
+              <div class="val" id="tempVal">22°C</div>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn" id="btnRnd" type="button">Escenario aleatorio</button>
+              <button class="btn" id="btnReset" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="score1">0</span></span>
+            </div>
+
+            <div class="result info" id="msg1" style="display:none;"></div>
+          </div>
+
+          <div class="lakeViz">
+            <div class="lakeHeader">
+              <span class="mini">Indicadores del lago</span>
+              <span class="mini" id="status1">Estado: —</span>
+            </div>
+
+            <canvas class="lakeCanvas" id="lakeCanvas" width="900" height="440" aria-label="Visualización del lago"></canvas>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Transparencia</div>
+                <div class="v" id="kClear">—</div>
+                <div class="u">aprox. (0–10)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Riesgo de floración</div>
+                <div class="v" id="kBloom">—</div>
+                <div class="u">bajo/medio/alto</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Oxígeno (O₂)</div>
+                <div class="v" id="kO2">—</div>
+                <div class="u">mg/L (aprox.)</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Comida para zooplancton</div>
+                <div class="v" id="kFood">—</div>
+                <div class="u">balance</div>
+              </div>
+            </div>
+
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Tip:</strong> nutrientes altos + poco viento + mucho calor suelen subir el riesgo de “floración”. Más sombra/vegetación y buena mezcla ayudan al equilibrio.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · “Construye la red trófica” (¿quién se come a quién?)</h2>
+        <div class="hint">
+          Objetivo: crear flechas correctas desde <strong>alimento → consumidor</strong>.
+          Haz clic en un organismo de origen y luego en el organismo que lo consume.
+        </div>
+
+        <div class="webGrid">
+          <div class="nodeBank">
+            <p style="margin:0;color:rgba(11,16,32,.80);line-height:1.6;font-size:13.6px;">
+              Organismos (selecciona 2 para crear una flecha):
+            </p>
+            <div class="bankRow" id="bank"></div>
+
+            <div class="webActions">
+              <button class="btn" id="btnCheckWeb" type="button">Revisar red</button>
+              <button class="btn" id="btnClearWeb" type="button">Borrar flechas</button>
+              <span class="mini">Aciertos: <span id="webOk">0</span>/<span id="webTotal">0</span></span>
+            </div>
+
+            <div class="result info" id="webMsg" style="display:none;"></div>
+          </div>
+
+          <div class="webStage">
+            <canvas id="webCanvas" width="1000" height="680" aria-label="Red trófica"></canvas>
+            <div class="webHelp">
+              Pista: empieza con <strong>fitoplancton</strong> y conecta hacia <strong>zooplancton</strong> y luego hacia peces y aves.
+              Las macrófitas no “se comen” igual que el plancton: funcionan más como <em>hábitat</em> y refugio (pero algunos animales sí consumen partes/organismos asociados).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 3 -->
+      <section class="card">
+        <h2>Juego 3 · “Alimenta al crustáceo” (mini arcade)</h2>
+        <div class="hint">
+          Controla al cangrejito. Come <strong>partículas de comida</strong> (verdes) para ganar puntos y evita <strong>plástico</strong> (rosado).
+          Mientras más plástico, peor salud.
+        </div>
+
+        <div class="arcadeGrid">
+          <div class="arcadeStage">
+            <canvas id="arcade" width="1000" height="680" aria-label="Juego del crustáceo"></canvas>
+            <div class="kbd">
+              <span class="chip">Mover: ← ↑ ↓ →</span>
+              <span class="chip">Pausa: P</span>
+              <span class="chip">Reiniciar: R</span>
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Indicadores del juego</strong></p>
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Puntos</div>
+                <div class="v" id="gPts">0</div>
+                <div class="u">comida capturada</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Salud</div>
+                <div class="v" id="gHp">100</div>
+                <div class="u">0–100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Nivel</div>
+                <div class="v" id="gLv">1</div>
+                <div class="u">sube cada 10 pts</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Plástico evitado</div>
+                <div class="v" id="gDod">0</div>
+                <div class="u">¡bien!</div>
+              </div>
+            </div>
+
+            <div class="result info" style="margin-top:10px;">
+              <strong>Conexión a la cuenca:</strong> más basura en calles y ríos termina en el lago. Menos plástico = vida acuática más sana.
+            </div>
+
+            <div class="result warn" style="margin-top:10px;">
+              <strong>Reto:</strong> llega a 30 puntos con salud arriba de 60.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap) — versión robusta
+    // =========================
+    const md = `
+# 3.6 Vida acuática
+## Vegetación acuática (macrófitas)
+- Plantas visibles (tules, plantas flotantes)
+- Funciones
+  - Reducen erosión de orillas
+  - Refugio y “guardería” para peces y aves
+  - Retienen basura/contaminantes cerca de la costa
+  - Modifican condiciones del agua y sedimentos
+- Tipos (idea)
+  - Fijas al sustrato
+  - Flotantes libres
+## Plancton
+- Fitoplancton
+  - Productores: fotosíntesis → oxígeno
+  - Vive en zona con luz (zona fótica)
+  - Exceso → “floraciones” y baja transparencia
+- Zooplancton
+  - Consumidores microscópicos
+  - Come fitoplancton
+  - Alimento para peces y crustáceos
+## Fauna
+- Insectos acuáticos, caracoles, crustáceos (cangrejos)
+- Peces (algunos exóticos) y aves de orilla
+## Calidad del agua
+- Transparencia (disco Secchi)
+- Temperatura (afecta metabolismo)
+- Oxígeno disuelto (O₂) vital
+- Nutrientes (N y P) en equilibrio
+## Conexión con la cuenca
+- Aguas residuales y fertilizantes → más nutrientes
+- Basura → afecta hábitat
+- Reforestar y proteger orillas → más vida y mejor agua
+`.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function renderMap(){
+      const fb = document.getElementById('mapFallback');
+      try{
+        if (!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        expanded = true;
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true; // para cortar reintentos (pero queda fallback visible)
+      }
+    }
+
+    let tries = 0;
+    const it = setInterval(() => {
+      tries++;
+      const ok = renderMap();
+      if (ok || tries > 12) clearInterval(it);
+      if (!mm && tries > 12) document.getElementById('mapFallback').classList.add('show');
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      if (expanded) mm.foldAll(); else mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; renderMap(); });
+
+    // =========================
+    // JUEGO 1: “Equilibrio del plancton”
+    // Modelo didáctico: combina nutrientes, luz (inversa de sombra), mezcla y temperatura.
+    // =========================
+    const elNut = document.getElementById('nut');
+    const elShade = document.getElementById('shade');
+    const elWind = document.getElementById('wind');
+    const elTemp = document.getElementById('temp');
+
+    const nutVal = document.getElementById('nutVal');
+    const shadeVal = document.getElementById('shadeVal');
+    const windVal = document.getElementById('windVal');
+    const tempVal = document.getElementById('tempVal');
+
+    const kClear = document.getElementById('kClear');
+    const kBloom = document.getElementById('kBloom');
+    const kO2 = document.getElementById('kO2');
+    const kFood = document.getElementById('kFood');
+
+    const msg1 = document.getElementById('msg1');
+    const score1 = document.getElementById('score1');
+    const status1 = document.getElementById('status1');
+
+    let pts1 = 0;
+
+    const lakeC = document.getElementById('lakeCanvas');
+    const lctx = lakeC.getContext('2d');
+
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+    function calcLake(nut, shade, wind, temp){
+      // Luz disponible (0–1) (más sombra => menos luz)
+      const light = (100 - shade) / 100;
+
+      // Crecimiento potencial de fitoplancton (0–1)
+      const grow = clamp((nut/100) * (0.45 + 0.55*light) * (0.55 + 0.45*(temp-18)/10), 0, 1);
+
+      // Mezcla reduce acumulación de algas en superficie, pero también puede redistribuir nutrientes
+      const mix = wind/100;
+
+      // “Bloom” sube con alto crecimiento, baja con mezcla
+      const bloomIdx = clamp((grow*1.15) - (mix*0.55), 0, 1);
+
+      // Transparencia: baja con bloom y con nutrientes altos; mejora con sombra (menos exceso de luz) y mezcla moderada
+      const clarity = clamp(9.5 - (8.2*bloomIdx) - (2.0*(nut/100)) + (1.2*mix) + (0.8*(shade/100)), 0.5, 10);
+
+      // Oxígeno (mg/L) didáctico: fotosíntesis sube O2 de día, pero bloom alto puede terminar bajando O2 (respiración/descomposición)
+      // Mezcla puede ayudar a oxigenar superficie; temp alto baja solubilidad
+      const o2 = clamp(
+        6.6 + (1.8*grow) + (0.9*mix) - (2.2*bloomIdx) - (0.12*(temp-22)),
+        1.5,
+        9.2
+      );
+
+      // “Comida” para zooplancton: demasiado poco = falta; demasiado bloom = mala calidad/hipoxia; ideal = medio
+      const food = clamp(1 - Math.abs(grow - 0.55)*1.65 - bloomIdx*0.35, 0, 1);
+
+      return { light, grow, bloomIdx, clarity, o2, food };
+    }
+
+    function labelBloom(x){
+      if (x < 0.33) return "bajo";
+      if (x < 0.66) return "medio";
+      return "alto";
+    }
+    function labelFood(x){
+      if (x < 0.33) return "baja";
+      if (x < 0.66) return "media";
+      return "alta";
+    }
+
+    function drawLake(out){
+      const w = lakeC.width, h = lakeC.height;
+
+      // Fondo
+      lctx.clearRect(0,0,w,h);
+      // agua base
+      lctx.fillStyle = "rgba(60,170,235,.22)";
+      lctx.fillRect(0, h*0.15, w, h*0.85);
+
+      // claridad: más clara = más transparente (menos “tinte”)
+      const murk = clamp(1 - out.clarity/10, 0, 1); // 0 claro, 1 turbio
+      lctx.fillStyle = `rgba(20, 80, 120, ${0.10 + 0.55*murk})`;
+      lctx.fillRect(0, h*0.15, w, h*0.85);
+
+      // “bloom” superficial (verde)
+      const bloom = out.bloomIdx;
+      lctx.fillStyle = `rgba(34,197,94, ${0.05 + 0.35*bloom})`;
+      lctx.fillRect(0, h*0.15, w, h*(0.30 + 0.10*bloom));
+
+      // rayos de luz (dependen de light)
+      const rays = Math.round(8 + 10*out.light);
+      lctx.strokeStyle = `rgba(255,255,255, ${0.08 + 0.12*out.light})`;
+      lctx.lineWidth = 2;
+      for(let i=0;i<rays;i++){
+        const x = (i+0.6)*w/rays;
+        lctx.beginPath();
+        lctx.moveTo(x, 0);
+        lctx.lineTo(x + 40*(0.5-out.light), h*(0.18 + 0.55*out.light));
+        lctx.stroke();
+      }
+
+      // iconitos: fitoplancton (puntos), zooplancton (bolitas), pez (simple)
+      function rnd(seed){ // pseudo-random fijo para que no “tiemble”
+        const s = Math.sin(seed) * 10000;
+        return s - Math.floor(s);
+      }
+
+      // fitoplancton: más puntos con grow
+      const fpN = Math.round(40 + 220*out.grow);
+      for(let i=0;i<fpN;i++){
+        const x = rnd(i*7.3)*w;
+        const y = h*0.18 + rnd(i*3.9)*h*0.55;
+        const r = 2 + rnd(i*2.1)*2;
+        lctx.fillStyle = `rgba(34,197,94, ${0.20 + 0.40*out.grow})`;
+        lctx.beginPath(); lctx.arc(x,y,r,0,Math.PI*2); lctx.fill();
+      }
+
+      // zooplancton: más con food (pero no infinito)
+      const zpN = Math.round(12 + 40*out.food);
+      for(let i=0;i<zpN;i++){
+        const x = rnd(900+i*5.2)*w;
+        const y = h*0.30 + rnd(600+i*4.1)*h*0.55;
+        lctx.fillStyle = `rgba(255,255,255, ${0.35 + 0.25*out.food})`;
+        lctx.beginPath(); lctx.arc(x,y,5,0,Math.PI*2); lctx.fill();
+        lctx.strokeStyle = "rgba(11,16,32,.12)";
+        lctx.stroke();
+      }
+
+      // pez: aparece si O2 suficiente
+      if(out.o2 >= 5.2){
+        const fx = w*0.72, fy = h*0.62;
+        lctx.fillStyle = "rgba(255,255,255,.65)";
+        lctx.strokeStyle = "rgba(11,16,32,.16)";
+        lctx.lineWidth = 2;
+        lctx.beginPath();
+        lctx.ellipse(fx, fy, 38, 18, 0, 0, Math.PI*2);
+        lctx.fill(); lctx.stroke();
+        // cola
+        lctx.beginPath();
+        lctx.moveTo(fx-38, fy);
+        lctx.lineTo(fx-58, fy-14);
+        lctx.lineTo(fx-58, fy+14);
+        lctx.closePath();
+        lctx.fill(); lctx.stroke();
+        // ojo
+        lctx.fillStyle="rgba(11,16,32,.55)";
+        lctx.beginPath(); lctx.arc(fx+18, fy-3, 3, 0, Math.PI*2); lctx.fill();
+      } else {
+        // burbujitas “poco O2”
+        for(let i=0;i<10;i++){
+          const x = w*0.70 + i*18;
+          const y = h*0.80 - i*20;
+          lctx.strokeStyle="rgba(255,255,255,.45)";
+          lctx.beginPath(); lctx.arc(x,y,6,0,Math.PI*2); lctx.stroke();
+        }
+      }
+    }
+
+    function updateGame1(){
+      const nut = Number(elNut.value);
+      const shade = Number(elShade.value);
+      const wind = Number(elWind.value);
+      const temp = Number(elTemp.value);
+
+      nutVal.textContent = `${nut}%`;
+      shadeVal.textContent = `${shade}%`;
+      windVal.textContent = `${wind}%`;
+      tempVal.textContent = `${temp}°C`;
+
+      const out = calcLake(nut, shade, wind, temp);
+
+      kClear.textContent = out.clarity.toFixed(1);
+      kBloom.textContent = labelBloom(out.bloomIdx);
+      kO2.textContent = out.o2.toFixed(1);
+      kFood.textContent = labelFood(out.food);
+
+      // estado + puntaje (simple)
+      let state = "Equilibrio";
+      let cls = "info";
+      let delta = 0;
+
+      if (out.bloomIdx >= 0.66 || out.o2 < 4.8){
+        state = "Riesgo";
+        cls = "warn";
+        delta = -1;
+      }
+      if (out.bloomIdx >= 0.80 || out.o2 < 4.0){
+        state = "Alerta";
+        cls = "no";
+        delta = -2;
+      }
+      if (out.bloomIdx < 0.35 && out.o2 >= 5.6 && out.clarity >= 6.2){
+        state = "Muy bien";
+        cls = "ok";
+        delta = +2;
+      }
+
+      status1.textContent = `Estado: ${state}`;
+      status1.style.background = "rgba(255,255,255,.58)";
+      status1.style.borderColor = "rgba(11,16,32,.10)";
+      // sumar puntaje de forma suave solo cuando hay interacción (lo hacemos en check)
+      drawLake(out);
+
+      // mensaje (solo visible cuando el usuario pide feedback)
+      msg1.dataset.cls = cls;
+      msg1.dataset.delta = String(delta);
+      msg1.dataset.state = state;
+      msg1.dataset.out = JSON.stringify(out);
+    }
+
+    [elNut, elShade, elWind, elTemp].forEach(el => el.addEventListener('input', updateGame1));
+
+    document.getElementById('btnRnd').addEventListener('click', () => {
+      elNut.value = String(Math.round((Math.random()*100)/5)*5);
+      elShade.value = String(Math.round((Math.random()*100)/5)*5);
+      elWind.value = String(Math.round((Math.random()*100)/5)*5);
+      elTemp.value = String(18 + Math.floor(Math.random()*11));
+      updateGame1();
+      // auto feedback
+      checkGame1();
+    });
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+      pts1 = 0;
+      score1.textContent = "0";
+      elNut.value = "45";
+      elShade.value = "35";
+      elWind.value = "40";
+      elTemp.value = "22";
+      msg1.style.display = "none";
+      updateGame1();
+    });
+
+    function checkGame1(){
+      const cls = msg1.dataset.cls || "info";
+      const delta = Number(msg1.dataset.delta || "0");
+      const state = msg1.dataset.state || "—";
+      const out = JSON.parse(msg1.dataset.out || "{}");
+
+      pts1 = clamp(pts1 + delta, 0, 30);
+      score1.textContent = String(pts1);
+
+      msg1.style.display = "block";
+      msg1.className = "result " + (cls === "ok" ? "ok" : cls === "no" ? "no" : cls === "warn" ? "warn" : "info");
+      msg1.innerHTML =
+        `<strong>${state}.</strong> ` +
+        `Transparencia: <strong>${out.clarity.toFixed(1)}</strong> · Bloom: <strong>${labelBloom(out.bloomIdx)}</strong> · O₂: <strong>${out.o2.toFixed(1)} mg/L</strong>.` +
+        `<br><span class="muted">Puntaje: ${pts1}/30 (entre más alto, mejor equilibrio).</span>`;
+    }
+
+    // Click en status para “evaluar”
+    status1.addEventListener('click', checkGame1);
+
+    // init
+    updateGame1();
+
+    // =========================
+    // JUEGO 2: Red trófica (canvas)
+    // =========================
+    const ORGS = [
+      { id:"phy", name:"Fitoplancton", x:0.18, y:0.22, kind:"prod" },
+      { id:"zoo", name:"Zooplancton", x:0.35, y:0.36, kind:"cons" },
+      { id:"shr", name:"Camaroncillos", x:0.52, y:0.48, kind:"cons" },
+      { id:"fis", name:"Pez pequeño", x:0.62, y:0.34, kind:"cons" },
+      { id:"big", name:"Pez grande", x:0.78, y:0.46, kind:"cons" },
+      { id:"bir", name:"Ave", x:0.72, y:0.18, kind:"top" },
+      { id:"mac", name:"Macrófitas", x:0.20, y:0.55, kind:"hab" },
+      { id:"det", name:"Detritos", x:0.45, y:0.62, kind:"det" },
+    ];
+
+    // Flechas correctas (alimento -> consumidor)
+    const TARGET = new Set([
+      "phy>zoo",
+      "zoo>shr",
+      "zoo>fis",
+      "shr>fis",
+      "fis>big",
+      "fis>bir",
+      "big>bir",
+      "det>shr",
+      // macrófitas como soporte/hábitat: permitimos una flecha “mac>fis” como relación de refugio/alimento asociado (didáctico)
+      "mac>fis"
+    ]);
+
+    // usuario crea flechas
+    let edges = [];
+    let selA = null;
+
+    const bank = document.getElementById('bank');
+    const webC = document.getElementById('webCanvas');
+    const wctx = webC.getContext('2d');
+
+    const webOk = document.getElementById('webOk');
+    const webTotal = document.getElementById('webTotal');
+    const webMsg = document.getElementById('webMsg');
+
+    function drawWeb(){
+      const w = webC.width, h = webC.height;
+      wctx.clearRect(0,0,w,h);
+
+      // flechas
+      wctx.lineWidth = 3;
+      edges.forEach(e => {
+        const a = ORGS.find(o=>o.id===e.a);
+        const b = ORGS.find(o=>o.id===e.b);
+        if(!a || !b) return;
+        const ax = a.x*w, ay = a.y*h;
+        const bx = b.x*w, by = b.y*h;
+
+        const ok = TARGET.has(`${e.a}>${e.b}`);
+        wctx.strokeStyle = ok ? "rgba(34,197,94,.55)" : "rgba(225,29,72,.35)";
+        wctx.fillStyle = wctx.strokeStyle;
+
+        // línea
+        wctx.beginPath();
+        wctx.moveTo(ax, ay);
+        // curvita suave
+        const cx = (ax+bx)/2;
+        const cy = (ay+by)/2 - 70;
+        wctx.quadraticCurveTo(cx, cy, bx, by);
+        wctx.stroke();
+
+        // punta de flecha
+        const ang = Math.atan2(by-cy, bx-cx);
+        const size = 10;
+        wctx.beginPath();
+        wctx.moveTo(bx, by);
+        wctx.lineTo(bx - size*Math.cos(ang-0.4), by - size*Math.sin(ang-0.4));
+        wctx.lineTo(bx - size*Math.cos(ang+0.4), by - size*Math.sin(ang+0.4));
+        wctx.closePath();
+        wctx.fill();
+      });
+
+      // nodos
+      ORGS.forEach(o => {
+        const x = o.x*w, y = o.y*h;
+        const r = 42;
+
+        const bg =
+          o.kind==="prod" ? "rgba(34,197,94,.16)" :
+          o.kind==="top" ? "rgba(120,190,255,.18)" :
+          o.kind==="hab" ? "rgba(56,189,248,.14)" :
+          o.kind==="det" ? "rgba(11,16,32,.06)" :
+          "rgba(255,255,255,.55)";
+
+        wctx.fillStyle = bg;
+        wctx.strokeStyle = "rgba(11,16,32,.16)";
+        wctx.lineWidth = 2;
+        wctx.beginPath();
+        wctx.arc(x, y, r, 0, Math.PI*2);
+        wctx.fill(); wctx.stroke();
+
+        // seleccionado
+        if(selA === o.id){
+          wctx.strokeStyle = "rgba(120,210,255,.55)";
+          wctx.lineWidth = 5;
+          wctx.beginPath();
+          wctx.arc(x, y, r+3, 0, Math.PI*2);
+          wctx.stroke();
+        }
+
+        // texto
+        wctx.fillStyle = "rgba(11,16,32,.82)";
+        wctx.font = "900 16px Inter, system-ui";
+        wctx.textAlign = "center";
+        wctx.textBaseline = "middle";
+
+        // multiline
+        const words = o.name.split(" ");
+        const lines = [];
+        let line = "";
+        words.forEach(wd => {
+          const test = (line ? line+" " : "") + wd;
+          if(test.length > 11 && line){
+            lines.push(line);
+            line = wd;
+          } else line = test;
+        });
+        if(line) lines.push(line);
+
+        const lh = 18;
+        const startY = y - (lines.length-1)*lh/2;
+        lines.forEach((ln, i) => wctx.fillText(ln, x, startY + i*lh));
+      });
+    }
+
+    function initBank(){
+      bank.innerHTML = "";
+      ORGS.forEach(o => {
+        const b = document.createElement('button');
+        b.type = "button";
+        b.className = "nodeBtn";
+        b.textContent = o.name;
+        b.dataset.id = o.id;
+        b.addEventListener('click', () => pickNode(o.id, b));
+        bank.appendChild(b);
+      });
+
+      webTotal.textContent = String(TARGET.size);
+      webOk.textContent = "0";
+      drawWeb();
+    }
+
+    function pickNode(id, btn){
+      // resaltado visual
+      document.querySelectorAll('.nodeBtn').forEach(x => x.classList.remove('sel'));
+      btn.classList.add('sel');
+
+      if(!selA){
+        selA = id;
+        drawWeb();
+        return;
+      }
+
+      // segunda selección: crear flecha
+      const a = selA;
+      const b = id;
+
+      // evitar self-edge
+      if(a === b){
+        selA = null;
+        document.querySelectorAll('.nodeBtn').forEach(x => x.classList.remove('sel'));
+        drawWeb();
+        return;
+      }
+
+      // evitar duplicados
+      if(!edges.some(e => e.a===a && e.b===b)){
+        edges.push({a,b});
+      }
+
+      selA = null;
+      document.querySelectorAll('.nodeBtn').forEach(x => x.classList.remove('sel'));
+      drawWeb();
+    }
+
+    function checkWeb(){
+      let ok = 0;
+      edges.forEach(e => { if(TARGET.has(`${e.a}>${e.b}`)) ok++; });
+
+      webOk.textContent = String(ok);
+      webMsg.style.display = "block";
+
+      const miss = TARGET.size - ok;
+      if(ok >= TARGET.size - 1){
+        webMsg.className = "result ok";
+        webMsg.innerHTML = `<strong>¡Excelente!</strong> Tu red está casi completa. Aciertos: <strong>${ok}/${TARGET.size}</strong>.`;
+      } else if(ok >= Math.ceil(TARGET.size*0.6)){
+        webMsg.className = "result warn";
+        webMsg.innerHTML = `<strong>Vas bien.</strong> Aciertos: <strong>${ok}/${TARGET.size}</strong>. Te faltan aprox. <strong>${miss}</strong> flechas correctas.`;
+      } else {
+        webMsg.className = "result no";
+        webMsg.innerHTML = `<strong>Intenta de nuevo.</strong> Aciertos: <strong>${ok}/${TARGET.size}</strong>. Pista: empieza con fitoplancton → zooplancton → peces.`;
+      }
+    }
+
+    document.getElementById('btnCheckWeb').addEventListener('click', checkWeb);
+    document.getElementById('btnClearWeb').addEventListener('click', () => {
+      edges = [];
+      selA = null;
+      webMsg.style.display = "none";
+      document.querySelectorAll('.nodeBtn').forEach(x => x.classList.remove('sel'));
+      drawWeb();
+      webOk.textContent = "0";
+    });
+
+    initBank();
+
+    // permitir “clic” en nodos del canvas también
+    webC.addEventListener('click', (ev) => {
+      const rect = webC.getBoundingClientRect();
+      const x = (ev.clientX - rect.left) * (webC.width / rect.width);
+      const y = (ev.clientY - rect.top) * (webC.height / rect.height);
+
+      for(const o of ORGS){
+        const ox = o.x*webC.width, oy = o.y*webC.height;
+        const d = Math.hypot(x-ox, y-oy);
+        if(d <= 45){
+          // simular el click del botón
+          const btn = [...document.querySelectorAll('.nodeBtn')].find(b => b.dataset.id===o.id);
+          if(btn) btn.click();
+          break;
+        }
+      }
+    });
+
+    // =========================
+    // JUEGO 3: Arcade crustáceo
+    // =========================
+    const aC = document.getElementById('arcade');
+    const actx = aC.getContext('2d');
+
+    const gPts = document.getElementById('gPts');
+    const gHp  = document.getElementById('gHp');
+    const gLv  = document.getElementById('gLv');
+    const gDod = document.getElementById('gDod');
+
+    const keys = { left:false, right:false, up:false, down:false };
+    let paused = false;
+
+    let crab, items, plastics, pts, hp, lv, dod;
+    let lastT = 0;
+
+    function resetArcade(){
+      crab = { x: aC.width*0.2, y: aC.height*0.65, r: 18, vx:0, vy:0 };
+      items = [];
+      plastics = [];
+      pts = 0;
+      hp = 100;
+      lv = 1;
+      dod = 0;
+      paused = false;
+      lastT = performance.now();
+      gPts.textContent = "0";
+      gHp.textContent = "100";
+      gLv.textContent = "1";
+      gDod.textContent = "0";
+    }
+
+    function spawnFood(){
+      items.push({
+        x: aC.width + 30,
+        y: 120 + Math.random()*(aC.height-200),
+        r: 10 + Math.random()*6,
+        vx: - (2.2 + 0.35*lv + Math.random()*1.2)
+      });
+    }
+    function spawnPlastic(){
+      plastics.push({
+        x: aC.width + 30,
+        y: 90 + Math.random()*(aC.height-160),
+        r: 12 + Math.random()*8,
+        vx: - (2.4 + 0.45*lv + Math.random()*1.6)
+      });
+    }
+
+    function drawCrab(){
+      const {x,y,r} = crab;
+      // cuerpo
+      actx.fillStyle = "rgba(255,255,255,.68)";
+      actx.strokeStyle = "rgba(11,16,32,.18)";
+      actx.lineWidth = 2;
+      actx.beginPath();
+      actx.ellipse(x, y, r+10, r, 0, 0, Math.PI*2);
+      actx.fill(); actx.stroke();
+      // ojos
+      actx.fillStyle = "rgba(11,16,32,.58)";
+      actx.beginPath(); actx.arc(x+10, y-10, 3, 0, Math.PI*2); actx.fill();
+      actx.beginPath(); actx.arc(x-2, y-10, 3, 0, Math.PI*2); actx.fill();
+      // pinzas
+      actx.strokeStyle = "rgba(11,16,32,.18)";
+      actx.beginPath();
+      actx.arc(x- (r+18), y-4, 8, 0, Math.PI*2);
+      actx.arc(x+ (r+18), y-4, 8, 0, Math.PI*2);
+      actx.stroke();
+    }
+
+    function drawHud(){
+      // “suelo” y olitas
+      const w=aC.width, h=aC.height;
+      actx.fillStyle = "rgba(185, 210, 230, .22)";
+      actx.fillRect(0, h*0.78, w, h*0.22);
+
+      actx.strokeStyle = "rgba(255,255,255,.35)";
+      actx.lineWidth = 2;
+      for(let i=0;i<5;i++){
+        const yy = h*0.18 + i*26;
+        actx.beginPath();
+        for(let x=0;x<=w;x+=60){
+          actx.quadraticCurveTo(x+30, yy + (i%2?10:-10), x+60, yy);
+        }
+        actx.stroke();
+      }
+
+      // texto
+      actx.fillStyle = "rgba(11,16,32,.70)";
+      actx.font = "900 18px Inter, system-ui";
+      actx.fillText(`Puntos: ${pts}  ·  Salud: ${hp}`, 16, 28);
+
+      if(paused){
+        actx.fillStyle="rgba(255,255,255,.72)";
+        actx.fillRect(w*0.25, h*0.35, w*0.5, 90);
+        actx.strokeStyle="rgba(11,16,32,.14)";
+        actx.strokeRect(w*0.25, h*0.35, w*0.5, 90);
+        actx.fillStyle="rgba(11,16,32,.80)";
+        actx.font="900 22px Outfit, Inter, system-ui";
+        actx.textAlign="center";
+        actx.fillText("Pausa (P para continuar)", w*0.5, h*0.35+55);
+        actx.textAlign="left";
+      }
+    }
+
+    function tick(t){
+      const dt = Math.min(0.03, (t-lastT)/1000);
+      lastT = t;
+
+      // fondo
+      actx.clearRect(0,0,aC.width,aC.height);
+
+      // dificultad: spawns
+      if(!paused){
+        const pFood = 0.02 + 0.002*lv;
+        const pPlas = 0.012 + 0.0022*lv;
+        if(Math.random() < pFood) spawnFood();
+        if(Math.random() < pPlas) spawnPlastic();
+      }
+
+      // movimiento
+      if(!paused){
+        const sp = 220;
+        crab.vx = (keys.right - keys.left) * sp;
+        crab.vy = (keys.down - keys.up) * sp;
+
+        crab.x += crab.vx * dt;
+        crab.y += crab.vy * dt;
+
+        crab.x = clamp(crab.x, 30, aC.width-30);
+        crab.y = clamp(crab.y, 70, aC.height-70);
+
+        // mover items
+        items.forEach(it => it.x += it.vx);
+        plastics.forEach(pl => pl.x += pl.vx);
+
+        // colisiones con comida
+        items = items.filter(it => {
+          const d = Math.hypot(it.x-crab.x, it.y-crab.y);
+          if(d < it.r + crab.r + 8){
+            pts += 1;
+            return false;
+          }
+          return it.x > -30;
+        });
+
+        // colisiones con plástico
+        plastics = plastics.filter(pl => {
+          const d = Math.hypot(pl.x-crab.x, pl.y-crab.y);
+          if(d < pl.r + crab.r + 8){
+            hp = clamp(hp - (10 + 2*lv), 0, 100);
+            return false;
+          }
+          // si salió de pantalla, cuenta como evitado
+          if(pl.x <= -30){
+            dod += 1;
+            return false;
+          }
+          return true;
+        });
+
+        // nivel
+        lv = 1 + Math.floor(pts/10);
+
+        // actualizar UI
+        gPts.textContent = String(pts);
+        gHp.textContent = String(hp);
+        gLv.textContent = String(lv);
+        gDod.textContent = String(dod);
+
+        // fin por salud
+        if(hp <= 0){
+          paused = true;
+        }
+      }
+
+      // dibujar objetos
+      items.forEach(it => {
+        actx.fillStyle = "rgba(34,197,94,.55)";
+        actx.strokeStyle = "rgba(11,16,32,.14)";
+        actx.beginPath(); actx.arc(it.x,it.y,it.r,0,Math.PI*2); actx.fill(); actx.stroke();
+      });
+      plastics.forEach(pl => {
+        actx.fillStyle = "rgba(225,29,72,.35)";
+        actx.strokeStyle = "rgba(11,16,32,.14)";
+        actx.beginPath(); actx.arc(pl.x,pl.y,pl.r,0,Math.PI*2); actx.fill(); actx.stroke();
+        // una rayita como “bolsa”
+        actx.strokeStyle = "rgba(11,16,32,.12)";
+        actx.beginPath(); actx.moveTo(pl.x-pl.r*0.6, pl.y); actx.lineTo(pl.x+pl.r*0.6, pl.y); actx.stroke();
+      });
+
+      drawHud();
+      drawCrab();
+
+      // mensaje de game over
+      if(paused && hp <= 0){
+        const w=aC.width, h=aC.height;
+        actx.fillStyle="rgba(255,255,255,.78)";
+        actx.fillRect(w*0.18, h*0.42, w*0.64, 120);
+        actx.strokeStyle="rgba(11,16,32,.14)";
+        actx.strokeRect(w*0.18, h*0.42, w*0.64, 120);
+        actx.fillStyle="rgba(11,16,32,.84)";
+        actx.font="900 26px Outfit, Inter, system-ui";
+        actx.textAlign="center";
+        actx.fillText("Fin del juego", w*0.5, h*0.42+45);
+        actx.font="800 16px Inter, system-ui";
+        actx.fillText(`Puntos: ${pts} · Presiona R para reiniciar`, w*0.5, h*0.42+80);
+        actx.textAlign="left";
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if(e.key === "ArrowLeft") keys.left = true;
+      if(e.key === "ArrowRight") keys.right = true;
+      if(e.key === "ArrowUp") keys.up = true;
+      if(e.key === "ArrowDown") keys.down = true;
+
+      if(e.key.toLowerCase() === "p"){
+        paused = !paused;
+      }
+      if(e.key.toLowerCase() === "r"){
+        resetArcade();
+      }
+    });
+    window.addEventListener('keyup', (e) => {
+      if(e.key === "ArrowLeft") keys.left = false;
+      if(e.key === "ArrowRight") keys.right = false;
+      if(e.key === "ArrowUp") keys.up = false;
+      if(e.key === "ArrowDown") keys.down = false;
+    });
+
+    // init arcade
+    resetArcade();
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
