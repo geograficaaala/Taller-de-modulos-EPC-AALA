@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4.6 Agroecosistemas · EPC AALA</title>
+  <meta name="description" content="Agroecosistemas: componentes, tipos, servicios y manejo sostenible. Mapa mental + 4 juegos interactivos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(56,189,248,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+    header{
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.62);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+      box-shadow:var(--shadow-soft);
+    }
+    h1{
+      margin:10px 0 0;
+      font-family:Outfit,Inter,system-ui;
+      font-weight:900;
+      letter-spacing:.2px;
+      line-height:1.08;
+      font-size:clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.55;max-width:95ch;}
+    .nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .btn{
+      appearance:none;border:1px solid rgba(11,16,32,.12);
+      background:var(--btn);
+      border-radius:14px;
+      padding:10px 12px;
+      text-decoration:none;
+      font-weight:900;font-size:13px;
+      color:rgba(11,16,32,.86);
+      box-shadow:var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;align-items:center;gap:8px;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{background:var(--btnh);border-color:rgba(11,16,32,.18)}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      background:rgba(120, 210, 255, .28);
+      border-color:rgba(35, 140, 210, .22);
+    }
+    main.stack{display:flex;flex-direction:column;gap:14px;margin-top:14px;}
+    .card{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.62);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      padding:16px;
+    }
+    .card h2{
+      margin:0;
+      font-family:Outfit,Inter,system-ui;
+      font-weight:900;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .hint{margin:6px 0 0;color:rgba(11,16,32,.70);font-size:13px;line-height:1.5}
+    .twoCols{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1.25fr .95fr;
+      gap:12px;
+      align-items:start;
+    }
+    @media (max-width:980px){ .twoCols{grid-template-columns:1fr;} }
+    .box{
+      border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);
+      border-radius:18px;
+      padding:12px;
+      box-shadow:var(--shadow-soft);
+    }
+    .box p{margin:0 0 10px;color:rgba(11,16,32,.82);line-height:1.65;font-size:13.6px}
+    .box ul{margin:8px 0 0 18px;color:rgba(11,16,32,.82);font-size:13.4px;line-height:1.6}
+    .box li{margin:6px 0}
+    .grid3{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width:980px){ .grid3{grid-template-columns:1fr;} }
+    .pill{
+      border:1px solid rgba(11,16,32,.10);
+      background:linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius:18px;
+      padding:12px;
+      box-shadow:var(--shadow-soft);
+    }
+    .pill .t{font-weight:900;font-family:Outfit,Inter,system-ui;letter-spacing:.2px}
+    .pill .s{margin:6px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5}
+    .result{
+      margin-top:10px;
+      border-radius:16px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.55);
+      padding:12px;
+      font-size:13px;
+      line-height:1.55;
+      color:rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{display:block}
+    .ok{background:var(--good);border-color:rgba(34,197,94,.28)}
+    .no{background:var(--bad);border-color:rgba(225,29,72,.22)}
+    .warn{background:var(--warn);border-color:rgba(245,158,11,.22)}
+    .info{background:var(--info);border-color:rgba(56,189,248,.22)}
+
+    /* Mapa mental */
+    .mapTop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+    .mapBtns{display:flex;gap:10px;flex-wrap:wrap;}
+    .mapStage{
+      margin-top:10px;
+      border-radius:18px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.60);
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+      padding:10px;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      border-radius:14px;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px dashed rgba(11,16,32,.18);
+      background:rgba(255,255,255,.55);
+      color:rgba(11,16,32,.72);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .fallback.show{display:block}
+
+    /* Util */
+    .mini{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+      box-shadow:var(--shadow-soft);
+    }
+    .hr{height:1px;background:rgba(11,16,32,.10);margin:10px 0;border-radius:999px}
+    footer{text-align:center;padding:18px 0 4px;color:rgba(11,16,32,.58);font-size:13px}
+
+    /* Game layouts */
+    .gameGrid{margin-top:10px;display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:start}
+    @media (max-width:980px){ .gameGrid{grid-template-columns:1fr;} }
+
+    .palette{display:grid;grid-template-columns:repeat(2, 1fr);gap:10px}
+    @media (max-width:520px){ .palette{grid-template-columns:1fr;} }
+
+    .tile{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.70);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+      cursor:grab;
+      user-select:none;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .tile:hover{background:rgba(255,255,255,.84);border-color:rgba(11,16,32,.18)}
+    .tile:active{transform:translateY(1px)}
+    .tile .t{font-weight:900}
+    .tile .s{margin-top:6px;color:rgba(11,16,32,.72);font-size:12.6px;line-height:1.4}
+    .tile .tag{display:inline-flex;margin-top:8px;font-size:11px;font-weight:900;color:rgba(11,16,32,.74);padding:4px 8px;border-radius:999px;border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.62)}
+
+    .drop{
+      border-radius:18px;border:1px dashed rgba(11,16,32,.18);
+      background:rgba(255,255,255,.56);
+      box-shadow:var(--shadow-soft);
+      padding:12px;
+      min-height: 220px;
+    }
+    .drop.dragover{outline:3px solid rgba(120,210,255,.35)}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.72);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+    }
+    .chip button{border:none;background:transparent;cursor:pointer;font:inherit;color:inherit;padding:0}
+
+    .bars{display:grid;gap:10px;margin-top:10px}
+    .bar{
+      border-radius:16px;border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.62);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+    }
+    .bar .k{font-size:12px;color:rgba(11,16,32,.70);font-weight:900}
+    .bar .row{display:flex;align-items:center;gap:10px;margin-top:8px}
+    .track{flex:1;height:12px;border-radius:999px;background:rgba(11,16,32,.10);overflow:hidden}
+    .fill{height:100%;width:50%;background:rgba(45,160,220,.45);transition:width .2s ease}
+    .bar .v{min-width:44px;text-align:right;font-weight:900;color:rgba(11,16,32,.78);font-size:12px}
+
+    .qaGrid{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+    @media (max-width:980px){ .qaGrid{grid-template-columns:1fr;} }
+
+    .qCard{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.62);
+      box-shadow:var(--shadow-soft);
+      padding:12px;
+    }
+    .qCard .q{font-weight:900;margin:0 0 8px}
+    .opt{width:100%;text-align:left;margin:8px 0;padding:10px 12px;border-radius:16px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.70);cursor:pointer;font-weight:900;color:rgba(11,16,32,.86)}
+    .opt:hover{background:rgba(255,255,255,.84);border-color:rgba(11,16,32,.18)}
+    .opt:disabled{opacity:.9;cursor:default}
+    .opt.good{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.26)}
+    .opt.bad{background:rgba(225,29,72,.12);border-color:rgba(225,29,72,.22)}
+
+    /* Small SVG scenes */
+    .scene{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.60);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+      overflow:hidden;
+    }
+    .ctrlRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+    .ctrlRow label{font-weight:900;font-size:13px;color:rgba(11,16,32,.82)}
+    input[type="range"]{width:54%}
+    .val{font-weight:900;font-size:13px;color:rgba(11,16,32,.78);min-width:64px;text-align:right}
+
+  </style>
+
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 4 · El suelo</div>
+        <h1>4.6 Agroecosistemas</h1>
+        <p class="subtitle">
+          Un <strong>agroecosistema</strong> es un ecosistema “adaptado” por las personas para producir alimentos.
+          Su equilibrio depende del <strong>suelo</strong>, el <strong>agua</strong>, la <strong>biodiversidad</strong> y las decisiones de manejo.
+          Si el sistema pierde cobertura o se degrada el suelo, la producción baja y aumentan erosión y riesgos.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="4-5.html">Anterior (4.5)</a>
+        <a class="btn primary" href="4-7.html">Siguiente (4.7)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <p class="hint">
+          La agricultura no ocurre “solo en la planta”: ocurre en todo un sistema con entradas (sol, agua, nutrientes) y salidas (alimentos, residuos, agua que se evapora o escurre).
+          Cuando cambia un elemento (por ejemplo, cobertura vegetal), cambia el resto del sistema.
+        </p>
+
+        <div class="twoCols">
+          <div class="box">
+            <p><strong>¿Qué es un agroecosistema?</strong></p>
+            <p>
+              Es el conjunto de <strong>elementos bióticos</strong> (plantas, animales, microorganismos) y <strong>abióticos</strong> (suelo, agua, clima)
+              que interactúan en un área agrícola y son <strong>modificados por actividades humanas</strong> (siembra, riego, fertilización, control de plagas, cosecha).
+            </p>
+            <ul>
+              <li><strong>Suelo</strong>: estructura, porosidad, materia orgánica, microorganismos y nutrientes.</li>
+              <li><strong>Agua</strong>: infiltración, escorrentía, humedad del suelo y recarga.</li>
+              <li><strong>Biodiversidad</strong>: cultivos, plantas asociadas, insectos, aves, hongos y bacterias.</li>
+              <li><strong>Manejo</strong>: prácticas que pueden conservar o degradar el sistema (rotación, cobertura, terrazas, agroquímicos).</li>
+            </ul>
+
+            <div class="result info show">
+              <strong>Idea clave:</strong> un agroecosistema sano “trabaja a favor” de la producción: recicla nutrientes, protege el suelo, regula plagas y mejora la infiltración.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Tipos de agroecosistemas (comparación)</strong></p>
+            <ul>
+              <li><strong>Tradicional:</strong> diversidad de cultivos, conocimientos locales, uso de semillas y prácticas adaptadas al territorio; suele ser más resiliente.</li>
+              <li><strong>Extensivo:</strong> grandes áreas con baja densidad/insumos; si se maneja mal puede aumentar deforestación y erosión.</li>
+              <li><strong>Intensivo:</strong> alta densidad/insumos para elevar rendimiento; requiere buen manejo para evitar degradación, compactación o contaminación.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              En la práctica, muchos territorios combinan elementos de estos tres, y el reto es aumentar productividad
+              sin perder <strong>suelo</strong>, <strong>agua</strong> y <strong>biodiversidad</strong>.
+            </p>
+
+            <div class="result warn show">
+              <strong>Riesgos frecuentes:</strong> monocultivo, suelo desnudo, quema, pendiente sin protección, uso excesivo de agroquímicos.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Servicios del sistema</div>
+            <p class="s">Producción, polinización, control natural de plagas, ciclo de nutrientes, infiltración, conservación del suelo.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Señales de salud del suelo</div>
+            <p class="s">Suelo con grumos, lombrices, hojarasca, buen drenaje y olor “a tierra” suele indicar vida y materia orgánica.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Agroecología</div>
+            <p class="s">Aumenta diversidad, recicla nutrientes (compost/abonos verdes) y reduce dependencia de insumos externos.</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>Conexión suelo–agua–biodiversidad</strong></p>
+            <ul>
+              <li><strong>Cobertura</strong> (mulch o plantas) reduce impacto de la lluvia y <strong>erosión</strong>.</li>
+              <li>Raíces y materia orgánica mejoran <strong>infiltración</strong> y retención de humedad.</li>
+              <li>Más diversidad favorece <strong>control biológico</strong> (menos plagas dominantes).</li>
+              <li>Árboles (agroforestería) aportan sombra, hojarasca y estabilizan pendientes.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Ejemplos de agroecosistemas</strong></p>
+            <ul>
+              <li><strong>Milpa / policultivo</strong>: asociaciones (maíz–frijol–calabaza) + barreras vivas.</li>
+              <li><strong>Huerto familiar</strong>: diversidad alta, alimentos para autoconsumo, plantas medicinales.</li>
+              <li><strong>Café bajo sombra</strong>: árboles + café + cobertura; protege suelo y biodiversidad.</li>
+              <li><strong>Sistemas silvopastoriles</strong>: árboles + pastos + ganado para reducir erosión y calor.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, expandir/contraer y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="fit" type="button">Ajustar</button>
+            <button class="btn" id="toggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="resetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de agroecosistemas"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Verifica conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · Construye tu agroecosistema (arrastrar y soltar)</h2>
+        <p class="hint">
+          Arrastra elementos al “campo”. Cada elección cambia la <strong>salud del suelo</strong>, el <strong>agua</strong>, la <strong>biodiversidad</strong> y la <strong>producción</strong>.
+          Tu meta: lograr un sistema <strong>equilibrado</strong> (≥ 70 en Suelo, Agua y Biodiversidad) sin caer en baja producción.
+        </p>
+
+        <div class="gameGrid">
+          <div class="box">
+            <div class="palette" id="palette"></div>
+
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="btn" type="button" id="presetMilpa">Preset: Milpa diversa</button>
+              <button class="btn" type="button" id="presetMono">Preset: Monocultivo</button>
+              <button class="btn" type="button" id="resetBuild">Reiniciar</button>
+              <span class="mini">Elementos: <span id="countEl">0</span></span>
+            </div>
+
+            <div class="result info" id="buildMsg"></div>
+          </div>
+
+          <div class="box">
+            <div class="drop" id="drop">
+              <strong>Campo / agroecosistema</strong>
+              <div class="hint">Suelta aquí los elementos. En móvil, toca un elemento para agregarlo.</div>
+              <div class="chips" id="chips"></div>
+            </div>
+
+            <div class="bars">
+              <div class="bar">
+                <div class="k">Suelo</div>
+                <div class="row"><div class="track"><div class="fill" id="bSoil"></div></div><div class="v" id="vSoil">50</div></div>
+              </div>
+              <div class="bar">
+                <div class="k">Agua</div>
+                <div class="row"><div class="track"><div class="fill" id="bWater"></div></div><div class="v" id="vWater">50</div></div>
+              </div>
+              <div class="bar">
+                <div class="k">Biodiversidad</div>
+                <div class="row"><div class="track"><div class="fill" id="bBio"></div></div><div class="v" id="vBio">50</div></div>
+              </div>
+              <div class="bar">
+                <div class="k">Producción (rendimiento)</div>
+                <div class="row"><div class="track"><div class="fill" id="bProd"></div></div><div class="v" id="vProd">50</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · Cadenas de causa–efecto (pensamiento sistémico)</h2>
+        <p class="hint">
+          En un agroecosistema, una decisión genera una cadena. Completa las cadenas en el orden correcto.
+          Toca opciones para armar la secuencia y luego verifica.
+        </p>
+
+        <div class="qaGrid" id="chainGrid"></div>
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn" type="button" id="checkChains">Verificar cadenas</button>
+          <button class="btn" type="button" id="resetChains">Reiniciar</button>
+          <span class="mini">Puntaje: <span id="chainScore">0</span>/<span id="chainTotal">0</span></span>
+        </div>
+        <div class="result info" id="chainMsg"></div>
+      </section>
+
+      <!-- JUEGO 3 -->
+      <section class="card">
+        <h2>Juego 3 · ¿Tradicional, extensivo o intensivo?</h2>
+        <p class="hint">
+          Lee cada caso y elige el tipo de agroecosistema que describe. Luego presiona “Calificar”.
+        </p>
+
+        <div class="box" style="margin-top:10px;">
+          <div id="caseList"></div>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <button class="btn" type="button" id="gradeCases">Calificar</button>
+            <button class="btn" type="button" id="resetCases">Reiniciar</button>
+            <span class="mini">Aciertos: <span id="caseScore">0</span>/<span id="caseTotal">0</span></span>
+          </div>
+          <div class="result info" id="caseMsg"></div>
+        </div>
+      </section>
+
+      <!-- JUEGO 4 -->
+      <section class="card">
+        <h2>Juego 4 · Reto relámpago (quiz)</h2>
+        <p class="hint">10 preguntas rápidas. Algunas son “trampa”: piensa en el sistema completo.</p>
+
+        <div class="qaGrid" id="quizGrid"></div>
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <button class="btn" type="button" id="resetQuiz">Reiniciar quiz</button>
+          <span class="mini">Puntaje: <span id="quizScore">0</span>/<span id="quizTotal">0</span></span>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA (Markmap)
+    // =========================
+    const md = '# 4.6 Agroecosistemas\n## Idea central\n- Un agroecosistema es un ecosistema **manejado por personas** para producir alimentos\n- Incluye elementos **bióticos** (seres vivos) y **abióticos** (suelo, agua, clima)\n- Todo está conectado: decisiones de manejo cambian el suelo, el agua y la biodiversidad\n## Componentes\n- Suelo: estructura, materia orgánica, microorganismos\n- Agua: infiltración, escorrentía, humedad del suelo\n- Plantas cultivadas y silvestres\n- Animales (polinizadores, aves, ganado)\n- Clima (lluvia, temperatura, viento)\n- Manejo humano: siembra, riego, fertilización, control de plagas, cosecha\n## Tipos comunes\n- Tradicional: diversidad y saber local; milpa, policultivos, huertos familiares\n- Extensivo: baja densidad/insumos; grandes áreas; suele degradar si no se cuida\n- Intensivo: alta densidad/insumos; puede aumentar rendimiento pero subir riesgos (erosión, contaminación)\n## Servicios del agroecosistema\n- Producción de alimentos y fibra\n- Conservación del suelo (cobertura, raíces) y del agua (infiltración)\n- Control biológico (depredadores naturales)\n- Polinización\n- Ciclo de nutrientes (compost, abonos verdes)\n## Enfoque sostenible\n- Agroecología: diversidad, reciclaje de nutrientes, menos agroquímicos\n- Suelo siempre cubierto (mulch / cobertura viva)\n- Rotación y asociación de cultivos\n- Barreras vivas, árboles y sombra (agroforestería)';
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('fallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const t = new Transformer();
+        const { root } = t.transform(md);
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0; const it=setInterval(()=>{ tries++; const ok=renderMap(); if(ok||tries>12) clearInterval(it); }, 300);
+    document.getElementById('fit').onclick=()=>mm&&mm.fit();
+    document.getElementById('toggle').onclick=()=>{ if(!mm) return; expanded ? mm.foldAll() : mm.unfoldAll(); expanded=!expanded; };
+    document.getElementById('resetMap').onclick=()=>{ mm=null; expanded=true; renderMap(); };
+
+    // =========================
+    // Helpers
+    // =========================
+    const clamp = (n,a,b)=> Math.max(a, Math.min(b,n));
+    function setBox(el, cls, html){
+      el.className = "result " + cls + " show";
+      el.innerHTML = html;
+    }
+
+    // =========================
+    // JUEGO 1: Builder
+    // =========================
+    const ELEMENTS = [
+      { id:"cover",  t:"Cobertura del suelo (mulch)", s:"Protege contra lluvia, reduce evaporación y alimenta microorganismos.", tag:"+Suelo +Agua", d:{soil:+14, water:+10, bio:+6, prod:+2} },
+      { id:"trees",  t:"Árboles / sombra", s:"Hojarasca, raíces profundas, microclima y hábitat para fauna.", tag:"+Bio +Suelo", d:{soil:+10, water:+8, bio:+14, prod:+2} },
+      { id:"rotation", t:"Rotación / asociación de cultivos", s:"Rompe ciclos de plagas y mejora uso de nutrientes.", tag:"+Bio +Prod", d:{soil:+6, water:+2, bio:+10, prod:+8} },
+      { id:"compost", t:"Compost / abono orgánico", s:"Aumenta materia orgánica y disponibilidad de nutrientes.", tag:"+Suelo +Prod", d:{soil:+14, water:+4, bio:+8, prod:+10} },
+      { id:"terraces", t:"Curvas a nivel / terrazas", s:"Bajan velocidad del agua y controlan erosión en pendiente.", tag:"+Agua +Suelo", d:{soil:+12, water:+12, bio:+2, prod:+4} },
+      { id:"mono", t:"Monocultivo sin cobertura", s:"Puede subir rendimiento a corto plazo, pero baja resiliencia y aumenta plagas/erosión.", tag:"Riesgo", d:{soil:-14, water:-10, bio:-16, prod:+10} },
+      { id:"chem", t:"Uso alto de agroquímicos", s:"Control rápido, pero puede afectar vida del suelo y contaminar agua si se usa mal.", tag:"Riesgo", d:{soil:-12, water:-10, bio:-10, prod:+8} },
+      { id:"burn", t:"Quema de rastrojo", s:"Quita cobertura y materia orgánica; aumenta erosión y pérdida de nutrientes.", tag:"Riesgo", d:{soil:-16, water:-10, bio:-8, prod:-2} }
+    ];
+
+    const palette = document.getElementById('palette');
+    const drop = document.getElementById('drop');
+    const chips = document.getElementById('chips');
+    const countEl = document.getElementById('countEl');
+    const buildMsg = document.getElementById('buildMsg');
+
+    const bSoil=document.getElementById('bSoil'), bWater=document.getElementById('bWater'), bBio=document.getElementById('bBio'), bProd=document.getElementById('bProd');
+    const vSoil=document.getElementById('vSoil'), vWater=document.getElementById('vWater'), vBio=document.getElementById('vBio'), vProd=document.getElementById('vProd');
+
+    let state = { soil:50, water:50, bio:50, prod:50 };
+    let picked = [];
+
+    function applyDelta(d){
+      state.soil = clamp(state.soil + d.soil, 0, 100);
+      state.water= clamp(state.water+ d.water,0,100);
+      state.bio  = clamp(state.bio  + d.bio,  0,100);
+      state.prod = clamp(state.prod + d.prod, 0,100);
+    }
+
+    function renderBars(){
+      bSoil.style.width  = state.soil + "%";
+      bWater.style.width = state.water + "%";
+      bBio.style.width   = state.bio + "%";
+      bProd.style.width  = state.prod + "%";
+      vSoil.textContent  = state.soil;
+      vWater.textContent = state.water;
+      vBio.textContent   = state.bio;
+      vProd.textContent  = state.prod;
+
+      const ok = state.soil>=70 && state.water>=70 && state.bio>=70 && state.prod>=45;
+      if(ok){
+        setBox(buildMsg, "ok", "<strong>¡Sistema equilibrado!</strong> Mantienes suelo, agua y biodiversidad altos sin perder producción. Prueba hacer el sistema aún más resiliente.");
+      } else {
+        setBox(buildMsg, "info", "Tip: combina <strong>cobertura</strong> + <strong>árboles</strong> + <strong>rotación</strong> + <strong>compost</strong> para subir Suelo/Agua/Bio, y usa infraestructura (terrazas) si hay pendiente.");
+      }
+    }
+
+    function addElement(id){
+      const e = ELEMENTS.find(x=>x.id===id);
+      if(!e) return;
+      picked.push(e);
+      applyDelta(e.d);
+      const c = document.createElement('span');
+      c.className="chip";
+      c.innerHTML = `<span>${e.t}</span><button type="button" aria-label="Quitar">✕</button>`;
+      c.querySelector('button').onclick = () => {
+        // remove first occurrence
+        const idx = picked.findIndex(x=>x.id===id);
+        if(idx>-1){
+          const removed = picked.splice(idx,1)[0];
+          applyDelta({soil:-removed.d.soil, water:-removed.d.water, bio:-removed.d.bio, prod:-removed.d.prod});
+        }
+        c.remove();
+        countEl.textContent = String(picked.length);
+        renderBars();
+      };
+      chips.appendChild(c);
+      countEl.textContent = String(picked.length);
+      renderBars();
+    }
+
+    function makeTile(e){
+      const d = document.createElement('div');
+      d.className="tile";
+      d.draggable = true;
+      d.dataset.id = e.id;
+      d.innerHTML = `<div class="t">${e.t}</div><div class="s">${e.s}</div><div class="tag">${e.tag}</div>`;
+      d.addEventListener('dragstart', (ev)=> {
+        ev.dataTransfer.setData('text/plain', e.id);
+      });
+      d.addEventListener('click', ()=> addElement(e.id)); // móvil: toque
+      return d;
+    }
+
+    ELEMENTS.forEach(e => palette.appendChild(makeTile(e)));
+
+    drop.addEventListener('dragover', (ev)=>{ ev.preventDefault(); drop.classList.add('dragover'); });
+    drop.addEventListener('dragleave', ()=> drop.classList.remove('dragover'));
+    drop.addEventListener('drop', (ev)=>{
+      ev.preventDefault();
+      drop.classList.remove('dragover');
+      const id = ev.dataTransfer.getData('text/plain');
+      addElement(id);
+    });
+
+    function resetBuilder(){
+      state = { soil:50, water:50, bio:50, prod:50 };
+      picked = [];
+      chips.innerHTML = "";
+      countEl.textContent = "0";
+      renderBars();
+    }
+
+    document.getElementById('resetBuild').onclick = resetBuilder;
+
+    function preset(items){
+      resetBuilder();
+      items.forEach(addElement);
+    }
+    document.getElementById('presetMilpa').onclick = ()=> preset(["cover","rotation","compost","trees","terraces"]);
+    document.getElementById('presetMono').onclick = ()=> preset(["mono","chem","mono","burn"]);
+
+    renderBars();
+
+    // =========================
+    // JUEGO 2: Cadenas
+    // =========================
+    const CHAINS = [
+      {
+        id:"c1",
+        q:"Cobertura vegetal en el suelo",
+        target:["Menos impacto de gotas","Menos erosión","Más infiltración","Más humedad disponible"],
+        opts:["Más escorrentía","Menos erosión","Más humedad disponible","Menos impacto de gotas","Más infiltración","Menos polinización"]
+      },
+      {
+        id:"c2",
+        q:"Rotación y asociación de cultivos",
+        target:["Más diversidad","Menos plagas dominantes","Menos necesidad de controles fuertes","Sistema más estable"],
+        opts:["Más diversidad","Menos necesidad de controles fuertes","Más plagas dominantes","Sistema más estable","Menos plagas dominantes","Suelo desnudo"]
+      },
+      {
+        id:"c3",
+        q:"Quema y suelo desnudo",
+        target:["Pierde cobertura","Aumenta erosión","Se pierden nutrientes","Baja productividad con el tiempo"],
+        opts:["Pierde cobertura","Aumenta erosión","Baja productividad con el tiempo","Se pierden nutrientes","Aumenta infiltración","Más materia orgánica"]
+      },
+      {
+        id:"c4",
+        q:"Árboles en el sistema (agroforestería)",
+        target:["Hojarasca y raíces","Más materia orgánica","Mejor estructura del suelo","Mejor infiltración"],
+        opts:["Mejor infiltración","Más materia orgánica","Hojarasca y raíces","Mejor estructura del suelo","Más escorrentía","Menos sombra"]
+      }
+    ];
+
+    const chainGrid = document.getElementById('chainGrid');
+    const chainMsg = document.getElementById('chainMsg');
+    const chainScoreEl = document.getElementById('chainScore');
+    const chainTotalEl = document.getElementById('chainTotal');
+    chainTotalEl.textContent = String(CHAINS.length);
+
+    const chainState = new Map(); // id -> selected array
+
+    function renderChains(){
+      chainGrid.innerHTML="";
+      chainState.clear();
+      CHAINS.forEach(ch => {
+        chainState.set(ch.id, []);
+        const card = document.createElement('div');
+        card.className="qCard";
+        card.innerHTML = `<p class="q">${ch.q}</p>
+          <div class="hint">Arma 4 pasos. Orden importa.</div>
+          <div class="chips" id="sel-${ch.id}"></div>
+          <div class="hr"></div>
+          <div id="opts-${ch.id}"></div>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn" type="button" id="undo-${ch.id}">Deshacer</button>
+            <button class="btn" type="button" id="clear-${ch.id}">Limpiar</button>
+          </div>`;
+        chainGrid.appendChild(card);
+
+        const sel = card.querySelector(`#sel-${ch.id}`);
+        const opts = card.querySelector(`#opts-${ch.id}`);
+
+        function redraw(){
+          sel.innerHTML="";
+          const arr = chainState.get(ch.id);
+          arr.forEach((txt, i)=>{
+            const sp = document.createElement('span');
+            sp.className="chip";
+            sp.innerHTML = `<span>${i+1}. ${txt}</span>`;
+            sel.appendChild(sp);
+          });
+          opts.querySelectorAll('button').forEach(b=>b.disabled = arr.length>=4);
+        }
+
+        ch.opts.forEach(o => {
+          const b = document.createElement('button');
+          b.type="button";
+          b.className="opt";
+          b.textContent = o;
+          b.onclick = ()=> {
+            const arr = chainState.get(ch.id);
+            if(arr.length>=4) return;
+            arr.push(o);
+            redraw();
+          };
+          opts.appendChild(b);
+        });
+
+        card.querySelector(`#undo-${ch.id}`).onclick = ()=> {
+          const arr = chainState.get(ch.id);
+          arr.pop();
+          redraw();
+        };
+        card.querySelector(`#clear-${ch.id}`).onclick = ()=> {
+          chainState.set(ch.id, []);
+          redraw();
+        };
+
+        redraw();
+      });
+      chainScoreEl.textContent="0";
+      chainMsg.className="result info";
+      chainMsg.innerHTML="";
+      chainMsg.classList.remove('show');
+    }
+
+    function gradeChains(){
+      let score = 0;
+      let missing = 0;
+      CHAINS.forEach(ch => {
+        const arr = chainState.get(ch.id);
+        if(arr.length!==4) missing++;
+        const ok = arr.length===4 && arr.every((v,i)=> v===ch.target[i]);
+        if(ok) score++;
+      });
+      chainScoreEl.textContent = String(score);
+      if(missing>0){
+        setBox(chainMsg, "warn", `Te faltan cadenas incompletas: <strong>${missing}</strong>. Completa 4 pasos en cada una y vuelve a verificar.`);
+      } else if(score===CHAINS.length){
+        setBox(chainMsg, "ok", "<strong>¡Excelente!</strong> Comprendiste cómo una decisión se convierte en una cadena de efectos en el agroecosistema.");
+      } else {
+        setBox(chainMsg, "no", `Aciertos: <strong>${score}/${CHAINS.length}</strong>. Revisa el orden: muchas opciones son correctas pero el <strong>orden</strong> importa.`);
+      }
+    }
+
+    document.getElementById('checkChains').onclick = gradeChains;
+    document.getElementById('resetChains').onclick = renderChains;
+    renderChains();
+
+    // =========================
+    // JUEGO 3: Clasificación
+    // =========================
+    const CASES = [
+      {
+        text:"Parcela con varios cultivos asociados, semillas locales, abonos orgánicos y barreras vivas; prioriza alimentos para la familia y venta local.",
+        a:"tradicional"
+      },
+      {
+        text:"Gran superficie con un solo cultivo y pocas prácticas de conservación; busca producir mucho pero deja el suelo expuesto en época de lluvia.",
+        a:"extensivo"
+      },
+      {
+        text:"Área pequeña con alta densidad de plantas, riego y fertilización frecuente; gran rendimiento pero requiere manejo cuidadoso para no degradar el suelo.",
+        a:"intensivo"
+      },
+      {
+        text:"Huerto familiar con diversidad de plantas (alimentos y medicinales) y reciclaje de residuos orgánicos para compost.",
+        a:"tradicional"
+      },
+      {
+        text:"Producción dirigida al mercado con paquetes tecnológicos y control químico frecuente; si no se cuida, afecta vida del suelo y agua.",
+        a:"intensivo"
+      },
+      {
+        text:"Ganadería en grandes extensiones con poca sombra y sobrepastoreo; el suelo se compacta y aumenta escorrentía.",
+        a:"extensivo"
+      },
+      {
+        text:"Café bajo sombra con árboles, cobertura de hojarasca y manejo integrado; mantiene biodiversidad y controla erosión.",
+        a:"tradicional"
+      },
+      {
+        text:"Monocultivo con mecanización intensa, suelo desnudo y drenajes; alto rendimiento a corto plazo, mayor riesgo de degradación.",
+        a:"intensivo"
+      }
+    ];
+
+    const caseList = document.getElementById('caseList');
+    const caseMsg  = document.getElementById('caseMsg');
+    const caseScoreEl = document.getElementById('caseScore');
+    const caseTotalEl = document.getElementById('caseTotal');
+    caseTotalEl.textContent = String(CASES.length);
+
+    function renderCases(){
+      caseList.innerHTML="";
+      caseScoreEl.textContent="0";
+      caseMsg.classList.remove('show');
+
+      CASES.forEach((c, idx)=>{
+        const wrap = document.createElement('div');
+        wrap.className="qCard";
+        wrap.style.marginTop = "10px";
+        wrap.innerHTML = `
+          <p class="q">Caso $5141</p>
+          <div class="hint">${c.text}</div>
+          <div class="hr"></div>
+          <label class="hint" for="sel-$5140"><strong>Tipo:</strong></label>
+          <select id="sel-$5140" style="width:100%;margin-top:6px;padding:10px 12px;border-radius:16px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.70);font-weight:900;color:rgba(11,16,32,.82)">
+            <option value="">— elegir —</option>
+            <option value="tradicional">Tradicional</option>
+            <option value="extensivo">Extensivo</option>
+            <option value="intensivo">Intensivo</option>
+          </select>
+          <div class="result" id="fb-$5140"></div>
+        `;
+        caseList.appendChild(wrap);
+      });
+    }
+
+    function gradeCases(){
+      let ok=0, miss=0;
+      CASES.forEach((c, idx)=>{
+        const sel = document.getElementById(`sel-$5140`);
+        const fb = document.getElementById(`fb-$5140`);
+        const v = sel.value;
+        if(!v){ miss++; fb.className="result warn show"; fb.innerHTML="Selecciona una opción."; return; }
+        if(v===c.a){ ok++; fb.className="result ok show"; fb.innerHTML="Correcto ✅"; }
+        else {
+          fb.className="result no show";
+          fb.innerHTML = `No ✅. Era: <strong>${c.a}</strong>.`;
+        }
+      });
+      caseScoreEl.textContent = String(ok);
+      if(miss>0) setBox(caseMsg,"warn",`Faltan <strong>${miss}</strong> casos por responder.`);
+      else if(ok===CASES.length) setBox(caseMsg,"ok","<strong>Perfecto.</strong> Identificaste los tipos por sus señales de manejo, escala e insumos.");
+      else setBox(caseMsg,"info",`Aciertos: <strong>${ok}/${CASES.length}</strong>. Revisa: tradicional suele tener <strong>diversidad</strong>; extensivo suele tener <strong>gran área</strong> y poca intensidad; intensivo usa <strong>más insumos</strong> y alta densidad.`);
+    }
+
+    document.getElementById('gradeCases').onclick = gradeCases;
+    document.getElementById('resetCases').onclick = renderCases;
+    renderCases();
+
+    // =========================
+    // JUEGO 4: Quiz
+    // =========================
+    const QUIZ = [
+      {q:"¿Cuál combinación suele mejorar infiltración y reducir erosión?", a:0, o:["Cobertura + raíces + curvas a nivel","Suelo desnudo + quema","Más impermeabilización + pendiente"]},
+      {q:"En un agroecosistema, la biodiversidad ayuda porque…", a:1, o:["baja la lluvia","favorece control biológico y polinización","hace que el suelo sea impermeable"]},
+      {q:"¿Qué elemento es abiótico?", a:2, o:["Lombrices","Aves insectívoras","Clima"]},
+      {q:"Un riesgo típico del monocultivo es:", a:0, o:["plagas dominantes y mayor dependencia de control","aumentar siempre la biodiversidad","mejorar siempre el suelo"]},
+      {q:"¿Qué práctica recicla nutrientes dentro del sistema?", a:1, o:["Quemar rastrojo","Compost/abono orgánico","Retirar toda la biomasa"]},
+      {q:"Si aumenta impermeabilización, normalmente:", a:2, o:["sube infiltración","sube materia orgánica","sube escorrentía y riesgo de inundación local"]},
+      {q:"¿Cuál es un ejemplo de agroforestería?", a:0, o:["Café bajo sombra con árboles","Suelo desnudo","Uso exclusivo de químicos"]},
+      {q:"El objetivo de la agroecología es:", a:1, o:["usar más insumos externos","aumentar resiliencia con diversidad y reciclaje","eliminar por completo los insectos"]},
+      {q:"¿Qué NO es un servicio del agroecosistema?", a:2, o:["Producción de alimentos","Polinización","Aumentar erosión"]},
+      {q:"Si el suelo tiene más materia orgánica, suele:", a:0, o:["retener más agua y mejorar estructura","evaporar todo el agua","perder nutrientes más rápido"]}
+    ];
+
+    const quizGrid=document.getElementById('quizGrid');
+    const quizScoreEl=document.getElementById('quizScore');
+    const quizTotalEl=document.getElementById('quizTotal');
+    quizTotalEl.textContent = String(QUIZ.length);
+
+    let quizScore=0;
+    function renderQuiz(){
+      quizScore=0;
+      quizScoreEl.textContent="0";
+      quizGrid.innerHTML="";
+      QUIZ.forEach((it, idx)=>{
+        const card=document.createElement('div');
+        card.className="qCard";
+        card.innerHTML = `<p class="q">${idx+1}) ${it.q}</p>`;
+        it.o.forEach((op, j)=>{
+          const b=document.createElement('button');
+          b.type="button";
+          b.className="opt";
+          b.textContent = op;
+          b.onclick = ()=> {
+            if(b.disabled) return;
+            // disable all
+            card.querySelectorAll('button.opt').forEach(x=>x.disabled=true);
+            if(j===it.a){ quizScore++; b.classList.add('good'); }
+            else {
+              b.classList.add('bad');
+              card.querySelectorAll('button.opt')[it.a].classList.add('good');
+            }
+            quizScoreEl.textContent=String(quizScore);
+          };
+          card.appendChild(b);
+        });
+        quizGrid.appendChild(card);
+      });
+    }
+
+    document.getElementById('resetQuiz').onclick = renderQuiz;
+    renderQuiz();
+  </script>
+</body>
+</html>

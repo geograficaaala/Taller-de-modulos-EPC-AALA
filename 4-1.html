@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4.1 El suelo: qué es y cómo se forma · EPC AALA</title>
+  <meta name="description" content="Módulo 4: qué es el suelo, cómo se forma y dos juegos interactivos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  /* Suelo: verdes + arenas suaves */
+  --a1: rgba(214, 240, 220, .92);
+  --a2: rgba(235, 248, 228, .88);
+  --a3: rgba(255, 242, 220, .80);
+  --a4: rgba(225, 236, 255, .60);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --info: rgba(56,189,248,.16);
+  --warn: rgba(245,158,11,.14);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(34,197,94,.18);
+  --accent2: rgba(245,158,11,.16);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #f4fff7 0%, #f6f1e6 45%, #f2fbff 100%);
+  min-height:100vh;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+header{
+  border:1px solid var(--stroke);
+  background:var(--glass);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.kicker{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:6px 10px;border-radius:999px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  font-weight:800;font-size:12px;color:rgba(11,16,32,.78);
+  box-shadow:var(--shadow-soft);
+}
+h1{
+  margin:10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  letter-spacing:.2px;
+  line-height:1.08;
+  font-size:clamp(22px, 2.7vw, 34px);
+}
+.subtitle{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+  max-width:96ch;
+}
+.nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.btn{
+  appearance:none;border:1px solid rgba(11,16,32,.12);
+  background:var(--btn);border-radius:14px;
+  padding:10px 12px;text-decoration:none;
+  font-weight:800;font-size:13px;color:rgba(11,16,32,.86);
+  box-shadow:var(--shadow-soft);
+  user-select:none;display:inline-flex;align-items:center;gap:8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;white-space:nowrap;
+}
+.btn:hover{background:var(--btnh);border-color:rgba(11,16,32,.18);}
+.btn:active{transform:translateY(1px);}
+.btn.primary{background: rgba(34,197,94,.18); border-color: rgba(34,197,94,.22);}
+main.stack{display:flex;flex-direction:column;gap:14px;margin-top:14px;}
+.card{
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(10px);
+  padding:16px;
+}
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.hint{font-size:13px;color:rgba(11,16,32,.72);line-height:1.55;margin:8px 0 0;}
+.twoCols{margin-top:10px;display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:start;}
+@media (max-width:980px){.twoCols{grid-template-columns:1fr;}}
+.box{
+  border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.box p{margin:0 0 10px;color:rgba(11,16,32,.82);line-height:1.65;font-size:13.6px;}
+.box ul{margin:8px 0 0 18px;color:rgba(11,16,32,.82);font-size:13.4px;line-height:1.6;}
+.box li{margin:6px 0;}
+.grid3{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media (max-width:980px){.grid3{grid-template-columns:1fr;}}
+.pill{
+  border:1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(235,248,228,.72), rgba(255,255,255,.58));
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.pill .t{font-weight:900;font-family:Outfit, Inter, system-ui; letter-spacing:.2px;}
+.pill .s{margin:6px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.45;}
+.result{
+  margin-top:10px;border-radius:16px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.55);padding:12px;
+  font-size:13px;line-height:1.55;color:rgba(11,16,32,.82);
+  display:none;
+}
+.result.show{display:block;}
+.result.good{background:var(--good);border-color:rgba(34,197,94,.28);}
+.result.bad{background:var(--bad);border-color:rgba(225,29,72,.22);}
+.result.info{background:var(--info);border-color:rgba(56,189,248,.22);}
+.result.warn{background:var(--warn);border-color:rgba(245,158,11,.25);}
+.mini{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:999px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+}
+footer{text-align:center;padding:18px 0 4px;color:rgba(11,16,32,.58);font-size:13px;}
+/* map */
+.mapTop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+.mapBtns{display:flex;gap:10px;flex-wrap:wrap;}
+.mapWrap{
+  margin-top:10px;border-radius:18px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);
+  overflow:hidden;position:relative;padding:10px;
+}
+svg#mindmap{width:100%;height:520px;display:block;border-radius:14px;background:
+  radial-gradient(700px 380px at 20% 0%, rgba(34,197,94,.10), transparent 55%),
+  radial-gradient(700px 380px at 80% 10%, rgba(245,158,11,.10), transparent 55%);
+}
+.fallback{
+  display:none;margin-top:10px;padding:10px 12px;border-radius:14px;border:1px dashed rgba(11,16,32,.18);
+  background:rgba(255,255,255,.55);color:rgba(11,16,32,.72);
+}
+.fallback.show{display:block;}
+/* common game bits */
+.gameGrid{margin-top:10px;display:grid;grid-template-columns:1.1fr .9fr;gap:12px;align-items:start;}
+@media (max-width:980px){.gameGrid{grid-template-columns:1fr;}}
+.panel{
+  border-radius:18px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  padding:12px;box-shadow:var(--shadow-soft);
+}
+.panel h3{margin:0;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:15px;}
+.panel p{margin:8px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+.kpiGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px;}
+@media (max-width:520px){.kpiGrid{grid-template-columns:1fr;}}
+.kpi{
+  border-radius:16px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);box-shadow:var(--shadow-soft);
+  padding:10px;
+}
+.kpi .k{font-size:12px;color:rgba(11,16,32,.70);font-weight:800;}
+.kpi .v{margin-top:6px;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:18px;letter-spacing:.2px;}
+.kpi .u{font-size:12px;color:rgba(11,16,32,.62);margin-top:2px;}
+
+  
+
+/* Juego 3 (4-1): Línea de tiempo */
+.timelineGrid{ margin-top:10px; display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start; }
+@media (max-width: 980px){ .timelineGrid{ grid-template-columns:1fr; } }
+.tlPool{ display:grid; grid-template-columns: 1fr; gap:10px; margin-top:10px; }
+.tlCard{
+  border-radius:16px; border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.62);
+  box-shadow: var(--shadow-soft);
+  padding: 12px; cursor:pointer; user-select:none;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  font-weight: 900; color: rgba(11,16,32,.88);
+}
+.tlCard:hover{ background: rgba(255,255,255,.82); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+.tlCard.disabled{ opacity:.55; cursor:default; transform:none; }
+.tlSeq{ margin: 10px 0 0 18px; padding: 0; }
+.tlSeq li{
+  margin: 10px 0;
+  border-radius:16px; border:1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  box-shadow: var(--shadow-soft);
+  padding: 10px 12px;
+  display:flex; justify-content:space-between; gap:10px; align-items:center;
+  font-weight: 800;
+}
+.tlSeq button{
+  border:none; background: transparent; cursor:pointer; font-weight: 900;
+  color: rgba(11,16,32,.62);
+}
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 4 · El suelo</div>
+        <h1>4.1 El suelo: qué es y cómo se forma</h1>
+        <p class="subtitle">El suelo se forma lentamente por la descomposición de rocas y la incorporación de materia orgánica. Es una capa viva que almacena agua, sostiene plantas y alberga una gran diversidad de organismos.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-10.html">Anterior (3.10)</a>
+        <a class="btn primary" href="4-2.html">Siguiente (4.2)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <section class="card">
+  <h2>Contexto teórico (ampliado)</h2>
+
+  <div class="twoCols" style="margin-top:10px;">
+    <div class="box">
+      <p>
+        El <strong>suelo</strong> es la capa superior de la tierra donde crecen las plantas.
+        No es “solo tierra”: es una <strong>mezcla</strong> de partículas minerales, materia orgánica,
+        organismos vivos, agua y aire. Esa mezcla permite que el suelo retenga humedad, tenga nutrientes
+        y forme poros por donde entra el agua y respiran las raíces.
+      </p>
+
+      <p><strong>¿De qué está hecho el suelo?</strong></p>
+      <ul>
+        <li><strong>Minerales:</strong> fragmentos de rocas (arena, limo y arcilla).</li>
+        <li><strong>Materia orgánica:</strong> restos de hojas y raíces que se transforman en <strong>humus</strong>.</li>
+        <li><strong>Organismos:</strong> microbios, hongos, insectos y lombrices que descomponen y “mezclan” el suelo.</li>
+        <li><strong>Agua y aire:</strong> ocupan los poros; sin poros, el suelo se compacta y se vuelve menos fértil.</li>
+      </ul>
+
+      <div class="result info" style="margin-top:10px;">
+        <strong>Idea clave:</strong> sin vida (microorganismos) casi no se forma humus; sin humus el suelo pierde estructura y fertilidad.
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>Cómo “nace” un suelo (en palabras simples)</strong></p>
+      <ul>
+        <li>Las rocas se rompen en partículas pequeñas (por lluvia, sol, viento y cambios de temperatura).</li>
+        <li>Caen hojas y restos de plantas; los descomponedores los transforman en <strong>humus</strong>.</li>
+        <li>Con el tiempo se forman capas: arriba hay más materia orgánica y raíces; abajo hay material más “nuevo”.</li>
+        <li>El suelo es <strong>renovable</strong>, pero se forma lento: si se erosiona, se pierde muy rápido.</li>
+      </ul>
+
+      <p style="margin-top:10px;"><strong>Propiedades que más importan</strong></p>
+      <ul>
+        <li><strong>Textura:</strong> proporción de arena, limo y arcilla; controla infiltración y retención de agua.</li>
+        <li><strong>Estructura:</strong> cómo se agrupan las partículas; afecta porosidad.</li>
+        <li><strong>pH:</strong> indica acidez o alcalinidad y modifica la disponibilidad de nutrientes.</li>
+        <li><strong>Materia orgánica:</strong> mejora retención de agua, estructura y actividad biológica.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:12px;">
+    <div class="pill">
+      <div class="t">Suelo fértil</div>
+      <p class="s">Tiene poros, humedad, humus y vida. Las raíces entran fácil y el agua infiltra sin arrastrar el suelo.</p>
+    </div>
+    <div class="pill">
+      <div class="t">Suelo degradado</div>
+      <p class="s">Se compacta o queda desnudo. Aumenta la escorrentía, la erosión y se pierden nutrientes.</p>
+    </div>
+    <div class="pill">
+      <div class="t">Conexión con la cuenca</div>
+      <p class="s">El suelo es el “filtro” de la lluvia: si infiltra, alimenta nacimientos y acuíferos; si escurre, carga sedimentos al río/lago.</p>
+    </div>
+  </div>
+</section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajusta, pliega/despliega y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">No se pudo cargar el mapa mental. Revisa tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · Mezcla el “suelo fértil”</h2>
+        <div class="hint">
+          Ajusta la composición del suelo (por volumen) para acercarte a un suelo equilibrado.
+          El aire se calcula automáticamente con lo que falta para llegar a 100%.
+        </div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Mezclador</h3>
+            <p>Mueve los controles y mira cómo cambian <strong>infiltración</strong>, <strong>fertilidad</strong> y <strong>riesgo de erosión</strong>.</p>
+
+            <div style="margin-top:10px; display:grid; gap:10px;">
+              <div>
+                <div class="mini">Minerales (arena+limo+arcilla): <span id="mVal">45</span>%</div>
+                <input id="m" type="range" min="20" max="80" step="1" value="45" style="width:100%;">
+              </div>
+              <div>
+                <div class="mini">Materia orgánica (humus): <span id="oVal">5</span>%</div>
+                <input id="o" type="range" min="0" max="20" step="1" value="5" style="width:100%;">
+              </div>
+              <div>
+                <div class="mini">Agua en poros: <span id="wVal">25</span>%</div>
+                <input id="w" type="range" min="0" max="60" step="1" value="25" style="width:100%;">
+              </div>
+              <div class="mini">Aire en poros (automático): <strong><span id="aVal">25</span>%</strong></div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" id="mixCheck" type="button">Evaluar</button>
+              <button class="btn" id="mixReset" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="mixScore">0</span></span>
+            </div>
+
+            <div class="result" id="mixMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Indicadores</h3>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Fertilidad</div>
+                <div class="v" id="kF">—</div>
+                <div class="u">0–100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Infiltración</div>
+                <div class="v" id="kI">—</div>
+                <div class="u">0–100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Aireación</div>
+                <div class="v" id="kA">—</div>
+                <div class="u">0–100</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Riesgo de erosión</div>
+                <div class="v" id="kE">—</div>
+                <div class="u">0–100 (más alto = peor)</div>
+              </div>
+            </div>
+
+            <div class="box" style="margin-top:10px;">
+              <p style="margin:0;">
+                <strong>Regla simple:</strong> más <em>humus</em> y una buena proporción de <em>agua + aire</em> ayudan a formar agregados,
+                retener humedad y resistir erosión. Demasiada agua y poco aire = raíces “se ahogan”.
+              </p>
+            </div>
+
+            <div style="margin-top:10px;">
+              <svg viewBox="0 0 520 240" width="100%" height="auto" aria-label="Frasco de suelo">
+                <defs>
+                  <linearGradient id="jar" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="rgba(255,255,255,.75)"/>
+                    <stop offset="1" stop-color="rgba(255,255,255,.30)"/>
+                  </linearGradient>
+                </defs>
+                <rect x="40" y="20" width="440" height="200" rx="26" fill="url(#jar)" stroke="rgba(11,16,32,.12)"/>
+                <g id="jarFill"></g>
+                <text x="260" y="40" text-anchor="middle" font-family="Outfit,Inter,system-ui" font-weight="900" fill="rgba(11,16,32,.78)">Composición (volumen)</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · ¿Qué factor domina?</h2>
+        <div class="hint">
+          Lee la situación y elige el factor que más controla la <strong>formación del suelo</strong> en ese caso.
+          Cada ronda es distinta.
+        </div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Situación</h3>
+            <p id="fdPrompt">—</p>
+
+            <div id="fdChoices" style="margin-top:10px; display:grid; gap:10px;"></div>
+
+            <div class="actions">
+              <button class="btn" id="fdNext" type="button">Nueva ronda</button>
+              <span class="mini">Aciertos: <span id="fdOk">0</span> · Rondas: <span id="fdN">0</span></span>
+            </div>
+
+            <div class="result" id="fdMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Pista rápida</h3>
+            <div class="box">
+              <p style="margin:0 0 8px;">
+                Recuerda los 5 factores:
+              </p>
+              <ul style="margin:0 0 0 18px;">
+                <li><strong>Clima</strong> (lluvia, temperatura)</li>
+                <li><strong>Roca madre</strong> (minerales de origen)</li>
+                <li><strong>Relieve</strong> (pendiente, drenaje)</li>
+                <li><strong>Organismos</strong> (raíces, microbios)</li>
+                <li><strong>Tiempo</strong> (años/siglos)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      
+
+      <section class="card">
+  <h2>Juego 3 · Línea de tiempo: así se forma el suelo</h2>
+  <div class="hint">Toca los pasos para armar la secuencia. Puedes quitar un paso tocando ✕.</div>
+
+  <div class="timelineGrid">
+    <div class="box">
+      <p><strong>Pasos disponibles</strong></p>
+      <div class="tlPool" id="tlPool"></div>
+
+      <div class="tipRow">
+        <button class="btn" id="tlShuffle" type="button">Mezclar</button>
+        <button class="btn" id="tlReset" type="button">Borrar</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>Tu secuencia</strong></p>
+      <ol class="tlSeq" id="tlSeq"></ol>
+
+      <div class="tipRow">
+        <button class="btn primary" id="tlCheck" type="button">Revisar</button>
+        <span class="mini">Puntaje: <span id="tlScore">0</span>/6</span>
+      </div>
+
+      <div class="result" id="tlMsg" style="display:none;"></div>
+    </div>
+  </div>
+</section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    window.__MM_MD__ = `# 4.1 ¿Qué es el suelo? ¿Cómo se forma?
+## Qué es el suelo
+- Mezcla de minerales + materia orgánica + organismos + agua + aire
+- Tiene poros: entra agua y respiran raíces
+## Componentes
+- Minerales (arena, limo, arcilla)
+- Materia orgánica → humus
+- Organismos (microbios, hongos, lombrices)
+- Agua y aire en los poros
+## Formación (idea)
+- Rocas se fragmentan en partículas
+- Restos de plantas se descomponen
+- Se acumula humus y se “mezcla” con minerales
+- Se crean capas (horizontes) con el tiempo
+## Propiedades importantes
+- Textura (controla infiltración/retención)
+- Estructura (porosidad)
+- pH y nutrientes
+- Materia orgánica (esponja del suelo)
+## Conexión con la cuenca
+- Si infiltra: recarga nacimientos/acuíferos
+- Si escurre: erosión y sedimentos a ríos/lago`;
+
+let mm=null, expanded=true;
+function renderMap(md){
+  const fb=document.getElementById('mapFallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const {Transformer,Markmap}=window.markmap;
+    const t=new Transformer();
+    const {root}=t.transform(md);
+    const svg=document.getElementById('mindmap');
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok=renderMap(window.__MM_MD__);
+  if(ok || tries>12) clearInterval(it);
+},300);
+
+document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+document.getElementById('btnToggle').onclick=()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded=!expanded;
+};
+document.getElementById('btnResetMap').onclick=()=>{
+  mm=null; expanded=true; renderMap(window.__MM_MD__);
+};
+
+
+
+// ===== Juego 1: Mezclador =====
+const m=document.getElementById('m');
+const o=document.getElementById('o');
+const w=document.getElementById('w');
+const mVal=document.getElementById('mVal');
+const oVal=document.getElementById('oVal');
+const wVal=document.getElementById('wVal');
+const aVal=document.getElementById('aVal');
+
+const kF=document.getElementById('kF');
+const kI=document.getElementById('kI');
+const kA=document.getElementById('kA');
+const kE=document.getElementById('kE');
+
+const jarFill=document.getElementById('jarFill');
+const mixMsg=document.getElementById('mixMsg');
+const mixScoreEl=document.getElementById('mixScore');
+let mixScore=0;
+
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+
+function normalize(changed){
+  let M=+m.value, O=+o.value, W=+w.value;
+  let sum=M+O+W;
+  if(sum>100){
+    const over=sum-100;
+    if(changed==='m'){ W=clamp(W-over,0,60); w.value=W; }
+    else if(changed==='o'){ W=clamp(W-over,0,60); w.value=W; }
+    else { M=clamp(M-over,20,80); m.value=M; }
+  }
+  const A=clamp(100-(+m.value+ +o.value + +w.value),0,100);
+  aVal.textContent=String(A);
+  mVal.textContent=m.value;
+  oVal.textContent=o.value;
+  wVal.textContent=w.value;
+  updateIndicators();
+  drawJar();
+}
+
+function scoreIndicators(M,O,W,A){
+  const fert = clamp( (O*8) + (clamp(W,10,30)*2.2) + (A*1.2) - (Math.abs(M-45)*1.2), 0, 100);
+  const inf  = clamp( (A*2.0) + (O*3.0) + (M>65? -10:0) - (W>35 ? (W-35)*1.8 : 0), 0, 100);
+  const air  = clamp( (A*3.0) - (W>30?(W-30)*2.2:0), 0, 100);
+  const ero  = clamp( 85 - (O*4.2) - (clamp(W,10,25)*1.2) + (W>35?(W-35)*1.8:0) + (M>70?8:0), 0, 100);
+  return {fert:Math.round(fert), inf:Math.round(inf), air:Math.round(air), ero:Math.round(ero)};
+}
+
+function updateIndicators(){
+  const M=+m.value, O=+o.value, W=+w.value, A=+aVal.textContent;
+  const s=scoreIndicators(M,O,W,A);
+  kF.textContent=s.fert;
+  kI.textContent=s.inf;
+  kA.textContent=s.air;
+  kE.textContent=s.ero;
+}
+
+function drawJar(){
+  const M=+m.value, O=+o.value, W=+w.value, A=+aVal.textContent;
+  const parts=[
+    {name:"Minerales", val:M, fill:"rgba(185, 165, 120, .55)"},
+    {name:"Orgánica", val:O, fill:"rgba(95, 75, 45, .55)"},
+    {name:"Agua", val:W, fill:"rgba(56,189,248,.35)"},
+    {name:"Aire", val:A, fill:"rgba(255,255,255,.55)"}
+  ];
+  const x=70, y=60, w0=380, h0=150;
+  jarFill.innerHTML="";
+  let acc=0;
+  parts.forEach(p=>{
+    const hh = h0*(p.val/100);
+    const yy = y + (h0-acc-hh);
+    const r = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    r.setAttribute("x", x);
+    r.setAttribute("y", yy);
+    r.setAttribute("width", w0);
+    r.setAttribute("height", hh);
+    r.setAttribute("rx", 16);
+    r.setAttribute("fill", p.fill);
+    r.setAttribute("opacity","0.95");
+    jarFill.appendChild(r);
+
+    const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("x", x+w0-10);
+    t.setAttribute("y", yy + Math.max(16, hh/2));
+    t.setAttribute("text-anchor", "end");
+    t.setAttribute("font-family","Inter,system-ui");
+    t.setAttribute("font-weight","800");
+    t.setAttribute("font-size","12");
+    t.setAttribute("fill","rgba(11,16,32,.78)");
+    t.textContent = `${p.name} ${p.val}%`;
+    jarFill.appendChild(t);
+
+    acc += hh;
+  });
+}
+
+[m,o,w].forEach(el=>el.addEventListener('input', (e)=>normalize(e.target.id)));
+normalize('m');
+
+document.getElementById('mixReset').addEventListener('click', ()=>{
+  m.value=45; o.value=5; w.value=25;
+  mixScore=0; mixScoreEl.textContent="0";
+  mixMsg.className="result"; mixMsg.textContent=""; mixMsg.classList.remove('show');
+  normalize('m');
+});
+
+document.getElementById('mixCheck').addEventListener('click', ()=>{
+  const M=+m.value, O=+o.value, W=+w.value, A=+aVal.textContent;
+  const inRange = (M>=35 && M<=55) && (O>=4 && O<=10) && (W>=15 && W<=30) && (A>=15 && A<=30);
+  mixMsg.classList.add('show');
+  if(inRange){
+    mixScore++;
+    mixScoreEl.textContent=String(mixScore);
+    mixMsg.className="result good show";
+    mixMsg.innerHTML = `<strong>¡Buen equilibrio!</strong> Estás cerca de un suelo fértil (humus + poros con agua y aire).`;
+  }else{
+    const s=scoreIndicators(M,O,W,A);
+    mixMsg.className="result warn show";
+    mixMsg.innerHTML = `<strong>Casi.</strong> Ajusta buscando humedad moderada y buena aireación.<br>
+      Fertilidad: <strong>${s.fert}</strong> · Infiltración: <strong>${s.inf}</strong> · Erosión: <strong>${s.ero}</strong>`;
+  }
+});
+
+// ===== Juego 2: Factores =====
+const BANK=[
+  {q:"Zona fría de montaña: la roca se descompone lentamente y casi no hay descomposición de hojas.", a:"tiempo", tip:"En frío, procesos y microbios van más lento; el tiempo pesa mucho."},
+  {q:"Ladera muy inclinada: cuando llueve, el agua baja rápido y se lleva partículas antes de que se forme suelo profundo.", a:"relieve", tip:"Pendiente controla escorrentía y pérdida/ganancia de material."},
+  {q:"Área volcánica con ceniza: el material original cambia el tipo de suelo que se forma.", a:"roca", tip:"La roca madre define minerales y textura inicial."},
+  {q:"Lugar cálido y lluvioso: hay mucha meteorización y descomposición orgánica.", a:"clima", tip:"Temperatura + lluvia aceleran formación y cambios químicos."},
+  {q:"Bosque con hojarasca y lombrices: se forma humus y agregados estables.", a:"organismos", tip:"La vida transforma residuos y mejora estructura."},
+  {q:"Dos sitios iguales, pero uno tiene siglos de estabilidad y el otro es muy reciente (deslizamiento).", a:"tiempo", tip:"Más años = más horizontes y desarrollo."},
+  {q:"Zona seca: casi no hay agua para reacciones químicas ni para vida.", a:"clima", tip:"La falta de humedad limita procesos."}
+];
+const labels=[
+  {id:"clima", t:"Clima"},
+  {id:"roca", t:"Roca madre"},
+  {id:"relieve", t:"Relieve"},
+  {id:"organismos", t:"Organismos"},
+  {id:"tiempo", t:"Tiempo"},
+];
+let fdOk=0, fdN=0, current=null;
+
+const fdPrompt=document.getElementById('fdPrompt');
+const fdChoices=document.getElementById('fdChoices');
+const fdMsg=document.getElementById('fdMsg');
+const fdOkEl=document.getElementById('fdOk');
+const fdNEl=document.getElementById('fdN');
+
+function newRound(){
+  fdMsg.className="result"; fdMsg.textContent=""; fdMsg.classList.remove('show');
+  current = BANK[Math.floor(Math.random()*BANK.length)];
+  fdPrompt.textContent = current.q;
+  fdChoices.innerHTML="";
+  labels.forEach(L=>{
+    const b=document.createElement('button');
+    b.type="button";
+    b.className="btn";
+    b.style.justifyContent="space-between";
+    b.innerHTML = `<span>${L.t}</span><span class="mini" style="padding:3px 8px; background:rgba(255,255,255,.55)">${L.id.toUpperCase()}</span>`;
+    b.addEventListener('click', ()=>{
+      fdN++; fdNEl.textContent=String(fdN);
+      fdMsg.classList.add('show');
+      if(L.id===current.a){
+        fdOk++; fdOkEl.textContent=String(fdOk);
+        fdMsg.className="result good show";
+        fdMsg.innerHTML = `<strong>Correcto.</strong> ${current.tip}`;
+      }else{
+        fdMsg.className="result bad show";
+        fdMsg.innerHTML = `<strong>No era ese.</strong> Pista: ${current.tip}`;
+      }
+    });
+    fdChoices.appendChild(b);
+  });
+}
+
+document.getElementById('fdNext').addEventListener('click', newRound);
+newRound();
+
+  
+
+/* =========================
+   JUEGO 3 (4-1): Línea de tiempo
+   ========================= */
+(function(){
+  const STEPS = [
+    {id:"w", t:"La roca se rompe en partículas (meteorización)."},
+    {id:"a", t:"Se mezclan partículas con agua y aire; aparecen poros."},
+    {id:"o", t:"Caen hojas y raíces; comienza la descomposición."},
+    {id:"h", t:"Se forma humus: materia orgánica estable que mejora el suelo."},
+    {id:"l", t:"Organismos (hongos/lombrices) mezclan y airean el suelo."},
+    {id:"p", t:"Se consolida la capa superficial fértil (horizonte A)."}
+  ];
+  const ORDER = ["w","a","o","h","l","p"];
+
+  const poolEl = document.getElementById("tlPool");
+  const seqEl  = document.getElementById("tlSeq");
+  const scoreEl= document.getElementById("tlScore");
+  const msgEl  = document.getElementById("tlMsg");
+
+  let pool = [];
+  let seq  = [];
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  function renderPool(){
+    poolEl.innerHTML = "";
+    pool.forEach(s=>{
+      const div = document.createElement("div");
+      div.className = "tlCard" + (seq.includes(s.id) ? " disabled":"");
+      div.textContent = s.t;
+      div.addEventListener("click", ()=>{
+        if(seq.includes(s.id)) return;
+        seq.push(s.id);
+        renderSeq();
+        renderPool();
+      });
+      poolEl.appendChild(div);
+    });
+  }
+
+  function renderSeq(){
+    seqEl.innerHTML = "";
+    seq.forEach((id, idx)=>{
+      const s = STEPS.find(x=>x.id===id);
+      const li = document.createElement("li");
+      li.innerHTML = `<span><strong>${idx+1}.</strong> ${s.t}</span>`;
+      const b = document.createElement("button");
+      b.type="button";
+      b.textContent="✕";
+      b.title="Quitar";
+      b.addEventListener("click", ()=>{
+        seq = seq.filter(x=>x!==id);
+        renderSeq(); renderPool();
+      });
+      li.appendChild(b);
+      seqEl.appendChild(li);
+    });
+  }
+
+  function check(){
+    msgEl.style.display="block";
+    let score=0;
+    for(let i=0;i<ORDER.length;i++){
+      if(seq[i]===ORDER[i]) score++;
+    }
+    scoreEl.textContent = String(score);
+    if(seq.length !== ORDER.length){
+      msgEl.className="result warn";
+      msgEl.innerHTML = `<strong>Te faltan pasos.</strong> Llevas ${seq.length}/6. Completa la secuencia y vuelve a revisar.`;
+      return;
+    }
+    if(score===6){
+      msgEl.className="result ok";
+      msgEl.innerHTML = "<strong>¡Perfecto!</strong> Armastes una secuencia lógica de formación del suelo.";
+    } else if(score>=4){
+      msgEl.className="result info";
+      msgEl.innerHTML = `<strong>¡Casi!</strong> Tienes ${score}/6 en la posición correcta. Ajusta el orden.`;
+    } else {
+      msgEl.className="result no";
+      msgEl.innerHTML = `<strong>Intenta otra vez.</strong> Tienes ${score}/6 correctos. Tip: primero rocas → luego materia orgánica → luego capa fértil.`;
+    }
+  }
+
+  function reset(){
+    seq = [];
+    scoreEl.textContent="0";
+    msgEl.style.display="none";
+    renderSeq(); renderPool();
+  }
+
+  function init(){
+    pool = shuffle(STEPS);
+    reset();
+  }
+
+  document.getElementById("tlShuffle").addEventListener("click", ()=>{ pool = shuffle(STEPS); renderPool(); });
+  document.getElementById("tlReset").addEventListener("click", reset);
+  document.getElementById("tlCheck").addEventListener("click", check);
+
+  init();
+})();
+</script>
+</body>
+</html>

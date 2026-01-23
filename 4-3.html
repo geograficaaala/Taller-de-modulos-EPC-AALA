@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4.3 Tipos de suelos en Sololá · EPC AALA</title>
+  <meta name="description" content="Tipos de suelos en Sololá y biodiversidad del suelo, con ahorcado y detective de suelos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  /* Suelo: verdes + arenas suaves */
+  --a1: rgba(214, 240, 220, .92);
+  --a2: rgba(235, 248, 228, .88);
+  --a3: rgba(255, 242, 220, .80);
+  --a4: rgba(225, 236, 255, .60);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --info: rgba(56,189,248,.16);
+  --warn: rgba(245,158,11,.14);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(34,197,94,.18);
+  --accent2: rgba(245,158,11,.16);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #f4fff7 0%, #f6f1e6 45%, #f2fbff 100%);
+  min-height:100vh;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+header{
+  border:1px solid var(--stroke);
+  background:var(--glass);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.kicker{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:6px 10px;border-radius:999px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  font-weight:800;font-size:12px;color:rgba(11,16,32,.78);
+  box-shadow:var(--shadow-soft);
+}
+h1{
+  margin:10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  letter-spacing:.2px;
+  line-height:1.08;
+  font-size:clamp(22px, 2.7vw, 34px);
+}
+.subtitle{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+  max-width:96ch;
+}
+.nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.btn{
+  appearance:none;border:1px solid rgba(11,16,32,.12);
+  background:var(--btn);border-radius:14px;
+  padding:10px 12px;text-decoration:none;
+  font-weight:800;font-size:13px;color:rgba(11,16,32,.86);
+  box-shadow:var(--shadow-soft);
+  user-select:none;display:inline-flex;align-items:center;gap:8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;white-space:nowrap;
+}
+.btn:hover{background:var(--btnh);border-color:rgba(11,16,32,.18);}
+.btn:active{transform:translateY(1px);}
+.btn.primary{background: rgba(34,197,94,.18); border-color: rgba(34,197,94,.22);}
+main.stack{display:flex;flex-direction:column;gap:14px;margin-top:14px;}
+.card{
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(10px);
+  padding:16px;
+}
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.hint{font-size:13px;color:rgba(11,16,32,.72);line-height:1.55;margin:8px 0 0;}
+.twoCols{margin-top:10px;display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:start;}
+@media (max-width:980px){.twoCols{grid-template-columns:1fr;}}
+.box{
+  border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.box p{margin:0 0 10px;color:rgba(11,16,32,.82);line-height:1.65;font-size:13.6px;}
+.box ul{margin:8px 0 0 18px;color:rgba(11,16,32,.82);font-size:13.4px;line-height:1.6;}
+.box li{margin:6px 0;}
+.grid3{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media (max-width:980px){.grid3{grid-template-columns:1fr;}}
+.pill{
+  border:1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(235,248,228,.72), rgba(255,255,255,.58));
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.pill .t{font-weight:900;font-family:Outfit, Inter, system-ui; letter-spacing:.2px;}
+.pill .s{margin:6px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.45;}
+.result{
+  margin-top:10px;border-radius:16px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.55);padding:12px;
+  font-size:13px;line-height:1.55;color:rgba(11,16,32,.82);
+  display:none;
+}
+.result.show{display:block;}
+.result.good{background:var(--good);border-color:rgba(34,197,94,.28);}
+.result.bad{background:var(--bad);border-color:rgba(225,29,72,.22);}
+.result.info{background:var(--info);border-color:rgba(56,189,248,.22);}
+.result.warn{background:var(--warn);border-color:rgba(245,158,11,.25);}
+.mini{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:999px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+}
+footer{text-align:center;padding:18px 0 4px;color:rgba(11,16,32,.58);font-size:13px;}
+/* map */
+.mapTop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+.mapBtns{display:flex;gap:10px;flex-wrap:wrap;}
+.mapWrap{
+  margin-top:10px;border-radius:18px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);
+  overflow:hidden;position:relative;padding:10px;
+}
+svg#mindmap{width:100%;height:520px;display:block;border-radius:14px;background:
+  radial-gradient(700px 380px at 20% 0%, rgba(34,197,94,.10), transparent 55%),
+  radial-gradient(700px 380px at 80% 10%, rgba(245,158,11,.10), transparent 55%);
+}
+.fallback{
+  display:none;margin-top:10px;padding:10px 12px;border-radius:14px;border:1px dashed rgba(11,16,32,.18);
+  background:rgba(255,255,255,.55);color:rgba(11,16,32,.72);
+}
+.fallback.show{display:block;}
+/* common game bits */
+.gameGrid{margin-top:10px;display:grid;grid-template-columns:1.1fr .9fr;gap:12px;align-items:start;}
+@media (max-width:980px){.gameGrid{grid-template-columns:1fr;}}
+.panel{
+  border-radius:18px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  padding:12px;box-shadow:var(--shadow-soft);
+}
+.panel h3{margin:0;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:15px;}
+.panel p{margin:8px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+.kpiGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px;}
+@media (max-width:520px){.kpiGrid{grid-template-columns:1fr;}}
+.kpi{
+  border-radius:16px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);box-shadow:var(--shadow-soft);
+  padding:10px;
+}
+.kpi .k{font-size:12px;color:rgba(11,16,32,.70);font-weight:800;}
+.kpi .v{margin-top:6px;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:18px;letter-spacing:.2px;}
+.kpi .u{font-size:12px;color:rgba(11,16,32,.62);margin-top:2px;}
+
+  
+
+/* Juego 3 (4-3): Laberinto de la gota */
+.mazeGrid{ margin-top:10px; display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; align-items:start; }
+@media (max-width: 980px){ .mazeGrid{ grid-template-columns:1fr; } }
+.canvasWrap{
+  border-radius:18px; border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.60);
+  box-shadow: var(--shadow-soft);
+  padding: 10px;
+}
+#maze{ width:100%; height:auto; display:block; border-radius:14px; background: rgba(255,255,255,.5); }
+.pad{ display:grid; grid-template-columns: 54px 54px 54px; gap:8px; justify-content:center; margin-top:10px; }
+.pad .btn{ width:54px; height:44px; padding:0; border-radius:14px; }
+.legend{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.lg{ display:inline-flex; align-items:center; gap:8px; padding: 6px 10px; border-radius:999px;
+  border:1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.58); font-weight:900; font-size:12px; color: rgba(11,16,32,.78);
+}
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 4 · El suelo</div>
+        <h1>4.3 Tipos de suelos en Sololá</h1>
+        <p class="subtitle">En Sololá existen suelos volcánicos y jóvenes en desarrollo. Conocer el tipo de suelo ayuda a manejar mejor el agua, reducir erosión y proteger la cuenca.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="4-2.html">Anterior (4.2)</a>
+        <a class="btn primary" href="4-4.html">Siguiente (4.4)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+<section class="card">
+  <h2>Contexto teórico (ampliado)</h2>
+
+  <div class="twoCols" style="margin-top:10px;">
+    <div class="box">
+      <p>
+        En muchas zonas de <strong>Sololá</strong> predominan suelos de origen <strong>volcánico</strong>.
+        Estos suelos pueden ser muy productivos si se manejan bien, pero también se degradan rápido si se cultivan en laderas
+        sin protección.
+      </p>
+
+      <p><strong>Textura: arena, limo y arcilla</strong></p>
+      <ul>
+        <li><strong>Arenoso:</strong> infiltra rápido, pero retiene menos agua y nutrientes.</li>
+        <li><strong>Arcilloso:</strong> retiene más agua, pero infiltra lento; puede compactarse con facilidad.</li>
+        <li><strong>Limoso:</strong> es fértil, pero se erosiona fácil si queda desnudo.</li>
+        <li><strong>Franco:</strong> mezcla equilibrada; suele ser ideal para cultivos.</li>
+      </ul>
+
+      <div class="result info" style="margin-top:10px;">
+        <strong>Clave para la cuenca:</strong> textura + cobertura vegetal determinan si la lluvia infiltra o arrastra sedimentos.
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>Propiedades químicas que cambian el “rendimiento”</strong></p>
+      <ul>
+        <li><strong>pH:</strong> indica acidez/alcalinidad; afecta la disponibilidad de nutrientes.</li>
+        <li><strong>Materia orgánica:</strong> mejora estructura y retención de agua, y alimenta microorganismos.</li>
+        <li><strong>CIC (capacidad de intercambio catiónico):</strong> “capacidad del suelo” para retener nutrientes.</li>
+        <li><strong>Salinidad:</strong> sales altas dificultan la absorción de agua por las plantas.</li>
+      </ul>
+
+      <p style="margin-top:10px;"><strong>¿Por qué hablar de suelos volcánicos?</strong></p>
+      <ul>
+        <li>Pueden almacenar mucha materia orgánica y nutrientes si se protege la cobertura.</li>
+        <li>Si se quema o se deja desnudo, el humus se pierde y el suelo se vuelve más frágil.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:12px;">
+    <div class="pill">
+      <div class="t">Andisoles</div>
+      <p class="s">Suelos volcánicos comunes en la región; pueden tener alta capacidad de retener nutrientes y agua si se manejan bien.</p>
+    </div>
+    <div class="pill">
+      <div class="t">Pendiente</div>
+      <p class="s">En laderas, la lluvia puede bajar con fuerza: sin barreras y cobertura aumenta la erosión.</p>
+    </div>
+    <div class="pill">
+      <div class="t">Buenas prácticas</div>
+      <p class="s">Curvas a nivel, barreras vivas, rastrojo, abono orgánico y menos suelo desnudo.</p>
+    </div>
+  </div>
+</section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajusta, pliega/despliega y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">No se pudo cargar el mapa mental. Revisa tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · Ahorcado de palabras del suelo</h2>
+        <div class="hint">Adivina la palabra antes de que se acaben los intentos. Son términos de suelos y cuencas. (Sin dibujos violentos: solo “vidas”).</div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Palabra</h3>
+            <div class="box" style="margin-top:10px;">
+              <div class="mini">Categoría: <span id="hmCat">—</span></div>
+              <div style="margin-top:10px; font-family:Outfit,Inter,system-ui; font-weight:900; font-size:26px; letter-spacing:6px;" id="hmWord">—</div>
+              <div class="hint" style="margin-top:10px;">Letras usadas: <span id="hmUsed">—</span></div>
+              <div class="kpiGrid" style="margin-top:10px;">
+                <div class="kpi"><div class="k">Intentos restantes</div><div class="v" id="hmLives">—</div><div class="u">vidas</div></div>
+                <div class="kpi"><div class="k">Racha</div><div class="v" id="hmStreak">0</div><div class="u">aciertos seguidos</div></div>
+              </div>
+            </div>
+
+            <div id="hmKeys" style="margin-top:10px; display:grid; grid-template-columns: repeat(7, 1fr); gap:8px;"></div>
+
+            <div class="actions">
+              <button class="btn" id="hmNew" type="button">Nueva palabra</button>
+              <button class="btn" id="hmHint" type="button">Pista</button>
+            </div>
+
+            <div class="result" id="hmMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Consejo</h3>
+            <div class="box">
+              <p style="margin:0 0 8px;"><strong>Pistas:</strong></p>
+              <ul style="margin:0 0 0 18px;">
+                <li>Órdenes de suelo: andisol, inceptisol, molisol, entisol.</li>
+                <li>Partes: humus, porosidad, arcilla.</li>
+                <li>Vida: lombriz, microbio, hongo.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Detective de suelos de Sololá</h2>
+        <div class="hint">Lee las pistas y elige el tipo de suelo más probable. Ganas insignias por precisión.</div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Caso</h3>
+            <div class="box" style="margin-top:10px;">
+              <div class="mini">Caso <span id="sdN">1</span>/6</div>
+              <p id="sdCase" style="margin:10px 0 0;">—</p>
+            </div>
+
+            <div id="sdChoices" style="margin-top:10px; display:grid; gap:10px;"></div>
+
+            <div class="actions">
+              <button class="btn" id="sdReset" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="sdScore">0</span></span>
+              <span class="mini">Insignias: <span id="sdBadges">0</span></span>
+            </div>
+
+            <div class="result" id="sdMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Guía rápida</h3>
+            <div class="box">
+              <ul style="margin:0 0 0 18px;">
+                <li><strong>Andisol:</strong> volcánico, ceniza; suele retener agua; muy común en Sololá.</li>
+                <li><strong>Inceptisol:</strong> joven, en desarrollo; frecuente en laderas y fondos de ladera.</li>
+                <li><strong>Molisol:</strong> oscuro y con mucho humus; alta fertilidad potencial.</li>
+                <li><strong>Entisol:</strong> muy joven; casi sin horizontes formados.</li>
+              </ul>
+            </div>
+
+            <div class="result info show" id="sdHint">
+              Pista: piensa en <strong>material volcánico</strong> (andisol), <strong>suelo joven</strong> (entisol/inceptisol)
+              y <strong>humus alto</strong> (molisol).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+
+      <section class="card">
+  <h2>Juego 3 · Laberinto de la gota: infiltra sin perder suelo</h2>
+  <div class="hint">
+    Mueve la gota (💧) hasta el acuífero (🟦). Evita zonas de <strong>suelo desnudo</strong> (🟫) porque generan sedimento.
+    Toca vegetación (🟩) para ganar “infiltración”.
+  </div>
+
+  <div class="mazeGrid">
+    <div class="canvasWrap">
+      <canvas id="maze" width="520" height="360" aria-label="Laberinto de infiltración"></canvas>
+
+      <div class="pad" aria-label="Controles">
+        <span></span>
+        <button class="btn" type="button" id="up">▲</button>
+        <span></span>
+        <button class="btn" type="button" id="left">◀</button>
+        <button class="btn" type="button" id="down">▼</button>
+        <button class="btn" type="button" id="right">▶</button>
+      </div>
+
+      <div class="tipRow" style="justify-content:center;">
+        <button class="btn" type="button" id="mzRestart">Reiniciar</button>
+      </div>
+
+      <div class="legend">
+        <span class="lg">🟩 Vegetación (+)</span>
+        <span class="lg">🟫 Suelo desnudo (sedimento)</span>
+        <span class="lg">⬛ Roca / muro</span>
+        <span class="lg">🟦 Acuífero (meta)</span>
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>Indicadores</strong></p>
+      <div class="kpiGrid" style="margin-top:10px;">
+        <div class="kpi">
+          <div class="k">Infiltración</div>
+          <div class="v" id="mzInf">0</div>
+          <div class="u">puntos</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Sedimento</div>
+          <div class="v" id="mzSed">0</div>
+          <div class="u">puntos</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Pasos</div>
+          <div class="v" id="mzSteps">0</div>
+          <div class="u">movimientos</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Resultado</div>
+          <div class="v" id="mzGrade">—</div>
+          <div class="u">al final</div>
+        </div>
+      </div>
+
+      <div class="result info" style="margin-top:10px;">
+        <strong>Meta:</strong> llega al acuífero con <em>sedimento bajo</em> y <em>infiltración alta</em>.
+        En la vida real, la vegetación y el humus reducen erosión y ayudan a infiltrar.
+      </div>
+
+      <div class="result" id="mzMsg" style="display:none;"></div>
+    </div>
+  </div>
+</section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    window.__MM_MD__ = `# 4.3 Suelos en Sololá (idea práctica)
+## Origen volcánico
+- Suelos formados por ceniza/pómez y materiales volcánicos
+- Pueden ser muy productivos con buen manejo
+## Textura y agua
+- Arenoso: infiltra rápido, retiene menos
+- Arcilloso: retiene más, infiltra lento
+- Limoso: fértil pero se erosiona fácil
+- Franco: equilibrio ideal
+## Química del suelo
+- pH influye en disponibilidad de nutrientes
+- Materia orgánica mejora estructura y retención
+- CIC: capacidad de retener nutrientes
+- Salinidad afecta absorción de agua
+## Riesgos en laderas
+- Suelo desnudo + pendiente → erosión
+## Buen manejo
+- Cobertura, abonos orgánicos
+- Curvas a nivel y barreras vivas
+- Evitar quemas`;
+
+let mm=null, expanded=true;
+function renderMap(md){
+  const fb=document.getElementById('mapFallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const {Transformer,Markmap}=window.markmap;
+    const t=new Transformer();
+    const {root}=t.transform(md);
+    const svg=document.getElementById('mindmap');
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok=renderMap(window.__MM_MD__);
+  if(ok || tries>12) clearInterval(it);
+},300);
+
+document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+document.getElementById('btnToggle').onclick=()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded=!expanded;
+};
+document.getElementById('btnResetMap').onclick=()=>{
+  mm=null; expanded=true; renderMap(window.__MM_MD__);
+};
+
+
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+
+// ===== Juego 1: Ahorcado =====
+const WORDS=[
+  {w:"ANDISOL", cat:"Tipos de suelo"},
+  {w:"INCEPTISOL", cat:"Tipos de suelo"},
+  {w:"MOLISOL", cat:"Tipos de suelo"},
+  {w:"ENTISOL", cat:"Tipos de suelo"},
+  {w:"HUMUS", cat:"Partes del suelo"},
+  {w:"POROSIDAD", cat:"Propiedades"},
+  {w:"ARCILLA", cat:"Textura"},
+  {w:"LOMBRIZ", cat:"Vida del suelo"},
+  {w:"MICROBIO", cat:"Vida del suelo"},
+  {w:"HONGO", cat:"Vida del suelo"},
+  {w:"INFILTRACION", cat:"Agua en el suelo"},
+  {w:"EROSION", cat:"Riesgos"}
+];
+
+const hmCat=document.getElementById('hmCat');
+const hmWord=document.getElementById('hmWord');
+const hmUsed=document.getElementById('hmUsed');
+const hmLives=document.getElementById('hmLives');
+const hmStreak=document.getElementById('hmStreak');
+const hmKeys=document.getElementById('hmKeys');
+const hmMsg=document.getElementById('hmMsg');
+
+let secret="", cat="", used=new Set(), lives=6, streak=0, revealed=new Set();
+
+function buildKeys(){
+  const letters="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".replace("Ñ","");
+  hmKeys.innerHTML="";
+  [...letters].forEach(ch=>{
+    const b=document.createElement('button');
+    b.type="button";
+    b.className="btn";
+    b.style.padding="10px 0";
+    b.textContent=ch;
+    b.addEventListener('click', ()=>guess(ch,b));
+    hmKeys.appendChild(b);
+  });
+}
+
+function displayWord(){
+  let out="";
+  for(const ch of secret){
+    out += (revealed.has(ch) ? ch : "_") + " ";
+  }
+  hmWord.textContent=out.trim();
+  hmUsed.textContent = used.size ? [...used].join(", ") : "—";
+  hmLives.textContent=String(lives);
+}
+
+function newWord(){
+  hmMsg.className="result"; hmMsg.textContent=""; hmMsg.classList.remove('show');
+  const pick=WORDS[Math.floor(Math.random()*WORDS.length)];
+  secret=pick.w;
+  cat=pick.cat;
+  used=new Set();
+  revealed=new Set();
+  lives=6;
+  hmCat.textContent=cat;
+  buildKeys();
+  displayWord();
+}
+function guess(ch, btn){
+  if(lives<=0) return;
+  if(used.has(ch)) return;
+  used.add(ch);
+  btn.disabled=true;
+  btn.style.opacity=".7";
+
+  if(secret.includes(ch)){
+    for(const c of secret) if(c===ch) revealed.add(c);
+    displayWord();
+    if([...secret].every(c=>revealed.has(c))){
+      streak++;
+      hmStreak.textContent=String(streak);
+      hmMsg.className="result good show";
+      hmMsg.innerHTML=`<strong>¡Bien!</strong> La palabra era <strong>${secret}</strong>.`;
+      hmMsg.classList.add('show');
+      setTimeout(newWord, 650);
+    }
+  }else{
+    lives--;
+    displayWord();
+    if(lives<=0){
+      streak=0;
+      hmStreak.textContent="0";
+      hmMsg.className="result bad show";
+      hmMsg.innerHTML=`<strong>Se acabaron las vidas.</strong> Era <strong>${secret}</strong>.`;
+      hmMsg.classList.add('show');
+      for(const c of secret) revealed.add(c);
+      displayWord();
+    }
+  }
+}
+
+document.getElementById('hmNew').addEventListener('click', newWord);
+document.getElementById('hmHint').addEventListener('click', ()=>{
+  if(!secret) return;
+  const remain=[...new Set([...secret].filter(c=>!revealed.has(c)))];
+  if(!remain.length) return;
+  const ch=remain[Math.floor(Math.random()*remain.length)];
+  revealed.add(ch);
+  displayWord();
+  hmMsg.className="result info show";
+  hmMsg.innerHTML=`<strong>Pista:</strong> se reveló la letra <strong>${ch}</strong>.`;
+});
+newWord();
+
+// ===== Juego 2: Detective de suelos =====
+const CASES=[
+  {txt:"Zona volcánica con materiales de ceniza; el suelo suele retener agua y es común en Sololá.", a:"ANDISOL",
+   why:"Material volcánico/ceniza → Andisol."},
+  {txt:"Suelo muy joven recién depositado (aluvión/deslizamiento) con pocos horizontes formados.", a:"ENTISOL",
+   why:"Poca formación de horizontes → Entisol."},
+  {txt:"Ladera o fondo de ladera donde el suelo está en desarrollo, con horizontes incipientes.", a:"INCEPTISOL",
+   why:"Suelos jóvenes en desarrollo → Inceptisol."},
+  {txt:"Suelo oscuro con mucha materia orgánica (humus) y buena estructura; alta fertilidad potencial.", a:"MOLISOL",
+   why:"Humus alto + estructura → Molisol."},
+  {txt:"Pendiente con capas poco desarrolladas, pero ya se distinguen cambios por lavado/acumulación.", a:"INCEPTISOL",
+   why:"Hay desarrollo, pero no maduro → Inceptisol."},
+  {txt:"Área con ceniza volcánica y propiedades particulares (pH variable, alta retención).", a:"ANDISOL",
+   why:"Ceniza volcánica → Andisol."},
+];
+
+const sdCase=document.getElementById('sdCase');
+const sdChoices=document.getElementById('sdChoices');
+const sdMsg=document.getElementById('sdMsg');
+const sdScoreEl=document.getElementById('sdScore');
+const sdBadgesEl=document.getElementById('sdBadges');
+const sdN=document.getElementById('sdN');
+
+let sdIdx=0, sdScore=0, sdBadges=0;
+const OPTS=["ANDISOL","INCEPTISOL","MOLISOL","ENTISOL"];
+
+function renderCase(){
+  sdMsg.className="result"; sdMsg.textContent=""; sdMsg.classList.remove('show');
+  sdN.textContent=String(sdIdx+1);
+  const c=CASES[sdIdx];
+  sdCase.textContent=c.txt;
+  sdChoices.innerHTML="";
+  OPTS.forEach(op=>{
+    const b=document.createElement('button');
+    b.type="button";
+    b.className="btn";
+    b.style.justifyContent="space-between";
+    b.innerHTML = `<span>${op}</span><span class="mini" style="padding:3px 8px;">elige</span>`;
+    b.addEventListener('click', ()=>pick(op));
+    sdChoices.appendChild(b);
+  });
+}
+
+function pick(op){
+  const c=CASES[sdIdx];
+  sdMsg.classList.add('show');
+  if(op===c.a){
+    sdScore += 2;
+    sdBadges += 1;
+    sdMsg.className="result good show";
+    sdMsg.innerHTML = `<strong>Correcto.</strong> ${c.why}`;
+  }else{
+    sdScore = Math.max(0, sdScore-1);
+    sdMsg.className="result warn show";
+    sdMsg.innerHTML = `<strong>No.</strong> La mejor respuesta era <strong>${c.a}</strong>. ${c.why}`;
+  }
+  sdScoreEl.textContent=String(sdScore);
+  sdBadgesEl.textContent=String(sdBadges);
+
+  setTimeout(()=>{
+    sdIdx++;
+    if(sdIdx>=CASES.length){
+      sdMsg.className="result info show";
+      sdMsg.innerHTML = `<strong>Juego terminado.</strong> Puntaje: <strong>${sdScore}</strong> · Insignias: <strong>${sdBadges}</strong>.`;
+      sdChoices.innerHTML="";
+      return;
+    }
+    renderCase();
+  }, 700);
+}
+
+document.getElementById('sdReset').addEventListener('click', ()=>{
+  sdIdx=0; sdScore=0; sdBadges=0;
+  sdScoreEl.textContent="0"; sdBadgesEl.textContent="0";
+  renderCase();
+});
+renderCase();
+  
+
+/* =========================
+   JUEGO 3 (4-3): Laberinto de la gota
+   ========================= */
+(function(){
+  const canvas = document.getElementById("maze");
+  const ctx = canvas.getContext("2d");
+
+  // Mapa: # muro/roca, . camino, v vegetación, b suelo desnudo, G meta
+  const MAP = [
+    "###############",
+    "#S..v....#....#",
+    "#.###.##.#.##.#",
+    "#...#....#..b.#",
+    "###.#.####.##.#",
+    "#...#..v..#...#",
+    "#.#####.###.#.#",
+    "#.....#.....#G#",
+    "###############"
+  ];
+
+  const rows = MAP.length;
+  const cols = MAP[0].length;
+  const cell = Math.floor(Math.min(canvas.width/cols, canvas.height/rows));
+  const offx = Math.floor((canvas.width - cell*cols)/2);
+  const offy = Math.floor((canvas.height - cell*rows)/2);
+
+  let start={x:1,y:1};
+  let goal={x:cols-2,y:rows-2};
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const c=MAP[y][x];
+      if(c==="S") start={x,y};
+      if(c==="G") goal={x,y};
+    }
+  }
+
+  let pos={...start};
+  let inf=0, sed=0, steps=0;
+  const seen = new Set();
+
+  const infEl=document.getElementById("mzInf");
+  const sedEl=document.getElementById("mzSed");
+  const stEl=document.getElementById("mzSteps");
+  const grEl=document.getElementById("mzGrade");
+  const msgEl=document.getElementById("mzMsg");
+
+  function key(x,y){ return x+","+y; }
+
+  function tile(x,y){ return MAP[y][x]; }
+
+  function isWall(c){ return c==="#"; }
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // background
+    ctx.fillStyle="rgba(255,255,255,.35)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    for(let y=0;y<rows;y++){
+      for(let x=0;x<cols;x++){
+        const c=tile(x,y);
+        const px=offx+x*cell, py=offy+y*cell;
+
+        // base
+        if(c==="#"){
+          ctx.fillStyle="rgba(11,16,32,.18)";
+          ctx.fillRect(px,py,cell,cell);
+        } else {
+          ctx.fillStyle="rgba(255,255,255,.55)";
+          ctx.fillRect(px,py,cell,cell);
+        }
+
+        // hints
+        if(c==="v"){
+          ctx.fillStyle="rgba(34,197,94,.22)";
+          ctx.fillRect(px+2,py+2,cell-4,cell-4);
+        }
+        if(c==="b"){
+          ctx.fillStyle="rgba(245,158,11,.20)";
+          ctx.fillRect(px+2,py+2,cell-4,cell-4);
+        }
+        if(c==="G"){
+          ctx.fillStyle="rgba(56,189,248,.22)";
+          ctx.fillRect(px+2,py+2,cell-4,cell-4);
+        }
+
+        // visited overlay
+        if(seen.has(key(x,y)) && c!=="#"){
+          ctx.fillStyle="rgba(11,16,32,.04)";
+          ctx.fillRect(px,py,cell,cell);
+        }
+
+        // grid lines
+        ctx.strokeStyle="rgba(11,16,32,.06)";
+        ctx.strokeRect(px,py,cell,cell);
+      }
+    }
+
+    // draw goal label
+    ctx.font = "900 14px Inter, system-ui";
+    ctx.fillStyle="rgba(11,16,32,.70)";
+    ctx.fillText("🟦", offx+goal.x*cell + cell*0.22, offy+goal.y*cell + cell*0.75);
+
+    // draw droplet
+    ctx.font = "900 16px Inter, system-ui";
+    ctx.fillText("💧", offx+pos.x*cell + cell*0.20, offy+pos.y*cell + cell*0.75);
+  }
+
+  function hud(){
+    infEl.textContent=String(inf);
+    sedEl.textContent=String(sed);
+    stEl.textContent=String(steps);
+  }
+
+  function grade(){
+    // simple grade: start at 100, penalize sed and steps, reward inf
+    const score = Math.max(0, Math.min(100, 60 + (inf*6) - (sed*10) - Math.floor(steps*0.8)));
+    let g="C";
+    if(score>=85) g="A";
+    else if(score>=70) g="B";
+    else if(score>=55) g="C";
+    else g="D";
+    grEl.textContent=g;
+    msgEl.style.display="block";
+    msgEl.className="result " + (g==="A"||g==="B" ? "ok" : g==="C" ? "warn" : "no");
+    msgEl.innerHTML =
+      `<strong>Resultado: ${g}</strong><br>` +
+      `Puntaje: <strong>${score}</strong>/100 · Infiltración: <strong>${inf}</strong> · Sedimento: <strong>${sed}</strong> · Pasos: <strong>${steps}</strong>.<br>` +
+      `<span style="color:rgba(11,16,32,.72)">Tip: busca más 🟩 y evita 🟫. En laderas reales, la cobertura y barreras frenan el agua.</span>`;
+  }
+
+  function step(dx,dy){
+    if(msgEl.style.display==="block" && pos.x===goal.x && pos.y===goal.y) return;
+    const nx=pos.x+dx, ny=pos.y+dy;
+    const c=tile(nx,ny);
+    if(isWall(c)) return;
+    pos={x:nx,y:ny};
+    steps++;
+    seen.add(key(nx,ny));
+    if(c==="v"){ inf += 1; }       // reward
+    if(c==="b"){ sed += 1; }       // penalty
+    hud();
+    draw();
+    if(nx===goal.x && ny===goal.y) grade();
+  }
+
+  function restart(){
+    pos={...start};
+    inf=0; sed=0; steps=0;
+    seen.clear(); seen.add(key(pos.x,pos.y));
+    grEl.textContent="—";
+    msgEl.style.display="none";
+    hud();
+    draw();
+  }
+
+  // controls
+  const keymap={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
+  window.addEventListener("keydown",(e)=>{
+    if(!keymap[e.key]) return;
+    e.preventDefault();
+    const [dx,dy]=keymap[e.key];
+    step(dx,dy);
+  });
+
+  document.getElementById("up").onclick=()=>step(0,-1);
+  document.getElementById("down").onclick=()=>step(0,1);
+  document.getElementById("left").onclick=()=>step(-1,0);
+  document.getElementById("right").onclick=()=>step(1,0);
+  document.getElementById("mzRestart").onclick=restart;
+
+  restart();
+})();
+</script>
+</body>
+</html>

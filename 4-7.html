@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4.7 Prácticas sostenibles para la conservación de suelos · EPC AALA</title>
+  <meta name="description" content="Curvas a nivel, barreras vivas, terrazas, compost, lombricompost y abonos verdes. Mapa mental + 4 juegos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(56,189,248,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+    header{
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.62);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+      box-shadow:var(--shadow-soft);
+    }
+    h1{
+      margin:10px 0 0;
+      font-family:Outfit,Inter,system-ui;
+      font-weight:900;
+      letter-spacing:.2px;
+      line-height:1.08;
+      font-size:clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.55;max-width:95ch;}
+    .nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .btn{
+      appearance:none;border:1px solid rgba(11,16,32,.12);
+      background:var(--btn);
+      border-radius:14px;
+      padding:10px 12px;
+      text-decoration:none;
+      font-weight:900;font-size:13px;
+      color:rgba(11,16,32,.86);
+      box-shadow:var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;align-items:center;gap:8px;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{background:var(--btnh);border-color:rgba(11,16,32,.18)}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      background:rgba(120, 210, 255, .28);
+      border-color:rgba(35, 140, 210, .22);
+    }
+    main.stack{display:flex;flex-direction:column;gap:14px;margin-top:14px;}
+    .card{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.62);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      padding:16px;
+    }
+    .card h2{
+      margin:0;
+      font-family:Outfit,Inter,system-ui;
+      font-weight:900;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .hint{margin:6px 0 0;color:rgba(11,16,32,.70);font-size:13px;line-height:1.5}
+    .twoCols{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1.25fr .95fr;
+      gap:12px;
+      align-items:start;
+    }
+    @media (max-width:980px){ .twoCols{grid-template-columns:1fr;} }
+    .box{
+      border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);
+      border-radius:18px;
+      padding:12px;
+      box-shadow:var(--shadow-soft);
+    }
+    .box p{margin:0 0 10px;color:rgba(11,16,32,.82);line-height:1.65;font-size:13.6px}
+    .box ul{margin:8px 0 0 18px;color:rgba(11,16,32,.82);font-size:13.4px;line-height:1.6}
+    .box li{margin:6px 0}
+    .grid3{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width:980px){ .grid3{grid-template-columns:1fr;} }
+    .pill{
+      border:1px solid rgba(11,16,32,.10);
+      background:linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius:18px;
+      padding:12px;
+      box-shadow:var(--shadow-soft);
+    }
+    .pill .t{font-weight:900;font-family:Outfit,Inter,system-ui;letter-spacing:.2px}
+    .pill .s{margin:6px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5}
+    .result{
+      margin-top:10px;
+      border-radius:16px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.55);
+      padding:12px;
+      font-size:13px;
+      line-height:1.55;
+      color:rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{display:block}
+    .ok{background:var(--good);border-color:rgba(34,197,94,.28)}
+    .no{background:var(--bad);border-color:rgba(225,29,72,.22)}
+    .warn{background:var(--warn);border-color:rgba(245,158,11,.22)}
+    .info{background:var(--info);border-color:rgba(56,189,248,.22)}
+
+    /* Mapa mental */
+    .mapTop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+    .mapBtns{display:flex;gap:10px;flex-wrap:wrap;}
+    .mapStage{
+      margin-top:10px;
+      border-radius:18px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.60);
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+      padding:10px;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      border-radius:14px;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px dashed rgba(11,16,32,.18);
+      background:rgba(255,255,255,.55);
+      color:rgba(11,16,32,.72);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .fallback.show{display:block}
+
+    /* Util */
+    .mini{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+      box-shadow:var(--shadow-soft);
+    }
+    .hr{height:1px;background:rgba(11,16,32,.10);margin:10px 0;border-radius:999px}
+    footer{text-align:center;padding:18px 0 4px;color:rgba(11,16,32,.58);font-size:13px}
+
+    /* Game layouts */
+    .gameGrid{margin-top:10px;display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:start}
+    @media (max-width:980px){ .gameGrid{grid-template-columns:1fr;} }
+
+    .palette{display:grid;grid-template-columns:repeat(2, 1fr);gap:10px}
+    @media (max-width:520px){ .palette{grid-template-columns:1fr;} }
+
+    .tile{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.70);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+      cursor:grab;
+      user-select:none;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .tile:hover{background:rgba(255,255,255,.84);border-color:rgba(11,16,32,.18)}
+    .tile:active{transform:translateY(1px)}
+    .tile .t{font-weight:900}
+    .tile .s{margin-top:6px;color:rgba(11,16,32,.72);font-size:12.6px;line-height:1.4}
+    .tile .tag{display:inline-flex;margin-top:8px;font-size:11px;font-weight:900;color:rgba(11,16,32,.74);padding:4px 8px;border-radius:999px;border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.62)}
+
+    .drop{
+      border-radius:18px;border:1px dashed rgba(11,16,32,.18);
+      background:rgba(255,255,255,.56);
+      box-shadow:var(--shadow-soft);
+      padding:12px;
+      min-height: 220px;
+    }
+    .drop.dragover{outline:3px solid rgba(120,210,255,.35)}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.72);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+    }
+    .chip button{border:none;background:transparent;cursor:pointer;font:inherit;color:inherit;padding:0}
+
+    .bars{display:grid;gap:10px;margin-top:10px}
+    .bar{
+      border-radius:16px;border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.62);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+    }
+    .bar .k{font-size:12px;color:rgba(11,16,32,.70);font-weight:900}
+    .bar .row{display:flex;align-items:center;gap:10px;margin-top:8px}
+    .track{flex:1;height:12px;border-radius:999px;background:rgba(11,16,32,.10);overflow:hidden}
+    .fill{height:100%;width:50%;background:rgba(45,160,220,.45);transition:width .2s ease}
+    .bar .v{min-width:44px;text-align:right;font-weight:900;color:rgba(11,16,32,.78);font-size:12px}
+
+    .qaGrid{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+    @media (max-width:980px){ .qaGrid{grid-template-columns:1fr;} }
+
+    .qCard{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.62);
+      box-shadow:var(--shadow-soft);
+      padding:12px;
+    }
+    .qCard .q{font-weight:900;margin:0 0 8px}
+    .opt{width:100%;text-align:left;margin:8px 0;padding:10px 12px;border-radius:16px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.70);cursor:pointer;font-weight:900;color:rgba(11,16,32,.86)}
+    .opt:hover{background:rgba(255,255,255,.84);border-color:rgba(11,16,32,.18)}
+    .opt:disabled{opacity:.9;cursor:default}
+    .opt.good{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.26)}
+    .opt.bad{background:rgba(225,29,72,.12);border-color:rgba(225,29,72,.22)}
+
+    /* Small SVG scenes */
+    .scene{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.60);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+      overflow:hidden;
+    }
+    .ctrlRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+    .ctrlRow label{font-weight:900;font-size:13px;color:rgba(11,16,32,.82)}
+    input[type="range"]{width:54%}
+    .val{font-weight:900;font-size:13px;color:rgba(11,16,32,.78);min-width:64px;text-align:right}
+
+  </style>
+
+  <style>
+    /* extras for this page */
+    .svgWrap{margin-top:10px}
+    svg.ladera{width:100%;height:260px;display:block;border-radius:16px;background:
+      radial-gradient(700px 340px at 25% 10%, rgba(45,160,220,.10), transparent 55%),
+      radial-gradient(700px 340px at 80% 0%, rgba(34,197,94,.10), transparent 55%);
+      border:1px solid rgba(11,16,32,.10);
+    }
+    .toggles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+    @media (max-width:700px){.toggles{grid-template-columns:1fr}}
+    .toggle{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:16px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.66);box-shadow:var(--shadow-soft)}
+    .toggle input{margin-top:3px}
+    .toggle .t{font-weight:900}
+    .toggle .s{margin-top:2px;color:rgba(11,16,32,.70);font-size:12.6px;line-height:1.4}
+    .meterGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    @media (max-width:980px){.meterGrid{grid-template-columns:1fr}}
+    .meterBox{border-radius:18px;border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);padding:12px}
+    .big{font-family:Outfit,Inter,system-ui;font-weight:900;font-size:28px;line-height:1}
+    .sub{margin-top:6px;color:rgba(11,16,32,.70);font-size:12.6px;line-height:1.45}
+    .line{width:100%;height:140px;border-radius:14px;border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.70)}
+
+    /* worm game */
+    .arena{margin-top:10px;border-radius:18px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);padding:12px}
+    .hud{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+    .hud .mini{margin:0}
+    .feedGrid{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media (max-width:900px){.feedGrid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.feedGrid{grid-template-columns:1fr}}
+    .food{border-radius:18px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.72);box-shadow:var(--shadow-soft);padding:12px;cursor:pointer;user-select:none;transition:transform .08s ease, background .12s ease}
+    .food:hover{background:rgba(255,255,255,.84);transform:translateY(-1px)}
+    .food .t{font-weight:900}
+    .food .s{margin-top:4px;color:rgba(11,16,32,.70);font-size:12.6px;line-height:1.4}
+
+    /* memory */
+    .memGrid{margin-top:10px;display:grid;grid-template-columns:repeat(4, 1fr);gap:10px}
+    @media (max-width:980px){.memGrid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:620px){.memGrid{grid-template-columns:repeat(2,1fr)}}
+    .cardFlip{position:relative;height:92px;border-radius:18px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.72);box-shadow:var(--shadow-soft);cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;font-weight:900;color:rgba(11,16,32,.84);transition:transform .08s ease, background .12s ease}
+    .cardFlip:hover{background:rgba(255,255,255,.84);transform:translateY(-1px)}
+    .cardFlip.revealed{background:rgba(56,189,248,.14);border-color:rgba(56,189,248,.22)}
+    .cardFlip.matched{background:rgba(34,197,94,.16);border-color:rgba(34,197,94,.26);cursor:default}
+    .cardFlip small{display:block;margin-top:6px;font-weight:800;color:rgba(11,16,32,.70)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 4 · El suelo</div>
+        <h1>4.7 Prácticas sostenibles para la conservación de suelos</h1>
+        <p class="subtitle">
+          Conservar el suelo significa proteger la capa fértil, mantener <strong>materia orgánica</strong> y controlar la <strong>erosión</strong>.
+          Prácticas como <strong>curvas a nivel</strong>, <strong>barreras vivas</strong>, <strong>terrazas</strong> y <strong>abonos orgánicos</strong>
+          mejoran infiltración, reducen escorrentía y sostienen la producción.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="4-6.html">Anterior (4.6)</a>
+        <a class="btn primary" href="4-8.html">Siguiente (4.8)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <p class="hint">
+          La conservación de suelos busca que el sistema aguante lluvias fuertes, sequías y pendiente sin perder tierra fértil.
+          Muchas prácticas funcionan mejor cuando se combinan: <strong>cobertura</strong> + <strong>infraestructura</strong> + <strong>fertilidad orgánica</strong> + <strong>diversidad</strong>.
+        </p>
+
+        <div class="twoCols">
+          <div class="box">
+            <p><strong>1) Reducir erosión y escorrentía</strong></p>
+            <ul>
+              <li><strong>Curvas a nivel</strong>: sembrar siguiendo la curva del terreno, no en línea recta cuesta abajo.</li>
+              <li><strong>Barreras vivas</strong>: franjas de plantas que frenan agua y retienen sedimentos.</li>
+              <li><strong>Terrazas</strong>: “escalones” que disminuyen la pendiente efectiva.</li>
+              <li><strong>Zanjas de infiltración</strong>: captan agua para que entre al suelo.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              En pendiente, la regla de oro es <strong>bajar la velocidad del agua</strong>. Si el agua baja lenta, infiltra; si baja rápida, arrastra suelo.
+            </p>
+          </div>
+
+          <div class="box">
+            <p><strong>2) Mejorar fertilidad sin dañar el sistema</strong></p>
+            <ul>
+              <li><strong>Compost</strong>: mezcla de residuos orgánicos que se transforma en abono estable.</li>
+              <li><strong>Lombricompost</strong>: humus producido por lombrices; mejora estructura y vida del suelo.</li>
+              <li><strong>Abonos verdes</strong>: plantas (muchas veces leguminosas) que cubren y aportan nitrógeno y biomasa.</li>
+              <li><strong>Manejo integrado</strong>: prioriza prevención y control biológico antes que químicos.</li>
+            </ul>
+            <div class="result info show">
+              <strong>Idea clave:</strong> más materia orgánica = mejor estructura del suelo + más retención de agua + más vida microbiana.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Cobertura siempre</div>
+            <p class="s">Suelo cubierto = menos gotas golpeando directo, menos evaporación, más alimento para el suelo.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Diversidad</div>
+            <p class="s">Rotar y asociar cultivos reduce plagas dominantes y distribuye mejor el uso de nutrientes.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Abonos orgánicos</div>
+            <p class="s">Compost y lombricompost aportan nutrientes y mejoran la “esponja” del suelo.</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>¿Cómo reconocer que una práctica funciona?</strong></p>
+            <ul>
+              <li>Menos “cárcavas” y menos barro bajando con la lluvia.</li>
+              <li>Más infiltración: charcos duran poco y el suelo mantiene humedad.</li>
+              <li>Más raíces y lombrices; suelo con grumos (no polvo suelto).</li>
+              <li>Producción más estable entre años (resiliencia).</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Ejemplo comunitario (idea inspirada en experiencias locales)</strong></p>
+            <p>
+              En algunas comunidades, se han impulsado prácticas como <strong>compostaje</strong>, <strong>abonos orgánicos</strong>, barreras y manejo de pendiente.
+              El cambio no es solo “técnico”: requiere <strong>acuerdos</strong>, seguimiento y aprendizaje.
+            </p>
+            <ul>
+              <li>Separamos residuos orgánicos y los convertimos en abono.</li>
+              <li>Reforzamos laderas con barreras y curvas a nivel.</li>
+              <li>Cuidamos nacimientos y zonas de recarga hídrica.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Conservación de suelos: cobertura · pendiente · abonos orgánicos · diversidad.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="fit" type="button">Ajustar</button>
+            <button class="btn" id="toggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="resetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de prácticas sostenibles"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Verifica conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      <!-- GAME 1: Compost lab -->
+      <section class="card">
+        <h2>Juego 1 · Laboratorio de compost (ajusta variables)</h2>
+        <p class="hint">
+          El compost “bueno” necesita balance entre material seco (carbono) y verde (nitrógeno), humedad tipo esponja y aireación.
+          Mueve los controles y observa la <strong>temperatura</strong> y el <strong>tiempo</strong> estimados.
+        </p>
+
+        <div class="gameGrid">
+          <div class="box">
+            <div class="ctrlRow">
+              <label for="cRatio">Balance seco↔verde</label>
+              <input id="cRatio" type="range" min="0" max="100" value="55">
+              <div class="val"><span id="cRatioV">55</span>% seco</div>
+            </div>
+            <div class="ctrlRow">
+              <label for="cHum">Humedad</label>
+              <input id="cHum" type="range" min="0" max="100" value="55">
+              <div class="val"><span id="cHumV">55</span>%</div>
+            </div>
+            <div class="ctrlRow">
+              <label for="cAir">Aireación (volteo)</label>
+              <input id="cAir" type="range" min="0" max="100" value="55">
+              <div class="val"><span id="cAirV">55</span>%</div>
+            </div>
+            <div class="ctrlRow">
+              <label for="cSize">Tamaño de partículas</label>
+              <input id="cSize" type="range" min="0" max="100" value="45">
+              <div class="val"><span id="cSizeV">45</span>% finas</div>
+            </div>
+
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn" type="button" id="compReset">Reiniciar</button>
+              <span class="mini">Meta: “zona verde”</span>
+            </div>
+
+            <div class="result info" id="compMsg"></div>
+          </div>
+
+          <div class="box">
+            <div class="meterGrid">
+              <div class="meterBox">
+                <div class="big"><span id="temp">48</span>°C</div>
+                <div class="sub">Temperatura estimada (pico). Compost activo suele subir si hay buen balance y aire.</div>
+                <div class="hr"></div>
+                <div class="big"><span id="days">45</span> días</div>
+                <div class="sub">Tiempo estimado a compost estable (aprox.). Depende de manejo y clima.</div>
+              </div>
+              <div class="meterBox">
+                <svg class="line" viewBox="0 0 320 140" preserveAspectRatio="none" aria-label="Curva de temperatura">
+                  <polyline id="line" fill="none" stroke="rgba(45,160,220,.65)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points=""></polyline>
+                  <line x1="0" y1="120" x2="320" y2="120" stroke="rgba(11,16,32,.10)" />
+                  <text x="8" y="18" font-size="12" fill="rgba(11,16,32,.65)" font-weight="700">Temp</text>
+                  <text x="8" y="134" font-size="12" fill="rgba(11,16,32,.55)" font-weight="700">Días</text>
+                </svg>
+                <div class="sub">La curva es ilustrativa: pico temprano y descenso al madurar.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GAME 2: Slope control -->
+      <section class="card">
+        <h2>Juego 2 · Ladera: controla escorrentía y sedimentos</h2>
+        <p class="hint">
+          Activa prácticas de conservación y mira cómo cambian <strong>escorrentía</strong> (agua que corre) y <strong>pérdida de suelo</strong>.
+          La meta: bajar escorrentía y sedimentos sin bajar demasiado la productividad.
+        </p>
+
+        <div class="gameGrid">
+          <div class="box">
+            <div class="toggles">
+              <label class="toggle"><input type="checkbox" id="tgCover" checked>
+                <div><div class="t">Cobertura del suelo</div><div class="s">Mulch o cobertura viva reduce impacto y evaporación.</div></div>
+              </label>
+              <label class="toggle"><input type="checkbox" id="tgContour" checked>
+                <div><div class="t">Curvas a nivel</div><div class="s">Siembra siguiendo la curva; frena el agua.</div></div>
+              </label>
+              <label class="toggle"><input type="checkbox" id="tgBarrier">
+                <div><div class="t">Barreras vivas</div><div class="s">Franjas vegetales que capturan sedimentos.</div></div>
+              </label>
+              <label class="toggle"><input type="checkbox" id="tgTerrace">
+                <div><div class="t">Terrazas</div><div class="s">Escalones que reducen pendiente efectiva.</div></div>
+              </label>
+              <label class="toggle"><input type="checkbox" id="tgOrganic" checked>
+                <div><div class="t">Abono orgánico</div><div class="s">Mejora estructura y retención de agua.</div></div>
+              </label>
+              <label class="toggle"><input type="checkbox" id="tgBurn">
+                <div><div class="t">Quema (mala idea)</div><div class="s">Quita cobertura y aumenta erosión.</div></div>
+              </label>
+            </div>
+
+            <div class="meterGrid">
+              <div class="meterBox">
+                <div class="big"><span id="runoff">38</span>/100</div>
+                <div class="sub">Escorrentía (más bajo es mejor).</div>
+              </div>
+              <div class="meterBox">
+                <div class="big"><span id="soilLoss">30</span>/100</div>
+                <div class="sub">Pérdida de suelo (más bajo es mejor).</div>
+              </div>
+            </div>
+
+            <div class="result info" id="slopeMsg"></div>
+          </div>
+
+          <div class="box">
+            <div class="scene svgWrap">
+              <svg class="ladera" viewBox="0 0 760 260" aria-label="Diagrama de ladera">
+                <!-- sky -->
+                <rect x="0" y="0" width="760" height="120" fill="rgba(255,255,255,.0)"/>
+                <!-- hill -->
+                <path d="M0,210 C140,160 260,120 420,120 C560,120 650,150 760,165 L760,260 L0,260 Z" fill="rgba(34,197,94,.12)" stroke="rgba(11,16,32,.10)" />
+                <!-- runoff arrow -->
+                <path id="arrow" d="M620,110 C650,140 680,170 710,200" fill="none" stroke="rgba(45,160,220,.75)" stroke-width="8" stroke-linecap="round"/>
+                <circle id="drop1" cx="610" cy="100" r="10" fill="rgba(45,160,220,.45)"/>
+                <circle id="drop2" cx="570" cy="78" r="7" fill="rgba(45,160,220,.38)"/>
+                <!-- contour lines -->
+                <g id="contours" opacity="1">
+                  <path d="M90,175 C210,150 300,140 430,140 C520,140 610,150 700,165" fill="none" stroke="rgba(11,16,32,.12)" stroke-width="3"/>
+                  <path d="M90,198 C210,172 300,162 430,162 C520,162 610,172 700,186" fill="none" stroke="rgba(11,16,32,.12)" stroke-width="3"/>
+                </g>
+                <!-- terraces -->
+                <g id="terraces" opacity="0">
+                  <path d="M120,205 L690,205" stroke="rgba(11,16,32,.14)" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M160,175 L650,175" stroke="rgba(11,16,32,.14)" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M200,148 L610,148" stroke="rgba(11,16,32,.14)" stroke-width="8" stroke-linecap="round"/>
+                </g>
+                <!-- barrier strips -->
+                <g id="barriers" opacity="0">
+                  <path d="M120,190 C260,168 320,160 460,160" stroke="rgba(34,197,94,.55)" stroke-width="10" stroke-linecap="round"/>
+                  <path d="M240,214 C380,192 460,186 620,186" stroke="rgba(34,197,94,.55)" stroke-width="10" stroke-linecap="round"/>
+                </g>
+                <!-- cover dots -->
+                <g id="coverDots" opacity="1">
+                  <circle cx="160" cy="210" r="5" fill="rgba(34,197,94,.45)"/>
+                  <circle cx="220" cy="200" r="4" fill="rgba(34,197,94,.40)"/>
+                  <circle cx="310" cy="206" r="5" fill="rgba(34,197,94,.42)"/>
+                  <circle cx="420" cy="212" r="5" fill="rgba(34,197,94,.42)"/>
+                  <circle cx="520" cy="206" r="4" fill="rgba(34,197,94,.38)"/>
+                  <circle cx="610" cy="198" r="5" fill="rgba(34,197,94,.40)"/>
+                </g>
+                <!-- burn haze -->
+                <g id="burnHaze" opacity="0">
+                  <rect x="0" y="0" width="760" height="260" fill="rgba(225,29,72,.06)"/>
+                  <text x="24" y="34" font-size="14" fill="rgba(11,16,32,.75)" font-weight="800">🔥 Quema: sube el riesgo</text>
+                </g>
+              </svg>
+            </div>
+            <div class="hint" style="margin-top:10px;">
+              Pista: la combinación más fuerte suele ser <strong>cobertura + curvas a nivel + barreras/terrazas</strong>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GAME 3: Worm feeding -->
+      <section class="card">
+        <h2>Juego 3 · “Alimenta a las lombrices” (rápido)</h2>
+        <p class="hint">
+          En lombricompost, las lombrices prefieren residuos vegetales y materiales secos. Evita cosas grasosas o carnes.
+          Presiona <strong>Iniciar</strong> y selecciona lo adecuado. Tienes 35 segundos.
+        </p>
+
+        <div class="arena">
+          <div class="hud">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="btn primary" id="wormStart" type="button">Iniciar</button>
+              <button class="btn" id="wormReset" type="button">Reiniciar</button>
+            </div>
+            <span class="mini">Tiempo: <span id="wormT">35</span>s</span>
+            <span class="mini">Puntaje: <span id="wormS">0</span></span>
+            <span class="mini">Vidas: <span id="wormL">3</span></span>
+          </div>
+
+          <div class="feedGrid" id="feedGrid"></div>
+          <div class="result info" id="wormMsg"></div>
+        </div>
+      </section>
+
+      <!-- GAME 4: Memory -->
+      <section class="card">
+        <h2>Juego 4 · Memoria: práctica ↔ beneficio</h2>
+        <p class="hint">
+          Encuentra las parejas. Una carta es la <strong>práctica</strong> y la otra es el <strong>beneficio</strong> que produce.
+        </p>
+
+        <div class="memGrid" id="memGrid"></div>
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <button class="btn" type="button" id="memReset">Reiniciar</button>
+          <span class="mini">Parejas: <span id="memDone">0</span>/<span id="memTotal">0</span></span>
+          <span class="mini">Intentos: <span id="memTries">0</span></span>
+        </div>
+        <div class="result info" id="memMsg"></div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA (Markmap)
+    // =========================
+    const md = '# 4.7 Prácticas sostenibles para la conservación de suelos\n## ¿Por qué son necesarias?\n- El suelo se pierde con facilidad por **erosión** (agua y viento)\n- En pendientes, la lluvia puede convertirse en **escorrentía** y arrastrar tierra fértil\n- Conservar suelo = conservar **agua**, **nutrientes** y **producción**\n## Principios (en sencillo)\n- Mantener el suelo **cubierto** (mulch, rastrojo, cobertura viva)\n- Reducir la velocidad del agua (curvas a nivel, terrazas, zanjas de infiltración)\n- Aumentar materia orgánica (compost, aboneras, lombricompost)\n- Diversificar (rotación, asociación, agroforestería)\n- Manejar plagas con enfoque **integrado** (priorizar control biológico)\n## Herramientas y ejemplos\n- Barreras vivas: vetiver, zacate, arbustos nativos\n- Curvas a nivel: siembra siguiendo la curva, no “cuesta abajo”\n- Terrazas: escalones para frenar el agua\n- Abonos orgánicos: compost, bocashi, lombricompost\n- Abonos verdes: leguminosas que fijan nitrógeno y cubren el suelo\n## Compost (idea práctica)\n- Mezclar material seco (carbono) + material verde (nitrógeno)\n- Humedad tipo “esponja”\n- Aireación: voltear para que no se pudra\n- Tiempo: paciencia; el resultado es un abono estable';
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('fallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const t = new Transformer();
+        const { root } = t.transform(md);
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0; const it=setInterval(()=>{ tries++; const ok=renderMap(); if(ok||tries>12) clearInterval(it); }, 300);
+    document.getElementById('fit').onclick=()=>mm&&mm.fit();
+    document.getElementById('toggle').onclick=()=>{ if(!mm) return; expanded ? mm.foldAll() : mm.unfoldAll(); expanded=!expanded; };
+    document.getElementById('resetMap').onclick=()=>{ mm=null; expanded=true; renderMap(); };
+
+    const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+    function setBox(el, cls, html){ el.className="result "+cls+" show"; el.innerHTML=html; }
+
+    // =========================
+    // GAME 1: Compost Lab
+    // =========================
+    const cRatio=document.getElementById('cRatio');
+    const cHum=document.getElementById('cHum');
+    const cAir=document.getElementById('cAir');
+    const cSize=document.getElementById('cSize');
+
+    const cRatioV=document.getElementById('cRatioV');
+    const cHumV=document.getElementById('cHumV');
+    const cAirV=document.getElementById('cAirV');
+    const cSizeV=document.getElementById('cSizeV');
+
+    const tempEl=document.getElementById('temp');
+    const daysEl=document.getElementById('days');
+    const lineEl=document.getElementById('line');
+    const compMsg=document.getElementById('compMsg');
+
+    function scoreZone(x, target, tol){
+      const d=Math.abs(x-target);
+      return clamp(1 - (d/tol), 0, 1);
+    }
+
+    function updateCompost(){
+      const ratio=+cRatio.value; // % seco (carbono)
+      const hum=+cHum.value;
+      const air=+cAir.value;
+      const size=+cSize.value; // % finas
+
+      cRatioV.textContent=ratio;
+      cHumV.textContent=hum;
+      cAirV.textContent=air;
+      cSizeV.textContent=size;
+
+      // "zona ideal" aproximada
+      const sRatio = scoreZone(ratio, 55, 30);
+      const sHum   = scoreZone(hum, 55, 28);
+      const sAir   = scoreZone(air, 60, 30);
+      const sSize  = scoreZone(size, 50, 35);
+
+      const quality = (0.32*sRatio + 0.28*sHum + 0.25*sAir + 0.15*sSize);
+
+      // temperatura pico 35–68
+      const temp = Math.round(35 + quality*33);
+      // días 25–85 (mejor calidad => menos días)
+      const days = Math.round(85 - quality*60);
+
+      tempEl.textContent=temp;
+      daysEl.textContent=days;
+
+      // curva simple (pico al 25% del tiempo)
+      const w=320, h=140;
+      const base=120;
+      const peakY = clamp(base - (temp-30)*2.0, 18, 112);
+      const p1 = `${0},${base}`;
+      const p2 = `${w*0.22},${peakY}`;
+      const p3 = `${w*0.55},${(peakY+base)/2}`;
+      const p4 = `${w},${base}`;
+      lineEl.setAttribute("points", `${p1} ${p2} ${p3} ${p4}`);
+
+      // feedback
+      if(quality>=0.82){
+        setBox(compMsg,"ok", "<strong>¡Excelente!</strong> Mezcla balanceada: buen pico de temperatura y maduración más rápida. Recuerda voltear y mantener humedad tipo esponja.");
+      } else if(quality>=0.62){
+        setBox(compMsg,"info", "<strong>Bien.</strong> Puedes mejorar: ajusta humedad y aireación. Si huele mal o se pone muy húmedo, falta aire; si está seco, falta agua.");
+      } else {
+        setBox(compMsg,"warn", "<strong>Atención.</strong> La pila podría pudrirse o no calentarse. Acércate a la zona ideal: 50–60% seco/verde, humedad moderada y buen volteo.");
+      }
+    }
+
+    [cRatio,cHum,cAir,cSize].forEach(x=>x.addEventListener('input', updateCompost));
+    document.getElementById('compReset').onclick = ()=>{ cRatio.value=55; cHum.value=55; cAir.value=55; cSize.value=45; updateCompost(); };
+    updateCompost();
+
+    // =========================
+    // GAME 2: Slope toggles
+    // =========================
+    const tgCover=document.getElementById('tgCover');
+    const tgContour=document.getElementById('tgContour');
+    const tgBarrier=document.getElementById('tgBarrier');
+    const tgTerrace=document.getElementById('tgTerrace');
+    const tgOrganic=document.getElementById('tgOrganic');
+    const tgBurn=document.getElementById('tgBurn');
+
+    const runoffEl=document.getElementById('runoff');
+    const soilLossEl=document.getElementById('soilLoss');
+    const slopeMsg=document.getElementById('slopeMsg');
+
+    const gContours=document.getElementById('contours');
+    const gTerraces=document.getElementById('terraces');
+    const gBarriers=document.getElementById('barriers');
+    const gCover=document.getElementById('coverDots');
+    const gBurn=document.getElementById('burnHaze');
+    const arrow=document.getElementById('arrow');
+    const drop1=document.getElementById('drop1');
+    const drop2=document.getElementById('drop2');
+
+    function updateSlope(){
+      const cover=tgCover.checked;
+      const contour=tgContour.checked;
+      const barrier=tgBarrier.checked;
+      const terrace=tgTerrace.checked;
+      const organic=tgOrganic.checked;
+      const burn=tgBurn.checked;
+
+      gContours.style.opacity = contour ? 1 : 0.15;
+      gTerraces.style.opacity = terrace ? 1 : 0;
+      gBarriers.style.opacity = barrier ? 1 : 0;
+      gCover.style.opacity = cover ? 1 : 0.05;
+      gBurn.style.opacity = burn ? 1 : 0;
+
+      // base risk (sin prácticas)
+      let runoff = 78;
+      let loss = 82;
+
+      if(cover){ runoff -= 18; loss -= 26; }
+      if(contour){ runoff -= 14; loss -= 14; }
+      if(barrier){ runoff -= 10; loss -= 16; }
+      if(terrace){ runoff -= 18; loss -= 18; }
+      if(organic){ runoff -= 8;  loss -= 10; }
+
+      if(burn){ runoff += 12; loss += 20; }
+
+      runoff = clamp(Math.round(runoff), 0, 100);
+      loss   = clamp(Math.round(loss), 0, 100);
+
+      runoffEl.textContent = runoff;
+      soilLossEl.textContent = loss;
+
+      // arrow style: more runoff => longer and thicker
+      const sw = 4 + (runoff/100)*8;
+      arrow.setAttribute("stroke-width", String(sw));
+      drop1.setAttribute("r", String(7 + runoff/18));
+      drop2.setAttribute("r", String(5 + runoff/24));
+
+      if(runoff<=35 && loss<=35){
+        setBox(slopeMsg, "ok", "<strong>¡Muy bien!</strong> El agua baja más lenta, infiltra y arrastra poco suelo. Mantén cobertura y refuerza barreras/terrazas en zonas críticas.");
+      } else if(runoff<=55 && loss<=55){
+        setBox(slopeMsg, "info", "<strong>Buen control.</strong> Para mejorar: activa barreras vivas o terrazas. En pendientes, sumar prácticas hace una gran diferencia.");
+      } else {
+        setBox(slopeMsg, burn ? "no" : "warn",
+          burn
+            ? "<strong>🔥 La quema empeora todo.</strong> Aumenta pérdida de suelo y escorrentía. Apágala y recupera cobertura."
+            : "<strong>Riesgo alto.</strong> Falta cobertura/infraestructura. Prueba activar curvas a nivel + cobertura y luego agrega barreras o terrazas."
+        );
+      }
+    }
+
+    [tgCover,tgContour,tgBarrier,tgTerrace,tgOrganic,tgBurn].forEach(x=>x.addEventListener('change', updateSlope));
+    updateSlope();
+
+    // =========================
+    // GAME 3: Worm Feeding
+    // =========================
+    const feedGrid=document.getElementById('feedGrid');
+    const wormT=document.getElementById('wormT');
+    const wormS=document.getElementById('wormS');
+    const wormL=document.getElementById('wormL');
+    const wormMsg=document.getElementById('wormMsg');
+    const wormStart=document.getElementById('wormStart');
+    const wormReset=document.getElementById('wormReset');
+
+    const FOODS = [
+      {t:"Cáscaras de fruta", good:true, s:"Fuente vegetal, en trozos pequeños."},
+      {t:"Hojas secas", good:true, s:"Aporta ‘seco’ (carbono)."},
+      {t:"Cartón sin plástico", good:true, s:"Material seco (carbono)."},
+      {t:"Restos de verduras", good:true, s:"Material verde (nitrógeno)."},
+      {t:"Café molido", good:true, s:"En poca cantidad, ayuda al proceso."},
+      {t:"Cáscara de huevo triturada", good:true, s:"Aporta calcio y ayuda a neutralizar acidez."},
+
+      {t:"Carne / huesos", good:false, s:"Atrae vectores y genera malos olores."},
+      {t:"Aceites / grasas", good:false, s:"Dificultan el proceso y atraen plagas."},
+      {t:"Exceso de cítricos", good:false, s:"Puede aumentar acidez si se usa en exceso."},
+      {t:"Comida muy salada", good:false, s:"No es ideal para las lombrices."},
+      {t:"Plásticos", good:false, s:"No se degrada en la abonera."},
+      {t:"Heces de mascotas", good:false, s:"Riesgo sanitario; no va al lombricompost."}
+    ];
+
+    let timer=null, timeLeft=35, score=0, lives=3, running=false;
+
+    function pickSix(){
+      // random 6 items
+      const arr=[...FOODS].sort(()=>Math.random()-0.5).slice(0,6);
+      return arr;
+    }
+
+    function renderFood(){
+      feedGrid.innerHTML="";
+      const items = pickSix();
+      items.forEach(it=>{
+        const d=document.createElement('div');
+        d.className="food";
+        d.innerHTML = `<div class="t">${it.t}</div><div class="s">${it.s}</div>`;
+        d.onclick = ()=> {
+          if(!running) return;
+          if(it.good){
+            score += 2;
+            setBox(wormMsg, "ok", `✅ Bien: <strong>${it.t}</strong>.`);
+          } else {
+            lives -= 1;
+            setBox(wormMsg, "no", `❌ Evita: <strong>${it.t}</strong>.`);
+          }
+          wormS.textContent=String(score);
+          wormL.textContent=String(lives);
+          if(lives<=0) endWorm(false);
+          else renderFood();
+        };
+        feedGrid.appendChild(d);
+      });
+    }
+
+    function tick(){
+      timeLeft -= 1;
+      wormT.textContent=String(timeLeft);
+      if(timeLeft<=0) endWorm(true);
+    }
+
+    function startWorm(){
+      if(running) return;
+      running=true;
+      timeLeft=35;
+      score=0;
+      lives=3;
+      wormT.textContent="35";
+      wormS.textContent="0";
+      wormL.textContent="3";
+      setBox(wormMsg, "info", "Elige lo adecuado. ✅");
+      renderFood();
+      timer=setInterval(tick, 1000);
+    }
+
+    function endWorm(byTime){
+      running=false;
+      clearInterval(timer); timer=null;
+      const cls = score>=18 && lives>=2 ? "ok" : score>=10 ? "info" : "warn";
+      setBox(wormMsg, cls,
+        byTime
+          ? `⏱️ Tiempo. Puntaje: <strong>${score}</strong>. ` + (cls==="ok" ? "¡Excelente selección!" : "Prueba otra vez: prioriza residuos vegetales y material seco.")
+          : `💥 Te quedaste sin vidas. Puntaje: <strong>${score}</strong>. Prueba otra vez evitando grasas, carnes y plásticos.`
+      );
+    }
+
+    function resetWorm(){
+      running=false;
+      clearInterval(timer); timer=null;
+      timeLeft=35; score=0; lives=3;
+      wormT.textContent="35";
+      wormS.textContent="0";
+      wormL.textContent="3";
+      feedGrid.innerHTML="";
+      wormMsg.className="result info";
+      wormMsg.classList.remove('show');
+    }
+
+    wormStart.onclick = startWorm;
+    wormReset.onclick = resetWorm;
+    resetWorm();
+
+    // =========================
+    // GAME 4: Memory pairs
+    // =========================
+    const memGrid=document.getElementById('memGrid');
+    const memDone=document.getElementById('memDone');
+    const memTotal=document.getElementById('memTotal');
+    const memTries=document.getElementById('memTries');
+    const memMsg=document.getElementById('memMsg');
+
+    const PAIRS = [
+      ["Curvas a nivel", "Frena escorrentía"],
+      ["Cobertura (mulch)", "Protege contra erosión"],
+      ["Compost", "Aumenta materia orgánica"],
+      ["Barreras vivas", "Capturan sedimento"],
+      ["Abonos verdes", "Aportan biomasa y nitrógeno"],
+      ["Terrazas", "Reducen pendiente"]
+    ];
+
+    let first=null, lock=false, done=0, triesN=0;
+
+    function shuffle(a){ return a.map(x=>x).sort(()=>Math.random()-0.5); }
+
+    function renderMemory(){
+      memGrid.innerHTML="";
+      done=0; triesN=0; first=null; lock=false;
+      memDone.textContent="0";
+      memTries.textContent="0";
+      memTotal.textContent=String(PAIRS.length);
+      memMsg.classList.remove('show');
+
+      // build cards (each pair -> two cards)
+      let cards=[];
+      PAIRS.forEach((p, idx)=>{
+        cards.push({k:idx, t:p[0], kind:"p"});
+        cards.push({k:idx, t:p[1], kind:"b"});
+      });
+      cards = shuffle(cards);
+
+      cards.forEach((c, i)=>{
+        const d=document.createElement('div');
+        d.className="cardFlip";
+        d.dataset.k=c.k;
+        d.dataset.kind=c.kind;
+        d.dataset.revealed="0";
+        d.textContent="¿?";
+        d.onclick = ()=> {
+          if(lock) return;
+          if(d.classList.contains('matched')) return;
+          if(d.dataset.revealed==="1") return;
+
+          d.dataset.revealed="1";
+          d.classList.add('revealed');
+          d.innerHTML = `${c.t}<small>${c.kind==="p" ? "Práctica" : "Beneficio"}</small>`;
+
+          if(!first){ first=d; return; }
+
+          triesN++; memTries.textContent=String(triesN);
+
+          const same = first.dataset.k===d.dataset.k && first.dataset.kind!==d.dataset.kind;
+          if(same){
+            d.classList.remove('revealed'); first.classList.remove('revealed');
+            d.classList.add('matched'); first.classList.add('matched');
+            done++; memDone.textContent=String(done);
+            first=null;
+            if(done===PAIRS.length){
+              setBox(memMsg,"ok",`¡Completaste todas las parejas en <strong>${triesN}</strong> intentos!`);
+            }
+          } else {
+            lock=true;
+            setTimeout(()=>{
+              [first,d].forEach(x=>{
+                x.dataset.revealed="0";
+                x.classList.remove('revealed');
+                x.textContent="¿?";
+              });
+              first=null;
+              lock=false;
+            }, 620);
+          }
+        };
+        memGrid.appendChild(d);
+      });
+
+      setBox(memMsg, "info", "Tip: una práctica tiene que emparejarse con su efecto. ¡Memoriza el orden!");
+    }
+
+    document.getElementById('memReset').onclick = renderMemory;
+    renderMemory();
+  </script>
+</body>
+</html>

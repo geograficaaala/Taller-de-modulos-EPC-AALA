@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4.2 Capas del suelo y propiedades físicas · EPC AALA</title>
+  <meta name="description" content="Horizontes del suelo y propiedades físicas: textura, porosidad y retención de agua, con juegos interactivos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  /* Suelo: verdes + arenas suaves */
+  --a1: rgba(214, 240, 220, .92);
+  --a2: rgba(235, 248, 228, .88);
+  --a3: rgba(255, 242, 220, .80);
+  --a4: rgba(225, 236, 255, .60);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --info: rgba(56,189,248,.16);
+  --warn: rgba(245,158,11,.14);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(34,197,94,.18);
+  --accent2: rgba(245,158,11,.16);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #f4fff7 0%, #f6f1e6 45%, #f2fbff 100%);
+  min-height:100vh;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+header{
+  border:1px solid var(--stroke);
+  background:var(--glass);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.kicker{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:6px 10px;border-radius:999px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  font-weight:800;font-size:12px;color:rgba(11,16,32,.78);
+  box-shadow:var(--shadow-soft);
+}
+h1{
+  margin:10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  letter-spacing:.2px;
+  line-height:1.08;
+  font-size:clamp(22px, 2.7vw, 34px);
+}
+.subtitle{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+  max-width:96ch;
+}
+.nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.btn{
+  appearance:none;border:1px solid rgba(11,16,32,.12);
+  background:var(--btn);border-radius:14px;
+  padding:10px 12px;text-decoration:none;
+  font-weight:800;font-size:13px;color:rgba(11,16,32,.86);
+  box-shadow:var(--shadow-soft);
+  user-select:none;display:inline-flex;align-items:center;gap:8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;white-space:nowrap;
+}
+.btn:hover{background:var(--btnh);border-color:rgba(11,16,32,.18);}
+.btn:active{transform:translateY(1px);}
+.btn.primary{background: rgba(34,197,94,.18); border-color: rgba(34,197,94,.22);}
+main.stack{display:flex;flex-direction:column;gap:14px;margin-top:14px;}
+.card{
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(10px);
+  padding:16px;
+}
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.hint{font-size:13px;color:rgba(11,16,32,.72);line-height:1.55;margin:8px 0 0;}
+.twoCols{margin-top:10px;display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:start;}
+@media (max-width:980px){.twoCols{grid-template-columns:1fr;}}
+.box{
+  border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.box p{margin:0 0 10px;color:rgba(11,16,32,.82);line-height:1.65;font-size:13.6px;}
+.box ul{margin:8px 0 0 18px;color:rgba(11,16,32,.82);font-size:13.4px;line-height:1.6;}
+.box li{margin:6px 0;}
+.grid3{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media (max-width:980px){.grid3{grid-template-columns:1fr;}}
+.pill{
+  border:1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(235,248,228,.72), rgba(255,255,255,.58));
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.pill .t{font-weight:900;font-family:Outfit, Inter, system-ui; letter-spacing:.2px;}
+.pill .s{margin:6px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.45;}
+.result{
+  margin-top:10px;border-radius:16px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.55);padding:12px;
+  font-size:13px;line-height:1.55;color:rgba(11,16,32,.82);
+  display:none;
+}
+.result.show{display:block;}
+.result.good{background:var(--good);border-color:rgba(34,197,94,.28);}
+.result.bad{background:var(--bad);border-color:rgba(225,29,72,.22);}
+.result.info{background:var(--info);border-color:rgba(56,189,248,.22);}
+.result.warn{background:var(--warn);border-color:rgba(245,158,11,.25);}
+.mini{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:999px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+}
+footer{text-align:center;padding:18px 0 4px;color:rgba(11,16,32,.58);font-size:13px;}
+/* map */
+.mapTop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+.mapBtns{display:flex;gap:10px;flex-wrap:wrap;}
+.mapWrap{
+  margin-top:10px;border-radius:18px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);
+  overflow:hidden;position:relative;padding:10px;
+}
+svg#mindmap{width:100%;height:520px;display:block;border-radius:14px;background:
+  radial-gradient(700px 380px at 20% 0%, rgba(34,197,94,.10), transparent 55%),
+  radial-gradient(700px 380px at 80% 10%, rgba(245,158,11,.10), transparent 55%);
+}
+.fallback{
+  display:none;margin-top:10px;padding:10px 12px;border-radius:14px;border:1px dashed rgba(11,16,32,.18);
+  background:rgba(255,255,255,.55);color:rgba(11,16,32,.72);
+}
+.fallback.show{display:block;}
+/* common game bits */
+.gameGrid{margin-top:10px;display:grid;grid-template-columns:1.1fr .9fr;gap:12px;align-items:start;}
+@media (max-width:980px){.gameGrid{grid-template-columns:1fr;}}
+.panel{
+  border-radius:18px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  padding:12px;box-shadow:var(--shadow-soft);
+}
+.panel h3{margin:0;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:15px;}
+.panel p{margin:8px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+.kpiGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px;}
+@media (max-width:520px){.kpiGrid{grid-template-columns:1fr;}}
+.kpi{
+  border-radius:16px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);box-shadow:var(--shadow-soft);
+  padding:10px;
+}
+.kpi .k{font-size:12px;color:rgba(11,16,32,.70);font-weight:800;}
+.kpi .v{margin-top:6px;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:18px;letter-spacing:.2px;}
+.kpi .u{font-size:12px;color:rgba(11,16,32,.62);margin-top:2px;}
+
+  
+
+/* Juego 3 (4-2): ¿En qué horizonte ocurre? */
+.hzGrid{ margin-top:10px; display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; align-items:start; }
+@media (max-width: 980px){ .hzGrid{ grid-template-columns:1fr; } }
+.hzClue{
+  margin: 10px 0 0;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.58);
+  box-shadow: var(--shadow-soft);
+  padding: 12px;
+  line-height: 1.6;
+  color: rgba(11,16,32,.84);
+  font-size: 13.6px;
+}
+.hzBtns{ display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:10px; }
+@media (max-width: 520px){ .hzBtns{ grid-template-columns: 1fr; } }
+.hzBtns .btn{ width:100%; justify-content:center; }
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 4 · El suelo</div>
+        <h1>4.2 Capas del suelo y propiedades físicas</h1>
+        <p class="subtitle">El suelo puede organizarse en horizontes (O, A, E, B, C) y sus propiedades físicas (textura, porosidad y estructura) controlan infiltración, retención de agua y erosión.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="4-1.html">Anterior (4.1)</a>
+        <a class="btn primary" href="4-3.html">Siguiente (4.3)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+<section class="card">
+  <h2>Contexto teórico (ampliado)</h2>
+
+  <div class="twoCols" style="margin-top:10px;">
+    <div class="box">
+      <p>
+        Un suelo sano se parece a un <strong>pastel por capas</strong>. A esas capas se les llama <strong>horizontes</strong>.
+        Cada horizonte tiene un “trabajo” distinto: arriba domina la materia orgánica; más abajo se acumulan minerales;
+        al fondo aparece el material original del que se formó el suelo.
+      </p>
+
+      <p><strong>Capas típicas del perfil del suelo</strong></p>
+      <ul>
+        <li><strong>Horizonte O:</strong> hojas y restos en descomposición (muy orgánico).</li>
+        <li><strong>Horizonte A:</strong> “tierra negra” o superficial; mezcla de minerales + humus; muchas raíces.</li>
+        <li><strong>Horizonte B:</strong> sub-suelo; suele acumular arcillas y minerales que bajan desde arriba.</li>
+        <li><strong>Horizonte C:</strong> material parental (roca alterada); transición hacia la roca.</li>
+      </ul>
+
+      <div class="result info" style="margin-top:10px;">
+        <strong>Truco:</strong> cuando el horizonte A se pierde por erosión, el suelo tarda mucho en recuperarse.
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>¿Qué pasa con el agua cuando llueve?</strong></p>
+      <ul>
+        <li>Si hay cobertura (hojas/plantas), el agua entra más suave y <strong>infiltra</strong> mejor.</li>
+        <li>El agua se mueve por poros hacia abajo (<strong>percolación</strong>) y puede llegar al manto freático.</li>
+        <li>Si el suelo está compacto o impermeabilizado, sube la <strong>escorrentía</strong> y la erosión.</li>
+      </ul>
+
+      <p style="margin-top:10px;"><strong>Señales rápidas en campo</strong></p>
+      <ul>
+        <li>Suelo con lombrices y raíces finas: buena actividad biológica.</li>
+        <li>Agua que se encharca y corre: posible compactación o arcilla muy cerrada.</li>
+        <li>Costra dura en la superficie: suelo desnudo + impacto de gotas.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:12px;">
+    <div class="pill">
+      <div class="t">O y A</div>
+      <p class="s">Zona de vida: humus, raíces y microorganismos. Controla infiltración y fertilidad.</p>
+    </div>
+    <div class="pill">
+      <div class="t">B</div>
+      <p class="s">Zona de acumulación: minerales y arcillas. Puede retener agua pero también “trabar” el drenaje.</p>
+    </div>
+    <div class="pill">
+      <div class="t">C</div>
+      <p class="s">Origen del suelo: roca alterada. Define mineralogía y parte de la textura.</p>
+    </div>
+  </div>
+</section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajusta, pliega/despliega y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">No se pudo cargar el mapa mental. Revisa tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · Arma el perfil del suelo (arrastrar y soltar)</h2>
+        <div class="hint">Arrastra las etiquetas (O, A, E, B, C) al lugar correcto. Si no existe horizonte E, puedes dejarlo vacío (pero aquí lo usamos para practicar).</div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Perfil</h3>
+            <p>Arrastra cada etiqueta hacia el “hueco” del horizonte.</p>
+
+            <div style="margin-top:10px; display:grid; grid-template-columns: 1fr; gap:12px;">
+              <div id="labels" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+
+              <div id="profile" class="box" style="padding:12px;">
+                <div style="display:grid; gap:10px;">
+                  <div class="hz" data-accept="O"><div class="slot" data-slot="O">Suelta aquí</div><div class="desc">Hojarasca / orgánica superficial</div></div>
+                  <div class="hz" data-accept="A"><div class="slot" data-slot="A">Suelta aquí</div><div class="desc">Minerales + humus (raíces)</div></div>
+                  <div class="hz" data-accept="E"><div class="slot" data-slot="E">Suelta aquí</div><div class="desc">Capa aclarada (lavado)</div></div>
+                  <div class="hz" data-accept="B"><div class="slot" data-slot="B">Suelta aquí</div><div class="desc">Acumulación de arcillas/óxidos</div></div>
+                  <div class="hz" data-accept="C"><div class="slot" data-slot="C">Suelta aquí</div><div class="desc">Material parental (roca meteorizada)</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" id="hzCheck" type="button">Revisar</button>
+              <button class="btn" id="hzReset" type="button">Reiniciar</button>
+              <span class="mini">Correctas: <span id="hzOk">0</span>/5</span>
+            </div>
+
+            <div class="result" id="hzMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Ayuda visual</h3>
+            <p>Haz clic en una capa para ver una descripción más técnica.</p>
+
+            <div class="box" style="margin-top:10px;">
+              <svg viewBox="0 0 520 260" width="100%" height="auto" aria-label="Corte de suelo">
+                <rect x="50" y="20" width="420" height="220" rx="22" fill="rgba(255,255,255,.55)" stroke="rgba(11,16,32,.12)"/>
+                <g id="layers"></g>
+              </svg>
+              <div class="result info show" id="layerInfo" style="margin-top:10px;">Clic en una capa para leer.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Calculadora de textura (arena · limo · arcilla)</h2>
+        <div class="hint">Ajusta porcentajes. El sistema mantiene la suma en 100% automáticamente y te indica una clase de textura simplificada.</div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Controles</h3>
+
+            <div style="margin-top:10px; display:grid; gap:10px;">
+              <div>
+                <div class="mini">Arena: <span id="sandV">40</span>%</div>
+                <input id="sand" type="range" min="0" max="100" value="40" style="width:100%;">
+              </div>
+              <div>
+                <div class="mini">Limo: <span id="siltV">40</span>%</div>
+                <input id="silt" type="range" min="0" max="100" value="40" style="width:100%;">
+              </div>
+              <div>
+                <div class="mini">Arcilla: <span id="clayV">20</span>%</div>
+                <input id="clay" type="range" min="0" max="100" value="20" style="width:100%;">
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" id="txReset" type="button">Ejemplo “franco”</button>
+              <span class="mini">Suma: <span id="sumV">100</span>%</span>
+            </div>
+
+            <div class="result info show" id="txOut">—</div>
+          </div>
+
+          <div class="panel">
+            <h3>Interpretación rápida</h3>
+            <div class="kpiGrid">
+              <div class="kpi"><div class="k">Infiltración (tendencia)</div><div class="v" id="txInf">—</div><div class="u">baja · media · alta</div></div>
+              <div class="kpi"><div class="k">Retención de agua (tendencia)</div><div class="v" id="txRet">—</div><div class="u">baja · media · alta</div></div>
+              <div class="kpi"><div class="k">Aireación</div><div class="v" id="txAir">—</div><div class="u">baja · media · alta</div></div>
+              <div class="kpi"><div class="k">Riesgo de erosión</div><div class="v" id="txEro">—</div><div class="u">bajo · medio · alto</div></div>
+            </div>
+
+            <div class="box" style="margin-top:10px;">
+              <p style="margin:0;">
+                <strong>Nota:</strong> la textura es solo una parte. Un suelo arcilloso con buena estructura y materia orgánica puede infiltrar mejor que uno compactado.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <style>
+        .hz{display:grid;grid-template-columns:160px 1fr;gap:10px;align-items:center;}
+        .slot{
+          border-radius:14px;border:1px dashed rgba(11,16,32,.22);
+          background:rgba(255,255,255,.52);padding:10px 12px;
+          font-weight:900;color:rgba(11,16,32,.74);
+          min-height:44px;display:flex;align-items:center;justify-content:center;
+        }
+        .slot.filled{border-style:solid;background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.25);}
+        .tag{
+          display:inline-flex;align-items:center;gap:8px;
+          padding:10px 12px;border-radius:999px;border:1px solid rgba(11,16,32,.12);
+          background:rgba(255,255,255,.68);font-weight:900;cursor:grab;user-select:none;
+        }
+        .tag:active{cursor:grabbing;}
+        .desc{font-size:12.8px;color:rgba(11,16,32,.72);line-height:1.35;}
+        .layerBtn{cursor:pointer;transition:opacity .12s ease;}
+        .layerBtn:hover{opacity:.92;}
+      </style>
+
+      
+
+      <section class="card">
+  <h2>Juego 3 · ¿En qué horizonte ocurre?</h2>
+  <div class="hint">Lee la pista y elige el horizonte correcto (O, A, B o C). Objetivo: lograr 8 aciertos en 10 pistas.</div>
+
+  <div class="hzGrid">
+    <div class="box">
+      <span class="mini" id="hzRound">Pista 1/10</span>
+      <div class="hzClue" id="hzClue">Cargando pista…</div>
+
+      <div class="hzBtns" id="hzBtns">
+        <button class="btn" type="button" data-hz="O">Horizonte O</button>
+        <button class="btn" type="button" data-hz="A">Horizonte A</button>
+        <button class="btn" type="button" data-hz="B">Horizonte B</button>
+        <button class="btn" type="button" data-hz="C">Horizonte C</button>
+      </div>
+
+      <div class="tipRow">
+        <button class="btn" type="button" id="hzSkip">Saltar</button>
+        <button class="btn primary" type="button" id="hzNext" disabled>Siguiente</button>
+        <button class="btn" type="button" id="hzRestart">Reiniciar</button>
+      </div>
+
+      <div class="result" id="hzMsg" style="display:none;"></div>
+    </div>
+
+    <div class="box">
+      <p><strong>Marcador</strong></p>
+      <div class="kpiGrid" style="margin-top:10px;">
+        <div class="kpi">
+          <div class="k">Aciertos</div>
+          <div class="v" id="hzOk">0</div>
+          <div class="u">de 10</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Intentos</div>
+          <div class="v" id="hzTry">0</div>
+          <div class="u">total</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Racha</div>
+          <div class="v" id="hzStreak">0</div>
+          <div class="u">seguidos</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Tiempo</div>
+          <div class="v" id="hzTime">0</div>
+          <div class="u">segundos</div>
+        </div>
+      </div>
+
+      <div class="result info" style="margin-top:10px;">
+        <strong>Recordatorio rápido</strong>
+        <ul style="margin:8px 0 0 18px;">
+          <li><strong>O:</strong> hojarasca y restos.</li>
+          <li><strong>A:</strong> capa fértil con humus y raíces.</li>
+          <li><strong>B:</strong> sub-suelo con acumulación de minerales/arcillas.</li>
+          <li><strong>C:</strong> roca alterada (material parental).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    window.__MM_MD__ = `# 4.2 Capas del suelo (horizontes)
+## Perfil del suelo
+- El suelo se organiza en horizontes
+- Cada horizonte tiene características distintas
+## Horizontes
+- O: hojarasca y restos en descomposición
+- A: capa superficial fértil (humus + minerales)
+- B: sub-suelo (acumulación de arcillas/minerales)
+- C: material parental (roca alterada)
+## Agua en el perfil
+- Lluvia → infiltración → percolación
+- Compactación e impermeabilización → escorrentía
+## Señales en campo
+- Lombrices/raíces: buena vida del suelo
+- Costra y encharcamiento: riesgo de compactación
+## Importancia
+- Proteger O y A evita pérdida de fertilidad
+- Menos sedimento y más recarga en la cuenca`;
+
+let mm=null, expanded=true;
+function renderMap(md){
+  const fb=document.getElementById('mapFallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const {Transformer,Markmap}=window.markmap;
+    const t=new Transformer();
+    const {root}=t.transform(md);
+    const svg=document.getElementById('mindmap');
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok=renderMap(window.__MM_MD__);
+  if(ok || tries>12) clearInterval(it);
+},300);
+
+document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+document.getElementById('btnToggle').onclick=()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded=!expanded;
+};
+document.getElementById('btnResetMap').onclick=()=>{
+  mm=null; expanded=true; renderMap(window.__MM_MD__);
+};
+
+
+// ===== Juego 1: Horizontes drag-drop =====
+const LABELS=["O","A","E","B","C"];
+const labelsEl=document.getElementById('labels');
+const hzOkEl=document.getElementById('hzOk');
+const hzMsg=document.getElementById('hzMsg');
+
+function makeTag(letter){
+  const d=document.createElement('div');
+  d.className="tag";
+  d.draggable=true;
+  d.dataset.letter=letter;
+  d.innerHTML = `<span style="font-family:Outfit,Inter,system-ui;">${letter}</span><span class="mini" style="padding:3px 8px;">Etiqueta</span>`;
+  d.addEventListener('dragstart', (e)=>{
+    e.dataTransfer.setData('text/plain', letter);
+  });
+  return d;
+}
+
+function resetHz(){
+  labelsEl.innerHTML="";
+  document.querySelectorAll('.slot').forEach(s=>{
+    s.textContent="Suelta aquí";
+    s.classList.remove('filled');
+    s.dataset.put="";
+  });
+  LABELS.forEach(L=>labelsEl.appendChild(makeTag(L)));
+  hzOkEl.textContent="0";
+  hzMsg.className="result"; hzMsg.textContent=""; hzMsg.classList.remove('show');
+}
+
+document.querySelectorAll('.slot').forEach(slot=>{
+  slot.addEventListener('dragover', (e)=>{ e.preventDefault(); });
+  slot.addEventListener('drop', (e)=>{
+    e.preventDefault();
+    const letter=e.dataTransfer.getData('text/plain');
+    if(!letter) return;
+    const already=document.querySelector(`.slot[data-put="${letter}"]`);
+    if(already && already!==slot) { already.textContent="Suelta aquí"; already.classList.remove('filled'); already.dataset.put=""; }
+    slot.textContent = letter;
+    slot.classList.add('filled');
+    slot.dataset.put=letter;
+  });
+});
+
+document.getElementById('hzReset').addEventListener('click', resetHz);
+
+document.getElementById('hzCheck').addEventListener('click', ()=>{
+  let ok=0;
+  document.querySelectorAll('.hz').forEach(h=>{
+    const need=h.dataset.accept;
+    const slot=h.querySelector('.slot');
+    if(slot.dataset.put===need) ok++;
+  });
+  hzOkEl.textContent=String(ok);
+  hzMsg.classList.add('show');
+  if(ok===5){
+    hzMsg.className="result good show";
+    hzMsg.innerHTML="<strong>¡Perfecto!</strong> Ordenaste correctamente los horizontes del perfil.";
+  }else{
+    hzMsg.className="result warn show";
+    hzMsg.innerHTML=`<strong>Casi.</strong> Llevas ${ok}/5. Recuerda: O arriba (orgánica) y C cerca de la roca.`;
+  }
+});
+
+resetHz();
+
+// Capa clicable
+const layers=[
+  {id:"O", y:40, h:34, fill:"rgba(95,75,45,.35)", text:"O: restos orgánicos (hojarasca) → base del humus."},
+  {id:"A", y:74, h:48, fill:"rgba(160,140,95,.35)", text:"A: mezcla mineral + humus. Mucha actividad biológica y raíces."},
+  {id:"E", y:122, h:36, fill:"rgba(210,210,210,.28)", text:"E: ‘lavado’ (elución). Pierde arcilla/óxidos; se aclara."},
+  {id:"B", y:158, h:56, fill:"rgba(170,120,80,.30)", text:"B: ‘acumulación’ (iluvión). Más arcilla/óxidos; suele ser más compacto."},
+  {id:"C", y:214, h:24, fill:"rgba(140,140,140,.26)", text:"C: material parental (roca meteorizada), origen del suelo."},
+];
+const g=document.getElementById('layers');
+const info=document.getElementById('layerInfo');
+layers.forEach(L=>{
+  const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
+  r.setAttribute("x","80"); r.setAttribute("y",String(L.y)); r.setAttribute("width","360"); r.setAttribute("height",String(L.h));
+  r.setAttribute("rx","16"); r.setAttribute("fill",L.fill); r.setAttribute("stroke","rgba(11,16,32,.12)");
+  r.classList.add('layerBtn');
+  r.addEventListener('click', ()=>{
+    info.innerHTML = `<strong>${L.id}</strong> · ${L.text}`;
+    info.className="result info show";
+  });
+  g.appendChild(r);
+
+  const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+  t.setAttribute("x","95"); t.setAttribute("y",String(L.y+Math.min(26,L.h-6)));
+  t.setAttribute("font-family","Outfit,Inter,system-ui"); t.setAttribute("font-weight","900");
+  t.setAttribute("fill","rgba(11,16,32,.78)");
+  t.textContent=L.id;
+  g.appendChild(t);
+});
+
+// ===== Juego 2: Textura =====
+const sand=document.getElementById('sand');
+const silt=document.getElementById('silt');
+const clay=document.getElementById('clay');
+
+const sandV=document.getElementById('sandV');
+const siltV=document.getElementById('siltV');
+const clayV=document.getElementById('clayV');
+const sumV=document.getElementById('sumV');
+
+const txOut=document.getElementById('txOut');
+const txInf=document.getElementById('txInf');
+const txRet=document.getElementById('txRet');
+const txAir=document.getElementById('txAir');
+const txEro=document.getElementById('txEro');
+
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+
+function rebalance(changed){
+  let S=+sand.value, L=+silt.value, C=+clay.value;
+  const total=S+L+C;
+  if(total!==100){
+    const diff=total-100;
+    if(changed==="sand"){
+      const rest=L+C || 1;
+      L = clamp(Math.round(L - diff*(L/rest)), 0, 100);
+      C = clamp(100 - S - L, 0, 100);
+    }else if(changed==="silt"){
+      const rest=S+C || 1;
+      S = clamp(Math.round(S - diff*(S/rest)), 0, 100);
+      C = clamp(100 - S - L, 0, 100);
+    }else{
+      const rest=S+L || 1;
+      S = clamp(Math.round(S - diff*(S/rest)), 0, 100);
+      L = clamp(100 - S - C, 0, 100);
+    }
+  }
+  const t2=S+L+C;
+  if(t2!==100){
+    C = clamp(100 - S - L, 0, 100);
+  }
+
+  sand.value=S; silt.value=L; clay.value=C;
+  sandV.textContent=S; siltV.textContent=L; clayV.textContent=C;
+  sumV.textContent=String(S+L+C);
+
+  const cls = classify(S,L,C);
+  txOut.innerHTML = `<strong>Textura estimada:</strong> ${cls}`;
+  const trends = interpret(S,L,C);
+  txInf.textContent = trends.inf;
+  txRet.textContent = trends.ret;
+  txAir.textContent = trends.air;
+  txEro.textContent = trends.ero;
+}
+
+function classify(S,L,C){
+  if(C>=40) return "Arcilloso";
+  if(S>=70 && C<15) return "Arenoso";
+  if(L>=70 && C<20) return "Limoso";
+  if(C>=27 && C<40 && S<=45) return "Franco-arcilloso";
+  if(S>=45 && S<70 && C<20) return "Franco-arenoso";
+  return "Franco";
+}
+
+function interpret(S,L,C){
+  let inf="media", ret="media", air="media", ero="medio";
+  if(S>=70){ inf="alta"; ret="baja"; air="alta"; ero="alto"; }
+  else if(C>=40){ inf="baja"; ret="alta"; air="baja"; ero="medio"; }
+  else if(L>=70){ inf="media"; ret="media"; air="media"; ero="alto"; }
+  else if(S>=45 && C<20){ inf="alta"; ret="media"; air="alta"; ero="alto"; }
+  else if(C>=27){ inf="media"; ret="alta"; air="media"; ero="medio"; }
+  else { inf="media"; ret="media"; air="media"; ero="medio"; }
+  return {inf, ret, air, ero};
+}
+
+[sand,silt,clay].forEach(el=>el.addEventListener('input', ()=>rebalance(el.id)));
+document.getElementById('txReset').addEventListener('click', ()=>{
+  sand.value=40; silt.value=40; clay.value=20;
+  rebalance("sand");
+});
+rebalance("sand");
+  
+
+/* =========================
+   JUEGO 3 (4-2): ¿En qué horizonte ocurre?
+   ========================= */
+(function(){
+  const BANK = [
+    {a:"O", q:"Restos de hojas y ramas en descomposición, muy orgánico."},
+    {a:"A", q:"Aquí se concentran muchas raíces finas y humus; es la capa fértil."},
+    {a:"B", q:"Capa donde suelen acumularse arcillas y minerales que bajaron desde arriba."},
+    {a:"C", q:"Material parental: roca alterada, transición hacia la roca madre."},
+    {a:"A", q:"La capa que más se pierde cuando hay erosión por lluvia."},
+    {a:"O", q:"Zona donde encuentras hojarasca, pequeños restos y olor a bosque."},
+    {a:"B", q:"Suele ser más compacta que A; menos raíces, más minerales."},
+    {a:"C", q:"Tiene fragmentos de roca grandes y poca materia orgánica."},
+    {a:"A", q:"Cuando hay buena cobertura vegetal, se protege esta capa superficial."},
+    {a:"B", q:"Si se acumula mucha arcilla, el agua puede drenar más lento en esta zona."},
+    {a:"O", q:"Primera capa que desaparece si se quema o se limpia demasiado."},
+    {a:"C", q:"Capa que explica el “origen” mineral del suelo en la zona."}
+  ];
+
+  const roundEl = document.getElementById("hzRound");
+  const clueEl  = document.getElementById("hzClue");
+  const msgEl   = document.getElementById("hzMsg");
+  const okEl    = document.getElementById("hzOk");
+  const tryEl   = document.getElementById("hzTry");
+  const streakEl= document.getElementById("hzStreak");
+  const timeEl  = document.getElementById("hzTime");
+  const btnNext = document.getElementById("hzNext");
+
+  let deck=[], i=0, ok=0, tries=0, streak=0, seconds=0, timer=null, locked=false;
+
+  function shuffle(arr){
+    const a=arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  function startTimer(){
+    if(timer) return;
+    timer=setInterval(()=>{ seconds++; timeEl.textContent=String(seconds); },1000);
+  }
+  function stopTimer(){ if(!timer) return; clearInterval(timer); timer=null; }
+
+  function pick(n){
+    if(locked) return;
+    startTimer();
+    locked=true;
+    tries++;
+    const cur=deck[i];
+    const correct = (n===cur.a);
+    msgEl.style.display="block";
+    if(correct){
+      ok++; streak++;
+      msgEl.className="result ok";
+      msgEl.innerHTML = `<strong>Correcto.</strong> Esa pista corresponde al horizonte <strong>${cur.a}</strong>.`;
+    }else{
+      streak=0;
+      msgEl.className="result no";
+      msgEl.innerHTML = `<strong>No.</strong> Era <strong>${cur.a}</strong>. Intenta leer la pista pensando en “orgánico arriba / mineral abajo”.`;
+    }
+    okEl.textContent=String(ok);
+    tryEl.textContent=String(tries);
+    streakEl.textContent=String(streak);
+    btnNext.disabled=false;
+
+    if(i===9){
+      stopTimer();
+      btnNext.disabled=true;
+      const win = ok>=8;
+      msgEl.className = "result " + (win ? "ok" : "warn");
+      msgEl.innerHTML =
+        (win
+          ? `<strong>¡Reto logrado!</strong> Aciertos: <strong>${ok}/10</strong>.`
+          : `<strong>Buen intento.</strong> Aciertos: <strong>${ok}/10</strong>. Meta: 8/10. Reinicia y prueba de nuevo.`
+        ) + `<br><span style="color:rgba(11,16,32,.72)">Tiempo: ${seconds}s · Intentos: ${tries}</span>`;
+    }
+  }
+
+  function show(){
+    const cur=deck[i];
+    roundEl.textContent = `Pista ${i+1}/10`;
+    clueEl.textContent = cur.q;
+    msgEl.style.display="none";
+    btnNext.disabled=true;
+    locked=false;
+  }
+
+  function next(){
+    if(i>=9) return;
+    i++;
+    show();
+  }
+
+  function restart(){
+    stopTimer();
+    seconds=0; i=0; ok=0; tries=0; streak=0;
+    timeEl.textContent="0"; okEl.textContent="0"; tryEl.textContent="0"; streakEl.textContent="0";
+    deck = shuffle(BANK).slice(0,10);
+    show();
+  }
+
+  document.getElementById("hzBtns").querySelectorAll("button").forEach(b=>{
+    b.addEventListener("click", ()=>pick(b.dataset.hz));
+  });
+  document.getElementById("hzSkip").addEventListener("click", ()=>{
+    startTimer();
+    streak=0;
+    streakEl.textContent=String(streak);
+    next();
+  });
+  document.getElementById("hzNext").addEventListener("click", next);
+  document.getElementById("hzRestart").addEventListener("click", restart);
+
+  restart();
+})();
+</script>
+</body>
+</html>

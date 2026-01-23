@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4.5 Conservación del suelo · EPC AALA</title>
+  <meta name="description" content="Prácticas de conservación del suelo: curvas a nivel, barreras y cobertura. Juegos: sopa de letras y planificador." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  /* Suelo: verdes + arenas suaves */
+  --a1: rgba(214, 240, 220, .92);
+  --a2: rgba(235, 248, 228, .88);
+  --a3: rgba(255, 242, 220, .80);
+  --a4: rgba(225, 236, 255, .60);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --info: rgba(56,189,248,.16);
+  --warn: rgba(245,158,11,.14);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(34,197,94,.18);
+  --accent2: rgba(245,158,11,.16);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #f4fff7 0%, #f6f1e6 45%, #f2fbff 100%);
+  min-height:100vh;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+header{
+  border:1px solid var(--stroke);
+  background:var(--glass);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.kicker{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:6px 10px;border-radius:999px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  font-weight:800;font-size:12px;color:rgba(11,16,32,.78);
+  box-shadow:var(--shadow-soft);
+}
+h1{
+  margin:10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  letter-spacing:.2px;
+  line-height:1.08;
+  font-size:clamp(22px, 2.7vw, 34px);
+}
+.subtitle{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+  max-width:96ch;
+}
+.nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.btn{
+  appearance:none;border:1px solid rgba(11,16,32,.12);
+  background:var(--btn);border-radius:14px;
+  padding:10px 12px;text-decoration:none;
+  font-weight:800;font-size:13px;color:rgba(11,16,32,.86);
+  box-shadow:var(--shadow-soft);
+  user-select:none;display:inline-flex;align-items:center;gap:8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;white-space:nowrap;
+}
+.btn:hover{background:var(--btnh);border-color:rgba(11,16,32,.18);}
+.btn:active{transform:translateY(1px);}
+.btn.primary{background: rgba(34,197,94,.18); border-color: rgba(34,197,94,.22);}
+main.stack{display:flex;flex-direction:column;gap:14px;margin-top:14px;}
+.card{
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(10px);
+  padding:16px;
+}
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.hint{font-size:13px;color:rgba(11,16,32,.72);line-height:1.55;margin:8px 0 0;}
+.twoCols{margin-top:10px;display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:start;}
+@media (max-width:980px){.twoCols{grid-template-columns:1fr;}}
+.box{
+  border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.box p{margin:0 0 10px;color:rgba(11,16,32,.82);line-height:1.65;font-size:13.6px;}
+.box ul{margin:8px 0 0 18px;color:rgba(11,16,32,.82);font-size:13.4px;line-height:1.6;}
+.box li{margin:6px 0;}
+.grid3{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media (max-width:980px){.grid3{grid-template-columns:1fr;}}
+.pill{
+  border:1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(235,248,228,.72), rgba(255,255,255,.58));
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.pill .t{font-weight:900;font-family:Outfit, Inter, system-ui; letter-spacing:.2px;}
+.pill .s{margin:6px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.45;}
+.result{
+  margin-top:10px;border-radius:16px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.55);padding:12px;
+  font-size:13px;line-height:1.55;color:rgba(11,16,32,.82);
+  display:none;
+}
+.result.show{display:block;}
+.result.good{background:var(--good);border-color:rgba(34,197,94,.28);}
+.result.bad{background:var(--bad);border-color:rgba(225,29,72,.22);}
+.result.info{background:var(--info);border-color:rgba(56,189,248,.22);}
+.result.warn{background:var(--warn);border-color:rgba(245,158,11,.25);}
+.mini{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:999px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+}
+footer{text-align:center;padding:18px 0 4px;color:rgba(11,16,32,.58);font-size:13px;}
+/* map */
+.mapTop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+.mapBtns{display:flex;gap:10px;flex-wrap:wrap;}
+.mapWrap{
+  margin-top:10px;border-radius:18px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);
+  overflow:hidden;position:relative;padding:10px;
+}
+svg#mindmap{width:100%;height:520px;display:block;border-radius:14px;background:
+  radial-gradient(700px 380px at 20% 0%, rgba(34,197,94,.10), transparent 55%),
+  radial-gradient(700px 380px at 80% 10%, rgba(245,158,11,.10), transparent 55%);
+}
+.fallback{
+  display:none;margin-top:10px;padding:10px 12px;border-radius:14px;border:1px dashed rgba(11,16,32,.18);
+  background:rgba(255,255,255,.55);color:rgba(11,16,32,.72);
+}
+.fallback.show{display:block;}
+/* common game bits */
+.gameGrid{margin-top:10px;display:grid;grid-template-columns:1.1fr .9fr;gap:12px;align-items:start;}
+@media (max-width:980px){.gameGrid{grid-template-columns:1fr;}}
+.panel{
+  border-radius:18px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  padding:12px;box-shadow:var(--shadow-soft);
+}
+.panel h3{margin:0;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:15px;}
+.panel p{margin:8px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+.kpiGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px;}
+@media (max-width:520px){.kpiGrid{grid-template-columns:1fr;}}
+.kpi{
+  border-radius:16px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);box-shadow:var(--shadow-soft);
+  padding:10px;
+}
+.kpi .k{font-size:12px;color:rgba(11,16,32,.70);font-weight:800;}
+.kpi .v{margin-top:6px;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:18px;letter-spacing:.2px;}
+.kpi .u{font-size:12px;color:rgba(11,16,32,.62);margin-top:2px;}
+
+  
+
+/* Juego 3 (4-5): Curva a nivel */
+.contGrid{ margin-top:10px; display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; align-items:start; }
+@media (max-width: 980px){ .contGrid{ grid-template-columns:1fr; } }
+#contour{ width:100%; height:auto; display:block; border-radius:14px; background: rgba(255,255,255,.55); }
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 4 · El suelo</div>
+        <h1>4.5 Conservación del suelo</h1>
+        <p class="subtitle">Conservar el suelo es clave para la cuenca: reduce erosión, mejora infiltración y evita que sedimentos lleguen a ríos y al lago. Aquí practicarás conceptos con actividades lúdicas.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="4-4.html">Anterior (4.4)</a>
+        <a class="btn primary" href="index.html">Siguiente (Inicio)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+<section class="card">
+  <h2>Contexto teórico (ampliado)</h2>
+
+  <div class="twoCols" style="margin-top:10px;">
+    <div class="box">
+      <p>
+        Conservar el suelo es conservar el agua. Las prácticas de conservación buscan:
+        <strong>reducir la velocidad del agua</strong>, <strong>aumentar infiltración</strong> y <strong>mantener cobertura</strong>.
+        En laderas, lo más importante es <strong>no dejar el suelo desnudo</strong>.
+      </p>
+
+      <p><strong>Prácticas clave en laderas</strong></p>
+      <ul>
+        <li><strong>Curvas a nivel:</strong> siembras y barreras siguiendo la “línea de nivel” para frenar el agua.</li>
+        <li><strong>Barreras vivas:</strong> plantas en franjas (por ejemplo, pastos o arbustos) que retienen suelo.</li>
+        <li><strong>Terrazas:</strong> escalones que reducen pendiente y escorrentía.</li>
+        <li><strong>Rastrojo/cobertura:</strong> dejar residuos de cosecha o sembrar cobertura para proteger el suelo.</li>
+      </ul>
+
+      <div class="result info" style="margin-top:10px;">
+        <strong>Tip:</strong> la cobertura vegetal y el humus ayudan a que el suelo funcione como “esponja”.
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>Prácticas en parcelas y fincas</strong></p>
+      <ul>
+        <li><strong>Rotación</strong> de cultivos y <strong>asociación</strong> (intercalado) para proteger el suelo.</li>
+        <li><strong>Rompevientos</strong> (cortinas de árboles) para reducir erosión por viento.</li>
+        <li><strong>Abonos orgánicos</strong> y compost para subir materia orgánica.</li>
+        <li><strong>Manejo de agua</strong>: zanjas de infiltración, drenajes y protección de nacimientos.</li>
+      </ul>
+
+      <p style="margin-top:10px;"><strong>Resultado esperado</strong></p>
+      <ul>
+        <li>Menos sedimento en ríos/lago.</li>
+        <li>Más infiltración y recarga en época de lluvia.</li>
+        <li>Mejor rendimiento y resiliencia del cultivo.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:12px;">
+    <div class="pill">
+      <div class="t">Cobertura</div>
+      <p class="s">Lo más barato y efectivo: suelo cubierto todo el año reduce erosión y mantiene humedad.</p>
+    </div>
+    <div class="pill">
+      <div class="t">Barreras</div>
+      <p class="s">Vivas o muertas (piedras, troncos): frenan el agua y atrapan sedimentos en la parcela.</p>
+    </div>
+    <div class="pill">
+      <div class="t">Reforestación</div>
+      <p class="s">Protege laderas y nacimientos. Raíces estabilizan el terreno y mejoran infiltración.</p>
+    </div>
+  </div>
+</section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajusta, pliega/despliega y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">No se pudo cargar el mapa mental. Revisa tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · Sopa de letras: conservación del suelo</h2>
+        <div class="hint">Encuentra las palabras en el tablero. Haz clic y arrastra para seleccionar letras (horizontal, vertical o diagonal).</div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Tablero</h3>
+
+            <div class="box" style="margin-top:10px;">
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <span class="mini">Tiempo: <span id="wsTime">0</span>s</span>
+                <span class="mini">Encontradas: <span id="wsFound">0</span>/<span id="wsTotal">0</span></span>
+                <button class="btn" id="wsReset" type="button">Nuevo tablero</button>
+              </div>
+
+              <div id="wsGrid" style="margin-top:10px; display:grid; grid-template-columns: repeat(12, 1fr); gap:6px;"></div>
+            </div>
+
+            <div class="result" id="wsMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Lista de palabras</h3>
+            <div class="box" style="margin-top:10px;">
+              <div id="wsWords" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+            </div>
+
+            <div class="result info show" style="margin-top:10px;">
+              Consejo: busca primero palabras largas. Si te trabas, reinicia para un tablero nuevo.
+            </div>
+          </div>
+        </div>
+
+        <style>
+          .cell{
+            border-radius:12px;border:1px solid rgba(11,16,32,.12);
+            background:rgba(255,255,255,.62);box-shadow:0 10px 22px rgba(11,16,32,.06);
+            aspect-ratio: 1 / 1;
+            display:flex; align-items:center; justify-content:center;
+            font-weight:900; font-family:Outfit, Inter, system-ui;
+            cursor:pointer; user-select:none;
+          }
+          .cell.sel{ outline: 3px solid rgba(34,197,94,.28); }
+          .cell.hit{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+          .wordChip{
+            display:inline-flex;align-items:center;gap:8px;
+            padding:8px 10px;border-radius:999px;border:1px solid rgba(11,16,32,.12);
+            background:rgba(255,255,255,.62);font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+          }
+          .wordChip.done{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.22); }
+        </style>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Planificador de conservación (con presupuesto)</h2>
+        <div class="hint">Elige prácticas sin pasarte del presupuesto. Tu meta: Erosión ≤ 35 y Humedad ≥ 65 y Vida ≥ 60.</div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Selecciona prácticas</h3>
+            <p>Presupuesto: <strong><span id="bp">12</span></strong> puntos · Gastado: <strong><span id="spent">0</span></strong></p>
+
+            <div id="planList" style="margin-top:10px; display:grid; gap:10px;"></div>
+
+            <div class="actions">
+              <button class="btn primary" id="planEval" type="button">Evaluar plan</button>
+              <button class="btn" id="planReset" type="button">Reiniciar</button>
+            </div>
+
+            <div class="result" id="planMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Resultados</h3>
+
+            <div class="kpiGrid">
+              <div class="kpi"><div class="k">Erosión</div><div class="v" id="pEro">55</div><div class="u">0–100 (más alto = peor)</div></div>
+              <div class="kpi"><div class="k">Humedad</div><div class="v" id="pHum">50</div><div class="u">0–100</div></div>
+              <div class="kpi"><div class="k">Vida del suelo</div><div class="v" id="pLife">45</div><div class="u">0–100</div></div>
+              <div class="kpi"><div class="k">Sedimentos a la cuenca</div><div class="v" id="pSed">60</div><div class="u">0–100 (más alto = peor)</div></div>
+            </div>
+
+            <div class="box" style="margin-top:10px;">
+              <p style="margin:0;">
+                Las mejores combinaciones suelen incluir: <strong>cobertura</strong> + <strong>curvas/barreras</strong> + <strong>materia orgánica</strong>.
+              </p>
+            </div>
+
+            <div style="margin-top:10px;">
+              <svg viewBox="0 0 560 220" width="100%" height="auto" aria-label="Ladera y barreras">
+                <path d="M40 170 C170 90, 310 70, 520 40" fill="none" stroke="rgba(11,16,32,.18)" stroke-width="4" stroke-linecap="round"/>
+                <g id="barriers"></g>
+                <text x="40" y="200" font-family="Inter,system-ui" font-weight="800" fill="rgba(11,16,32,.70)">ladera</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+
+      <section class="card">
+  <h2>Juego 3 · Curvas a nivel: coloca estacas en la línea</h2>
+  <div class="hint">
+    Haz clic en el mapa para colocar <strong>8 estacas</strong> cerca de la línea punteada (curva a nivel).
+    Si colocas estacas “en nivel”, el agua se frena y puede infiltrar.
+  </div>
+
+  <div class="contGrid">
+    <div class="svgWrap">
+      <canvas id="contour" width="560" height="340" aria-label="Curvas a nivel"></canvas>
+      <div class="tipRow">
+        <button class="btn" type="button" id="ctReset">Reiniciar</button>
+        <button class="btn primary" type="button" id="ctCheck">Evaluar</button>
+        <span class="mini">Estacas: <span id="ctN">0</span>/8</span>
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>Resultado</strong></p>
+      <div class="kpiGrid" style="margin-top:10px;">
+        <div class="kpi">
+          <div class="k">Aciertos</div>
+          <div class="v" id="ctOk">0</div>
+          <div class="u">cerca de la línea</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Precisión</div>
+          <div class="v" id="ctAcc">0%</div>
+          <div class="u">aprox.</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Efecto</div>
+          <div class="v" id="ctEff">—</div>
+          <div class="u">sobre escorrentía</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Tip</div>
+          <div class="v" id="ctTip">—</div>
+          <div class="u">mejora</div>
+        </div>
+      </div>
+
+      <div class="result info" style="margin-top:10px;">
+        <strong>Conexión:</strong> en campo se pueden marcar curvas a nivel con un <em>marco en A</em> y luego sembrar barreras vivas o hacer camellones.
+      </div>
+
+      <div class="result" id="ctMsg" style="display:none;"></div>
+    </div>
+  </div>
+</section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    window.__MM_MD__ = `# 4.5 Conservación del suelo
+## Objetivo
+- Frenar el agua, aumentar infiltración y proteger la capa fértil
+## En laderas
+- Curvas a nivel
+- Barreras vivas (franjas de plantas)
+- Terrazas
+- Suelo siempre cubierto (rastrojo/cobertura)
+## En parcelas
+- Rotación y asociación de cultivos
+- Rompevientos
+- Abonos orgánicos y compost
+- Manejo del agua (zanjas, drenajes, nacimientos)
+## Beneficios
+- Menos erosión y sedimentos
+- Más recarga y agua constante
+- Mejor productividad y resiliencia`;
+
+let mm=null, expanded=true;
+function renderMap(md){
+  const fb=document.getElementById('mapFallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const {Transformer,Markmap}=window.markmap;
+    const t=new Transformer();
+    const {root}=t.transform(md);
+    const svg=document.getElementById('mindmap');
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok=renderMap(window.__MM_MD__);
+  if(ok || tries>12) clearInterval(it);
+},300);
+
+document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+document.getElementById('btnToggle').onclick=()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded=!expanded;
+};
+document.getElementById('btnResetMap').onclick=()=>{
+  mm=null; expanded=true; renderMap(window.__MM_MD__);
+};
+
+
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+
+// ===== Juego 1: Word Search =====
+const SIZE=12;
+const WORDS=["CURVAS","BARRERAS","COBERTURA","COMPOST","TERRAZAS","INFILTRA","HUMUS","MULCH","REFORESTA","DRENAJE"].map(w=>w.replace("Á","A").replace("É","E"));
+let grid=[], placed=[], found=new Set();
+let t=0, timer=null, selecting=false, startIdx=null, currentSel=[];
+
+const wsGrid=document.getElementById('wsGrid');
+const wsWords=document.getElementById('wsWords');
+const wsTime=document.getElementById('wsTime');
+const wsFound=document.getElementById('wsFound');
+const wsTotal=document.getElementById('wsTotal');
+const wsMsg=document.getElementById('wsMsg');
+
+const dirs=[
+  {dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1},
+  {dx:1,dy:1},{dx:-1,dy:-1},{dx:1,dy:-1},{dx:-1,dy:1},
+];
+
+function idx(x,y){ return y*SIZE + x; }
+function inb(x,y){ return x>=0 && x<SIZE && y>=0 && y<SIZE; }
+
+function emptyGrid(){
+  grid = Array.from({length:SIZE*SIZE}, ()=>"");
+  placed = [];
+  found = new Set();
+}
+
+function canPlace(word, x,y, d){
+  for(let i=0;i<word.length;i++){
+    const xx=x + d.dx*i, yy=y + d.dy*i;
+    if(!inb(xx,yy)) return false;
+    const cur=grid[idx(xx,yy)];
+    if(cur!=="" && cur!==word[i]) return false;
+  }
+  return true;
+}
+
+function placeWord(word){
+  for(let k=0;k<600;k++){
+    const d=dirs[Math.floor(Math.random()*dirs.length)];
+    const x=Math.floor(Math.random()*SIZE);
+    const y=Math.floor(Math.random()*SIZE);
+    if(!canPlace(word,x,y,d)) continue;
+    const cells=[];
+    for(let i=0;i<word.length;i++){
+      const xx=x+d.dx*i, yy=y+d.dy*i;
+      grid[idx(xx,yy)]=word[i];
+      cells.push(idx(xx,yy));
+    }
+    placed.push({word, cells});
+    return true;
+  }
+  return false;
+}
+
+function fillRandom(){
+  const letters="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".replace("Ñ","");
+  for(let i=0;i<grid.length;i++){
+    if(grid[i]==="") grid[i]=letters[Math.floor(Math.random()*letters.length)];
+  }
+}
+
+function renderWords(){
+  wsWords.innerHTML="";
+  WORDS.forEach(w=>{
+    const chip=document.createElement('span');
+    chip.className="wordChip" + (found.has(w) ? " done" : "");
+    chip.textContent=w;
+    wsWords.appendChild(chip);
+  });
+  wsTotal.textContent=String(WORDS.length);
+  wsFound.textContent=String(found.size);
+}
+
+function renderGrid(){
+  wsGrid.innerHTML="";
+  grid.forEach((ch,i)=>{
+    const c=document.createElement('div');
+    c.className="cell";
+    c.textContent=ch;
+    c.dataset.i=String(i);
+    c.addEventListener('pointerdown', ()=>startSelect(i));
+    c.addEventListener('pointerenter', ()=>extendSelect(i));
+    c.addEventListener('pointerup', endSelect);
+    wsGrid.appendChild(c);
+  });
+  wsGrid.addEventListener('pointerleave', ()=>{ if(selecting) endSelect(); });
+}
+
+function clearSel(){
+  currentSel.forEach(i=>{
+    const el=wsGrid.querySelector(`.cell[data-i="${i}"]`);
+    if(el) el.classList.remove('sel');
+  });
+  currentSel=[];
+}
+
+function startSelect(i){
+  if(!timer){
+    timer=setInterval(()=>{t++; wsTime.textContent=String(t);},1000);
+  }
+  selecting=true;
+  startIdx=i;
+  clearSel();
+  currentSel=[i];
+  wsGrid.querySelector(`.cell[data-i="${i}"]`).classList.add('sel');
+}
+function extendSelect(i){
+  if(!selecting) return;
+  clearSel();
+  const sx=startIdx%SIZE, sy=Math.floor(startIdx/SIZE);
+  const ex=i%SIZE, ey=Math.floor(i/SIZE);
+  const dx=ex-sx, dy=ey-sy;
+  let stepX=0, stepY=0;
+  if(dx===0 && dy===0){ stepX=0; stepY=0; }
+  else if(dx===0){ stepX=0; stepY=dy>0?1:-1; }
+  else if(dy===0){ stepX=dx>0?1:-1; stepY=0; }
+  else if(Math.abs(dx)===Math.abs(dy)){ stepX=dx>0?1:-1; stepY=dy>0?1:-1; }
+  else{
+    currentSel=[startIdx];
+    wsGrid.querySelector(`.cell[data-i="${startIdx}"]`).classList.add('sel');
+    return;
+  }
+  const len = Math.max(Math.abs(dx), Math.abs(dy));
+  const sel=[];
+  for(let k=0;k<=len;k++){
+    const xx=sx+stepX*k, yy=sy+stepY*k;
+    if(!inb(xx,yy)) break;
+    sel.push(idx(xx,yy));
+  }
+  currentSel=sel;
+  currentSel.forEach(ii=>wsGrid.querySelector(`.cell[data-i="${ii}"]`).classList.add('sel'));
+}
+
+function getSelWord(){
+  return currentSel.map(i=>grid[i]).join("");
+}
+
+function markCells(cells){
+  cells.forEach(i=>{
+    const el=wsGrid.querySelector(`.cell[data-i="${i}"]`);
+    if(el){ el.classList.remove('sel'); el.classList.add('hit'); }
+  });
+}
+
+function endSelect(){
+  if(!selecting) return;
+  selecting=false;
+
+  const w=getSelWord();
+  const wr=w.split("").reverse().join("");
+  let hit=null;
+  placed.forEach(p=>{
+    if(found.has(p.word)) return;
+    if(w===p.word || wr===p.word) hit=p;
+  });
+
+  wsMsg.classList.add('show');
+  if(hit){
+    found.add(hit.word);
+    markCells(hit.cells);
+    wsMsg.className="result good show";
+    wsMsg.innerHTML=`<strong>¡Encontraste!</strong> ${hit.word}`;
+    renderWords();
+    if(found.size===WORDS.length){
+      clearInterval(timer); timer=null;
+      wsMsg.className="result info show";
+      wsMsg.innerHTML=`<strong>¡Completado!</strong> Tiempo: <strong>${t}s</strong>.`;
+    }
+  }else{
+    wsMsg.className="result warn show";
+    wsMsg.innerHTML=`<strong>No coincide.</strong> Intenta otra selección.`;
+    clearSel();
+  }
+}
+
+function newBoard(){
+  if(timer){ clearInterval(timer); timer=null; }
+  t=0; wsTime.textContent="0";
+  wsMsg.className="result"; wsMsg.textContent=""; wsMsg.classList.remove('show');
+  emptyGrid();
+  const order=[...WORDS].sort(()=>Math.random()-0.5);
+  order.forEach(w=>placeWord(w));
+  fillRandom();
+  renderGrid();
+  renderWords();
+}
+
+document.getElementById('wsReset').addEventListener('click', newBoard);
+newBoard();
+
+// ===== Juego 2: Planificador =====
+const BUDGET=12;
+const bp=document.getElementById('bp');
+const spent=document.getElementById('spent');
+const planList=document.getElementById('planList');
+const planMsg=document.getElementById('planMsg');
+
+const pEro=document.getElementById('pEro');
+const pHum=document.getElementById('pHum');
+const pLife=document.getElementById('pLife');
+const pSed=document.getElementById('pSed');
+
+const barriers=document.getElementById('barriers');
+
+bp.textContent=String(BUDGET);
+
+const PRACTICES=[
+  {id:"cov",  name:"Cobertura (mulch/rastrojo)", cost:3, d:{ero:-14, hum:+10, life:+8, sed:-12}, note:"Protege suelo y retiene humedad."},
+  {id:"cont", name:"Curvas a nivel", cost:3, d:{ero:-18, sed:-15}, note:"Frena escorrentía en pendiente."},
+  {id:"live", name:"Barreras vivas", cost:2, d:{ero:-12, hum:+4, sed:-10}, note:"Retienen suelo y mejoran infiltración."},
+  {id:"dead", name:"Barreras muertas (piedra/ramas)", cost:2, d:{ero:-10, sed:-8}, note:"Obstáculos que retienen sedimento."},
+  {id:"terr", name:"Terrazas / fajas", cost:4, d:{ero:-20, sed:-18}, note:"Reduce pendiente efectiva."},
+  {id:"comp", name:"Compost", cost:3, d:{hum:+14, life:+12, ero:-6}, note:"Aumenta humus y vida del suelo."},
+  {id:"tree", name:"Reforestación en zonas clave", cost:4, d:{ero:-16, hum:+6, sed:-14, life:+6}, note:"Protege recarga y laderas."},
+  {id:"drn",  name:"Drenajes/cunetas bien dirigidos", cost:2, d:{ero:-8, sed:-10}, note:"Evita cárcavas en caminos."}
+];
+
+let selected=new Set();
+let base={ero:55, hum:50, life:45, sed:60};
+
+function updatePlanUI(){
+  planList.innerHTML="";
+  let sp=0;
+  selected.forEach(id=>{
+    const p=PRACTICES.find(x=>x.id===id);
+    if(p) sp+=p.cost;
+  });
+  spent.textContent=String(sp);
+
+  PRACTICES.forEach(p=>{
+    const row=document.createElement('div');
+    row.className="box";
+    row.style.display="grid";
+    row.style.gridTemplateColumns="1fr auto";
+    row.style.gap="10px";
+    row.style.alignItems="start";
+
+    const left=document.createElement('div');
+    left.innerHTML = `<p style="margin:0 0 6px;"><strong>${p.name}</strong> <span class="mini" style="padding:3px 8px;">Costo ${p.cost}</span></p>
+      <div class="hint" style="margin:0;">${p.note}</div>`;
+
+    const right=document.createElement('button');
+    right.type="button";
+    right.className="btn";
+    right.textContent = selected.has(p.id) ? "Quitar" : "Agregar";
+    right.addEventListener('click', ()=>{
+      if(selected.has(p.id)){
+        selected.delete(p.id);
+      }else{
+        const newSpent = sp + p.cost;
+        if(newSpent > BUDGET){
+          planMsg.className="result warn show";
+          planMsg.classList.add('show');
+          planMsg.innerHTML = `<strong>Presupuesto excedido.</strong> Te faltan ${(newSpent-BUDGET)} puntos.`;
+          return;
+        }
+        selected.add(p.id);
+      }
+      planMsg.className="result"; planMsg.classList.remove('show');
+      updatePlanUI();
+      computePreview();
+    });
+
+    row.appendChild(left);
+    row.appendChild(right);
+    planList.appendChild(row);
+  });
+}
+
+function computePreview(){
+  let st={...base};
+  selected.forEach(id=>{
+    const p=PRACTICES.find(x=>x.id===id);
+    if(!p) return;
+    for(const k in p.d) st[k]=clamp(st[k]+p.d[k],0,100);
+  });
+  pEro.textContent=String(st.ero);
+  pHum.textContent=String(st.hum);
+  pLife.textContent=String(st.life);
+  pSed.textContent=String(st.sed);
+
+  barriers.innerHTML="";
+  const n = (selected.has("cont")?3:0) + (selected.has("live")?2:0) + (selected.has("dead")?2:0) + (selected.has("terr")?3:0);
+  for(let i=0;i<n;i++){
+    const x=110 + i*120;
+    const y=160 - i*18;
+    const line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("x1", x); line.setAttribute("y1", y);
+    line.setAttribute("x2", x+40); line.setAttribute("y2", y-24);
+    line.setAttribute("stroke","rgba(34,197,94,.35)");
+    line.setAttribute("stroke-width","6");
+    line.setAttribute("stroke-linecap","round");
+    barriers.appendChild(line);
+  }
+}
+
+document.getElementById('planEval').addEventListener('click', ()=>{
+  const ero=+pEro.textContent, hum=+pHum.textContent, life=+pLife.textContent;
+  const ok = (ero<=35 && hum>=65 && life>=60);
+  planMsg.classList.add('show');
+  if(ok){
+    planMsg.className="result good show";
+    planMsg.innerHTML = `<strong>¡Plan sólido!</strong> Controlas erosión y fortaleces humus/vida.`;
+  }else{
+    planMsg.className="result warn show";
+    planMsg.innerHTML = `<strong>Aún falta.</strong> Prueba combinar <em>cobertura</em> + <em>curvas/barreras</em> + <em>compost</em>.`;
+  }
+});
+
+document.getElementById('planReset').addEventListener('click', ()=>{
+  selected=new Set();
+  planMsg.className="result"; planMsg.classList.remove('show');
+  updatePlanUI();
+  computePreview();
+});
+
+updatePlanUI();
+computePreview();
+  
+
+/* =========================
+   JUEGO 3 (4-5): Curvas a nivel (estacas)
+   ========================= */
+(function(){
+  const c = document.getElementById("contour");
+  const ctx = c.getContext("2d");
+
+  const nEl  = document.getElementById("ctN");
+  const okEl = document.getElementById("ctOk");
+  const accEl= document.getElementById("ctAcc");
+  const effEl= document.getElementById("ctEff");
+  const tipEl= document.getElementById("ctTip");
+  const msgEl= document.getElementById("ctMsg");
+
+  const MAX = 8;
+  const TOL = 18; // px tolerance to contour
+
+  let stakes = [];
+
+  function contourY(x){
+    // dashed contour line function
+    return 170 + 40*Math.sin((x-40)/85) + 10*Math.sin((x-40)/27);
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+
+    // elevation background (bands)
+    for(let y=0;y<c.height;y+=18){
+      const a = 0.05 + (y/c.height)*0.08;
+      ctx.fillStyle = `rgba(34,197,94, ${a})`;
+      ctx.fillRect(0,y,c.width,18);
+    }
+
+    // slope arrow
+    ctx.strokeStyle="rgba(11,16,32,.18)";
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    ctx.moveTo(40,60);
+    ctx.lineTo(40,280);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(30,270); ctx.lineTo(40,280); ctx.lineTo(50,270);
+    ctx.stroke();
+    ctx.fillStyle="rgba(11,16,32,.70)";
+    ctx.font="800 12px Inter, system-ui";
+    ctx.fillText("Baja", 16, 298);
+    ctx.fillText("Sube", 14, 52);
+
+    // dashed contour line
+    ctx.setLineDash([8,8]);
+    ctx.strokeStyle="rgba(56,189,248,.55)";
+    ctx.lineWidth=4;
+    ctx.beginPath();
+    for(let x=40;x<=c.width-40;x+=4){
+      const y = contourY(x);
+      if(x===40) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle="rgba(11,16,32,.72)";
+    ctx.font="900 14px Inter, system-ui";
+    ctx.fillText("Curva a nivel (línea punteada)", 54, 24);
+
+    // stakes
+    stakes.forEach(s=>{
+      const d = Math.abs(s.y - contourY(s.x));
+      const ok = d <= TOL;
+      ctx.fillStyle = ok ? "rgba(34,197,94,.75)" : "rgba(245,158,11,.75)";
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, 6, 0, Math.PI*2);
+      ctx.fill();
+
+      // small stem
+      ctx.strokeStyle="rgba(11,16,32,.22)";
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(s.x, s.y+14);
+      ctx.stroke();
+    });
+
+    // instruction
+    ctx.fillStyle="rgba(11,16,32,.70)";
+    ctx.font="800 12px Inter, system-ui";
+    ctx.fillText("Haz clic para colocar estacas (8).", 54, 44);
+  }
+
+  function reset(){
+    stakes=[];
+    nEl.textContent="0";
+    okEl.textContent="0";
+    accEl.textContent="0%";
+    effEl.textContent="—";
+    tipEl.textContent="—";
+    msgEl.style.display="none";
+    draw();
+  }
+
+  function evaluate(){
+    if(stakes.length<MAX){
+      msgEl.style.display="block";
+      msgEl.className="result warn";
+      msgEl.innerHTML = `<strong>Te faltan estacas.</strong> Llevas ${stakes.length}/${MAX}.`;
+      return;
+    }
+    let ok=0, sumd=0;
+    stakes.forEach(s=>{
+      const d = Math.abs(s.y - contourY(s.x));
+      sumd += d;
+      if(d <= TOL) ok++;
+    });
+    okEl.textContent=String(ok);
+    const acc = Math.round((ok/MAX)*100);
+    accEl.textContent = acc + "%";
+
+    const avgd = sumd/MAX;
+    let eff="Media", tip="Ajusta al nivel";
+    let cls="warn";
+    if(ok>=7){ eff="Alta"; tip="¡Excelente! Ahora agrega barreras vivas."; cls="ok"; }
+    else if(ok>=5){ eff="Media"; tip="Mejora: coloca más cerca de la línea."; cls="info"; }
+    else { eff="Baja"; tip="Vuelve a intentar: sigue la línea punteada."; cls="no"; }
+
+    effEl.textContent=eff;
+    tipEl.textContent=tip;
+
+    msgEl.style.display="block";
+    msgEl.className="result " + cls;
+    msgEl.innerHTML = `<strong>Evaluación:</strong> ${ok}/${MAX} estacas cerca de la curva (tolerancia ${TOL}px).<br>
+      <span style="color:rgba(11,16,32,.72)">Promedio de distancia: ${Math.round(avgd)} px.</span>`;
+    draw();
+  }
+
+  c.addEventListener("click", (e)=>{
+    if(stakes.length>=MAX) return;
+    const r = c.getBoundingClientRect();
+    const x = (e.clientX - r.left) * (c.width / r.width);
+    const y = (e.clientY - r.top) * (c.height / r.height);
+    // keep within drawable area
+    if(x<40 || x>c.width-40 || y<60 || y>c.height-40) return;
+    stakes.push({x, y});
+    nEl.textContent = String(stakes.length);
+    draw();
+  });
+
+  document.getElementById("ctReset").addEventListener("click", reset);
+  document.getElementById("ctCheck").addEventListener("click", evaluate);
+
+  reset();
+})();
+</script>
+</body>
+</html>

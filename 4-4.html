@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4.4 Empobrecimiento del suelo · EPC AALA</title>
+  <meta name="description" content="Causas y efectos del empobrecimiento del suelo. Juegos: temporada agrícola y ruleta de riesgos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  /* Suelo: verdes + arenas suaves */
+  --a1: rgba(214, 240, 220, .92);
+  --a2: rgba(235, 248, 228, .88);
+  --a3: rgba(255, 242, 220, .80);
+  --a4: rgba(225, 236, 255, .60);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --info: rgba(56,189,248,.16);
+  --warn: rgba(245,158,11,.14);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(34,197,94,.18);
+  --accent2: rgba(245,158,11,.16);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #f4fff7 0%, #f6f1e6 45%, #f2fbff 100%);
+  min-height:100vh;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+header{
+  border:1px solid var(--stroke);
+  background:var(--glass);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.kicker{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:6px 10px;border-radius:999px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  font-weight:800;font-size:12px;color:rgba(11,16,32,.78);
+  box-shadow:var(--shadow-soft);
+}
+h1{
+  margin:10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  letter-spacing:.2px;
+  line-height:1.08;
+  font-size:clamp(22px, 2.7vw, 34px);
+}
+.subtitle{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+  max-width:96ch;
+}
+.nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.btn{
+  appearance:none;border:1px solid rgba(11,16,32,.12);
+  background:var(--btn);border-radius:14px;
+  padding:10px 12px;text-decoration:none;
+  font-weight:800;font-size:13px;color:rgba(11,16,32,.86);
+  box-shadow:var(--shadow-soft);
+  user-select:none;display:inline-flex;align-items:center;gap:8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;white-space:nowrap;
+}
+.btn:hover{background:var(--btnh);border-color:rgba(11,16,32,.18);}
+.btn:active{transform:translateY(1px);}
+.btn.primary{background: rgba(34,197,94,.18); border-color: rgba(34,197,94,.22);}
+main.stack{display:flex;flex-direction:column;gap:14px;margin-top:14px;}
+.card{
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.62);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(10px);
+  padding:16px;
+}
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.hint{font-size:13px;color:rgba(11,16,32,.72);line-height:1.55;margin:8px 0 0;}
+.twoCols{margin-top:10px;display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:start;}
+@media (max-width:980px){.twoCols{grid-template-columns:1fr;}}
+.box{
+  border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.box p{margin:0 0 10px;color:rgba(11,16,32,.82);line-height:1.65;font-size:13.6px;}
+.box ul{margin:8px 0 0 18px;color:rgba(11,16,32,.82);font-size:13.4px;line-height:1.6;}
+.box li{margin:6px 0;}
+.grid3{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media (max-width:980px){.grid3{grid-template-columns:1fr;}}
+.pill{
+  border:1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(235,248,228,.72), rgba(255,255,255,.58));
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+}
+.pill .t{font-weight:900;font-family:Outfit, Inter, system-ui; letter-spacing:.2px;}
+.pill .s{margin:6px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.45;}
+.result{
+  margin-top:10px;border-radius:16px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.55);padding:12px;
+  font-size:13px;line-height:1.55;color:rgba(11,16,32,.82);
+  display:none;
+}
+.result.show{display:block;}
+.result.good{background:var(--good);border-color:rgba(34,197,94,.28);}
+.result.bad{background:var(--bad);border-color:rgba(225,29,72,.22);}
+.result.info{background:var(--info);border-color:rgba(56,189,248,.22);}
+.result.warn{background:var(--warn);border-color:rgba(245,158,11,.25);}
+.mini{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:999px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+}
+footer{text-align:center;padding:18px 0 4px;color:rgba(11,16,32,.58);font-size:13px;}
+/* map */
+.mapTop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+.mapBtns{display:flex;gap:10px;flex-wrap:wrap;}
+.mapWrap{
+  margin-top:10px;border-radius:18px;border:1px solid rgba(11,16,32,.12);
+  background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);
+  overflow:hidden;position:relative;padding:10px;
+}
+svg#mindmap{width:100%;height:520px;display:block;border-radius:14px;background:
+  radial-gradient(700px 380px at 20% 0%, rgba(34,197,94,.10), transparent 55%),
+  radial-gradient(700px 380px at 80% 10%, rgba(245,158,11,.10), transparent 55%);
+}
+.fallback{
+  display:none;margin-top:10px;padding:10px 12px;border-radius:14px;border:1px dashed rgba(11,16,32,.18);
+  background:rgba(255,255,255,.55);color:rgba(11,16,32,.72);
+}
+.fallback.show{display:block;}
+/* common game bits */
+.gameGrid{margin-top:10px;display:grid;grid-template-columns:1.1fr .9fr;gap:12px;align-items:start;}
+@media (max-width:980px){.gameGrid{grid-template-columns:1fr;}}
+.panel{
+  border-radius:18px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);
+  padding:12px;box-shadow:var(--shadow-soft);
+}
+.panel h3{margin:0;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:15px;}
+.panel p{margin:8px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+.kpiGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px;}
+@media (max-width:520px){.kpiGrid{grid-template-columns:1fr;}}
+.kpi{
+  border-radius:16px;border:1px solid rgba(11,16,32,.10);
+  background:rgba(255,255,255,.58);box-shadow:var(--shadow-soft);
+  padding:10px;
+}
+.kpi .k{font-size:12px;color:rgba(11,16,32,.70);font-weight:800;}
+.kpi .v{margin-top:6px;font-family:Outfit, Inter, system-ui;font-weight:900;font-size:18px;letter-spacing:.2px;}
+.kpi .u{font-size:12px;color:rgba(11,16,32,.62);margin-top:2px;}
+
+  
+
+/* Juego 3 (4-4): Simulador de erosión */
+.eroGrid{ margin-top:10px; display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; align-items:start; }
+@media (max-width: 980px){ .eroGrid{ grid-template-columns:1fr; } }
+#erosion{ width:100%; height:auto; display:block; border-radius:14px; background: rgba(255,255,255,.5); }
+.sliderRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; }
+.sliderRow label{ font-weight:900; font-size:13px; color: rgba(11,16,32,.82); }
+.sliderRow input[type="range"]{ width: 52%; }
+.bar2{ height:12px; border-radius:999px; background: rgba(11,16,32,.10); overflow:hidden; }
+.bar2 > div{ height:100%; width:0%; background: rgba(56,189,248,.45); transition: width .15s ease; }
+.bar2.sed > div{ background: rgba(245,158,11,.40); }
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 4 · El suelo</div>
+        <h1>4.4 Empobrecimiento del suelo</h1>
+        <p class="subtitle">Cuando el suelo pierde humus, estructura y vida, baja la infiltración y aumenta la erosión. Eso afecta directamente a la cuenca: más escorrentía y sedimentos hacia ríos y lago.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="4-3.html">Anterior (4.3)</a>
+        <a class="btn primary" href="4-5.html">Siguiente (4.5)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+<section class="card">
+  <h2>Contexto teórico (ampliado)</h2>
+
+  <div class="twoCols" style="margin-top:10px;">
+    <div class="box">
+      <p>
+        El <strong>empobrecimiento del suelo</strong> ocurre cuando pierde su capacidad de producir y de regular el agua.
+        Suele empezar con la <strong>erosión</strong> (se va la capa fértil) y continúa con compactación, pérdida de humus
+        y desequilibrios por mal manejo.
+      </p>
+
+      <p><strong>Causas comunes (en cuencas con laderas)</strong></p>
+      <ul>
+        <li>Cultivar en pendiente sin barreras ni cobertura.</li>
+        <li>Dejar el suelo desnudo y hacer quemas.</li>
+        <li>Monocultivos repetidos que agotan nutrientes.</li>
+        <li>Uso excesivo de agroquímicos sin reponer materia orgánica.</li>
+      </ul>
+
+      <div class="result warn" style="margin-top:10px;">
+        <strong>Efecto dominó:</strong> menos cobertura → más escorrentía → más erosión → menos fertilidad → más presión para abrir más tierra.
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>Consecuencias en la cuenca</strong></p>
+      <ul>
+        <li>Menos infiltración: baja la recarga y se secan nacimientos en época seca.</li>
+        <li>Más sedimentos: ríos y lago se enturbian y se azolvan.</li>
+        <li>Más riesgo de deslizamientos e inundaciones rápidas.</li>
+        <li>Menor rendimiento de cultivos y mayor costo de producción.</li>
+      </ul>
+
+      <p style="margin-top:10px;"><strong>Ojo:</strong> el fertilizante químico aporta nutrientes, pero no reemplaza el papel del humus y la vida del suelo.</p>
+      <ul>
+        <li>Sin materia orgánica, el suelo retiene menos agua y se degrada más rápido.</li>
+        <li>Un suelo vivo mejora estructura, porosidad y resiliencia ante lluvias fuertes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:12px;">
+    <div class="pill">
+      <div class="t">Erosión</div>
+      <p class="s">Se va la capa fértil (A). Aparecen surcos, cárcavas y piedras expuestas.</p>
+    </div>
+    <div class="pill">
+      <div class="t">Compactación</div>
+      <p class="s">Menos poros: el agua no entra y las raíces sufren; aumenta el encharcamiento y la escorrentía.</p>
+    </div>
+    <div class="pill">
+      <div class="t">Pérdida de humus</div>
+      <p class="s">Baja la “esponja” del suelo: menos retención de agua y menos nutrientes disponibles.</p>
+    </div>
+  </div>
+</section>
+
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajusta, pliega/despliega y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Centrar</button>
+            <button class="btn" id="btnToggle" type="button">Plegar/Desplegar</button>
+            <button class="btn" id="btnResetMap" type="button">Recargar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental"></svg>
+          <div class="fallback" id="mapFallback">No se pudo cargar el mapa mental. Revisa tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 1 · “Temporada agrícola”: mantén el suelo vivo</h2>
+        <div class="hint">Gestiona 8 semanas. Cada semana eliges una acción. Habrá eventos aleatorios. Tu meta: humus ≥ 55, vida ≥ 55 y erosión ≤ 45.</div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Semana <span id="wk">1</span>/8</h3>
+            <p id="eventTxt">—</p>
+
+            <div id="actionsList" style="margin-top:10px; display:grid; gap:10px;"></div>
+
+            <div class="actions">
+              <button class="btn" id="restartSeason" type="button">Reiniciar</button>
+              <span class="mini">Meta: humus/vida altos, erosión baja</span>
+            </div>
+
+            <div class="result" id="seasonMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Indicadores</h3>
+
+            <div class="kpiGrid">
+              <div class="kpi"><div class="k">Humus</div><div class="v" id="sHum">60</div><div class="u">0–100</div></div>
+              <div class="kpi"><div class="k">Vida del suelo</div><div class="v" id="sLife">60</div><div class="u">0–100</div></div>
+              <div class="kpi"><div class="k">Erosión</div><div class="v" id="sEro">35</div><div class="u">0–100 (más alto = peor)</div></div>
+              <div class="kpi"><div class="k">Contaminación</div><div class="v" id="sPol">10</div><div class="u">0–100 (más alto = peor)</div></div>
+            </div>
+
+            <div class="box" style="margin-top:10px;">
+              <canvas id="miniChart" width="520" height="220" style="width:100%; height:auto; border-radius:14px; border:1px solid rgba(11,16,32,.10); background:rgba(255,255,255,.45)"></canvas>
+              <div class="hint" style="margin-top:8px;">Gráfica simple: humus y vida (suben) · erosión y contaminación (bajan).</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Juego 2 · Ruleta de riesgos (respuesta rápida)</h2>
+        <div class="hint">Gira la ruleta: caerá un riesgo de empobrecimiento. Elige la mejor respuesta para sumar puntos.</div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>Ruleta</h3>
+
+            <div class="box" style="margin-top:10px;">
+              <canvas id="wheel" width="520" height="520" style="width:100%; height:auto; border-radius:18px; background:rgba(255,255,255,.45); border:1px solid rgba(11,16,32,.10)"></canvas>
+              <div class="actions">
+                <button class="btn primary" id="spin" type="button">Girar</button>
+                <span class="mini">Puntos: <span id="wheelScore">0</span></span>
+                <span class="mini">Rondas: <span id="wheelRounds">0</span></span>
+              </div>
+            </div>
+
+            <div class="box" style="margin-top:10px;">
+              <p style="margin:0;"><strong>Riesgo:</strong> <span id="riskName">—</span></p>
+              <p class="hint" id="riskPrompt" style="margin-top:8px;">—</p>
+              <div id="riskChoices" style="margin-top:10px; display:grid; gap:10px;"></div>
+            </div>
+
+            <div class="result" id="wheelMsg"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Tips de prevención</h3>
+            <div class="box">
+              <ul style="margin:0 0 0 18px;">
+                <li>Mantén el suelo <strong>cubierto</strong> (mulch, rastrojo, pasto).</li>
+                <li>Trabaja en <strong>curva a nivel</strong> y con barreras vivas/muertas en pendientes.</li>
+                <li>Evita <strong>tirar basura</strong> o aceites; maneja agroquímicos con cuidado.</li>
+                <li>Usa <strong>compost</strong> para alimentar vida del suelo.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+
+      <section class="card">
+  <h2>Juego 3 · Simulador de erosión: lluvia, pendiente y cobertura</h2>
+  <div class="hint">
+    Ajusta <strong>lluvia</strong>, <strong>pendiente</strong> y <strong>cobertura</strong> para bajar la erosión.
+    Objetivo: lograr <strong>sedimento &lt; 30</strong> con lluvia alta.
+  </div>
+
+  <div class="eroGrid">
+    <div class="svgWrap">
+      <canvas id="erosion" width="560" height="320" aria-label="Simulación de erosión"></canvas>
+
+      <div class="sliderRow">
+        <label for="erRain">Lluvia</label>
+        <input id="erRain" type="range" min="20" max="100" step="5" value="70">
+        <div class="val" id="erRainVal">70</div>
+      </div>
+      <div class="sliderRow">
+        <label for="erSlope">Pendiente</label>
+        <input id="erSlope" type="range" min="5" max="45" step="2" value="25">
+        <div class="val" id="erSlopeVal">25°</div>
+      </div>
+      <div class="sliderRow">
+        <label for="erCover">Cobertura</label>
+        <input id="erCover" type="range" min="0" max="100" step="5" value="55">
+        <div class="val" id="erCoverVal">55%</div>
+      </div>
+      <div class="sliderRow">
+        <label for="erSoil">Textura</label>
+        <input id="erSoil" type="range" min="0" max="2" step="1" value="1">
+        <div class="val" id="erSoilVal">Franco</div>
+      </div>
+
+      <div class="tipRow">
+        <button class="btn primary" type="button" id="erChallenge">Nuevo reto</button>
+        <span class="mini" id="erGoal">Meta: sedimento &lt; 30 con lluvia ≥ 75</span>
+      </div>
+    </div>
+
+    <div class="box">
+      <p><strong>Resultados</strong></p>
+
+      <div class="kpiGrid" style="margin-top:10px;">
+        <div class="kpi">
+          <div class="k">Escorrentía</div>
+          <div class="v" id="erRun">0</div>
+          <div class="u">0–100</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Sedimento</div>
+          <div class="v" id="erSed">0</div>
+          <div class="u">0–100</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Infiltración</div>
+          <div class="v" id="erInf">0</div>
+          <div class="u">0–100</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Estado</div>
+          <div class="v" id="erState">—</div>
+          <div class="u">meta</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <div class="mini" style="font-weight:900;">Barras</div>
+        <div style="margin-top:8px;">
+          <div class="mini">Escorrentía</div>
+          <div class="bar2"><div id="erBarRun"></div></div>
+        </div>
+        <div style="margin-top:8px;">
+          <div class="mini">Sedimento</div>
+          <div class="bar2 sed"><div id="erBarSed"></div></div>
+        </div>
+      </div>
+
+      <div class="result" id="erMsg" style="display:none;"></div>
+    </div>
+  </div>
+</section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    window.__MM_MD__ = `# 4.4 Empobrecimiento del suelo
+## Qué es
+- Pérdida de fertilidad y de capacidad de regular agua
+## Causas
+- Erosión por agua (laderas sin cobertura)
+- Compactación (pisoteo, maquinaria, suelo húmedo)
+- Quemas y suelo desnudo
+- Monocultivo y agotamiento de nutrientes
+- Uso excesivo de agroquímicos sin materia orgánica
+## Consecuencias
+- Menos infiltración y recarga
+- Más escorrentía y sedimentos
+- Menor rendimiento y más costos
+## Señales
+- Surcos y cárcavas
+- Piedras expuestas, costras duras
+- Encharcamiento o escurrimiento rápido
+## Respuesta
+- Recuperar cobertura y humus
+- Barreras, curvas a nivel, rotación y abonos orgánicos`;
+
+let mm=null, expanded=true;
+function renderMap(md){
+  const fb=document.getElementById('mapFallback');
+  try{
+    if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+    const {Transformer,Markmap}=window.markmap;
+    const t=new Transformer();
+    const {root}=t.transform(md);
+    const svg=document.getElementById('mindmap');
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+    fb.classList.remove('show');
+    return true;
+  }catch(e){
+    fb.classList.add('show');
+    return true;
+  }
+}
+let tries=0;
+const it=setInterval(()=>{
+  tries++;
+  const ok=renderMap(window.__MM_MD__);
+  if(ok || tries>12) clearInterval(it);
+},300);
+
+document.getElementById('btnFit').onclick=()=>mm&&mm.fit();
+document.getElementById('btnToggle').onclick=()=>{
+  if(!mm) return;
+  expanded ? mm.foldAll() : mm.unfoldAll();
+  expanded=!expanded;
+};
+document.getElementById('btnResetMap').onclick=()=>{
+  mm=null; expanded=true; renderMap(window.__MM_MD__);
+};
+
+
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+
+// ===== Juego 1: Temporada agrícola =====
+const wkEl=document.getElementById('wk');
+const eventTxt=document.getElementById('eventTxt');
+const actionsList=document.getElementById('actionsList');
+const seasonMsg=document.getElementById('seasonMsg');
+
+const sHum=document.getElementById('sHum');
+const sLife=document.getElementById('sLife');
+const sEro=document.getElementById('sEro');
+const sPol=document.getElementById('sPol');
+
+const chart=document.getElementById('miniChart');
+const ctx=chart.getContext('2d');
+
+let week=1;
+let state={hum:60, life:60, ero:35, pol:10};
+let hist=[];
+
+const EVENTS=[
+  {t:"Lluvia intensa en ladera", d:{ero:+10}, note:"Sin cobertura, la lluvia arrastra suelo."},
+  {t:"Semana seca y caliente", d:{hum:-3, life:-5}, note:"Si hay poca materia orgánica, baja vida y humedad."},
+  {t:"Viento fuerte y suelo desnudo", d:{ero:+8}, note:"El viento puede levantar partículas finas."},
+  {t:"Basura cerca del terreno", d:{pol:+10}, note:"La contaminación afecta suelo y agua."},
+  {t:"Buen crecimiento de cobertura", d:{ero:-6, life:+4}, note:"Cobertura protege y alimenta vida."},
+  {t:"Compactación por pisoteo", d:{ero:+6, life:-4}, note:"Menos poros → más escorrentía."}
+];
+
+const ACTIONS=[
+  {name:"Aplicar compost", desc:"Aumenta humus y vida; mejora estructura.", d:{hum:+7, life:+8, ero:-3}},
+  {name:"Dejar rastrojo/cobertura", desc:"Protege el suelo y reduce erosión.", d:{ero:-8, hum:+2, life:+2}},
+  {name:"Hacer curvas a nivel", desc:"Disminuye velocidad del agua en pendiente.", d:{ero:-10}},
+  {name:"Usar agroquímicos sin control", desc:"Puede subir producción a corto plazo, pero afecta vida del suelo.", d:{life:-10, pol:+6}},
+  {name:"Quema para “limpiar”", desc:"Pierde cobertura y vida; sube erosión.", d:{hum:-6, life:-12, ero:+10}},
+  {name:"Manejo de residuos (no tirar aceites/basura)", desc:"Reduce contaminación en suelo y agua.", d:{pol:-10}},
+];
+
+function applyDelta(d){
+  for(const k in d) state[k]=clamp(state[k]+d[k],0,100);
+}
+
+function drawChart(){
+  ctx.clearRect(0,0,chart.width,chart.height);
+  ctx.globalAlpha=1;
+  ctx.lineWidth=2;
+  ctx.strokeStyle="rgba(11,16,32,.18)";
+  ctx.beginPath(); ctx.moveTo(40,10); ctx.lineTo(40,200); ctx.lineTo(510,200); ctx.stroke();
+
+  const series=[
+    {key:"hum", label:"Humus"},
+    {key:"life", label:"Vida"},
+    {key:"ero", label:"Erosión"},
+    {key:"pol", label:"Contam."},
+  ];
+
+  function y(v){ return 200 - (v/100)*170; }
+  function x(i){ return 40 + (i/(8-1))*460; }
+
+  series.forEach((s, si)=>{
+    ctx.beginPath();
+    ctx.lineWidth=3;
+    ctx.strokeStyle=`rgba(11,16,32,${0.20+si*0.12})`;
+    hist.forEach((h,i)=>{
+      const px=x(i), py=y(h[s.key]);
+      if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    });
+    ctx.stroke();
+    ctx.fillStyle="rgba(11,16,32,.72)";
+    ctx.font="12px Inter,system-ui";
+    ctx.fillText(s.label, 420, 22+si*16);
+  });
+}
+
+function updateUI(){
+  sHum.textContent=String(state.hum);
+  sLife.textContent=String(state.life);
+  sEro.textContent=String(state.ero);
+  sPol.textContent=String(state.pol);
+  drawChart();
+}
+
+function setRound(){
+  wkEl.textContent=String(week);
+  seasonMsg.className="result"; seasonMsg.textContent=""; seasonMsg.classList.remove('show');
+
+  const ev=EVENTS[Math.floor(Math.random()*EVENTS.length)];
+  eventTxt.textContent = `Evento: ${ev.t}. ${ev.note}`;
+
+  actionsList.innerHTML="";
+  ACTIONS.forEach(A=>{
+    const b=document.createElement('button');
+    b.type="button";
+    b.className="btn";
+    b.style.justifyContent="space-between";
+    b.innerHTML = `<span>${A.name}</span><span class="mini" style="padding:3px 8px;">Elegir</span>`;
+    b.addEventListener('click', ()=>{
+      applyDelta(ev.d);
+      applyDelta(A.d);
+      hist.push({...state});
+      updateUI();
+
+      seasonMsg.classList.add('show');
+      const good = (A.d.ero||0)<=0 && (A.d.pol||0)<=0 && (A.d.life||0)>=0;
+      seasonMsg.className = "result " + (good ? "good" : "warn") + " show";
+      seasonMsg.innerHTML = `<strong>Elegiste:</strong> ${A.name}. Semana ${week} actualizada.`;
+
+      week++;
+      if(week>8) endSeason();
+      else setTimeout(setRound, 650);
+    });
+    actionsList.appendChild(b);
+
+    const small=document.createElement('div');
+    small.className="hint";
+    small.textContent=A.desc;
+    actionsList.appendChild(small);
+  });
+
+  if(hist.length===0){
+    hist.push({...state});
+    updateUI();
+  }
+}
+
+function endSeason(){
+  actionsList.innerHTML="";
+  const ok = (state.hum>=55 && state.life>=55 && state.ero<=45 && state.pol<=35);
+  seasonMsg.classList.add('show');
+  seasonMsg.className = "result " + (ok ? "good":"bad") + " show";
+  seasonMsg.innerHTML = ok
+    ? `<strong>¡Meta lograda!</strong> Mantienes suelo vivo y controlas erosión/contaminación.`
+    : `<strong>Meta no lograda.</strong> Prueba otra estrategia: más cobertura, curvas a nivel, compost y mejor manejo de residuos.`;
+  eventTxt.textContent="Temporada finalizada. Puedes reiniciar para intentar mejorar.";
+}
+
+document.getElementById('restartSeason').addEventListener('click', ()=>{
+  week=1;
+  state={hum:60, life:60, ero:35, pol:10};
+  hist=[];
+  setRound();
+});
+
+setRound();
+
+// ===== Juego 2: Ruleta =====
+const wheel=document.getElementById('wheel');
+const wctx=wheel.getContext('2d');
+const riskName=document.getElementById('riskName');
+const riskPrompt=document.getElementById('riskPrompt');
+const riskChoices=document.getElementById('riskChoices');
+const wheelMsg=document.getElementById('wheelMsg');
+const wheelScore=document.getElementById('wheelScore');
+const wheelRounds=document.getElementById('wheelRounds');
+
+let angle=0, spinning=false, wScore=0, wRounds=0, currentRisk=null;
+
+const RISKS=[
+  {name:"Erosión por lluvia", prompt:"Lluvia fuerte en pendiente. ¿Qué haces primero?", 
+   choices:[
+     {t:"Poner cobertura (mulch/rastrojo) y barreras", ok:true, fb:"Cobertura amortigua y barreras bajan velocidad."},
+     {t:"Dejar suelo desnudo", ok:false, fb:"Aumenta el arrastre de partículas."},
+     {t:"Quemar para ‘limpiar’", ok:false, fb:"Pierdes cobertura y sube la erosión."},
+   ]},
+  {name:"Compactación", prompt:"El suelo está duro por pisoteo. ¿Qué medida ayuda?", 
+   choices:[
+     {t:"Reducir pisoteo y mejorar estructura con materia orgánica", ok:true, fb:"Recupera porosidad con manejo."},
+     {t:"Pasar maquinaria más veces", ok:false, fb:"Empeora compactación."},
+     {t:"Tapar con plástico sin drenaje", ok:false, fb:"Puede causar encharcamiento."},
+   ]},
+  {name:"Contaminación", prompt:"Hay aceites/basura cerca del terreno. ¿Qué haces?", 
+   choices:[
+     {t:"Retirar y disponer correctamente; evitar vertidos", ok:true, fb:"Reduce riesgo a suelo y agua."},
+     {t:"Enterrar todo", ok:false, fb:"Puede contaminar capas y aguas."},
+     {t:"Quemar basura", ok:false, fb:"Genera toxinas y daña suelo/aire."},
+   ]},
+  {name:"Pérdida de humus", prompt:"Después de varias cosechas baja el color oscuro del suelo. ¿Qué conviene?", 
+   choices:[
+     {t:"Compost + abonos verdes + rotación", ok:true, fb:"Recupera carbono y vida del suelo."},
+     {t:"Solo más fertilizante químico", ok:false, fb:"No reemplaza la estructura y vida."},
+     {t:"Dejar el suelo desnudo", ok:false, fb:"Aumenta oxidación y erosión."},
+   ]},
+  {name:"Monocultivo", prompt:"Siempre el mismo cultivo en la misma parcela. ¿Qué mejora?", 
+   choices:[
+     {t:"Rotación y diversificación", ok:true, fb:"Reduce plagas y mejora nutrientes."},
+     {t:"Más pesticida", ok:false, fb:"Aumenta daño a organismos beneficiosos."},
+     {t:"Arar más profundo cada vez", ok:false, fb:"Puede degradar estructura."},
+   ]},
+];
+
+function drawWheel(){
+  const cx=wheel.width/2, cy=wheel.height/2, r=wheel.width/2-18;
+  wctx.clearRect(0,0,wheel.width,wheel.height);
+  const n=RISKS.length;
+  for(let i=0;i<n;i++){
+    const a0=angle + (i*(2*Math.PI/n));
+    const a1=angle + ((i+1)*(2*Math.PI/n));
+    wctx.beginPath();
+    wctx.moveTo(cx,cy);
+    wctx.arc(cx,cy,r,a0,a1);
+    wctx.fillStyle = `rgba(11,16,32,${0.08 + (i%2)*0.06})`;
+    wctx.fill();
+    wctx.strokeStyle="rgba(11,16,32,.10)";
+    wctx.stroke();
+
+    wctx.save();
+    wctx.translate(cx,cy);
+    wctx.rotate((a0+a1)/2);
+    wctx.textAlign="right";
+    wctx.fillStyle="rgba(11,16,32,.76)";
+    wctx.font="bold 14px Inter,system-ui";
+    wctx.fillText(RISKS[i].name, r-12, 5);
+    wctx.restore();
+  }
+
+  wctx.beginPath();
+  wctx.moveTo(cx, 14);
+  wctx.lineTo(cx-14, 42);
+  wctx.lineTo(cx+14, 42);
+  wctx.closePath();
+  wctx.fillStyle="rgba(34,197,94,.35)";
+  wctx.fill();
+}
+
+function pickRisk(){
+  const n=RISKS.length;
+  const pointer = -Math.PI/2;
+  let a = (pointer - angle) % (2*Math.PI);
+  if(a<0) a+=2*Math.PI;
+  const idx = Math.floor(a / (2*Math.PI/n));
+  return RISKS[idx];
+}
+
+function showRisk(r){
+  currentRisk=r;
+  riskName.textContent=r.name;
+  riskPrompt.textContent=r.prompt;
+  riskChoices.innerHTML="";
+  wheelMsg.className="result"; wheelMsg.textContent=""; wheelMsg.classList.remove('show');
+
+  r.choices.forEach(c=>{
+    const b=document.createElement('button');
+    b.type="button";
+    b.className="btn";
+    b.textContent=c.t;
+    b.addEventListener('click', ()=>{
+      wRounds++; wheelRounds.textContent=String(wRounds);
+      wheelMsg.classList.add('show');
+      if(c.ok){
+        wScore += 2;
+        wheelMsg.className="result good show";
+        wheelMsg.innerHTML=`<strong>Bien.</strong> ${c.fb}`;
+      }else{
+        wScore = Math.max(0, wScore-1);
+        wheelMsg.className="result warn show";
+        wheelMsg.innerHTML=`<strong>Mejor opción:</strong> ${r.choices.find(x=>x.ok).t}. ${c.fb}`;
+      }
+      wheelScore.textContent=String(wScore);
+    });
+    riskChoices.appendChild(b);
+  });
+}
+
+function spin(){
+  if(spinning) return;
+  spinning=true;
+  wheelMsg.className="result"; wheelMsg.textContent=""; wheelMsg.classList.remove('show');
+  let v = 0.35 + Math.random()*0.35;
+  const friction = 0.985;
+  const tick = ()=>{
+    angle += v;
+    v *= friction;
+    drawWheel();
+    if(v<0.004){
+      spinning=false;
+      showRisk(pickRisk());
+      return;
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+document.getElementById('spin').addEventListener('click', spin);
+drawWheel();
+showRisk(RISKS[0]);
+  
+
+/* =========================
+   JUEGO 3 (4-4): Simulador de erosión
+   ========================= */
+(function(){
+  const c = document.getElementById("erosion");
+  const ctx = c.getContext("2d");
+
+  const elRain = document.getElementById("erRain");
+  const elSlope= document.getElementById("erSlope");
+  const elCover= document.getElementById("erCover");
+  const elSoil = document.getElementById("erSoil");
+
+  const vRain = document.getElementById("erRainVal");
+  const vSlope= document.getElementById("erSlopeVal");
+  const vCover= document.getElementById("erCoverVal");
+  const vSoil = document.getElementById("erSoilVal");
+
+  const kRun = document.getElementById("erRun");
+  const kSed = document.getElementById("erSed");
+  const kInf = document.getElementById("erInf");
+  const kState=document.getElementById("erState");
+
+  const barRun = document.getElementById("erBarRun");
+  const barSed = document.getElementById("erBarSed");
+  const msgEl  = document.getElementById("erMsg");
+  const goalEl = document.getElementById("erGoal");
+
+  let target = { rainMin:75, sedMax:30 };
+
+  function soilName(x){ return x==0 ? "Arenoso" : x==1 ? "Franco" : "Arcilloso"; }
+
+  function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+  function model(rain, slope, cover, soil){
+    // base infiltration by soil
+    const baseInf = soil==0 ? 62 : soil==1 ? 50 : 38; // sandy > loam > clay
+    // cover increases infiltration and reduces erosion
+    const inf = clamp(baseInf + cover*0.32 - slope*0.45 + (100-rain)*0.05, 5, 95);
+    const run = clamp(rain - inf + slope*0.35 + (soil==2?8:0) - cover*0.20, 0, 100);
+    const sed = clamp((run*0.75) * (slope/35) * (1 - cover/110) + (soil==1?6:0) + (soil==0?3:0), 0, 100);
+    return {inf, run, sed};
+  }
+
+  function drawScene(rain, slope, cover, out){
+    ctx.clearRect(0,0,c.width,c.height);
+
+    // background sky
+    ctx.fillStyle = "rgba(235,248,228,.55)";
+    ctx.fillRect(0,0,c.width,c.height);
+
+    // hill
+    const baseY = 250;
+    const hillH = 140;
+    const angle = slope * Math.PI/180;
+    const rise = Math.tan(angle) * 380;
+
+    const x0=80, x1=480;
+    const y0=baseY, y1=baseY - rise;
+
+    ctx.beginPath();
+    ctx.moveTo(0, baseY+hillH);
+    ctx.lineTo(x0, y0);
+    ctx.lineTo(x1, y1);
+    ctx.lineTo(c.width, baseY+hillH);
+    ctx.closePath();
+
+    // soil tone depends on cover
+    const soilAlpha = 0.30 + (1-cover/120)*0.25;
+    ctx.fillStyle = `rgba(180, 140, 90, ${soilAlpha})`;
+    ctx.fill();
+
+    // vegetation overlay
+    ctx.fillStyle = `rgba(34,197,94, ${cover/200})`;
+    ctx.fill();
+
+    // rain drops
+    const drops = Math.floor(rain/4);
+    ctx.strokeStyle = "rgba(56,189,248,.35)";
+    ctx.lineWidth = 2;
+    for(let i=0;i<drops;i++){
+      const x = 60 + (i*11) % 460;
+      const y = 20 + ((i*7) % 110);
+      ctx.beginPath();
+      ctx.moveTo(x,y);
+      ctx.lineTo(x-6,y+18);
+      ctx.stroke();
+    }
+
+    // runoff arrows size
+    const rw = 12 + out.run*1.1;
+    ctx.strokeStyle = "rgba(56,189,248,.55)";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(200, y0-10);
+    ctx.lineTo(360, y1+20);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(360, y1+20);
+    ctx.lineTo(360-rw*0.2, y1+20-rw*0.2);
+    ctx.lineTo(360-rw*0.2, y1+20+rw*0.2);
+    ctx.closePath();
+    ctx.fillStyle = "rgba(56,189,248,.55)";
+    ctx.fill();
+
+    // infiltration arrows downward
+    ctx.strokeStyle = "rgba(11,16,32,.18)";
+    ctx.lineWidth = 4;
+    const nInf = Math.floor(out.inf/18);
+    for(let k=0;k<nInf;k++){
+      const x = 180 + k*60;
+      const y = 210 - k*8;
+      ctx.beginPath();
+      ctx.moveTo(x,y);
+      ctx.lineTo(x,y+45);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x-8,y+35); ctx.lineTo(x,y+45); ctx.lineTo(x+8,y+35);
+      ctx.stroke();
+    }
+
+    // labels
+    ctx.fillStyle="rgba(11,16,32,.78)";
+    ctx.font="900 14px Inter, system-ui";
+    ctx.fillText("Lluvia", 22, 30);
+    ctx.fillText("Escorrentía", 370, 70);
+    ctx.fillText("Infiltración", 380, 290);
+
+    // sediment cloud near bottom
+    ctx.fillStyle = `rgba(245,158,11, ${out.sed/130})`;
+    ctx.beginPath();
+    ctx.arc(470, 280, 18 + out.sed*0.10, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle="rgba(11,16,32,.70)";
+    ctx.fillText("Sedimento", 420, 315);
+  }
+
+  function update(){
+    const rain = Number(elRain.value);
+    const slope= Number(elSlope.value);
+    const cover= Number(elCover.value);
+    const soil = Number(elSoil.value);
+
+    vRain.textContent = String(rain);
+    vSlope.textContent = `${slope}°`;
+    vCover.textContent = `${cover}%`;
+    vSoil.textContent = soilName(soil);
+
+    const out = model(rain,slope,cover,soil);
+    kRun.textContent = Math.round(out.run);
+    kSed.textContent = Math.round(out.sed);
+    kInf.textContent = Math.round(out.inf);
+
+    barRun.style.width = `${Math.round(out.run)}%`;
+    barSed.style.width = `${Math.round(out.sed)}%`;
+
+    const ok = (rain >= target.rainMin) && (out.sed <= target.sedMax);
+    kState.textContent = ok ? "✅" : "—";
+    msgEl.style.display="block";
+    msgEl.className = "result " + (ok ? "ok" : out.sed>70 ? "no" : "warn");
+    msgEl.innerHTML =
+      ok
+      ? `<strong>¡Meta lograda!</strong> Con lluvia alta, lograste sedimento ≤ ${target.sedMax}.`
+      : `<strong>Reto activo:</strong> sube cobertura o baja pendiente/escorrentía para reducir sedimento.<br>
+         <span style="color:rgba(11,16,32,.72)">Pista: cobertura y curvas a nivel bajan la velocidad del agua.</span>`;
+
+    drawScene(rain,slope,cover,out);
+  }
+
+  document.getElementById("erChallenge").addEventListener("click", ()=>{
+    // new target: keep it challenging
+    const rainMin = [70,75,80,85][Math.floor(Math.random()*4)];
+    const sedMax  = [35,30,28,25][Math.floor(Math.random()*4)];
+    target = {rainMin, sedMax};
+    goalEl.textContent = `Meta: sedimento < ${sedMax} con lluvia ≥ ${rainMin}`;
+    elRain.value = String(rainMin);
+    update();
+  });
+
+  [elRain,elSlope,elCover,elSoil].forEach(el=>el.addEventListener("input", update));
+
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4.9 Seguridad alimentaria y nutricional · EPC AALA</title>
+  <meta name="description" content="Seguridad alimentaria: 4 pilares, dieta balanceada, nutrientes y estrategias. Mapa mental + 4 juegos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --warn: rgba(245,158,11,.14);
+      --info: rgba(56,189,248,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:26px 18px 64px;}
+    header{
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .kicker{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.62);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+      box-shadow:var(--shadow-soft);
+    }
+    h1{
+      margin:10px 0 0;
+      font-family:Outfit,Inter,system-ui;
+      font-weight:900;
+      letter-spacing:.2px;
+      line-height:1.08;
+      font-size:clamp(22px, 2.7vw, 34px);
+    }
+    .subtitle{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.55;max-width:95ch;}
+    .nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .btn{
+      appearance:none;border:1px solid rgba(11,16,32,.12);
+      background:var(--btn);
+      border-radius:14px;
+      padding:10px 12px;
+      text-decoration:none;
+      font-weight:900;font-size:13px;
+      color:rgba(11,16,32,.86);
+      box-shadow:var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;align-items:center;gap:8px;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{background:var(--btnh);border-color:rgba(11,16,32,.18)}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      background:rgba(120, 210, 255, .28);
+      border-color:rgba(35, 140, 210, .22);
+    }
+    main.stack{display:flex;flex-direction:column;gap:14px;margin-top:14px;}
+    .card{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.62);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      padding:16px;
+    }
+    .card h2{
+      margin:0;
+      font-family:Outfit,Inter,system-ui;
+      font-weight:900;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .hint{margin:6px 0 0;color:rgba(11,16,32,.70);font-size:13px;line-height:1.5}
+    .twoCols{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1.25fr .95fr;
+      gap:12px;
+      align-items:start;
+    }
+    @media (max-width:980px){ .twoCols{grid-template-columns:1fr;} }
+    .box{
+      border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);
+      border-radius:18px;
+      padding:12px;
+      box-shadow:var(--shadow-soft);
+    }
+    .box p{margin:0 0 10px;color:rgba(11,16,32,.82);line-height:1.65;font-size:13.6px}
+    .box ul{margin:8px 0 0 18px;color:rgba(11,16,32,.82);font-size:13.4px;line-height:1.6}
+    .box li{margin:6px 0}
+    .grid3{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width:980px){ .grid3{grid-template-columns:1fr;} }
+    .pill{
+      border:1px solid rgba(11,16,32,.10);
+      background:linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius:18px;
+      padding:12px;
+      box-shadow:var(--shadow-soft);
+    }
+    .pill .t{font-weight:900;font-family:Outfit,Inter,system-ui;letter-spacing:.2px}
+    .pill .s{margin:6px 0 0;color:rgba(11,16,32,.74);font-size:13px;line-height:1.5}
+    .result{
+      margin-top:10px;
+      border-radius:16px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.55);
+      padding:12px;
+      font-size:13px;
+      line-height:1.55;
+      color:rgba(11,16,32,.82);
+      display:none;
+    }
+    .result.show{display:block}
+    .ok{background:var(--good);border-color:rgba(34,197,94,.28)}
+    .no{background:var(--bad);border-color:rgba(225,29,72,.22)}
+    .warn{background:var(--warn);border-color:rgba(245,158,11,.22)}
+    .info{background:var(--info);border-color:rgba(56,189,248,.22)}
+
+    /* Mapa mental */
+    .mapTop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+    .mapBtns{display:flex;gap:10px;flex-wrap:wrap;}
+    .mapStage{
+      margin-top:10px;
+      border-radius:18px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.60);
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+      padding:10px;
+    }
+    svg#mindmap{
+      width:100%;
+      height:520px;
+      display:block;
+      border-radius:14px;
+      background:
+        radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+        radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+    }
+    .fallback{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px dashed rgba(11,16,32,.18);
+      background:rgba(255,255,255,.55);
+      color:rgba(11,16,32,.72);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .fallback.show{display:block}
+
+    /* Util */
+    .mini{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.58);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+      box-shadow:var(--shadow-soft);
+    }
+    .hr{height:1px;background:rgba(11,16,32,.10);margin:10px 0;border-radius:999px}
+    footer{text-align:center;padding:18px 0 4px;color:rgba(11,16,32,.58);font-size:13px}
+
+    /* Game layouts */
+    .gameGrid{margin-top:10px;display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:start}
+    @media (max-width:980px){ .gameGrid{grid-template-columns:1fr;} }
+
+    .palette{display:grid;grid-template-columns:repeat(2, 1fr);gap:10px}
+    @media (max-width:520px){ .palette{grid-template-columns:1fr;} }
+
+    .tile{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.70);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+      cursor:grab;
+      user-select:none;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .tile:hover{background:rgba(255,255,255,.84);border-color:rgba(11,16,32,.18)}
+    .tile:active{transform:translateY(1px)}
+    .tile .t{font-weight:900}
+    .tile .s{margin-top:6px;color:rgba(11,16,32,.72);font-size:12.6px;line-height:1.4}
+    .tile .tag{display:inline-flex;margin-top:8px;font-size:11px;font-weight:900;color:rgba(11,16,32,.74);padding:4px 8px;border-radius:999px;border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.62)}
+
+    .drop{
+      border-radius:18px;border:1px dashed rgba(11,16,32,.18);
+      background:rgba(255,255,255,.56);
+      box-shadow:var(--shadow-soft);
+      padding:12px;
+      min-height: 220px;
+    }
+    .drop.dragover{outline:3px solid rgba(120,210,255,.35)}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.72);
+      font-weight:900;font-size:12px;color:rgba(11,16,32,.78);
+    }
+    .chip button{border:none;background:transparent;cursor:pointer;font:inherit;color:inherit;padding:0}
+
+    .bars{display:grid;gap:10px;margin-top:10px}
+    .bar{
+      border-radius:16px;border:1px solid rgba(11,16,32,.10);
+      background:rgba(255,255,255,.62);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+    }
+    .bar .k{font-size:12px;color:rgba(11,16,32,.70);font-weight:900}
+    .bar .row{display:flex;align-items:center;gap:10px;margin-top:8px}
+    .track{flex:1;height:12px;border-radius:999px;background:rgba(11,16,32,.10);overflow:hidden}
+    .fill{height:100%;width:50%;background:rgba(45,160,220,.45);transition:width .2s ease}
+    .bar .v{min-width:44px;text-align:right;font-weight:900;color:rgba(11,16,32,.78);font-size:12px}
+
+    .qaGrid{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+    @media (max-width:980px){ .qaGrid{grid-template-columns:1fr;} }
+
+    .qCard{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.62);
+      box-shadow:var(--shadow-soft);
+      padding:12px;
+    }
+    .qCard .q{font-weight:900;margin:0 0 8px}
+    .opt{width:100%;text-align:left;margin:8px 0;padding:10px 12px;border-radius:16px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.70);cursor:pointer;font-weight:900;color:rgba(11,16,32,.86)}
+    .opt:hover{background:rgba(255,255,255,.84);border-color:rgba(11,16,32,.18)}
+    .opt:disabled{opacity:.9;cursor:default}
+    .opt.good{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.26)}
+    .opt.bad{background:rgba(225,29,72,.12);border-color:rgba(225,29,72,.22)}
+
+    /* Small SVG scenes */
+    .scene{
+      border-radius:18px;border:1px solid rgba(11,16,32,.12);
+      background:rgba(255,255,255,.60);
+      box-shadow:var(--shadow-soft);
+      padding:10px;
+      overflow:hidden;
+    }
+    .ctrlRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+    .ctrlRow label{font-weight:900;font-size:13px;color:rgba(11,16,32,.82)}
+    input[type="range"]{width:54%}
+    .val{font-weight:900;font-size:13px;color:rgba(11,16,32,.78);min-width:64px;text-align:right}
+
+  </style>
+
+  <style>
+    /* plate builder */
+    .plateWrap{margin-top:10px;display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:start}
+    @media (max-width:980px){.plateWrap{grid-template-columns:1fr}}
+    .foodGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media (max-width:520px){.foodGrid{grid-template-columns:1fr}}
+    .foodTile{border-radius:18px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.72);box-shadow:var(--shadow-soft);padding:10px;cursor:grab;user-select:none;transition:transform .08s ease, background .12s ease}
+    .foodTile:hover{background:rgba(255,255,255,.84)}
+    .foodTile:active{transform:translateY(1px)}
+    .foodTile .t{font-weight:900}
+    .foodTile .s{margin-top:4px;color:rgba(11,16,32,.70);font-size:12.6px;line-height:1.4}
+    .foodTile .tag{display:inline-flex;margin-top:8px;font-size:11px;font-weight:900;color:rgba(11,16,32,.74);padding:4px 8px;border-radius:999px;border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.62)}
+
+    .plate{border-radius:18px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.60);box-shadow:var(--shadow-soft);padding:12px}
+    .zones{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    @media (max-width:820px){.zones{grid-template-columns:1fr}}
+    .zone{border-radius:18px;border:1px dashed rgba(11,16,32,.18);background:rgba(255,255,255,.58);padding:12px;min-height:160px}
+    .zone.dragover{outline:3px solid rgba(120,210,255,.35)}
+    .zone .h{font-weight:900;display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .zone .h small{font-weight:900;color:rgba(11,16,32,.62)}
+    .zone .chips{margin-top:10px}
+    .miniBar{margin-top:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media (max-width:980px){.miniBar{grid-template-columns:1fr 1fr}}
+    @media (max-width:520px){.miniBar{grid-template-columns:1fr}}
+    .mB{border-radius:18px;border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.62);box-shadow:var(--shadow-soft);padding:10px}
+    .mB .k{font-size:12px;font-weight:900;color:rgba(11,16,32,.72)}
+    .mB .row{display:flex;align-items:center;gap:10px;margin-top:8px}
+    .mB .track{flex:1;height:12px;border-radius:999px;background:rgba(11,16,32,.10);overflow:hidden}
+    .mB .fill{height:100%;width:50%;background:rgba(45,160,220,.45);transition:width .2s ease}
+    .mB .v{min-width:44px;text-align:right;font-weight:900;color:rgba(11,16,32,.78);font-size:12px}
+
+    /* pillars sort */
+    .sortWrap{margin-top:10px;display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:start}
+    @media (max-width:980px){.sortWrap{grid-template-columns:1fr}}
+    .cardsRow{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media (max-width:520px){.cardsRow{grid-template-columns:1fr}}
+    .act{border-radius:18px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.72);box-shadow:var(--shadow-soft);padding:10px;cursor:grab;user-select:none}
+    .act:hover{background:rgba(255,255,255,.84)}
+    .act .t{font-weight:900}
+    .act .s{margin-top:6px;color:rgba(11,16,32,.70);font-size:12.6px;line-height:1.4}
+
+    .pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media (max-width:820px){.pillars{grid-template-columns:1fr}}
+    .pillar{border-radius:18px;border:1px dashed rgba(11,16,32,.18);background:rgba(255,255,255,.58);padding:12px;min-height:170px}
+    .pillar.dragover{outline:3px solid rgba(120,210,255,.35)}
+    .pillar .h{font-weight:900}
+    .pillar .hint{margin-top:4px}
+    .pillar .chips{margin-top:10px}
+
+    /* garden */
+    .gardenGrid{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media (max-width:980px){.gardenGrid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:620px){.gardenGrid{grid-template-columns:1fr}}
+    .crop{border-radius:18px;border:1px solid rgba(11,16,32,.12);background:rgba(255,255,255,.72);box-shadow:var(--shadow-soft);padding:10px;cursor:pointer;user-select:none}
+    .crop:hover{background:rgba(255,255,255,.84)}
+    .crop.sel{outline:3px solid rgba(120,210,255,.35)}
+    .crop .t{font-weight:900}
+    .crop .s{margin-top:6px;color:rgba(11,16,32,.70);font-size:12.6px;line-height:1.4}
+    .crop .tag{display:inline-flex;margin-top:8px;font-size:11px;font-weight:900;color:rgba(11,16,32,.74);padding:4px 8px;border-radius:999px;border:1px solid rgba(11,16,32,.10);background:rgba(255,255,255,.62)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 4 · El suelo</div>
+        <h1>4.9 Seguridad alimentaria y nutricional</h1>
+        <p class="subtitle">
+          La seguridad alimentaria significa que las personas tengan alimentos <strong>suficientes</strong>, <strong>seguros</strong> y <strong>nutritivos</strong>,
+          y que puedan acceder a ellos de forma estable. Depende tanto de la producción como del acceso, la salud, el agua y la diversidad de la dieta.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="4-8.html">Anterior (4.8)</a>
+        <a class="btn primary" href="index.html">Siguiente (Inicio)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA -->
+      <section class="card">
+        <h2>Contexto teórico (muy ampliado)</h2>
+        <p class="hint">
+          Tener “comida en la casa” no siempre significa estar bien alimentado. La seguridad alimentaria incluye disponibilidad, acceso, utilización y estabilidad.
+          Además, una dieta repetitiva (poca diversidad) puede causar deficiencias de vitaminas y minerales aunque haya calorías.
+        </p>
+
+        <div class="twoCols">
+          <div class="box">
+            <p><strong>Los 4 pilares (explicados con ejemplos)</strong></p>
+            <ul>
+              <li><strong>Disponibilidad:</strong> hay alimentos en el territorio (producción, mercados, reservas). Ej.: cosecha, compra, almacenamiento.</li>
+              <li><strong>Acceso:</strong> las familias pueden conseguirlos (ingresos, precios, transporte). Ej.: si sube el precio del maíz, baja el acceso.</li>
+              <li><strong>Utilización:</strong> el cuerpo aprovecha nutrientes (dieta variada, higiene, agua segura, salud). Ej.: diarrea reduce absorción.</li>
+              <li><strong>Estabilidad:</strong> lo anterior se mantiene en el tiempo (sin crisis repetidas). Ej.: sequías o plagas frecuentes afectan estabilidad.</li>
+            </ul>
+            <div class="result info show">
+              <strong>Idea clave:</strong> la nutrición depende de comida + salud + agua + cuidados.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>Alimentación balanceada (3 grupos prácticos)</strong></p>
+            <ul>
+              <li><strong>Energéticos:</strong> cereales, tubérculos, grasas saludables. Dan “combustible”.</li>
+              <li><strong>Constructores:</strong> leguminosas, huevos, lácteos, pescado/carnes (cuando haya). Construyen tejidos (proteína).</li>
+              <li><strong>Reguladores:</strong> frutas y verduras. Aportan vitaminas y minerales que regulan funciones del cuerpo.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              Para una dieta fuerte se busca <strong>diversidad</strong>: distintos colores de verduras/frutas, combinación cereal + leguminosa,
+              y alimentos locales disponibles.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Micronutrientes</div>
+            <p class="s">Hierro, zinc, yodo, vitamina A, etc. En poca cantidad, pero esenciales. Suelen faltar si la dieta es poco variada.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Postcosecha</div>
+            <p class="s">Pérdidas por hongos, humedad o plagas reducen disponibilidad. Almacenar bien también es “conservar alimentos”.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Huerto familiar</div>
+            <p class="s">Aumenta diversidad, mejora acceso y puede fortalecer estabilidad (más opciones durante el año).</p>
+          </div>
+        </div>
+
+        <div class="twoCols" style="margin-top:12px;">
+          <div class="box">
+            <p><strong>Señales de alerta (en general)</strong></p>
+            <ul>
+              <li>Pocas comidas al día o raciones muy pequeñas.</li>
+              <li>Dieta muy repetitiva (solo uno o dos alimentos principales).</li>
+              <li>Enfermedades frecuentes relacionadas con agua/higiene.</li>
+              <li>Falta de alimentos reguladores (frutas/verduras) por semanas.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <p><strong>Acciones que fortalecen seguridad alimentaria</strong></p>
+            <ul>
+              <li>Diversificar cultivos y alimentos (agroecología y huertos).</li>
+              <li>Mejorar almacenamiento (seco, limpio, sin plagas).</li>
+              <li>Higiene y agua segura para mejorar utilización.</li>
+              <li>Organización comunitaria (compras, reservas, mercados, aprendizaje).</li>
+            </ul>
+            <div class="result warn show">
+              <strong>Recuerda:</strong> cuidar el suelo sostiene la producción y también la seguridad alimentaria.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Definición · 4 pilares · dieta balanceada · estrategias familiares y comunitarias.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="fit" type="button">Ajustar</button>
+            <button class="btn" id="toggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="resetMap" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de seguridad alimentaria"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa. Verifica conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      <!-- GAME 1 -->
+      <section class="card">
+        <h2>Juego 1 · Arma un plato balanceado (arrastrar y soltar)</h2>
+        <p class="hint">
+          Arrastra alimentos a cada grupo. Meta: que tu plato tenga energía, proteína y reguladores (vitaminas/minerales) con buena diversidad.
+          En móvil, toca un alimento para seleccionarlo y luego toca el grupo para colocarlo.
+        </p>
+
+        <div class="plateWrap">
+          <div class="box">
+            <strong>Alimentos disponibles</strong>
+            <div class="hint">Puedes repetir máximo 2 veces el mismo alimento.</div>
+            <div class="foodGrid" id="foodGrid"></div>
+
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="btn" type="button" id="plateReset">Reiniciar</button>
+              <span class="mini">Seleccionado: <span id="pickedName">—</span></span>
+            </div>
+
+            <div class="result info" id="plateMsg"></div>
+          </div>
+
+          <div class="plate">
+            <div class="zones">
+              <div class="zone" id="zEnergy" data-zone="energy">
+                <div class="h">Energéticos <small>(combustible)</small></div>
+                <div class="chips" id="cEnergy"></div>
+              </div>
+              <div class="zone" id="zBuild" data-zone="protein">
+                <div class="h">Constructores <small>(proteína)</small></div>
+                <div class="chips" id="cBuild"></div>
+              </div>
+              <div class="zone" id="zReg" data-zone="vit">
+                <div class="h">Reguladores <small>(vit/min)</small></div>
+                <div class="chips" id="cReg"></div>
+              </div>
+            </div>
+
+            <div class="miniBar">
+              <div class="mB">
+                <div class="k">Energía</div>
+                <div class="row"><div class="track"><div class="fill" id="bEnergy"></div></div><div class="v" id="vEnergy">0</div></div>
+              </div>
+              <div class="mB">
+                <div class="k">Proteína</div>
+                <div class="row"><div class="track"><div class="fill" id="bProt"></div></div><div class="v" id="vProt">0</div></div>
+              </div>
+              <div class="mB">
+                <div class="k">Vit/Min</div>
+                <div class="row"><div class="track"><div class="fill" id="bVit"></div></div><div class="v" id="vVit">0</div></div>
+              </div>
+              <div class="mB">
+                <div class="k">Diversidad</div>
+                <div class="row"><div class="track"><div class="fill" id="bDiv"></div></div><div class="v" id="vDiv">0</div></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- GAME 2 -->
+      <section class="card">
+        <h2>Juego 2 · Clasifica acciones por pilar (Disponibilidad, Acceso, Utilización, Estabilidad)</h2>
+        <p class="hint">
+          Arrastra acciones a su pilar. Meta: comprender que la seguridad alimentaria no es solo producir.
+        </p>
+
+        <div class="sortWrap">
+          <div class="box">
+            <strong>Acciones</strong>
+            <div class="hint">Arrastra (o toca para seleccionar y luego toca un pilar).</div>
+            <div class="cardsRow" id="actPool"></div>
+
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="btn" type="button" id="pillCheck">Verificar</button>
+              <button class="btn" type="button" id="pillReset">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="pillScore">0</span>/<span id="pillTotal">0</span></span>
+            </div>
+
+            <div class="result info" id="pillMsg"></div>
+          </div>
+
+          <div class="box">
+            <div class="pillars">
+              <div class="pillar" id="pAvail" data-p="avail">
+                <div class="h">Disponibilidad</div>
+                <div class="hint">Producción, reservas, oferta en mercados.</div>
+                <div class="chips" id="cAvail"></div>
+              </div>
+              <div class="pillar" id="pAccess" data-p="access">
+                <div class="h">Acceso</div>
+                <div class="hint">Dinero, precios, transporte, equidad.</div>
+                <div class="chips" id="cAccess"></div>
+              </div>
+              <div class="pillar" id="pUse" data-p="use">
+                <div class="h">Utilización</div>
+                <div class="hint">Dieta variada, higiene, agua segura, salud.</div>
+                <div class="chips" id="cUse"></div>
+              </div>
+              <div class="pillar" id="pStab" data-p="stab">
+                <div class="h">Estabilidad</div>
+                <div class="hint">Que lo anterior se mantenga en el tiempo.</div>
+                <div class="chips" id="cStab"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GAME 3 -->
+      <section class="card">
+        <h2>Juego 3 · Detective nutricional (casos)</h2>
+        <p class="hint">
+          Lee el caso y elige la idea más probable. Este juego es educativo: ante dudas reales, se consulta a personal de salud.
+        </p>
+
+        <div class="qaGrid" id="detGrid"></div>
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <button class="btn" type="button" id="detReset">Reiniciar</button>
+          <span class="mini">Puntaje: <span id="detScore">0</span>/<span id="detTotal">0</span></span>
+        </div>
+      </section>
+
+      <!-- GAME 4 -->
+      <section class="card">
+        <h2>Juego 4 · Diseña un huerto familiar diverso</h2>
+        <p class="hint">
+          Selecciona hasta 9 cultivos. Meta: combinar energéticos, proteínas y reguladores para mejorar diversidad y estabilidad.
+        </p>
+
+        <div class="twoCols">
+          <div class="box">
+            <div class="gardenGrid" id="gardenGrid"></div>
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="btn" type="button" id="gardenReset">Reiniciar</button>
+              <span class="mini">Seleccionados: <span id="gardenN">0</span>/9</span>
+            </div>
+            <div class="result info" id="gardenMsg"></div>
+          </div>
+
+          <div class="box">
+            <p><strong>Cómo se puntúa</strong></p>
+            <ul>
+              <li><strong>Diversidad:</strong> más grupos y más colores (verduras/frutas).</li>
+              <li><strong>Proteína:</strong> incluir leguminosas.</li>
+              <li><strong>Estabilidad:</strong> mezclar cultivos de ciclo corto y más resistentes.</li>
+              <li><strong>Balance:</strong> no llenar todo de un solo grupo.</li>
+            </ul>
+            <div class="result warn show">
+              <strong>Tip:</strong> un huerto no reemplaza toda la dieta, pero mejora acceso a reguladores (vitaminas/minerales) y diversidad.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA (Markmap)
+    // =========================
+    const md = '# 4.9 Seguridad alimentaria y nutricional\n## ¿Qué significa?\n- Que todas las personas tengan acceso a alimentos **suficientes**, **seguros** y **nutritivos**\n- No es solo “tener comida”: también importa salud, agua segura y cómo se aprovechan nutrientes\n## 4 pilares\n- Disponibilidad: hay alimentos (producción, compra, reservas)\n- Acceso: se pueden conseguir (ingresos, precios, transporte)\n- Utilización: el cuerpo los aprovecha (dieta variada, higiene, agua segura, salud)\n- Estabilidad: los 3 anteriores se mantienen en el tiempo (sin crisis constantes)\n## Alimentación balanceada\n- Energéticos: cereales, tubérculos, grasas saludables\n- Constructores: leguminosas, huevos, lácteos, carnes (proteína)\n- Reguladores: frutas y verduras (vitaminas y minerales)\n## Riesgos nutricionales\n- Dieta poco diversa → deficiencias (hierro, vitamina A, etc.)\n- Enfermedades y agua contaminada → mala absorción\n- Pérdidas postcosecha → menos disponibilidad\n## Estrategias familiares/comunitarias\n- Huerto familiar y diversificación\n- Almacenamiento y manejo postcosecha\n- Educación alimentaria e higiene\n- Prácticas agrícolas sostenibles para asegurar producción';
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('fallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const t = new Transformer();
+        const { root } = t.transform(md);
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0; const it=setInterval(()=>{ tries++; const ok=renderMap(); if(ok||tries>12) clearInterval(it); }, 300);
+    document.getElementById('fit').onclick=()=>mm&&mm.fit();
+    document.getElementById('toggle').onclick=()=>{ if(!mm) return; expanded ? mm.foldAll() : mm.unfoldAll(); expanded=!expanded; };
+    document.getElementById('resetMap').onclick=()=>{ mm=null; expanded=true; renderMap(); };
+
+    const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+    function setBox(el, cls, html){ el.className="result "+cls+" show"; el.innerHTML=html; }
+
+    // =========================
+    // GAME 1: Plate builder
+    // =========================
+    const FOODS = [
+      {id:"tortilla", t:"Tortilla / maíz", g:"energy", e:18, p:4, v:1, note:"Energía; combina con frijol."},
+      {id:"papa", t:"Papa", g:"energy", e:16, p:2, v:2, note:"Energía + potasio."},
+      {id:"arroz", t:"Arroz", g:"energy", e:18, p:3, v:1, note:"Energía."},
+      {id:"aceite", t:"Grasa saludable", g:"energy", e:14, p:0, v:0, note:"Energía concentrada."},
+
+      {id:"frijol", t:"Frijol", g:"protein", e:8, p:18, v:4, note:"Proteína vegetal + minerales."},
+      {id:"huevo", t:"Huevo", g:"protein", e:6, p:16, v:3, note:"Proteína + micronutrientes."},
+      {id:"lacteo", t:"Lácteo", g:"protein", e:6, p:14, v:3, note:"Proteína + calcio."},
+      {id:"pescado", t:"Pescado", g:"protein", e:6, p:18, v:4, note:"Proteína; omega."},
+
+      {id:"verduras", t:"Verduras verdes", g:"vit", e:2, p:2, v:18, note:"Vitaminas/minerales."},
+      {id:"zanahoria", t:"Zanahoria", g:"vit", e:4, p:1, v:16, note:"Vitamina A."},
+      {id:"fruta", t:"Fruta", g:"vit", e:6, p:1, v:14, note:"Vitaminas y fibra."},
+      {id:"tomate", t:"Tomate", g:"vit", e:3, p:1, v:12, note:"Vitamina C y minerales."}
+    ];
+
+    const foodGrid=document.getElementById('foodGrid');
+    const pickedName=document.getElementById('pickedName');
+    const plateMsg=document.getElementById('plateMsg');
+
+    const zEnergy=document.getElementById('zEnergy');
+    const zBuild=document.getElementById('zBuild');
+    const zReg=document.getElementById('zReg');
+
+    const cEnergy=document.getElementById('cEnergy');
+    const cBuild=document.getElementById('cBuild');
+    const cReg=document.getElementById('cReg');
+
+    const bEnergy=document.getElementById('bEnergy');
+    const bProt=document.getElementById('bProt');
+    const bVit=document.getElementById('bVit');
+    const bDiv=document.getElementById('bDiv');
+
+    const vEnergy=document.getElementById('vEnergy');
+    const vProt=document.getElementById('vProt');
+    const vVit=document.getElementById('vVit');
+    const vDiv=document.getElementById('vDiv');
+
+    let selectedFood=null;
+    let plate = { energy:[], protein:[], vit:[] };
+    const counts = new Map();
+
+    function makeFoodTile(f){
+      const d=document.createElement('div');
+      d.className="foodTile";
+      d.draggable=true;
+      d.dataset.id=f.id;
+      d.innerHTML = `<div class="t">${f.t}</div><div class="s">${f.note}</div><div class="tag">${f.g==="energy"?"Energético":f.g==="protein"?"Constructor":"Regulador"}</div>`;
+      d.addEventListener('dragstart', (ev)=>{ ev.dataTransfer.setData('text/plain', f.id); });
+      d.addEventListener('click', ()=> {
+        selectedFood=f.id;
+        pickedName.textContent=f.t;
+        setBox(plateMsg,"info","Toca un grupo para colocar el alimento seleccionado.");
+      });
+      return d;
+    }
+
+    function renderFoods(){
+      foodGrid.innerHTML="";
+      FOODS.forEach(f=> foodGrid.appendChild(makeFoodTile(f)));
+    }
+
+    function addToZone(zone, id){
+      const f=FOODS.find(x=>x.id===id);
+      if(!f) return;
+      const n=counts.get(id)||0;
+      if(n>=2){ setBox(plateMsg,"warn","Máximo 2 repeticiones del mismo alimento."); return; }
+      counts.set(id, n+1);
+      plate[zone].push(id);
+
+      const chip=document.createElement('span');
+      chip.className="chip";
+      chip.innerHTML=`<span>${f.t}</span><button type="button" aria-label="Quitar">✕</button>`;
+      chip.querySelector('button').onclick=()=>removeFromZone(zone, id, chip);
+      if(zone==="energy") cEnergy.appendChild(chip);
+      if(zone==="protein") cBuild.appendChild(chip);
+      if(zone==="vit") cReg.appendChild(chip);
+
+      updatePlate();
+    }
+
+    function removeFromZone(zone, id, el){
+      const arr=plate[zone];
+      const idx=arr.indexOf(id);
+      if(idx>-1) arr.splice(idx,1);
+      const n=counts.get(id)||0;
+      counts.set(id, Math.max(0,n-1));
+      el.remove();
+      updatePlate();
+    }
+
+    function allowDrop(el){
+      el.addEventListener('dragover', (ev)=>{ ev.preventDefault(); el.classList.add('dragover'); });
+      el.addEventListener('dragleave', ()=> el.classList.remove('dragover'));
+      el.addEventListener('drop', (ev)=>{
+        ev.preventDefault();
+        el.classList.remove('dragover');
+        const id=ev.dataTransfer.getData('text/plain');
+        addToZone(el.dataset.zone, id);
+      });
+      el.addEventListener('click', ()=> {
+        if(!selectedFood) return;
+        addToZone(el.dataset.zone, selectedFood);
+        selectedFood=null;
+        pickedName.textContent="—";
+      });
+    }
+
+    allowDrop(zEnergy); allowDrop(zBuild); allowDrop(zReg);
+
+    function plateStats(){
+      let E=0,P=0,V=0;
+      const set = new Set();
+      Object.values(plate).flat().forEach(id=>set.add(id));
+      Object.values(plate).flat().forEach(id=>{
+        const f=FOODS.find(x=>x.id===id);
+        E+=f.e; P+=f.p; V+=f.v;
+      });
+      const div = set.size;
+      return {E,P,V,div};
+    }
+
+    function updatePlate(){
+      const st=plateStats();
+      const E=clamp(Math.round(st.E),0,100);
+      const P=clamp(Math.round(st.P),0,100);
+      const V=clamp(Math.round(st.V),0,100);
+      const D=clamp(st.div*10,0,100);
+
+      bEnergy.style.width=E+"%"; vEnergy.textContent=E;
+      bProt.style.width=P+"%";   vProt.textContent=P;
+      bVit.style.width=V+"%";    vVit.textContent=V;
+      bDiv.style.width=D+"%";    vDiv.textContent=st.div;
+
+      const hasEnergy=plate.energy.length>0;
+      const hasProt=plate.protein.length>0;
+      const hasVit=plate.vit.length>0;
+
+      if(hasEnergy && hasProt && hasVit && st.div>=6 && P>=45 && V>=45){
+        setBox(plateMsg,"ok","¡Plato fuerte! ✅ Tienes los 3 grupos y buena diversidad. Ahora piensa en porciones reales y agua segura.");
+      } else if((hasEnergy && hasProt && hasVit) || st.div>=5){
+        setBox(plateMsg,"info","Vas bien. Mejora con más reguladores (verduras/frutas) y una proteína fuerte (frijol/huevo).");
+      } else {
+        setBox(plateMsg,"warn","Aún está desbalanceado. Meta mínima: al menos 1 alimento en cada grupo (energético, constructor, regulador).");
+      }
+    }
+
+    function resetPlate(){
+      selectedFood=null;
+      pickedName.textContent="—";
+      plate={energy:[], protein:[], vit:[]};
+      counts.clear();
+      cEnergy.innerHTML=""; cBuild.innerHTML=""; cReg.innerHTML="";
+      updatePlate();
+    }
+
+    document.getElementById('plateReset').onclick=resetPlate;
+    renderFoods();
+    resetPlate();
+
+    // =========================
+    // GAME 2: Pillars sort
+    // =========================
+    const ACTIONS = [
+      {id:"reserve", t:"Hacer reservas de granos", s:"Almacenar bien para tener comida en temporada difícil.", a:"avail"},
+      {id:"market", t:"Mejorar acceso al mercado", s:"Transporte/venta local para comprar alimentos.", a:"access"},
+      {id:"water", t:"Agua segura y lavado de manos", s:"Reduce enfermedades y mejora absorción.", a:"use"},
+      {id:"prices", t:"Apoyos ante precios altos", s:"Evita que familias pierdan acceso económico.", a:"access"},
+      {id:"diversify", t:"Diversificar cultivos y huerto", s:"Más alimentos disponibles y más variedad.", a:"avail"},
+      {id:"clinic", t:"Control de salud y desparasitación", s:"Mejora utilización de nutrientes.", a:"use"},
+      {id:"risk", t:"Plan para sequía/plagas", s:"Reduce impactos de crisis repetidas.", a:"stab"},
+      {id:"savings", t:"Ahorro/compras comunitarias", s:"Mejoran estabilidad del acceso en el tiempo.", a:"stab"}
+    ];
+
+    const actPool=document.getElementById('actPool');
+    const pillScore=document.getElementById('pillScore');
+    const pillTotal=document.getElementById('pillTotal');
+    const pillMsg=document.getElementById('pillMsg');
+
+    pillTotal.textContent = String(ACTIONS.length);
+
+    const pillars = [
+      document.getElementById('pAvail'),
+      document.getElementById('pAccess'),
+      document.getElementById('pUse'),
+      document.getElementById('pStab'),
+    ];
+
+    let chosenAction=null;
+    const placed = new Map(); // actionId -> pillar
+
+    function renderActions(){
+      actPool.innerHTML="";
+      placed.clear();
+      pillScore.textContent="0";
+      pillars.forEach(p=> p.querySelector('.chips').innerHTML="");
+      setBox(pillMsg,"info","Arrastra o asigna las acciones a su pilar.");
+
+      ACTIONS.forEach(a=>{
+        const d=document.createElement('div');
+        d.className="act";
+        d.draggable=true;
+        d.dataset.id=a.id;
+        d.innerHTML = `<div class="t">${a.t}</div><div class="s">${a.s}</div>`;
+        d.addEventListener('dragstart', (ev)=> ev.dataTransfer.setData('text/plain', a.id));
+        d.addEventListener('click', ()=> {
+          chosenAction=a.id;
+          setBox(pillMsg,"info",`Seleccionado: <strong>${a.t}</strong>. Ahora toca un pilar para colocarlo.`);
+        });
+        actPool.appendChild(d);
+      });
+    }
+
+    function addToPillar(pid, actionId){
+      if(placed.has(actionId)) return;
+      const a=ACTIONS.find(x=>x.id===actionId);
+      if(!a) return;
+      placed.set(actionId, pid);
+
+      const chip=document.createElement('span');
+      chip.className="chip";
+      chip.innerHTML = `<span>${a.t}</span><button type="button" aria-label="Quitar">✕</button>`;
+      chip.querySelector('button').onclick=()=> {
+        placed.delete(actionId);
+        chip.remove();
+        // return card visually? (optional) keep simple
+      };
+      document.querySelector(`#c${pid.charAt(0).toUpperCase()+pid.slice(1)}`)?.appendChild(chip);
+    }
+
+    function allowPillar(p){
+      p.addEventListener('dragover', (ev)=>{ ev.preventDefault(); p.classList.add('dragover'); });
+      p.addEventListener('dragleave', ()=> p.classList.remove('dragover'));
+      p.addEventListener('drop', (ev)=>{
+        ev.preventDefault(); p.classList.remove('dragover');
+        const id=ev.dataTransfer.getData('text/plain');
+        addToPillar(p.dataset.p, id);
+      });
+      p.addEventListener('click', ()=> {
+        if(!chosenAction) return;
+        addToPillar(p.dataset.p, chosenAction);
+        chosenAction=null;
+      });
+    }
+    pillars.forEach(allowPillar);
+
+    function checkPillars(){
+      if(placed.size<ACTIONS.length){
+        setBox(pillMsg,"warn",`Faltan <strong>${ACTIONS.length - placed.size}</strong> acciones por colocar.`);
+        return;
+      }
+      let ok=0;
+      ACTIONS.forEach(a=>{ if(placed.get(a.id)===a.a) ok++; });
+      pillScore.textContent = String(ok);
+      if(ok===ACTIONS.length) setBox(pillMsg,"ok","¡Perfecto! Identificaste los 4 pilares.");
+      else setBox(pillMsg,"info",`Aciertos: <strong>${ok}/${ACTIONS.length}</strong>. Consejo: “utilización” se relaciona con salud/agua; “estabilidad” con sostener en el tiempo.`);
+    }
+
+    document.getElementById('pillCheck').onclick=checkPillars;
+    document.getElementById('pillReset').onclick=renderActions;
+    renderActions();
+
+    // =========================
+    // GAME 3: Nutrient detective quiz
+    // =========================
+    const DET = [
+      {
+        q:"Una familia consume casi siempre tortilla y café, muy pocas verduras y frijol solo de vez en cuando. ¿Qué mejora es más urgente?",
+        a:1,
+        o:["Comer solo más tortilla","Aumentar reguladores (verduras/frutas) y proteína (frijol)","Eliminar el agua de la dieta"]
+      },
+      {
+        q:"Niñas y niños se enferman seguido del estómago y toman agua de fuente sin tratamiento. ¿Qué pilar se afecta más directamente?",
+        a:2,
+        o:["Acceso","Disponibilidad","Utilización"]
+      },
+      {
+        q:"Después de cosecha se pierden granos por humedad y plagas en el almacenamiento. ¿Qué pilar se golpea primero?",
+        a:0,
+        o:["Disponibilidad","Utilización","Acceso"]
+      },
+      {
+        q:"En época de sequía cada año baja la cosecha y suben precios. ¿Qué pilar describe mejor este problema repetido?",
+        a:2,
+        o:["Acceso","Utilización","Estabilidad"]
+      },
+      {
+        q:"Para aumentar proteína en dietas locales con bajo costo, una estrategia común es:",
+        a:1,
+        o:["Evitar leguminosas","Combinar cereal + leguminosa (maíz + frijol)","Comer solo fruta"]
+      },
+      {
+        q:"Si hay mercado con alimentos pero una familia no tiene ingreso suficiente, el problema principal es:",
+        a:1,
+        o:["Disponibilidad","Acceso","Utilización"]
+      }
+    ];
+
+    const detGrid=document.getElementById('detGrid');
+    const detScore=document.getElementById('detScore');
+    const detTotal=document.getElementById('detTotal');
+    detTotal.textContent = String(DET.length);
+    let detS=0;
+
+    function renderDet(){
+      detS=0; detScore.textContent="0";
+      detGrid.innerHTML="";
+      DET.forEach((it, idx)=>{
+        const card=document.createElement('div');
+        card.className="qCard";
+        card.innerHTML=`<p class="q">${idx+1}) ${it.q}</p>`;
+        it.o.forEach((op, j)=>{
+          const b=document.createElement('button');
+          b.type="button";
+          b.className="opt";
+          b.textContent=op;
+          b.onclick=()=> {
+            card.querySelectorAll('button.opt').forEach(x=>x.disabled=true);
+            if(j===it.a){ detS++; b.classList.add('good'); }
+            else {
+              b.classList.add('bad');
+              card.querySelectorAll('button.opt')[it.a].classList.add('good');
+            }
+            detScore.textContent=String(detS);
+          };
+          card.appendChild(b);
+        });
+        detGrid.appendChild(card);
+      });
+    }
+    document.getElementById('detReset').onclick=renderDet;
+    renderDet();
+
+    // =========================
+    // GAME 4: Garden planner
+    // =========================
+    const CROPS = [
+      {id:"maiz", t:"Maíz", tag:"Energético", g:"E", s:"Base energética; combinar con frijol."},
+      {id:"yuca", t:"Yuca", tag:"Energético", g:"E", s:"Tubérculo resistente."},
+      {id:"papa2", t:"Papa", tag:"Energético", g:"E", s:"Energía y minerales."},
+
+      {id:"frijol2", t:"Frijol", tag:"Proteína", g:"P", s:"Proteína vegetal; mejora suelo."},
+      {id:"arveja", t:"Arveja", tag:"Proteína", g:"P", s:"Leguminosa; aporta nitrógeno."},
+      {id:"haba", t:"Haba", tag:"Proteína", g:"P", s:"Leguminosa; buena en clima fresco."},
+
+      {id:"zanah2", t:"Zanahoria", tag:"Regulador", g:"R", s:"Vitamina A."},
+      {id:"espinaca", t:"Hojas verdes", tag:"Regulador", g:"R", s:"Hierro y vitaminas."},
+      {id:"tom2", t:"Tomate", tag:"Regulador", g:"R", s:"Vitamina C."},
+      {id:"citrus", t:"Fruta local", tag:"Regulador", g:"R", s:"Vitaminas y fibra."},
+
+      {id:"cebolla2", t:"Cebolla", tag:"Sabor/uso", g:"S", s:"Apoya cocina y diversidad."},
+      {id:"hierbas", t:"Hierbas", tag:"Sabor/uso", g:"S", s:"Aromáticas; atraen insectos útiles."}
+    ];
+
+    const gardenGrid=document.getElementById('gardenGrid');
+    const gardenN=document.getElementById('gardenN');
+    const gardenMsg=document.getElementById('gardenMsg');
+    const MAXG=9;
+    const sel = new Set();
+
+    function renderGarden(){
+      sel.clear();
+      gardenGrid.innerHTML="";
+      CROPS.forEach(c=>{
+        const d=document.createElement('div');
+        d.className="crop";
+        d.dataset.id=c.id;
+        d.innerHTML=`<div class="t">${c.t}</div><div class="s">${c.s}</div><div class="tag">${c.tag}</div>`;
+        d.onclick=()=>toggleCrop(c.id, d);
+        gardenGrid.appendChild(d);
+      });
+      updateGarden();
+    }
+
+    function toggleCrop(id, el){
+      if(sel.has(id)){ sel.delete(id); el.classList.remove('sel'); }
+      else {
+        if(sel.size>=MAXG){ setBox(gardenMsg,"warn",`Máximo ${MAXG} cultivos. Quita uno para agregar otro.`); return; }
+        sel.add(id); el.classList.add('sel');
+      }
+      updateGarden();
+    }
+
+    function updateGarden(){
+      gardenN.textContent=String(sel.size);
+      let E=0,P=0,R=0,S=0;
+      sel.forEach(id=>{
+        const c=CROPS.find(x=>x.id===id);
+        if(c.g==="E") E++;
+        if(c.g==="P") P++;
+        if(c.g==="R") R++;
+        if(c.g==="S") S++;
+      });
+      const div = sel.size;
+      const balance = (E>0 && P>0 && R>0);
+      const score = clamp(Math.round(div*10 + (balance?20:0) + (R*6) + (P*8)), 0, 100);
+
+      if(sel.size===0){
+        setBox(gardenMsg,"info","Selecciona cultivos para empezar. Meta: incluir al menos 1 energético, 1 proteína y 2 reguladores.");
+        return;
+      }
+      if(balance && R>=2 && P>=1){
+        setBox(gardenMsg,"ok",`¡Buen huerto! ✅ Energéticos: ${E} · Proteína: ${P} · Reguladores: ${R} · Otros: ${S} · Puntaje: <strong>${score}</strong>/100.`);
+      } else {
+        setBox(gardenMsg,"info",`Vas bien. Energéticos: ${E} · Proteína: ${P} · Reguladores: ${R} · Otros: ${S} · Puntaje: <strong>${score}</strong>/100. Añade proteína (leguminosa) y más reguladores.`);
+      }
+    }
+
+    document.getElementById('gardenReset').onclick=renderGarden;
+    renderGarden();
+  </script>
+</body>
+</html>
