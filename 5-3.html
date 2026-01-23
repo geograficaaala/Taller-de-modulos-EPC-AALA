@@ -1,0 +1,983 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.3 Desechos sólidos en Sololá (cuenca) · EPC AALA</title>
+  <meta name="description" content="Datos de referencia sobre residuos en Sololá, composición y desafíos, con calculadoras y juegos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.3 Desechos sólidos en Sololá (cuenca)</h1>
+        <p class="subtitle">Sololá enfrenta un reto grande de residuos por hogares, comercio y turismo. Aquí usamos referencias del módulo para estimar generación y composición, y practicamos metas reales de separación para proteger la cuenca del Lago de Atitlán.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-2.html">Anterior</a>
+        <a class="btn primary" href="5-4.html">Siguiente</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+      <section class="card" id="teoria">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="grid2">
+  <div class="box">
+    <p>
+      En Sololá, los desechos sólidos provienen de hogares, mercados, comercios, escuelas y actividades turísticas.
+      La gestión en una cuenca como la del Lago de Atitlán es especialmente sensible porque las lluvias pueden mover
+      residuos desde calles y barrancos hacia los ríos y el lago.
+    </p>
+    <p>
+      En el material del módulo se menciona un valor de referencia de generación:
+      <strong>0.50 kg por persona por día</strong> (aprox. <strong>1.10 lb/persona/día</strong>).
+      Con esa referencia, se estima una generación anual del orden de <strong>1,322,102 quintales/año</strong>.
+      (Esta cifra ayuda a dimensionar el reto de recolección, transporte, tratamiento y disposición).
+    </p>
+    <div class="result info">
+      <strong>Lectura rápida:</strong> si sube la población o el turismo, sube el volumen de residuos.
+      Por eso las soluciones más fuertes son las que <strong>reducen</strong> y <strong>separan</strong> desde el origen.
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>¿De qué está compuesta la “bolsa” de basura?</strong></p>
+    <p>
+      El módulo reporta una composición aproximada donde los <strong>orgánicos</strong> son la fracción más grande:
+      cerca de <strong>52%</strong> orgánico y alrededor de <strong>20%</strong> reciclable; el resto corresponde a
+      materiales de rechazo y otros (mezclados o sin mercado).
+    </p>
+    <ul>
+      <li><strong>Si compostas orgánicos:</strong> reduces el peso y el mal olor, y bajas el riesgo de vectores.</li>
+      <li><strong>Si recuperas reciclables:</strong> evitas que plásticos, vidrio y metal terminen en barrancos o ríos.</li>
+      <li><strong>Si separas peligrosos:</strong> reduces contaminación de suelo/agua y riesgos para recolectores.</li>
+    </ul>
+    <div class="result warn" style="margin-top:10px;">
+      <strong>Dato clave:</strong> con alta fracción orgánica, la separación de “húmedo” (orgánico) vs “seco”
+      (reciclables) puede cambiar mucho el resultado final.
+    </div>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Por qué pesa tanto el orgánico</div>
+    <p class="s">
+      Los restos de comida contienen agua. Si se quedan mezclados, generan lixiviados y mal olor. Si se separan,
+      se vuelven un recurso para compost.
+    </p>
+  </div>
+  <div class="pill">
+    <div class="t">Turismo y temporadas</div>
+    <p class="s">
+      En temporadas altas puede aumentar la cantidad de envases y empaques. Planificar recolección y separación
+      en eventos reduce puntos críticos cerca del lago.
+    </p>
+  </div>
+  <div class="pill">
+    <div class="t">Auditoría simple de residuos</div>
+    <p class="s">
+      1) Separar por categorías una semana. 2) Pesar (o estimar) cada fracción. 3) Decidir acciones: compost, reciclaje,
+      reducción de empaques y manejo de peligrosos.
+    </p>
+  </div>
+</div>
+
+<div class="grid2" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Meta realista por hogar o aula (cuenca)</strong></p>
+    <ul>
+      <li><strong>Desviar 40–60%</strong> del total mediante <strong>compost + reciclaje</strong> (si hay seguimiento).</li>
+      <li>Mantener <strong>reciclables limpios y secos</strong> para que sí se puedan vender/entregar.</li>
+      <li>Reducir “rechazo” evitando desechables de un solo uso cuando sea posible.</li>
+    </ul>
+    <div class="result info" style="margin-top:10px;">
+      <strong>Reto:</strong> primero logra constancia (separar bien), luego aumenta el porcentaje.
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>Puntos críticos típicos y acciones</strong></p>
+    <ul>
+      <li><strong>Mercados:</strong> orgánico separado para compostaje comunitario; control de drenajes.</li>
+      <li><strong>Orillas/barrancos:</strong> jornadas de limpieza + barreras + vigilancia para que no se vuelva a llenar.</li>
+      <li><strong>Escuelas:</strong> estaciones de separación + brigadas + acuerdos de “cero quema”.</li>
+      <li><strong>Eventos:</strong> vasos reutilizables, retorno de residuos y señalización clara.</li>
+    </ul>
+  </div>
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="nav">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental 5.3 Desechos sólidos en Sololá (cuenca)"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa mental. Verifica tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      
+<section class="card" id="juego1">
+  <h2>Juego 1 · “Calculadora de residuos (Sololá)” + reto de reducción</h2>
+  <div class="hint">
+    Usa la referencia <strong>0.50 kg/persona/día</strong>. Ajusta el tamaño del hogar o del aula y prueba acciones para
+    reducir lo que llega al botadero. (Nivel difícil: alcanzar meta con pocas acciones).
+  </div>
+
+  <style>
+    .calcGrid{ margin-top:10px; display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; align-items:start; }
+    @media (max-width:980px){ .calcGrid{ grid-template-columns: 1fr; } }
+    .field{ display:grid; gap:6px; margin-top:10px; }
+    .field label{ font-weight: 900; font-size: 12.5px; color: rgba(11,16,32,.78); }
+    .field input[type="number"]{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.72);
+      font-weight: 800;
+      font-size: 14px;
+      outline: none;
+    }
+    .tog{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .cardOpt{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.66);
+      border-radius: 16px;
+      padding: 10px 12px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+      flex:1 1 240px;
+    }
+    .cardOpt strong{ display:block; font-family: Outfit, Inter, system-ui; }
+    .cardOpt small{ display:block; margin-top:6px; color: rgba(11,16,32,.70); line-height:1.45; font-weight: 700; }
+    .cardOpt.on{ outline: 3px solid rgba(120,210,255,.35); background: rgba(255,255,255,.80); }
+    .metric{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      display:grid;
+      gap:10px;
+    }
+    .metric .big{ font-size: 28px; font-weight: 900; font-family: Outfit, Inter, system-ui; }
+    .metric .row2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width:520px){ .metric .row2{ grid-template-columns: 1fr; } }
+    .stat{ border:1px solid rgba(11,16,32,.10); background: rgba(255,255,255,.62); border-radius: 16px; padding: 10px; }
+    .stat .k{ font-weight: 900; font-size: 12px; color: rgba(11,16,32,.70); }
+    .stat .v{ font-weight: 900; font-size: 18px; font-family: Outfit, Inter, system-ui; margin-top:4px; }
+    .meterLine{ height: 12px; border-radius: 999px; background: rgba(11,16,32,.10); overflow:hidden; }
+    .meterLine > div{ height: 100%; width: 40%; background: rgba(56,189,248,.50); transition: width .2s ease; }
+  </style>
+
+  <div class="calcGrid">
+    <div class="panel">
+      <h3>Entradas</h3>
+
+      <div class="field">
+        <label for="cPeople">Personas (hogar o aula)</label>
+        <input id="cPeople" type="number" min="1" max="80" value="5" />
+      </div>
+
+      <div class="field">
+        <label for="cDays">Días</label>
+        <input id="cDays" type="number" min="1" max="365" value="7" />
+      </div>
+
+      <div class="hint" style="margin-top:10px;">
+        Ahora elige acciones. Recuerda: en el módulo se indica una composición aproximada de <strong>52% orgánico</strong>
+        y <strong>20% reciclable</strong> (el resto es rechazo/otros).
+      </div>
+
+      <div class="tog" id="cActions"></div>
+
+      <div class="row">
+        <button class="btn" type="button" id="cReset">Reiniciar</button>
+        <button class="btn primary" type="button" id="cGoal">Reto difícil (meta)</button>
+        <span class="mini">Meta: <span id="cTarget">—</span></span>
+      </div>
+
+      <div class="result info" id="cMsg" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Resultado</h3>
+      <div class="metric">
+        <div class="big"><span id="cTotal">0</span> kg</div>
+        <div class="hint" style="margin-top:-6px;">Generado en el período (0.50 kg/persona/día).</div>
+
+        <div class="row2">
+          <div class="stat">
+            <div class="k">Orgánico (≈52%)</div>
+            <div class="v"><span id="cOrg">0</span> kg</div>
+          </div>
+          <div class="stat">
+            <div class="k">Reciclable (≈20%)</div>
+            <div class="v"><span id="cRec">0</span> kg</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="stat">
+            <div class="k">Desviado (compost + reciclaje)</div>
+            <div class="v"><span id="cDiv">0</span> kg</div>
+          </div>
+          <div class="stat">
+            <div class="k">A botadero / rechazo</div>
+            <div class="v"><span id="cLand">0</span> kg</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="k" style="font-weight:900;color:rgba(11,16,32,.70);font-size:12px;">
+            Índice “cuenca protegida” (más alto es mejor)
+          </div>
+          <div class="meterLine"><div id="cFill"></div></div>
+          <div class="hint" id="cLabel" style="margin-top:8px;">—</div>
+        </div>
+
+        <div class="result" id="cExplain">Ajusta valores y activa acciones para ver el impacto.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="juego2">
+  <h2>Juego 2 · “Composición y metas” (desafío de separación)</h2>
+  <div class="hint">
+    Ajusta cuánto orgánico compostas y cuánto reciclable recuperas (sin exceder lo que realmente existe).
+    Desbloquea el nivel “difícil” con condiciones (poco espacio, recolección limitada).
+  </div>
+
+  <style>
+    .mixGrid{ margin-top:10px; display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; align-items:start; }
+    @media (max-width:980px){ .mixGrid{ grid-template-columns: 1fr; } }
+    .slider{
+      width:100%;
+      accent-color: rgba(35,140,210,.65);
+    }
+    .donut{
+      width: 260px; height: 260px; border-radius: 999px;
+      background: conic-gradient(rgba(34,197,94,.55) 0% 52%, rgba(56,189,248,.55) 52% 72%, rgba(225,29,72,.35) 72% 100%);
+      box-shadow: var(--shadow-soft);
+      border:1px solid rgba(11,16,32,.10);
+      display:grid;
+      place-items:center;
+      margin: 6px auto 0;
+      position:relative;
+    }
+    .donut::after{
+      content:"";
+      width: 160px; height: 160px; border-radius: 999px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(11,16,32,.08);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.20);
+      position:absolute;
+    }
+    .donutCenter{
+      position:relative;
+      z-index:2;
+      text-align:center;
+      padding: 8px 10px;
+    }
+    .donutCenter .big{ font-size: 22px; font-weight: 900; font-family: Outfit, Inter, system-ui; }
+    .legend{ display:grid; gap:8px; margin-top:10px; }
+    .legRow{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .sw{ width: 14px; height: 14px; border-radius: 4px; border:1px solid rgba(11,16,32,.10); }
+    .sw.g{ background: rgba(34,197,94,.55); }
+    .sw.b{ background: rgba(56,189,248,.55); }
+    .sw.r{ background: rgba(225,29,72,.35); }
+    .cond{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .tag{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 900;
+      font-size: 12px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+    }
+    .tag.on{ outline: 3px solid rgba(120,210,255,.35); background: rgba(255,255,255,.82); }
+  </style>
+
+  <div class="mixGrid">
+    <div class="panel">
+      <h3>Controles</h3>
+
+      <div class="field">
+        <label for="mComp">Orgánico a compost (0–52%)</label>
+        <input class="slider" id="mComp" type="range" min="0" max="52" value="18" />
+        <div class="hint">Actual: <strong><span id="mCompV">18</span>%</strong></div>
+      </div>
+
+      <div class="field">
+        <label for="mRec">Reciclable recuperado (0–20%)</label>
+        <input class="slider" id="mRec" type="range" min="0" max="20" value="10" />
+        <div class="hint">Actual: <strong><span id="mRecV">10</span>%</strong></div>
+      </div>
+
+      <div class="hint" style="margin-top:10px;">
+        Nivel difícil: activa condiciones que reducen tu capacidad real.
+      </div>
+      <div class="cond">
+        <span class="tag" data-cond="space">Poco espacio compost</span>
+        <span class="tag" data-cond="collect">Recolección reciclaje limitada</span>
+        <span class="tag" data-cond="rain">Lluvia intensa (más riesgo de mezcla)</span>
+      </div>
+
+      <div class="row">
+        <button class="btn" type="button" id="mMixReset">Reiniciar</button>
+        <button class="btn primary" type="button" id="mMixGoal">Reto</button>
+        <span class="mini">Objetivo: <span id="mMixTarget">—</span></span>
+      </div>
+
+      <div class="result info" id="mMixMsg" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Resultado visual</h3>
+      <div class="donut" id="mDonut">
+        <div class="donutCenter">
+          <div class="big"><span id="mLand">72</span>%</div>
+          <div class="hint">a botadero</div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legRow"><span style="display:flex;gap:8px;align-items:center;"><span class="sw g"></span> Compost</span><strong id="mG">18%</strong></div>
+        <div class="legRow"><span style="display:flex;gap:8px;align-items:center;"><span class="sw b"></span> Reciclaje</span><strong id="mB">10%</strong></div>
+        <div class="legRow"><span style="display:flex;gap:8px;align-items:center;"><span class="sw r"></span> Botadero</span><strong id="mR">72%</strong></div>
+      </div>
+
+      <div class="result" id="mMixExplain" style="margin-top:10px;">
+        Tu meta: aumentar “compost + reciclaje” sin sobrepasar límites y manteniendo materiales limpios.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = "# 5.3 Desechos s\u00f3lidos en Solol\u00e1 (cuenca del Lago Atitl\u00e1n)\n## Generaci\u00f3n (referencia del m\u00f3dulo)\n- 0.50 kg/persona/d\u00eda (\u2248 1.10 lb)\n- Estimaci\u00f3n anual: ~1,322,102 quintales/a\u00f1o\n## Composici\u00f3n aproximada\n- ~52% org\u00e1nico (h\u00famedo)\n- ~20% reciclable (seco)\n- Resto: rechazo/otros y especiales\n## Implicaciones en cuenca\n- Org\u00e1nico mezclado \u2192 lixiviados, olores, vectores\n- Pl\u00e1sticos/vidrio/metal \u2192 viajan con lluvia y viento\n## Metas por hogar/escuela\n- Separar: h\u00famedo vs seco + peligrosos aparte\n- Desviar 40\u201360% con compost + reciclaje\n## Puntos cr\u00edticos\n- Mercados, barrancos, riberas, eventos\n- Acciones: estaciones, acuerdos, vigilancia, limpieza";
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('fallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{
+      tries++;
+      const ok=renderMap();
+      if(ok || tries>12) clearInterval(it);
+      if(tries>12 && !mm) document.getElementById('fallback').classList.add('show');
+    },300);
+
+    document.getElementById('fit').addEventListener('click',()=>mm&&mm.fit());
+    document.getElementById('toggle').addEventListener('click',()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    });
+    document.getElementById('resetMap').addEventListener('click',()=>{ mm=null; expanded=true; renderMap(); });
+
+    // =========================
+    // JUEGOS
+    // =========================
+
+    // ===== Juego 1: Calculadora + reto =====
+    const BASE_PER_CAPITA = 0.50; // kg/persona/día (referencia del módulo)
+    const P_ORG = 0.52;
+    const P_REC = 0.20;
+
+    const cPeople=document.getElementById('cPeople');
+    const cDays=document.getElementById('cDays');
+    const cActions=document.getElementById('cActions');
+    const cReset=document.getElementById('cReset');
+    const cGoal=document.getElementById('cGoal');
+    const cTarget=document.getElementById('cTarget');
+    const cMsg=document.getElementById('cMsg');
+
+    const cTotal=document.getElementById('cTotal');
+    const cOrg=document.getElementById('cOrg');
+    const cRec=document.getElementById('cRec');
+    const cDiv=document.getElementById('cDiv');
+    const cLand=document.getElementById('cLand');
+    const cFill=document.getElementById('cFill');
+    const cLabel=document.getElementById('cLabel');
+    const cExplain=document.getElementById('cExplain');
+
+    const ACTIONS = [
+      {id:"comp_home", t:"Compost en casa/escuela", s:"Aprovecha hasta 45% del total (según organización).", divert:0.28, cost:2, note:"Funciona mejor si separas bien orgánicos y controlas humedad."},
+      {id:"comp_comm", t:"Compost comunitario (mercado)", s:"Aprovecha orgánico de ventas/comedores.", divert:0.20, cost:2, note:"Necesita acuerdos, sitio y turnos de mantenimiento."},
+      {id:"recycle", t:"Reciclaje limpio y seco", s:"Recupera hasta 18% del total si hay acopio.", divert:0.14, cost:2, note:"Depende de limpieza y rutas de acopio."},
+      {id:"reduce_pack", t:"Reducir empaques", s:"Compra a granel / evita desechables.", divert:0.10, cost:1, note:"Reduce desde el inicio, no solo 'maneja después'."},
+      {id:"reuse", t:"Reusar recipientes y bolsas", s:"Baja generación de plástico y papel.", divert:0.08, cost:1, note:"Especialmente útil en mercado y refacciones."},
+      {id:"haz", t:"Peligrosos aparte", s:"Reduce riesgos aunque no baje mucho el peso.", divert:0.02, cost:1, note:"Pilas, aceite y químicos: acopio separado."}
+    ];
+
+    let cState = {on:new Set(), target:null};
+
+    function fmt(n){ return (Math.round(n*10)/10).toFixed(1); }
+
+    function renderActions(){
+      cActions.innerHTML="";
+      ACTIONS.forEach(a=>{
+        const d=document.createElement('div');
+        d.className="cardOpt";
+        d.dataset.id=a.id;
+        d.innerHTML = `<strong>${a.t}</strong><small>${a.s}</small>`;
+        d.addEventListener('click', ()=>{
+          if(cState.on.has(a.id)) cState.on.delete(a.id);
+          else cState.on.add(a.id);
+          updateCalc();
+        });
+        cActions.appendChild(d);
+      });
+    }
+
+    function updateCalc(){
+      const people = Math.max(1, Number(cPeople.value||1));
+      const days = Math.max(1, Number(cDays.value||1));
+      cPeople.value=String(people);
+      cDays.value=String(days);
+
+      const total = people * days * BASE_PER_CAPITA; // kg
+      const org = total * P_ORG;
+      const rec = total * P_REC;
+
+      // desviación: suma de acciones, pero limitada por lo que existe (orgánicos y reciclables)
+      let divert = 0;
+      let effort = 0;
+      let notes = [];
+      cActions.querySelectorAll('.cardOpt').forEach(el=>{
+        const id=el.dataset.id;
+        const a=ACTIONS.find(x=>x.id===id);
+        const on=cState.on.has(id);
+        el.classList.toggle('on', on);
+        if(on){
+          divert += total * a.divert;
+          effort += a.cost;
+          notes.push(a.note);
+        }
+      });
+
+      // límites realistas: no se puede compostar más que orgánico + un pequeño margen (por ejemplo, servilletas no)
+      const maxDiv = org + rec + total*0.03; // margen por reuso/reducción
+      divert = Math.min(divert, maxDiv);
+
+      const land = Math.max(0, total - divert);
+
+      // índice: más desvío y menos mezcla → mejor
+      const divPct = total>0 ? (divert/total)*100 : 0;
+      const idx = Math.round( clamp(20 + divPct*0.9 - effort*2.0, 0, 100) );
+
+      cTotal.textContent = fmt(total);
+      cOrg.textContent = fmt(org);
+      cRec.textContent = fmt(rec);
+      cDiv.textContent = fmt(divert);
+      cLand.textContent = fmt(land);
+
+      cFill.style.width = idx + "%";
+      cLabel.textContent =
+        idx>=80 ? "Nivel: Cuenca muy protegida 💧✨"
+        : idx>=60 ? "Nivel: Buen manejo 💧"
+        : idx>=40 ? "Nivel: En camino ⚠️"
+        : "Nivel: Riesgo alto ❌";
+
+      cExplain.innerHTML =
+        `Desvío estimado: <strong>${Math.round(divPct)}%</strong> · Esfuerzo: <strong>${effort}</strong>.<br>` +
+        (notes.length ? `<span style="color:rgba(11,16,32,.72)">${notes.slice(0,2).join(" ")}${notes.length>2?" …":""}</span>` : "Activa acciones para ver recomendaciones.");
+
+      // reto
+      if(cState.target!==null){
+        const ok = land <= cState.target;
+        cMsg.style.display="block";
+        cMsg.className = "result " + (ok ? "ok" : "warn");
+        cMsg.innerHTML = ok
+          ? `✅ <strong>¡Meta lograda!</strong> Lograste bajar el “a botadero” a <strong>${fmt(land)} kg</strong> (meta ≤ ${fmt(cState.target)} kg).`
+          : `⚠️ <strong>Meta:</strong> baja el “a botadero” a ≤ <strong>${fmt(cState.target)} kg</strong>. Ahora estás en <strong>${fmt(land)} kg</strong>.`;
+      }else{
+        cMsg.style.display="none";
+      }
+    }
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    cPeople.addEventListener('input', updateCalc);
+    cDays.addEventListener('input', updateCalc);
+
+    cReset.addEventListener('click', ()=>{
+      cPeople.value="5"; cDays.value="7";
+      cState.on.clear();
+      cState.target=null;
+      cTarget.textContent="—";
+      cMsg.style.display="none";
+      updateCalc();
+    });
+
+    cGoal.addEventListener('click', ()=>{
+      const people = Math.max(1, Number(cPeople.value||1));
+      const days = Math.max(1, Number(cDays.value||1));
+      const total = people * days * BASE_PER_CAPITA;
+
+      // meta difícil: dejar <= 45% al botadero
+      cState.target = total * 0.45;
+      cTarget.textContent = `Botadero ≤ ${fmt(cState.target)} kg`;
+      cMsg.style.display="block";
+      cMsg.className="result info";
+      cMsg.innerHTML = `Reto difícil activado: deja al botadero ≤ <strong>${fmt(cState.target)} kg</strong>.`;
+      updateCalc();
+    });
+
+    renderActions();
+    updateCalc();
+
+    // ===== Juego 2: Composición y metas =====
+    const mComp=document.getElementById('mComp');
+    const mRec=document.getElementById('mRec');
+    const mCompV=document.getElementById('mCompV');
+    const mRecV=document.getElementById('mRecV');
+
+    const tags=[...document.querySelectorAll('.tag')];
+    const mDonut=document.getElementById('mDonut');
+    const mLand=document.getElementById('mLand');
+    const mG=document.getElementById('mG');
+    const mB=document.getElementById('mB');
+    const mR=document.getElementById('mR');
+    const mMixReset=document.getElementById('mMixReset');
+    const mMixGoal=document.getElementById('mMixGoal');
+    const mMixTarget=document.getElementById('mMixTarget');
+    const mMixMsg=document.getElementById('mMixMsg');
+    const mMixExplain=document.getElementById('mMixExplain');
+
+    let mState={conds:new Set(), target:null};
+
+    function updateMix(){
+      let comp = Number(mComp.value);
+      let rec = Number(mRec.value);
+
+      // condiciones reducen capacidades
+      let maxComp=52, maxRec=20;
+      if(mState.conds.has('space')) maxComp = 34;
+      if(mState.conds.has('collect')) maxRec = 12;
+      // lluvia intensa: aumenta mezcla, reduce eficacia 20%
+      let eff=1.0;
+      if(mState.conds.has('rain')) eff = 0.80;
+
+      comp = Math.min(comp, maxComp);
+      rec = Math.min(rec, maxRec);
+
+      mComp.value=String(comp);
+      mRec.value=String(rec);
+
+      mCompV.textContent=String(comp);
+      mRecV.textContent=String(rec);
+
+      // a botadero:
+      let land = 100 - (comp + rec);
+      // mezcla por lluvia reduce efectividad: parte de lo que creías desviar vuelve
+      if(eff<1.0){
+        const diverted = comp + rec;
+        const lost = Math.round(diverted*(1-eff));
+        land += lost;
+        // repartimos pérdida proporcionalmente (solo visual)
+        const scale = (diverted>0)?(diverted-lost)/diverted:1;
+        comp = Math.round(comp*scale);
+        rec = Math.round(rec*scale);
+        land = 100 - (comp + rec);
+      }
+
+      land = Math.max(0, Math.min(100, land));
+
+      mLand.textContent=String(land);
+      mG.textContent = comp + "%";
+      mB.textContent = rec + "%";
+      mR.textContent = land + "%";
+
+      mDonut.style.background = `conic-gradient(
+        rgba(34,197,94,.55) 0% ${comp}%,
+        rgba(56,189,248,.55) ${comp}% ${comp+rec}%,
+        rgba(225,29,72,.35) ${comp+rec}% 100%
+      )`;
+
+      const diverted = 100 - land;
+      mMixExplain.innerHTML =
+        `Desvío total: <strong>${diverted}%</strong> (compost + reciclaje).<br>` +
+        `<span style="color:rgba(11,16,32,.72)">Límites activos: compost ≤ ${maxComp}%, reciclaje ≤ ${maxRec}%${mState.conds.has('rain')?" (lluvia reduce eficacia)":""}.</span>`;
+
+      if(mState.target!==null){
+        const ok = land <= mState.target;
+        mMixMsg.style.display="block";
+        mMixMsg.className = "result " + (ok ? "ok" : "warn");
+        mMixMsg.innerHTML = ok
+          ? `✅ <strong>¡Meta lograda!</strong> Botadero = <strong>${land}%</strong> (meta ≤ ${mState.target}%).`
+          : `⚠️ Meta: Botadero ≤ <strong>${mState.target}%</strong>. Ahora estás en <strong>${land}%</strong>.`;
+      }else{
+        mMixMsg.style.display="none";
+      }
+    }
+
+    tags.forEach(t=>{
+      t.addEventListener('click', ()=>{
+        const id=t.dataset.cond;
+        if(mState.conds.has(id)) mState.conds.delete(id);
+        else mState.conds.add(id);
+        t.classList.toggle('on', mState.conds.has(id));
+        updateMix();
+      });
+    });
+
+    mComp.addEventListener('input', updateMix);
+    mRec.addEventListener('input', updateMix);
+
+    mMixReset.addEventListener('click', ()=>{
+      mState.conds.clear();
+      tags.forEach(t=>t.classList.remove('on'));
+      mState.target=null;
+      mMixTarget.textContent="—";
+      mComp.value="18"; mRec.value="10";
+      updateMix();
+    });
+
+    mMixGoal.addEventListener('click', ()=>{
+      // meta: botadero <= 38%
+      mState.target = mState.conds.size ? 45 : 38;
+      mMixTarget.textContent = `Botadero ≤ ${mState.target}%`;
+      mMixMsg.style.display="block";
+      mMixMsg.className="result info";
+      mMixMsg.textContent = "Reto activado. Ajusta sliders para cumplir la meta sin exceder límites.";
+      updateMix();
+    });
+
+    updateMix();
+
+  </script>
+</body>
+</html>

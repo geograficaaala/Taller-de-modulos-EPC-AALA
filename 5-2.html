@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.2 Efectos de la mala gestión de residuos y desechos sólidos · EPC AALA</title>
+  <meta name="description" content="Impactos en salud y ambiente por mala gestión de residuos, con juegos de diagnóstico y planificación." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.2 Efectos de la mala gestión de residuos y desechos sólidos</h1>
+        <p class="subtitle">La mala gestión causa enfermedades, contamina el aire, el agua y afecta el clima. En Sololá, la lluvia puede arrastrar residuos desde calles y barrancos hacia el Lago de Atitlán.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-1.html">Anterior</a>
+        <a class="btn primary" href="5-3.html">Siguiente</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+      <section class="card" id="teoria">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="grid2">
+  <div class="box">
+    <p>
+      La mala gestión de residuos no solo “se ve fea”: afecta directamente <strong>salud</strong>, <strong>aire</strong>,
+      <strong>agua</strong> y <strong>clima</strong>. En una cuenca como la de Sololá, lo que está en calles y barrancos puede
+      terminar en ríos y finalmente en el Lago de Atitlán.
+    </p>
+    <div class="result warn">
+      <strong>Mensaje del módulo:</strong> si los desechos se tiran en el ambiente (calles, barrancos o riberas),
+      generan problemas de salud pública y contaminación.
+    </div>
+
+    <p style="margin-top:10px;"><strong>Efectos en salud (módulo)</strong></p>
+    <ul>
+      <li>Enfermedades gastrointestinales (cólera, diarrea, fiebre tifoidea).</li>
+      <li>Presencia de insectos y roedores que transmiten enfermedades.</li>
+      <li>Materiales peligrosos aumentan el riesgo de lesiones y contaminación.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <p><strong>Efectos en ambiente (módulo)</strong></p>
+    <ul>
+      <li><strong>Aire:</strong> la quema de residuos contamina el aire y afecta la salud.</li>
+      <li><strong>Clima:</strong> quemar produce CO₂; la descomposición de orgánicos en botaderos libera <strong>metano</strong>.</li>
+      <li><strong>Agua subterránea:</strong> lixiviados contaminan el suelo y pueden llegar a pozos (lixiviación).</li>
+      <li><strong>Agua superficial:</strong> lluvias arrastran basura y contaminantes hacia ríos y el lago (escorrentía).</li>
+      <li><strong>Paisaje:</strong> malos olores y pérdida de belleza escénica.</li>
+      <li><strong>Dispersión:</strong> residuos se esparcen en caminos por viento o animales.</li>
+    </ul>
+    <div class="result info" style="margin-top:10px;">
+      <strong>Clave cuenca:</strong> lluvia + barranco + basura = camino directo al lago.
+    </div>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Quema = doble daño</div>
+    <p class="s">
+      Afecta aire (salud) y también clima (CO₂). Además, algunos plásticos al quemarse pueden generar sustancias muy peligrosas.
+    </p>
+  </div>
+  <div class="pill">
+    <div class="t">Lixiviados</div>
+    <p class="s">
+      Líquidos que se forman cuando la basura se mezcla con agua. Si no hay control, pueden contaminar suelo y aguas subterráneas.
+    </p>
+  </div>
+  <div class="pill">
+    <div class="t">Escorrentía</div>
+    <p class="s">
+      Cuando llueve, el agua corre y arrastra residuos. En Sololá, eso puede mover basura desde calles a ríos y al lago.
+    </p>
+  </div>
+</div>
+
+<div class="grid2" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Acciones rápidas para reducir impactos</strong></p>
+    <ul>
+      <li><strong>Separación:</strong> húmedo (orgánico) vs seco (reciclables) + peligrosos aparte.</li>
+      <li><strong>No quema:</strong> acuerdos comunitarios y vigilancia.</li>
+      <li><strong>Puntos críticos:</strong> limpieza y barreras en drenajes antes de lluvias.</li>
+      <li><strong>Educación:</strong> señalización clara en escuelas/mercados y seguimiento.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <p><strong>Cómo medir el cambio (simple)</strong></p>
+    <ul>
+      <li>¿Cuántas bolsas a la semana se desvían a compost/reciclaje?</li>
+      <li>¿Hay menos basura en drenajes después de lluvia?</li>
+      <li>¿Bajó el mal olor en el punto de disposición?</li>
+    </ul>
+    <div class="result info" style="margin-top:10px;">
+      <strong>Medir</strong> ayuda a sostener hábitos: si se ve el avance, se mantiene.
+    </div>
+  </div>
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="nav">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental 5.2 Efectos de la mala gestión de residuos y desechos sólidos"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa mental. Verifica tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      
+<section class="card" id="juego1">
+  <h2>Juego 1 · “Detective de impactos” (multi-selección, difícil)</h2>
+  <div class="hint">
+    Lee la situación y marca <strong>todos</strong> los impactos que aplica (salud, aire, agua, clima, paisaje).
+    Nivel difícil: necesitas ≥ 8/10 con selección exacta (si marcas de más, cuenta como error).
+  </div>
+
+  <style>
+    .diGrid{ margin-top:10px; display:grid; grid-template-columns: 1.08fr .92fr; gap:12px; align-items:start; }
+    @media (max-width:980px){ .diGrid{ grid-template-columns: 1fr; } }
+    .case{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.66);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+    .case .t{ font-size: 18px; font-family: Outfit, Inter, system-ui; font-weight: 900; }
+    .case .d{ margin-top:6px; color: rgba(11,16,32,.76); line-height:1.55; font-size: 13.4px; }
+    .chips{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+    .chip{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 900;
+      font-size: 12px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: var(--shadow-soft);
+    }
+    .chip.on{ outline:3px solid rgba(120,210,255,.35); background: rgba(255,255,255,.86); }
+    .hud{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+  </style>
+
+  <div class="diGrid">
+    <div class="panel">
+      <h3>Caso</h3>
+      <div class="case">
+        <div class="t" id="diTitle">—</div>
+        <div class="d" id="diDesc">—</div>
+        <div class="chips" id="diChips"></div>
+      </div>
+
+      <div class="hud">
+        <span class="mini">Ronda <span id="diRound">1</span>/10</span>
+        <span class="mini">✅ <span id="diOk">0</span></span>
+        <span class="mini">❌ <span id="diBad">0</span></span>
+        <button class="btn primary" type="button" id="diStart">Iniciar</button>
+        <button class="btn" type="button" id="diSubmit">Enviar</button>
+        <button class="btn" type="button" id="diReset">Reiniciar</button>
+        <button class="btn" type="button" id="diHint">Pista</button>
+      </div>
+
+      <div class="result info" id="diMsg" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Guía de impactos (módulo)</h3>
+      <div class="box">
+        <ul>
+          <li><strong>Salud:</strong> enfermedades + vectores.</li>
+          <li><strong>Aire:</strong> quema y humo.</li>
+          <li><strong>Clima:</strong> CO₂ (quema) + metano (orgánicos en botaderos).</li>
+          <li><strong>Agua:</strong> lixiviados y escorrentía.</li>
+          <li><strong>Paisaje:</strong> olores, belleza escénica, dispersión en caminos.</li>
+        </ul>
+      </div>
+      <div class="result" id="diFinal" style="display:none;margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="juego2">
+  <h2>Juego 2 · “Plan de emergencia en la cuenca” (optimización)</h2>
+  <div class="hint">
+    Tienes <strong>10 fichas</strong> para invertir en acciones. Debes cumplir metas mínimas en <strong>salud</strong>, <strong>aire</strong> y <strong>agua</strong>.
+    Si te falta un objetivo, pierdes. (Difícil: hay que balancear, no solo una cosa).
+  </div>
+
+  <style>
+    .plGrid{ margin-top:10px; display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; align-items:start; }
+    @media (max-width:980px){ .plGrid{ grid-template-columns: 1fr; } }
+    .actRow{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: var(--shadow-soft);
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+    }
+    @media (max-width:700px){ .actRow{ grid-template-columns: 1fr; } }
+    .actRow strong{ font-family: Outfit, Inter, system-ui; }
+    .qty{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+    .qty button{
+      width:44px; height:40px;
+      border-radius: 14px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.72);
+      cursor:pointer;
+      font-weight:900;
+      box-shadow: var(--shadow-soft);
+    }
+    .qty button:hover{ background: rgba(255,255,255,.86); border-color: rgba(11,16,32,.18); }
+    .qty span{
+      min-width: 34px;
+      text-align:center;
+      font-weight: 900;
+      font-family: Outfit, Inter, system-ui;
+    }
+    .meters{ display:grid; gap:10px; margin-top:10px; }
+    .m{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: var(--shadow-soft);
+    }
+    .m .k{ font-weight:900; font-size:12px; color: rgba(11,16,32,.70); }
+    .m .bar{ height: 12px; border-radius:999px; background: rgba(11,16,32,.10); overflow:hidden; margin-top:8px; }
+    .m .bar div{ height:100%; width:0%; background: rgba(56,189,248,.50); transition: width .2s ease; }
+    .m .v{ margin-top:8px; font-weight:900; font-family: Outfit, Inter, system-ui; }
+  </style>
+
+  <div class="plGrid">
+    <div class="panel">
+      <h3>Acciones (elige cantidades)</h3>
+      <div class="hint" style="margin-top:0;">Fichas disponibles: <strong><span id="plBudget">10</span></strong></div>
+      <div id="plActs"></div>
+      <div class="row">
+        <button class="btn" type="button" id="plReset">Reiniciar</button>
+        <button class="btn primary" type="button" id="plCheck">Evaluar</button>
+        <button class="btn" type="button" id="plRandom">Aleatorio (difícil)</button>
+      </div>
+      <div class="result info" id="plMsg" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Metas</h3>
+      <div class="meters">
+        <div class="m">
+          <div class="k">Salud (meta ≥ 70)</div>
+          <div class="bar"><div id="plHbar"></div></div>
+          <div class="v"><span id="plH">0</span>/100</div>
+        </div>
+        <div class="m">
+          <div class="k">Aire (meta ≥ 65)</div>
+          <div class="bar"><div id="plAbar"></div></div>
+          <div class="v"><span id="plA">0</span>/100</div>
+        </div>
+        <div class="m">
+          <div class="k">Agua (meta ≥ 70)</div>
+          <div class="bar"><div id="plWbar"></div></div>
+          <div class="v"><span id="plW">0</span>/100</div>
+        </div>
+      </div>
+      <div class="result" id="plFinal" style="display:none;margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = "# 5.2 Efectos de la mala gesti\u00f3n de residuos y desechos s\u00f3lidos\n## Salud (m\u00f3dulo)\n- Enfermedades gastrointestinales (c\u00f3lera, diarrea, fiebre tifoidea)\n- Insectos y roedores (vectores)\n## Ambiente (m\u00f3dulo)\n- Aire: quema contamina\n- Clima: CO\u2082 por quema + metano por descomposici\u00f3n en botaderos\n- Agua subterr\u00e1nea: lixiviados (lixiviaci\u00f3n)\n- Agua superficial: escorrent\u00eda hacia r\u00edos/lago\n- Paisaje: olores, p\u00e9rdida de belleza, dispersi\u00f3n\n## En Solol\u00e1 (cuenca)\n- Lluvia arrastra residuos a r\u00edos y al Lago de Atitl\u00e1n\n- Separaci\u00f3n + no quema + control de puntos cr\u00edticos reduce impacto";
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('fallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{
+      tries++;
+      const ok=renderMap();
+      if(ok || tries>12) clearInterval(it);
+      if(tries>12 && !mm) document.getElementById('fallback').classList.add('show');
+    },300);
+
+    document.getElementById('fit').addEventListener('click',()=>mm&&mm.fit());
+    document.getElementById('toggle').addEventListener('click',()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    });
+    document.getElementById('resetMap').addEventListener('click',()=>{ mm=null; expanded=true; renderMap(); });
+
+    // =========================
+    // JUEGOS
+    // =========================
+
+    // ===== Juego 1: Detective de impactos =====
+    const diTitle=document.getElementById('diTitle');
+    const diDesc=document.getElementById('diDesc');
+    const diChips=document.getElementById('diChips');
+    const diRound=document.getElementById('diRound');
+    const diOk=document.getElementById('diOk');
+    const diBad=document.getElementById('diBad');
+    const diStart=document.getElementById('diStart');
+    const diSubmit=document.getElementById('diSubmit');
+    const diReset=document.getElementById('diReset');
+    const diHint=document.getElementById('diHint');
+    const diMsg=document.getElementById('diMsg');
+    const diFinal=document.getElementById('diFinal');
+
+    const IMP = [
+      {id:"salud", t:"Salud"},
+      {id:"aire", t:"Aire"},
+      {id:"clima", t:"Clima"},
+      {id:"agua_sub", t:"Agua subterránea"},
+      {id:"agua_sup", t:"Agua superficial"},
+      {id:"paisaje", t:"Paisaje"}
+    ];
+
+    const CASES = [
+      {t:"Quema en patio", d:"En una casa queman plástico y orgánico para 'desaparecer' la basura.", impacts:["aire","clima","salud","paisaje"], hint:"Quema afecta aire+clima y enferma."},
+      {t:"Botadero cerca de un riachuelo", d:"La basura se moja con lluvia; sale líquido oscuro hacia el suelo.", impacts:["agua_sub","agua_sup","salud","paisaje"], hint:"Piensa en lixiviados y escorrentía."},
+      {t:"Basura en drenajes del barrio", d:"Antes de lluvias, hay bolsas en las rejillas y canales.", impacts:["agua_sup","paisaje","salud"], hint:"Con lluvia se va a ríos y trae vectores."},
+      {t:"Residuos orgánicos mezclados", d:"En el mercado tiran restos de comida mezclados con plástico. Huele fuerte y hay moscas.", impacts:["salud","agua_sub","paisaje","clima"], hint:"Orgánicos en botaderos → metano y lixiviados."},
+      {t:"Pilas con basura común", d:"Se botan pilas y químicos junto con el resto.", impacts:["agua_sub","salud"], hint:"Peligrosos contaminan y dañan."},
+      {t:"Basura en barranco", d:"En un barranco se tiran bolsas; el viento las lleva a la carretera.", impacts:["paisaje","salud","agua_sup"], hint:"Dispersión + lluvia = río/lago."},
+      {t:"Vidrios rotos sin protección", d:"Hay vidrio roto en la bolsa, sin separar.", impacts:["salud","paisaje"], hint:"Riesgo de lesiones."},
+      {t:"Lluvia arrastra basura", d:"Tras una tormenta, aparecen botellas y bolsas en la orilla del lago.", impacts:["agua_sup","paisaje","salud"], hint:"Escorrentía hacia el lago."},
+      {t:"Mala recolección", d:"Pasan muchos días sin recolección y se acumulan residuos en la calle.", impacts:["salud","paisaje","agua_sup"], hint:"Vectores + dispersión + drenajes."},
+      {t:"Orgánicos enterrados sin control", d:"Se entierra orgánico en un lugar húmedo cerca de un pozo.", impacts:["agua_sub","salud","clima"], hint:"Lixiviación + gases de descomposición."}
+    ];
+
+    let diState=null;
+
+    function chipEl(o){
+      const s=document.createElement('span');
+      s.className="chip";
+      s.textContent=o.t;
+      s.dataset.id=o.id;
+      s.addEventListener('click', ()=>{
+        if(!diState) return;
+        if(diState.sel.has(o.id)) diState.sel.delete(o.id);
+        else diState.sel.add(o.id);
+        s.classList.toggle('on', diState.sel.has(o.id));
+      });
+      return s;
+    }
+
+    function diRender(){
+      const c=diState.cases[diState.i];
+      diTitle.textContent=c.t;
+      diDesc.textContent=c.d;
+      diChips.innerHTML="";
+      IMP.forEach(o=>diChips.appendChild(chipEl(o)));
+      diRound.textContent=String(diState.i+1);
+      diMsg.style.display="none";
+      diState.sel.clear();
+    }
+
+    function setEq(a,b){
+      if(a.size!==b.size) return false;
+      for(const x of a) if(!b.has(x)) return false;
+      return true;
+    }
+
+    function diSubmitCase(){
+      if(!diState) return;
+      const c=diState.cases[diState.i];
+      const correct = new Set(c.impacts);
+      const ok = setEq(diState.sel, correct);
+
+      if(ok) diState.ok++; else diState.bad++;
+      diOk.textContent=String(diState.ok);
+      diBad.textContent=String(diState.bad);
+
+      diMsg.style.display="block";
+      diMsg.className = "result " + (ok ? "ok" : "warn");
+      diMsg.innerHTML = ok
+        ? "✅ Selección exacta."
+        : `⚠️ No exacto. Correcto: <strong>${c.impacts.join(", ")}</strong>.`;
+
+      diState.i++;
+      if(diState.i>=diState.cases.length){
+        diFinish();
+      }else{
+        setTimeout(diRender, 550);
+      }
+    }
+
+    function diFinish(){
+      diFinal.style.display="block";
+      const ok=diState.ok;
+      diFinal.className = "result " + (ok>=8 ? "ok" : ok>=6 ? "warn" : "no");
+      diFinal.innerHTML =
+        (ok>=8
+          ? "🏆 Nivel difícil superado: ya reconoces impactos rápidamente."
+          : ok>=6
+          ? "Buen avance. Para subir: piensa siempre en quema (aire+clima) y lluvia (escorrentía al lago)."
+          : "Repite. En Sololá, lluvia + residuos = contaminación del lago."
+        ) + `<br>Resultado: ✅ ${diState.ok} · ❌ ${diState.bad}`;
+      diStart.disabled=false;
+    }
+
+    diStart.addEventListener('click', ()=>{
+      diState={i:0, ok:0, bad:0, sel:new Set(), cases: CASES.slice()};
+      // mezclar casos
+      for(let i=diState.cases.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [diState.cases[i],diState.cases[j]]=[diState.cases[j],diState.cases[i]];
+      }
+      diState.cases = diState.cases.slice(0,10);
+      diOk.textContent="0"; diBad.textContent="0";
+      diFinal.style.display="none";
+      diStart.disabled=true;
+      diRender();
+    });
+
+    diSubmit.addEventListener('click', diSubmitCase);
+
+    diHint.addEventListener('click', ()=>{
+      if(!diState) return;
+      const c=diState.cases[diState.i];
+      diMsg.style.display="block";
+      diMsg.className="result info";
+      diMsg.textContent = "Pista: " + c.hint;
+    });
+
+    diReset.addEventListener('click', ()=>{
+      diState=null;
+      diTitle.textContent="—";
+      diDesc.textContent="—";
+      diChips.innerHTML="";
+      diRound.textContent="1";
+      diOk.textContent="0";
+      diBad.textContent="0";
+      diFinal.style.display="none";
+      diMsg.style.display="block";
+      diMsg.className="result info";
+      diMsg.textContent="Presiona “Iniciar”.";
+      diStart.disabled=false;
+    });
+
+    diReset.click();
+
+    // ===== Juego 2: Plan de emergencia =====
+    const plBudget=document.getElementById('plBudget');
+    const plActs=document.getElementById('plActs');
+    const plReset=document.getElementById('plReset');
+    const plCheck=document.getElementById('plCheck');
+    const plRandom=document.getElementById('plRandom');
+    const plMsg=document.getElementById('plMsg');
+
+    const plH=document.getElementById('plH');
+    const plA=document.getElementById('plA');
+    const plW=document.getElementById('plW');
+    const plHbar=document.getElementById('plHbar');
+    const plAbar=document.getElementById('plAbar');
+    const plWbar=document.getElementById('plWbar');
+    const plFinal=document.getElementById('plFinal');
+
+    const ACTIONS = [
+      {id:"no_quema", t:"Acuerdo 'No quema'", s:"Reduce humo y CO₂.", cost:1, H:6, A:18, W:2},
+      {id:"sep", t:"Separación (húmedo/seco)", s:"Baja vectores y lixiviados.", cost:1, H:14, A:2, W:12},
+      {id:"comp", t:"Compost orgánico", s:"Menos metano y lixiviados.", cost:1, H:8, A:2, W:14},
+      {id:"barreras", t:"Barreras en drenajes", s:"Evita arrastre al lago.", cost:1, H:6, A:0, W:18},
+      {id:"acopio_pel", t:"Acopio de peligrosos", s:"Evita contaminación y riesgos.", cost:1, H:16, A:0, W:10},
+      {id:"recolec", t:"Mejorar recolección", s:"Menos acumulación en calles.", cost:2, H:18, A:2, W:10},
+      {id:"educ", t:"Brigadas escolares", s:"Hábitos y vigilancia.", cost:1, H:10, A:2, W:6},
+      {id:"limpieza", t:"Limpieza puntos críticos", s:"Quita basura antes de lluvias.", cost:2, H:10, A:0, W:14}
+    ];
+
+    let plState=null;
+
+    function plRender(){
+      plActs.innerHTML="";
+      ACTIONS.forEach(a=>{
+        const row=document.createElement('div');
+        row.className="actRow";
+        row.innerHTML = `
+          <div>
+            <strong>${a.t}</strong>
+            <div class="hint" style="margin-top:6px;">${a.s} · Costo: <strong>${a.cost}</strong></div>
+          </div>
+          <div class="qty">
+            <button type="button" data-dec="${a.id}">−</button>
+            <span id="q_${a.id}">0</span>
+            <button type="button" data-inc="${a.id}">+</button>
+          </div>
+        `;
+        plActs.appendChild(row);
+      });
+
+      plActs.querySelectorAll('button[data-inc]').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const id=b.dataset.inc;
+          if(plRemaining()<1) return;
+          plState.qty[id] = (plState.qty[id]||0)+1;
+          plUpdate();
+        });
+      });
+      plActs.querySelectorAll('button[data-dec]').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const id=b.dataset.dec;
+          plState.qty[id] = Math.max(0,(plState.qty[id]||0)-1);
+          plUpdate();
+        });
+      });
+
+      plUpdate();
+    }
+
+    function plSpent(){
+      let s=0;
+      ACTIONS.forEach(a=>{
+        const q=plState.qty[a.id]||0;
+        s += q*a.cost;
+      });
+      return s;
+    }
+    function plRemaining(){
+      return plState.budget - plSpent();
+    }
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    function plUpdate(){
+      ACTIONS.forEach(a=>{
+        document.getElementById(`q_${a.id}`).textContent=String(plState.qty[a.id]||0);
+      });
+      plBudget.textContent=String(plRemaining());
+
+      // métricas (con rendimientos decrecientes)
+      let H=0,A=0,W=0;
+      ACTIONS.forEach(a=>{
+        const q=plState.qty[a.id]||0;
+        if(q<=0) return;
+        for(let i=1;i<=q;i++){
+          const factor = i===1 ? 1.0 : i===2 ? 0.72 : 0.55;
+          H += a.H*factor;
+          A += a.A*factor;
+          W += a.W*factor;
+        }
+      });
+
+      H = Math.round(clamp(H,0,100));
+      A = Math.round(clamp(A,0,100));
+      W = Math.round(clamp(W,0,100));
+
+      plH.textContent=String(H);
+      plA.textContent=String(A);
+      plW.textContent=String(W);
+
+      plHbar.style.width=H+"%";
+      plAbar.style.width=A+"%";
+      plWbar.style.width=W+"%";
+
+      plFinal.style.display="none";
+      plMsg.style.display="none";
+    }
+
+    function plResetGame(){
+      plState={budget:10, qty:{}};
+      plRender();
+      plMsg.style.display="none";
+      plFinal.style.display="none";
+    }
+
+    plReset.addEventListener('click', plResetGame);
+
+    plRandom.addEventListener('click', ()=>{
+      // asignación aleatoria (difícil)
+      plResetGame();
+      let tries=40;
+      while(plRemaining()>0 && tries-->0){
+        const a=ACTIONS[Math.floor(Math.random()*ACTIONS.length)];
+        if(plRemaining()>=a.cost){
+          plState.qty[a.id]=(plState.qty[a.id]||0)+1;
+        }
+      }
+      plUpdate();
+      plMsg.style.display="block";
+      plMsg.className="result info";
+      plMsg.textContent="Asignación aleatoria hecha. ¿Cumple metas?";
+    });
+
+    plCheck.addEventListener('click', ()=>{
+      const H=Number(plH.textContent), A=Number(plA.textContent), W=Number(plW.textContent);
+      const spent = plSpent();
+      plMsg.style.display="block";
+
+      if(spent>plState.budget){
+        plMsg.className="result no";
+        plMsg.textContent="❌ Te pasaste del presupuesto.";
+        return;
+      }
+
+      const okH=H>=70, okA=A>=65, okW=W>=70;
+      const okAll=okH&&okA&&okW;
+
+      plMsg.className="result " + (okAll ? "ok" : "warn");
+      plMsg.innerHTML = okAll
+        ? "✅ <strong>Plan sólido.</strong> Cumple metas en salud, aire y agua."
+        : `⚠️ Falta meta: ${[!okH?'salud':'',!okA?'aire':'',!okW?'agua':''].filter(Boolean).join(", ")}. Ajusta fichas.`;
+
+      plFinal.style.display="block";
+      plFinal.className="result " + (okAll ? "ok" : "warn");
+      plFinal.innerHTML = okAll
+        ? "🏆 Lograste balancear impactos en la cuenca. Mantén el 'no quema' y la separación como base."
+        : "Sugerencia: combina acciones de <strong>aire</strong> (no quema) con acciones de <strong>agua</strong> (barreras + separación) y <strong>salud</strong> (recolección).";
+    });
+
+    plResetGame();
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.1 Residuos y desechos · EPC AALA</title>
+  <meta name="description" content="Definiciones y clasificación de residuos y desechos, con juegos de decisión y ordenamiento." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.1 Residuos y desechos</h1>
+        <p class="subtitle">En el módulo se distingue entre residuos (aprovechables) y desechos (inservibles). En Sololá, separar desde el origen es clave para proteger la cuenca del Lago de Atitlán.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="4-5.html">Anterior</a>
+        <a class="btn primary" href="5-2.html">Siguiente</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+      <section class="card" id="teoria">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="grid2">
+  <div class="box">
+    <p><strong>¿Qué es un residuo?</strong></p>
+    <p>
+      Según el material, <strong>residuos</strong> son “materiales que pueden ser utilizados en otras actividades”
+      (por ejemplo: orgánicos para compost, papel limpio para reciclaje o envases retornables).
+      Un residuo todavía tiene <strong>valor</strong> si se maneja bien.
+    </p>
+    <div class="result info">
+      <strong>Idea clave:</strong> Si se puede aprovechar (reusar, reciclar o compostar) y está bien separado,
+      normalmente lo tratamos como <strong>residuo</strong>.
+    </div>
+    <p style="margin-top:10px;"><strong>¿Qué es un desecho?</strong></p>
+    <p>
+      Los <strong>desechos</strong> son “materiales inservibles” que requieren ser eliminados.
+      Por eso deben <strong>tratarse</strong> y disponerse en un lugar seguro (por ejemplo, un <strong>relleno sanitario</strong>).
+    </p>
+  </div>
+
+  <div class="box">
+    <p><strong>Tipos principales (según el módulo)</strong></p>
+    <ul>
+      <li><strong>Orgánicos biodegradables:</strong> restos de comida, cáscaras, hojas, estiércol.</li>
+      <li><strong>Inorgánicos no biodegradables:</strong> plásticos, vidrio, metales, algunos textiles.</li>
+      <li><strong>Especiales/peligrosos:</strong> residuos de agroquímicos, tóxicos y agentes bioinfecciosos.</li>
+    </ul>
+    <div class="result warn" style="margin-top:10px;">
+      <strong>En cuenca (Sololá):</strong> lo peligroso nunca va mezclado, porque puede contaminar el agua y lastimar a quien recolecta.
+    </div>
+
+    <p style="margin-top:10px;"><strong>Clasificación por origen</strong></p>
+    <ul>
+      <li>Domiciliarios</li>
+      <li>Industriales</li>
+      <li>Hospitalarios</li>
+      <li>Comerciales</li>
+      <li>Urbanos</li>
+    </ul>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Separación desde el origen</div>
+    <p class="s">
+      Lo que se separa bien (limpio y seco) tiene más oportunidad de aprovechamiento. Lo mezclado suele volverse “desecho”.
+    </p>
+  </div>
+  <div class="pill">
+    <div class="t">Tiempo de descomposición</div>
+    <p class="s">
+      El módulo muestra que algunos materiales se degradan rápido (orgánicos) y otros pueden tardar muchísimo (plástico/vidrio).
+      Por eso, en Sololá es clave evitar que lleguen a barrancos y al lago.
+    </p>
+  </div>
+  <div class="pill">
+    <div class="t">Decisión rápida</div>
+    <p class="s">
+      Pregunta: ¿Se puede aprovechar con seguridad? Si sí → residuo (aprovechar). Si no → desecho (disposición segura).
+    </p>
+  </div>
+</div>
+
+<div class="grid2" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Ejemplo de separación simple para casa/escuela</strong></p>
+    <ul>
+      <li><strong>Orgánico:</strong> restos de comida (para compost).</li>
+      <li><strong>Inorgánico reciclable:</strong> plástico, metal, vidrio, papel/cartón limpios y secos.</li>
+      <li><strong>No reciclable:</strong> servilletas sucias, pañales, colillas, mezclados.</li>
+      <li><strong>Peligrosos:</strong> pilas, agroquímicos, medicamentos (acopio aparte).</li>
+    </ul>
+    <div class="result info" style="margin-top:10px;">
+      <strong>Meta:</strong> que el “no reciclable” sea lo más pequeño posible.
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>Conexión con Sololá</strong></p>
+    <ul>
+      <li>En temporada de lluvia, los residuos en la calle pueden llegar rápido a ríos y al Lago de Atitlán.</li>
+      <li>Separar reduce basura en drenajes y evita puntos críticos en barrancos.</li>
+      <li>Si el orgánico se aprovecha, baja olor y lixiviados en botaderos.</li>
+    </ul>
+  </div>
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="nav">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental 5.1 Residuos y desechos"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa mental. Verifica tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      
+<section class="card" id="juego1">
+  <h2>Juego 1 · “¿Residuo o desecho?” (juicio rápido + categoría)</h2>
+  <div class="hint">
+    Aparecerá un objeto con una condición (limpio, sucio, roto). Primero decide si es <strong>residuo</strong> (aprovechable)
+    o <strong>desecho</strong> (inservible). Luego elige el tipo: <strong>orgánico</strong>, <strong>inorgánico</strong> o <strong>peligroso</strong>.
+    Nivel difícil: 12 rondas, necesitas ≥ 10 aciertos.
+  </div>
+
+  <style>
+    .jdGrid{ margin-top:10px; display:grid; grid-template-columns: 1.08fr .92fr; gap:12px; align-items:start; }
+    @media (max-width:980px){ .jdGrid{ grid-template-columns: 1fr; } }
+    .bigCard{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.66);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+    .bigCard .name{ font-size: 22px; font-family: Outfit, Inter, system-ui; font-weight: 900; }
+    .bigCard .meta{ margin-top:6px; color: rgba(11,16,32,.74); line-height: 1.45; font-size: 13px; }
+    .pickRow{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px; }
+    @media (max-width:700px){ .pickRow{ grid-template-columns: 1fr; } }
+    .pickBtn{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.72);
+      border-radius: 16px;
+      padding: 12px;
+      cursor:pointer;
+      text-align:left;
+      font-weight: 900;
+      box-shadow: var(--shadow-soft);
+    }
+    .pickBtn:hover{ background: rgba(255,255,255,.86); border-color: rgba(11,16,32,.18); }
+    .pickBtn small{ display:block; margin-top:6px; color: rgba(11,16,32,.70); font-weight:700; line-height:1.45; }
+    .hud{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+  </style>
+
+  <div class="jdGrid">
+    <div class="panel">
+      <h3>Ronda</h3>
+      <div class="bigCard">
+        <div class="name" id="jdItem">—</div>
+        <div class="meta" id="jdDesc">—</div>
+      </div>
+
+      <div class="hint" style="margin-top:10px;"><strong>1) Residuo o desecho</strong></div>
+      <div class="pickRow" id="jdRD"></div>
+
+      <div class="hint" style="margin-top:10px;"><strong>2) Tipo</strong></div>
+      <div class="pickRow" id="jdType"></div>
+
+      <div class="hud">
+        <span class="mini">Ronda <span id="jdRound">1</span>/12</span>
+        <span class="mini">✅ <span id="jdOk">0</span></span>
+        <span class="mini">❌ <span id="jdBad">0</span></span>
+        <button class="btn primary" type="button" id="jdStart">Iniciar</button>
+        <button class="btn" type="button" id="jdReset">Reiniciar</button>
+        <button class="btn" type="button" id="jdHint">Pista</button>
+      </div>
+
+      <div class="result info" id="jdMsg" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Reglas del módulo (resumen)</h3>
+      <div class="box">
+        <ul>
+          <li><strong>Residuo</strong>: se puede usar en otra actividad (compost/reciclaje/reuso).</li>
+          <li><strong>Desecho</strong>: inservible, debe eliminarse (disposición segura).</li>
+          <li><strong>Peligroso</strong>: agroquímicos, tóxicos, bioinfecciosos → <strong>aparte</strong>.</li>
+        </ul>
+      </div>
+      <div class="result" id="jdFinal" style="display:none;margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="juego2">
+  <h2>Juego 2 · “Reto del tiempo” (ordena la descomposición)</h2>
+  <div class="hint">
+    Sin usar números: ordena de <strong>más rápido</strong> a <strong>más lento</strong> según lo que muestra el módulo (orgánicos vs materiales duraderos).
+    Usa las flechas para reordenar. Nivel difícil: ≤ 10 movimientos.
+  </div>
+
+  <style>
+    .ordGrid{ margin-top:10px; display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; align-items:start; }
+    @media (max-width:980px){ .ordGrid{ grid-template-columns: 1fr; } }
+    .ordList{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      display:grid;
+      gap:10px;
+    }
+    .ordRow{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: var(--shadow-soft);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .ordRow strong{ font-family: Outfit, Inter, system-ui; }
+    .ar{
+      display:flex; gap:8px; align-items:center;
+    }
+    .ar button{
+      width:44px; height:40px;
+      border-radius: 14px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.72);
+      cursor:pointer;
+      font-weight:900;
+      box-shadow: var(--shadow-soft);
+    }
+    .ar button:hover{ background: rgba(255,255,255,.86); border-color: rgba(11,16,32,.18); }
+  </style>
+
+  <div class="ordGrid">
+    <div class="panel">
+      <h3>Lista a ordenar</h3>
+      <div class="ordList" id="ordList"></div>
+      <div class="row">
+        <button class="btn" type="button" id="ordNew">Nueva lista</button>
+        <button class="btn primary" type="button" id="ordCheck">Comprobar</button>
+        <span class="mini">Movimientos: <span id="ordMoves">0</span></span>
+      </div>
+      <div class="result info" id="ordMsg" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Pistas</h3>
+      <div class="box">
+        <ul>
+          <li>Orgánicos suelen degradarse más rápido.</li>
+          <li>Papel/cartón suele ir antes que plástico y vidrio.</li>
+          <li>Vidrio y algunos plásticos pueden durar muchísimo en el ambiente.</li>
+        </ul>
+      </div>
+      <div class="result" id="ordFinal" style="display:none;margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = "# 5.1 Residuos y desechos\n## Definiciones (m\u00f3dulo)\n- Residuo: material que puede ser usado en otras actividades\n- Desecho: material inservible que debe eliminarse (disposici\u00f3n segura)\n## Tipos principales\n- Org\u00e1nicos biodegradables\n- Inorg\u00e1nicos no biodegradables\n- Especiales/peligrosos: agroqu\u00edmicos, t\u00f3xicos y bioinfecciosos\n## Clasificaci\u00f3n por origen\n- Domiciliarios, industriales, hospitalarios, comerciales, urbanos\n## En Solol\u00e1 (cuenca)\n- Separar bien convierte \u201cbasura\u201d en recursos (compost/reciclaje)\n- Evitar que inorg\u00e1nicos lleguen a barrancos y al lago";
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('fallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{
+      tries++;
+      const ok=renderMap();
+      if(ok || tries>12) clearInterval(it);
+      if(tries>12 && !mm) document.getElementById('fallback').classList.add('show');
+    },300);
+
+    document.getElementById('fit').addEventListener('click',()=>mm&&mm.fit());
+    document.getElementById('toggle').addEventListener('click',()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    });
+    document.getElementById('resetMap').addEventListener('click',()=>{ mm=null; expanded=true; renderMap(); });
+
+    // =========================
+    // JUEGOS
+    // =========================
+
+    // ===== Juego 1: Juicio rápido =====
+    const jdItem=document.getElementById('jdItem');
+    const jdDesc=document.getElementById('jdDesc');
+    const jdRD=document.getElementById('jdRD');
+    const jdType=document.getElementById('jdType');
+    const jdRound=document.getElementById('jdRound');
+    const jdOk=document.getElementById('jdOk');
+    const jdBad=document.getElementById('jdBad');
+    const jdStart=document.getElementById('jdStart');
+    const jdReset=document.getElementById('jdReset');
+    const jdHint=document.getElementById('jdHint');
+    const jdMsg=document.getElementById('jdMsg');
+    const jdFinal=document.getElementById('jdFinal');
+
+    const RD_OPTS = [
+      {id:"residuo", t:"Residuo", s:"Aprovechable si se separa bien."},
+      {id:"desecho", t:"Desecho", s:"Inservible (disposición segura)."}
+    ];
+    const TY_OPTS = [
+      {id:"organico", t:"Orgánico", s:"Biodegradable (compost)."},
+      {id:"inorganico", t:"Inorgánico", s:"Plástico/vidrio/metal, etc."},
+      {id:"peligroso", t:"Peligroso", s:"Agroquímicos, tóxicos, bioinfecciosos."}
+    ];
+
+    const JD_ITEMS = [
+      {name:"Cáscaras de banano", desc:"Restos de fruta, sin plástico.", rd:"residuo", type:"organico", hint:"Puede convertirse en compost."},
+      {name:"Botella plástica limpia", desc:"Vacía, sin restos de comida.", rd:"residuo", type:"inorganico", hint:"Si está limpia y seca, se puede aprovechar."},
+      {name:"Botella plástica con aceite", desc:"Con grasa pegada y mal olor.", rd:"desecho", type:"inorganico", hint:"Contaminada: suele arruinar reciclaje."},
+      {name:"Hojas secas", desc:"Recolectadas del patio.", rd:"residuo", type:"organico", hint:"Sirven como material 'marrón' en compost."},
+      {name:"Pila usada", desc:"Batería agotada.", rd:"desecho", type:"peligroso", hint:"Nunca va mezclada: necesita acopio aparte."},
+      {name:"Envase de vidrio entero", desc:"Frasco sin tapa, limpio.", rd:"residuo", type:"inorganico", hint:"Vidrio separado y seguro."},
+      {name:"Jeringa (residuo bioinfeccioso)", desc:"Objeto punzocortante de clínica.", rd:"desecho", type:"peligroso", hint:"Bioinfeccioso: manejo especial."},
+      {name:"Cartón seco", desc:"Caja sin grasa.", rd:"residuo", type:"inorganico", hint:"Papel/cartón se aprovecha si está seco."},
+      {name:"Servilleta sucia", desc:"Con salsa y grasa.", rd:"desecho", type:"organico", hint:"Aunque sea orgánico, suele ser rechazo por suciedad."},
+      {name:"Bolsita de agroquímico", desc:"Envase con residuos de químico.", rd:"desecho", type:"peligroso", hint:"Agroquímico: peligroso."},
+      {name:"Lata limpia", desc:"Enjuagada y seca.", rd:"residuo", type:"inorganico", hint:"Metal se aprovecha si está limpio."},
+      {name:"Pañal desechable", desc:"Usado.", rd:"desecho", type:"inorganico", hint:"Rechazo: no reciclable."},
+      {name:"Restos de verduras", desc:"De cocina o mercado.", rd:"residuo", type:"organico", hint:"Orgánico aprovechable en compost."},
+      {name:"Vidrio roto", desc:"Pedazos filosos.", rd:"desecho", type:"inorganico", hint:"Riesgo alto: debe ir protegido o a disposición segura."},
+    ];
+
+    let jdState=null;
+
+    function jdBtnGrid(container, list, onPick){
+      container.innerHTML="";
+      list.forEach(o=>{
+        const b=document.createElement('button');
+        b.type="button";
+        b.className="pickBtn";
+        b.innerHTML = `${o.t}<small>${o.s}</small>`;
+        b.addEventListener('click', ()=>onPick(o.id, b));
+        container.appendChild(b);
+      });
+    }
+
+    function jdNew(){
+      const it = JD_ITEMS[Math.floor(Math.random()*JD_ITEMS.length)];
+      jdState.item=it;
+      jdState.pickRD=null;
+      jdState.pickType=null;
+      jdItem.textContent=it.name;
+      jdDesc.textContent=it.desc;
+
+      [...jdRD.querySelectorAll('.pickBtn')].forEach(b=>b.style.outline='none');
+      [...jdType.querySelectorAll('.pickBtn')].forEach(b=>b.style.outline='none');
+
+      jdMsg.style.display="block";
+      jdMsg.className="result info";
+      jdMsg.textContent="Elige primero Residuo/Desecho y luego el tipo.";
+    }
+
+    function jdEval(){
+      const it=jdState.item;
+      const ok = (jdState.pickRD===it.rd) && (jdState.pickType===it.type);
+      if(ok) jdState.ok++; else jdState.bad++;
+      jdOk.textContent=String(jdState.ok);
+      jdBad.textContent=String(jdState.bad);
+
+      jdMsg.style.display="block";
+      jdMsg.className = "result " + (ok ? "ok" : "warn");
+      jdMsg.innerHTML = ok
+        ? "✅ Correcto. ¡Sigue!"
+        : `⚠️ Casi. Lo ideal era <strong>${it.rd}</strong> + <strong>${it.type}</strong>.`;
+
+      jdState.round++;
+      if(jdState.round>12){
+        jdFinish();
+      }else{
+        jdRound.textContent=String(jdState.round);
+        jdNew();
+      }
+    }
+
+    function jdFinish(){
+      jdFinal.style.display="block";
+      const ok=jdState.ok;
+      jdFinal.className = "result " + (ok>=10 ? "ok" : ok>=8 ? "warn" : "no");
+      jdFinal.innerHTML =
+        (ok>=10
+          ? "🏆 <strong>Nivel difícil superado.</strong> Ya piensas como gestor/a de residuos."
+          : ok>=8
+          ? "Buen avance. Para subir, recuerda: lo <strong>peligroso</strong> siempre va aparte y lo sucio suele volverse desecho."
+          : "Repite. En cuenca, separar bien es clave: lo limpio se aprovecha, lo mezclado se vuelve desecho."
+        ) + `<br>Resultado: ✅ ${jdState.ok} · ❌ ${jdState.bad}`;
+      jdMsg.style.display="none";
+      jdStart.disabled=false;
+    }
+
+    function jdStartGame(){
+      jdState={round:1, ok:0, bad:0, item:null, pickRD:null, pickType:null};
+      jdOk.textContent="0"; jdBad.textContent="0";
+      jdFinal.style.display="none";
+      jdRound.textContent="1";
+      jdStart.disabled=true;
+      jdNew();
+    }
+
+    jdBtnGrid(jdRD, RD_OPTS, (id, btn)=>{
+      if(!jdState) return;
+      jdState.pickRD=id;
+      [...jdRD.querySelectorAll('.pickBtn')].forEach(b=>b.style.outline='none');
+      btn.style.outline="3px solid rgba(120,210,255,.35)";
+      if(jdState.pickType) jdEval();
+    });
+
+    jdBtnGrid(jdType, TY_OPTS, (id, btn)=>{
+      if(!jdState) return;
+      jdState.pickType=id;
+      [...jdType.querySelectorAll('.pickBtn')].forEach(b=>b.style.outline='none');
+      btn.style.outline="3px solid rgba(120,210,255,.35)";
+      if(jdState.pickRD) jdEval();
+    });
+
+    jdStart.addEventListener('click', jdStartGame);
+    jdReset.addEventListener('click', ()=>{
+      jdState=null;
+      jdItem.textContent="—";
+      jdDesc.textContent="—";
+      jdRound.textContent="1";
+      jdOk.textContent="0";
+      jdBad.textContent="0";
+      jdMsg.style.display="block";
+      jdMsg.className="result info";
+      jdMsg.textContent="Presiona “Iniciar”.";
+      jdFinal.style.display="none";
+      jdStart.disabled=false;
+    });
+    jdHint.addEventListener('click', ()=>{
+      if(!jdState || !jdState.item) return;
+      jdMsg.style.display="block";
+      jdMsg.className="result info";
+      jdMsg.textContent = "Pista: " + jdState.item.hint;
+    });
+
+    // inicial
+    jdReset.click();
+
+    // ===== Juego 2: Ordenar descomposición =====
+    const ordList=document.getElementById('ordList');
+    const ordNew=document.getElementById('ordNew');
+    const ordCheck=document.getElementById('ordCheck');
+    const ordMoves=document.getElementById('ordMoves');
+    const ordMsg=document.getElementById('ordMsg');
+    const ordFinal=document.getElementById('ordFinal');
+
+    const ORD_POOL = [
+      {id:"restos", name:"Restos de comida (orgánico)"},
+      {id:"hojas", name:"Hojas secas"},
+      {id:"papel", name:"Papel/cartón"},
+      {id:"tela", name:"Tela (algodón)"},
+      {id:"lata", name:"Lata (metal)"},
+      {id:"plastico", name:"Botella plástica"},
+      {id:"vidrio", name:"Vidrio (frasco)"},
+    ];
+    // orden esperado (más rápido -> más lento)
+    const ORD_RANK = {restos:1, hojas:2, papel:3, tela:4, lata:5, plastico:6, vidrio:7};
+
+    let ordState=null;
+
+    function ordPick(){
+      const a=ORD_POOL.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a.slice(0,6);
+    }
+
+    function ordRender(){
+      ordList.innerHTML="";
+      ordState.items.forEach((it, idx)=>{
+        const row=document.createElement('div');
+        row.className="ordRow";
+        row.innerHTML = `
+          <div><strong>${idx+1}.</strong> ${it.name}</div>
+          <div class="ar">
+            <button type="button" data-up="${idx}" aria-label="Subir">↑</button>
+            <button type="button" data-down="${idx}" aria-label="Bajar">↓</button>
+          </div>
+        `;
+        ordList.appendChild(row);
+      });
+
+      ordList.querySelectorAll('button[data-up]').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const i=Number(b.dataset.up);
+          if(i<=0) return;
+          [ordState.items[i-1], ordState.items[i]]=[ordState.items[i], ordState.items[i-1]];
+          ordState.moves++;
+          ordMoves.textContent=String(ordState.moves);
+          ordRender();
+        });
+      });
+
+      ordList.querySelectorAll('button[data-down]').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const i=Number(b.dataset.down);
+          if(i>=ordState.items.length-1) return;
+          [ordState.items[i+1], ordState.items[i]]=[ordState.items[i], ordState.items[i+1]];
+          ordState.moves++;
+          ordMoves.textContent=String(ordState.moves);
+          ordRender();
+        });
+      });
+    }
+
+    function ordNewGame(){
+      ordState={items: ordPick(), moves:0};
+      ordMoves.textContent="0";
+      ordMsg.style.display="none";
+      ordFinal.style.display="none";
+      ordRender();
+    }
+
+    function ordCheckGame(){
+      // comprobar si está ordenado por rank ascendente
+      const ok = ordState.items.every((it, idx, arr)=> idx===0 || ORD_RANK[arr[idx-1].id] <= ORD_RANK[it.id]);
+      ordMsg.style.display="block";
+      ordMsg.className = "result " + (ok ? "ok" : "warn");
+      ordMsg.textContent = ok ? "✅ Orden correcto." : "⚠️ Aún hay al menos un elemento fuera de lugar.";
+      if(ok){
+        ordFinal.style.display="block";
+        const m=ordState.moves;
+        ordFinal.className = "result " + (m<=10 ? "ok" : m<=16 ? "warn" : "no");
+        ordFinal.innerHTML = (m<=10 ? "🏆 Nivel difícil: ¡logrado!" : "Bien. Intenta con menos movimientos para hacerlo difícil.") + `<br>Movimientos: <strong>${m}</strong>.`;
+      }
+    }
+
+    ordNew.addEventListener('click', ordNewGame);
+    ordCheck.addEventListener('click', ordCheckGame);
+    ordNewGame();
+
+  </script>
+</body>
+</html>

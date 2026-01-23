@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5.4 Las tres erres (Reducir, Reusar, Reciclar) · EPC AALA</title>
+  <meta name="description" content="Las 3R aplicadas a Sololá y la cuenca del Lago de Atitlán, con juegos de optimización y lógica." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+
+:root{
+  --ink:#0b1020;
+  --muted:rgba(11,16,32,.72);
+  --stroke:rgba(11,16,32,.10);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 18px 45px rgba(11,16,32,.14);
+  --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+  --radius:24px;
+
+  --a1: rgba(160, 220, 255, .95);
+  --a2: rgba(190, 235, 255, .92);
+  --a3: rgba(210, 245, 255, .88);
+
+  --good: rgba(34,197,94,.16);
+  --bad: rgba(225,29,72,.14);
+  --warn: rgba(245,158,11,.16);
+  --info: rgba(56,189,248,.16);
+
+  --btn: rgba(255,255,255,.62);
+  --btnh: rgba(255,255,255,.82);
+  --accent: rgba(35, 140, 210, .20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+    radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+    radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+    linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+  min-height:100vh;
+}
+
+.wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+header{
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+h1{
+  margin: 10px 0 0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  letter-spacing:.2px;
+  line-height: 1.08;
+  font-size: clamp(22px, 2.7vw, 34px);
+}
+
+.subtitle{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 96ch;
+}
+
+.nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  appearance:none;
+  border: 1px solid rgba(11,16,32,.12);
+  background: var(--btn);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11,16,32,.86);
+  box-shadow: var(--shadow-soft);
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+.btn:active{ transform: translateY(1px); }
+.btn.primary{
+  background: rgba(120, 210, 255, .28);
+  border-color: rgba(35, 140, 210, .22);
+}
+
+main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+.card{
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.62);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.card h2{
+  margin:0;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing:.2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: rgba(11,16,32,.70);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+.grid2{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .grid2{ grid-template-columns: 1fr; } }
+
+.grid3{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+.box{
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.65; font-size: 13.7px; }
+.box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.6; padding:0; }
+.box li{ margin: 6px 0; }
+
+.pill{
+  border: 1px solid rgba(11,16,32,.10);
+  background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+.pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+.pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+.result{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.55);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(11,16,32,.82);
+}
+.ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+.no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+.info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+.warn{ background: var(--warn); border-color: rgba(245,158,11,.24); }
+
+.mini{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(11,16,32,.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.mapTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 2px; }
+.mapStage{
+  margin-top: 10px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  overflow:hidden;
+}
+svg#mindmap{
+  width:100%;
+  height: 520px;
+  display:block;
+  border-radius: 14px;
+  background:
+    radial-gradient(700px 380px at 20% 0%, rgba(45,160,220,.10), transparent 55%),
+    radial-gradient(700px 380px at 80% 10%, rgba(34,197,94,.10), transparent 55%);
+}
+.fallback{
+  display:none;
+  margin-top:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(11,16,32,.18);
+  background: rgba(255,255,255,.55);
+  color: rgba(11,16,32,.72);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fallback.show{ display:block; }
+
+/* Game helpers */
+.gameGrid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  align-items:start;
+}
+@media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+.panel{
+  border-radius: 18px;
+  border: 1px solid rgba(11,16,32,.10);
+  background: rgba(255,255,255,.58);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.panel h3{
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-family: Outfit, Inter, system-ui;
+  font-weight: 900;
+}
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+hr.soft{ border: none; border-top: 1px solid rgba(11,16,32,.10); margin: 12px 0; }
+
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border:1px solid rgba(11,16,32,.12);
+  background: rgba(255,255,255,.70);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 5 · Saneamiento ambiental</div>
+        <h1>5.4 Las tres erres (Reducir, Reusar, Reciclar)</h1>
+        <p class="subtitle">La 3R es una escalera de decisiones para evitar basura. En una cuenca como la del Lago de Atitlán, reducir y reusar previenen puntos críticos, y reciclar funciona cuando se separa limpio y seco. Practica con juegos difíciles.</p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="5-3.html">Anterior</a>
+        <a class="btn primary" href="5-5.html">Siguiente</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+      <section class="card" id="teoria">
+        <h2>Contexto teórico (ampliado)</h2>
+        
+<div class="grid2">
+  <div class="box">
+    <p>
+      Las <strong>tres erres (3R)</strong> son una guía para decidir qué hacer antes de que un material se convierta en basura.
+      Funcionan como una escalera: lo más fuerte es <strong>reducir</strong>, luego <strong>reusar</strong> y por último <strong>reciclar</strong>.
+      En una cuenca, cada “R” evita que residuos terminen en drenajes, quebradas y finalmente en el Lago de Atitlán.
+    </p>
+    <ul>
+      <li><strong>Reducir:</strong> evitar generar residuos (menos empaque, comprar lo necesario, elegir productos durables).</li>
+      <li><strong>Reusar:</strong> usar varias veces (bolsas, botellas retornables, recipientes, reparar antes de desechar).</li>
+      <li><strong>Reciclar:</strong> transformar materiales (requiere separación, limpieza y un destino real).</li>
+    </ul>
+    <div class="result info">
+      <strong>Regla:</strong> si una acción evita comprar algo nuevo, casi siempre es <strong>Reducir</strong> (la R más poderosa).
+    </div>
+  </div>
+
+  <div class="box">
+    <p><strong>Ejemplos aplicados a Sololá (vida real)</strong></p>
+    <ul>
+      <li><strong>Mercado:</strong> llevar costal/bolsa y recipiente para comida (reusar), comprar a granel (reducir).</li>
+      <li><strong>Escuela:</strong> refacción en recipiente y botella reutilizable (reusar), estaciones de separación (reciclar/compostar).</li>
+      <li><strong>Turismo:</strong> evitar desechables en miradores; “lo que entra, sale” (reducir + responsabilidad).</li>
+      <li><strong>Hogar:</strong> reparar antes de tirar; donar/intercambiar ropa (reusar).</li>
+    </ul>
+    <div class="result warn" style="margin-top:10px;">
+      <strong>Trampa común:</strong> “reciclar” no compensa consumir de más. Primero reduce.
+    </div>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="pill">
+    <div class="t">Decisiones inteligentes</div>
+    <p class="s">
+      Preguntas rápidas: ¿Lo necesito? ¿Tengo una opción reutilizable? ¿Hay retorno/reciclaje real? ¿Cómo lo separo limpio y seco?
+    </p>
+  </div>
+  <div class="pill">
+    <div class="t">Diseño y hábitos</div>
+    <p class="s">
+      La 3R funciona mejor con “sistemas”: una bolsa para reciclables secos, un bote con tapa para orgánicos y un lugar para peligrosos.
+    </p>
+  </div>
+  <div class="pill">
+    <div class="t">Impacto en cuenca</div>
+    <p class="s">
+      Menos basura en calles y barrancos = menos arrastre por lluvia. Reducir es una acción directa de protección del lago.
+    </p>
+  </div>
+</div>
+
+<div class="grid2" style="margin-top:12px;">
+  <div class="box">
+    <p><strong>Cómo elegir la “R” correcta (pasos)</strong></p>
+    <ul>
+      <li><strong>1) Reduce:</strong> evita desechables, compra a granel, comparte/usa lo que ya existe.</li>
+      <li><strong>2) Reusa:</strong> retorna, rellena, repara, intercambia, da segunda vida.</li>
+      <li><strong>3) Recicla/composta:</strong> separa, lava/escúrre, seca, y entrégalo en acopio.</li>
+      <li><strong>4) Rechazo:</strong> lo que no se puede, va a disposición final segura (sin quema, sin barranco).</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <p><strong>Mini-checklist para escuela o comité</strong></p>
+    <ul>
+      <li>¿Hay reglas claras: “cero quema”, “cero barrancos”?</li>
+      <li>¿Hay estación de separación (húmedo/seco/peligrosos)?</li>
+      <li>¿Hay responsables y calendario de acopio?</li>
+      <li>¿Se mide el avance (porcentaje desviado)?</li>
+    </ul>
+    <div class="result info" style="margin-top:10px;">
+      <strong>Consejo:</strong> mide una semana al mes: ver números motiva y muestra progreso.
+    </div>
+  </div>
+</div>
+
+      </section>
+
+      <section class="card" id="mapa">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="nav">
+            <button class="btn" type="button" id="fit">Ajustar</button>
+            <button class="btn" type="button" id="toggle">Expandir/Contraer</button>
+            <button class="btn" type="button" id="resetMap">Reiniciar</button>
+          </div>
+        </div>
+        <div class="mapStage">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental 5.4 Las tres erres (Reducir, Reusar, Reciclar)"></svg>
+          <div class="fallback" id="fallback">No se pudo cargar el mapa mental. Verifica tu conexión o recarga la página.</div>
+        </div>
+      </section>
+
+      
+<section class="card" id="juego1">
+  <h2>Juego 1 · “Compras 3R en el mercado” (optimización)</h2>
+  <div class="hint">
+    Debes completar una lista de compras con <strong>presupuesto</strong>. Elige opciones (desechable vs reutilizable vs a granel)
+    y gana puntos si bajas la basura sin pasarte de Q.
+  </div>
+
+  <style>
+    .shopGrid{ margin-top:10px; display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; align-items:start; }
+    @media (max-width:980px){ .shopGrid{ grid-template-columns: 1fr; } }
+    .list{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .itemRow{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: var(--shadow-soft);
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap:10px;
+      align-items:center;
+    }
+    @media (max-width:700px){ .itemRow{ grid-template-columns: 1fr; } }
+    .itemRow strong{ font-family: Outfit, Inter, system-ui; }
+    select{
+      width:100%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.82);
+      font-weight: 800;
+      font-size: 13px;
+      outline:none;
+    }
+    .scoreBox{
+      border:1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      display:grid;
+      gap:10px;
+    }
+    .scoreBox .big{ font-size: 26px; font-weight: 900; font-family: Outfit, Inter, system-ui; }
+    .two{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width:520px){ .two{ grid-template-columns: 1fr; } }
+  </style>
+
+  <div class="shopGrid">
+    <div class="panel">
+      <h3>Lista</h3>
+      <div class="list">
+        <div class="hint" style="margin-top:0;">
+          Presupuesto: <strong>Q<span id="shBudget">60</span></strong>. Meta difícil: basura ≤ <strong><span id="shTarget">180</span> g</strong>.
+        </div>
+        <div id="shItems"></div>
+        <div class="row">
+          <button class="btn" type="button" id="shNew">Nueva lista</button>
+          <button class="btn primary" type="button" id="shCheck">Evaluar</button>
+          <button class="btn" type="button" id="shHint">Pista</button>
+        </div>
+        <div class="result info" id="shMsg" style="display:none;"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Marcador</h3>
+      <div class="scoreBox">
+        <div class="big"><span id="shScore">0</span> pts</div>
+        <div class="two">
+          <div class="stat">
+            <div class="k">Costo</div>
+            <div class="v">Q<span id="shCost">0</span></div>
+          </div>
+          <div class="stat">
+            <div class="k">Basura generada</div>
+            <div class="v"><span id="shWaste">0</span> g</div>
+          </div>
+        </div>
+        <div class="result" id="shExplain">Elige opciones. Lo más poderoso es <strong>reducir</strong> (evitar desechables).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="juego2">
+  <h2>Juego 2 · “Escape 3R” (código lógico)</h2>
+  <div class="hint">
+    Resuelve 5 retos. Cada respuesta correcta revela un dígito. Al final, ingresa el código para “salir”.
+    (Difícil: debes acertar 5/5 para desbloquear).
+  </div>
+
+  <style>
+    .escGrid{ margin-top:10px; display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; align-items:start; }
+    @media (max-width:980px){ .escGrid{ grid-template-columns: 1fr; } }
+    .qCard{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .qCard h3{ margin:0; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 14px; }
+    .qCard p{ margin: 6px 0 10px; color: rgba(11,16,32,.76); line-height:1.55; font-size: 13.4px; }
+    .qOpts{ display:grid; gap:10px; }
+    .qBtn{
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.72);
+      border-radius: 16px;
+      padding: 12px;
+      cursor:pointer;
+      text-align:left;
+      font-weight: 900;
+      box-shadow: var(--shadow-soft);
+    }
+    .qBtn:hover{ background: rgba(255,255,255,.86); border-color: rgba(11,16,32,.18); }
+    .codeRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+    .digit{
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      border:1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.72);
+      display:grid;
+      place-items:center;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 22px;
+      box-shadow: var(--shadow-soft);
+    }
+    .codeInput{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.82);
+      font-weight: 900;
+      font-size: 14px;
+      width: 180px;
+      outline:none;
+      letter-spacing: 4px;
+      text-align:center;
+    }
+  </style>
+
+  <div class="escGrid">
+    <div class="panel">
+      <h3>Reto</h3>
+      <div class="qCard" id="eCard">
+        <h3 id="eTitle">Reto 1/5</h3>
+        <p id="eText">...</p>
+        <div class="qOpts" id="eOpts"></div>
+      </div>
+      <div class="row">
+        <button class="btn" type="button" id="eRestart">Reiniciar</button>
+        <button class="btn" type="button" id="eHint">Pista</button>
+        <button class="btn primary" type="button" id="eNext" disabled>Siguiente</button>
+      </div>
+      <div class="result info" id="eMsg" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Código</h3>
+      <div class="hint" style="margin-top:0;">Cada acierto revela un dígito. Solo 5/5 desbloquea.</div>
+      <div class="codeRow" id="eDigits"></div>
+      <hr class="soft">
+      <div class="hint" style="margin-top:0;">Ingresa el código (5 dígitos):</div>
+      <div class="codeRow">
+        <input class="codeInput" id="eInput" maxlength="5" inputmode="numeric" placeholder="_____" />
+        <button class="btn primary" type="button" id="eUnlock">Desbloquear</button>
+      </div>
+      <div class="result" id="eFinal" style="display:none;"></div>
+    </div>
+  </div>
+</section>
+
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = "# 5.4 Las tres erres (3R)\n## Escalera de decisi\u00f3n\n- Reducir (la m\u00e1s poderosa)\n- Reusar (retornar, rellenar, reparar)\n- Reciclar/Compostar (requiere separaci\u00f3n y destino real)\n## Ejemplos en Solol\u00e1\n- Mercado: costal, recipientes, a granel\n- Escuela: botella reutilizable, refacci\u00f3n sin desechables\n- Turismo: \"lo que entra, sale\"\n- Hogar: reparar, donar, intercambiar\n## C\u00f3mo elegir la R correcta\n- Preguntas r\u00e1pidas: \u00bflo necesito? \u00bfpuedo reusar? \u00bfse recicla de verdad?\n## Checklist comunitario\n- Reglas + estaciones + responsables + medici\u00f3n";
+
+    let mm=null, expanded=true;
+    function renderMap(){
+      const fb=document.getElementById('fallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const {Transformer,Markmap}=window.markmap;
+        const t=new Transformer();
+        const {root}=t.transform(md);
+        const svg=document.getElementById('mindmap');
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        mm=Markmap.create(svg,{autoFit:true,duration:240},root);
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+    let tries=0;
+    const it=setInterval(()=>{
+      tries++;
+      const ok=renderMap();
+      if(ok || tries>12) clearInterval(it);
+      if(tries>12 && !mm) document.getElementById('fallback').classList.add('show');
+    },300);
+
+    document.getElementById('fit').addEventListener('click',()=>mm&&mm.fit());
+    document.getElementById('toggle').addEventListener('click',()=>{
+      if(!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded=!expanded;
+    });
+    document.getElementById('resetMap').addEventListener('click',()=>{ mm=null; expanded=true; renderMap(); });
+
+    // =========================
+    // JUEGOS
+    // =========================
+
+    // ===== Juego 1: Compras 3R =====
+    const SHOP_ITEMS_POOL = [
+      {name:"Tortillas", options:[
+        {label:"En bolsa plástica (desechable)", cost:10, waste:14, r:"—"},
+        {label:"En servilleta + bolsa reusada", cost:10, waste:6, r:"Reusar"},
+        {label:"En recipiente propio", cost:10, waste:0, r:"Reusar"}
+      ]},
+      {name:"Frutas", options:[
+        {label:"En bolsa nueva", cost:12, waste:12, r:"—"},
+        {label:"En costal/bolsa propia", cost:12, waste:0, r:"Reusar"},
+        {label:"Comprar solo lo necesario (menos)", cost:9, waste:0, r:"Reducir"}
+      ]},
+      {name:"Refacción", options:[
+        {label:"Empaque individual", cost:14, waste:18, r:"—"},
+        {label:"A granel + bolsa propia", cost:12, waste:2, r:"Reducir"},
+        {label:"Preparar en casa (recipiente)", cost:9, waste:0, r:"Reducir"}
+      ]},
+      {name:"Agua", options:[
+        {label:"2 botellas desechables", cost:12, waste:26, r:"—"},
+        {label:"Garrafa + rellenar", cost:9, waste:2, r:"Reusar"},
+        {label:"Botella reutilizable + filtro/recarga", cost:10, waste:0, r:"Reusar"}
+      ]},
+      {name:"Detergente", options:[
+        {label:"Envase pequeño nuevo", cost:16, waste:22, r:"—"},
+        {label:"Relleno en tienda (refill)", cost:13, waste:4, r:"Reusar"},
+        {label:"Comprar el tamaño familiar (menos envases)", cost:15, waste:8, r:"Reducir"}
+      ]},
+      {name:"Verduras", options:[
+        {label:"En bolsa nueva", cost:10, waste:12, r:"—"},
+        {label:"En malla/bolsa propia", cost:10, waste:0, r:"Reusar"},
+        {label:"Compras planificadas (solo lo que usarás)", cost:8, waste:0, r:"Reducir"}
+      ]},
+      {name:"Pollo o queso", options:[
+        {label:"Bandeja + film", cost:20, waste:28, r:"—"},
+        {label:"Recipiente propio (pide que lo pongan ahí)", cost:20, waste:0, r:"Reusar"},
+        {label:"Comprar en porción exacta (menos empaque)", cost:18, waste:6, r:"Reducir"}
+      ]}
+    ];
+
+    const shBudgetEl=document.getElementById('shBudget');
+    const shTargetEl=document.getElementById('shTarget');
+    const shItems=document.getElementById('shItems');
+    const shNew=document.getElementById('shNew');
+    const shCheck=document.getElementById('shCheck');
+    const shHint=document.getElementById('shHint');
+    const shMsg=document.getElementById('shMsg');
+    const shScore=document.getElementById('shScore');
+    const shCost=document.getElementById('shCost');
+    const shWaste=document.getElementById('shWaste');
+    const shExplain=document.getElementById('shExplain');
+
+    let shState=null;
+
+    function pickN(arr,n){
+      const a=arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a.slice(0,n);
+    }
+
+    function newShop(){
+      shState = {
+        budget: 60,
+        target: 180,
+        items: pickN(SHOP_ITEMS_POOL, 5).map((it)=>({it, choice:0}))
+      };
+      shBudgetEl.textContent=String(shState.budget);
+      shTargetEl.textContent=String(shState.target);
+      shMsg.style.display="none";
+      shScore.textContent="0";
+      renderShop();
+      updateShopTotals();
+    }
+
+    function renderShop(){
+      shItems.innerHTML="";
+      shState.items.forEach((row, idx)=>{
+        const div=document.createElement('div');
+        div.className="itemRow";
+        div.innerHTML = `
+          <div>
+            <strong>${idx+1}. ${row.it.name}</strong>
+            <div class="hint" style="margin-top:6px;">Elige una opción (3R si puedes).</div>
+          </div>
+          <div>
+            <select data-idx="${idx}">
+              ${row.it.options.map((o,i)=>`<option value="${i}">${o.label} · Q${o.cost} · ${o.waste}g</option>`).join("")}
+            </select>
+            <div class="hint" style="margin-top:6px;color:rgba(11,16,32,.70)">
+              R sugerida: <strong class="shR">${row.it.options[row.choice].r}</strong>
+            </div>
+          </div>
+        `;
+        shItems.appendChild(div);
+      });
+
+      shItems.querySelectorAll('select').forEach(sel=>{
+        sel.addEventListener('change', ()=>{
+          const idx=Number(sel.dataset.idx);
+          shState.items[idx].choice = Number(sel.value);
+          // actualizar etiqueta R
+          const r=shState.items[idx].it.options[shState.items[idx].choice].r;
+          sel.closest('.itemRow').querySelector('.shR').textContent = r;
+          updateShopTotals();
+        });
+      });
+    }
+
+    function updateShopTotals(){
+      let cost=0, waste=0;
+      let reduceHits=0, reuseHits=0, recycleHits=0;
+      shState.items.forEach(row=>{
+        const opt=row.it.options[row.choice];
+        cost += opt.cost;
+        waste += opt.waste;
+        if(opt.r==="Reducir") reduceHits++;
+        if(opt.r==="Reusar") reuseHits++;
+        if(opt.r==="Reciclar") recycleHits++;
+      });
+
+      shCost.textContent=String(cost);
+      shWaste.textContent=String(waste);
+
+      // puntaje: premia bajo desperdicio y 3R; penaliza exceder presupuesto
+      let score = 1200 - waste*3 + (reduceHits*80 + reuseHits*50 + recycleHits*30);
+      if(cost>shState.budget) score -= (cost-shState.budget)*40;
+      score = Math.max(0, Math.round(score));
+
+      shScore.textContent=String(score);
+
+      shExplain.innerHTML =
+        `3R usadas: <strong>Reducir ${reduceHits}</strong>, <strong>Reusar ${reuseHits}</strong>.<br>` +
+        `Tip: prioriza <strong>reducir</strong> (evitar desechables).`;
+
+      return {cost, waste, score};
+    }
+
+    function evalShop(){
+      const {cost, waste, score} = updateShopTotals();
+      shMsg.style.display="block";
+
+      const okBudget = cost <= shState.budget;
+      const okWaste = waste <= shState.target;
+
+      shMsg.className = "result " + (okBudget && okWaste ? "ok" : okBudget ? "warn" : "no");
+
+      let msg = "";
+      if(okBudget && okWaste){
+        msg = `✅ <strong>¡Compra excelente!</strong> Presupuesto OK y basura ≤ meta.`;
+      }else if(okBudget && !okWaste){
+        msg = `⚠️ <strong>Presupuesto OK</strong>, pero la basura está alta. Intenta cambiar opciones a “Reducir” o “Reusar”.`;
+      }else{
+        msg = `❌ <strong>Te pasaste del presupuesto.</strong> Ajusta opciones sin perder 3R.`;
+      }
+      msg += `<br>Resultado: Q<strong>${cost}</strong> / Q${shState.budget} · Basura: <strong>${waste}g</strong> / ${shState.target}g · Puntaje: <strong>${score}</strong>.`;
+      shMsg.innerHTML = msg;
+    }
+
+    shNew.addEventListener('click', newShop);
+    shCheck.addEventListener('click', evalShop);
+    shHint.addEventListener('click', ()=>{
+      shMsg.style.display="block";
+      shMsg.className="result info";
+      shMsg.innerHTML = "Pista: busca opciones con <strong>0g</strong> de basura (recipiente propio, botella reutilizable, a granel).";
+    });
+
+    newShop();
+
+    // ===== Juego 2: Escape 3R =====
+    const ESC = [
+      {
+        q:"Una persona deja de comprar pajillas plásticas porque no las necesita. ¿Qué R es?",
+        opts:[
+          {t:"Reducir", ok:true, digit:7, hint:"Evita generar desde el inicio."},
+          {t:"Reusar", ok:false},
+          {t:"Reciclar", ok:false}
+        ]
+      },
+      {
+        q:"Llevas una botella reutilizable y la rellenas cada día. ¿Qué R es?",
+        opts:[
+          {t:"Reducir", ok:false},
+          {t:"Reusar", ok:true, digit:3, hint:"Usar muchas veces el mismo objeto."},
+          {t:"Reciclar", ok:false}
+        ]
+      },
+      {
+        q:"Separar latas limpias y secas para entregarlas a un centro de acopio. ¿Qué R es?",
+        opts:[
+          {t:"Reducir", ok:false},
+          {t:"Reusar", ok:false},
+          {t:"Reciclar", ok:true, digit:9, hint:"Transformar material con destino real."}
+        ]
+      },
+      {
+        q:"Arreglar un cuaderno usando hojas sobrantes en lugar de comprar otro nuevo. ¿Qué R es principalmente?",
+        opts:[
+          {t:"Reducir (evita comprar nuevo)", ok:true, digit:1, hint:"Evitas producción/compra."},
+          {t:"Reusar", ok:false},
+          {t:"Reciclar", ok:false}
+        ]
+      },
+      {
+        q:"En el mercado eliges comprar a granel para usar tu propio recipiente. ¿Qué R domina?",
+        opts:[
+          {t:"Reducir", ok:true, digit:5, hint:"Menos empaque desde la compra."},
+          {t:"Reusar", ok:false},
+          {t:"Reciclar", ok:false}
+        ]
+      }
+    ];
+
+    const eTitle=document.getElementById('eTitle');
+    const eText=document.getElementById('eText');
+    const eOpts=document.getElementById('eOpts');
+    const eRestart=document.getElementById('eRestart');
+    const eHint=document.getElementById('eHint');
+    const eNext=document.getElementById('eNext');
+    const eMsg=document.getElementById('eMsg');
+    const eDigits=document.getElementById('eDigits');
+    const eInput=document.getElementById('eInput');
+    const eUnlock=document.getElementById('eUnlock');
+    const eFinal=document.getElementById('eFinal');
+
+    let eState=null;
+
+    function eInit(){
+      eState={i:0, digits:Array(ESC.length).fill("•"), ok:Array(ESC.length).fill(false), locked:true, picked:false, lastHint:null};
+      eInput.value="";
+      eFinal.style.display="none";
+      eMsg.style.display="none";
+      renderDigits();
+      renderEsc();
+    }
+
+    function renderDigits(){
+      eDigits.innerHTML="";
+      eState.digits.forEach((d, i)=>{
+        const div=document.createElement('div');
+        div.className="digit";
+        div.textContent=d;
+        div.title = eState.ok[i] ? "Resuelto" : "Pendiente";
+        eDigits.appendChild(div);
+      });
+    }
+
+    function renderEsc(){
+      const q=ESC[eState.i];
+      eTitle.textContent=`Reto ${eState.i+1}/${ESC.length}`;
+      eText.textContent=q.q;
+      eNext.disabled=true;
+      eState.picked=false;
+      eState.lastHint=null;
+
+      eOpts.innerHTML="";
+      q.opts.forEach(opt=>{
+        const b=document.createElement('button');
+        b.type="button";
+        b.className="qBtn";
+        b.textContent=opt.t;
+        b.addEventListener('click', ()=>{
+          if(eState.picked) return;
+          eState.picked=true;
+          eState.lastHint = opt.hint || null;
+
+          if(opt.ok){
+            eState.ok[eState.i]=true;
+            eState.digits[eState.i]=String(opt.digit);
+            eMsg.style.display="block";
+            eMsg.className="result ok";
+            eMsg.innerHTML = `✅ Correcto. Dígito ${eState.i+1}: <strong>${opt.digit}</strong>.`;
+          }else{
+            eState.ok[eState.i]=false;
+            eState.digits[eState.i]="×";
+            eMsg.style.display="block";
+            eMsg.className="result no";
+            eMsg.textContent = "❌ Incorrecto. En modo difícil, necesitas 5/5.";
+          }
+          renderDigits();
+          eNext.disabled=false;
+        });
+        eOpts.appendChild(b);
+      });
+    }
+
+    eNext.addEventListener('click', ()=>{
+      eState.i++;
+      eMsg.style.display="none";
+      if(eState.i>=ESC.length){
+        eFinal.style.display="block";
+        const allOk = eState.ok.every(Boolean);
+        eFinal.className="result " + (allOk ? "ok" : "warn");
+        eFinal.innerHTML = allOk
+          ? "¡Ya tienes el código completo! Ingresa los 5 dígitos para desbloquear."
+          : "Tienes errores. Reinicia e intenta lograr 5/5 para obtener el código correcto.";
+        return;
+      }
+      renderEsc();
+    });
+
+    eHint.addEventListener('click', ()=>{
+      const q=ESC[eState.i];
+      eMsg.style.display="block";
+      eMsg.className="result info";
+      eMsg.textContent = "Pista: piensa qué acción evita generar basura (Reducir), cuál usa varias veces (Reusar), y cuál transforma material separado (Reciclar).";
+    });
+
+    eRestart.addEventListener('click', eInit);
+
+    eUnlock.addEventListener('click', ()=>{
+      const allOk = eState.ok.every(Boolean);
+      if(!allOk){
+        eFinal.style.display="block";
+        eFinal.className="result warn";
+        eFinal.textContent="Necesitas 5/5 para desbloquear. Reinicia el juego.";
+        return;
+      }
+      const code = eState.digits.join("");
+      const attempt = (eInput.value || "").replace(/\s/g,"");
+      eFinal.style.display="block";
+      if(attempt===code){
+        eFinal.className="result ok";
+        eFinal.innerHTML = `🔓 <strong>¡Desbloqueado!</strong> Código correcto: <strong>${code}</strong>.<br>
+          Mensaje: la mejor basura es la que <strong>no se genera</strong>.`;
+      }else{
+        eFinal.className="result no";
+        eFinal.innerHTML = `❌ Código incorrecto. Revisa tus dígitos (sin errores) e intenta de nuevo.`;
+      }
+    });
+
+    eInit();
+
+  </script>
+</body>
+</html>
