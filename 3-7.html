@@ -1,0 +1,1306 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.7 Calidad del agua del Lago de Atitlán · EPC AALA</title>
+  <meta name="description" content="Calidad del agua del Lago de Atitlán: por qué monitorear, parámetros clave y actividades lúdicas. Incluye mapa mental y 2 juegos interactivos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Markmap (mapa mental) — autoloader (más confiable para GitHub Pages / sitios estáticos) -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.1"></script>
+
+  <style>
+    :root{
+      --ink:#0b1020;
+      --muted:rgba(11,16,32,.72);
+      --stroke:rgba(11,16,32,.10);
+      --glass:rgba(255,255,255,.66);
+      --shadow:0 18px 45px rgba(11,16,32,.14);
+      --shadow-soft:0 10px 24px rgba(11,16,32,.10);
+      --radius:24px;
+
+      /* Pasteles azules/celestes */
+      --a1: rgba(160, 220, 255, .95);
+      --a2: rgba(190, 235, 255, .92);
+      --a3: rgba(210, 245, 255, .88);
+      --a4: rgba(200, 230, 255, .65);
+
+      --good: rgba(34,197,94,.16);
+      --bad: rgba(225,29,72,.14);
+      --info: rgba(56,189,248,.16);
+      --warn: rgba(245,158,11,.16);
+
+      --btn: rgba(255,255,255,.62);
+      --btnh: rgba(255,255,255,.82);
+      --accent: rgba(35, 140, 210, .20);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 760px at 12% 12%, var(--a2), transparent 58%),
+        radial-gradient(980px 760px at 84% 18%, var(--a1), transparent 62%),
+        radial-gradient(1200px 920px at 48% 96%, var(--a3), transparent 58%),
+        linear-gradient(135deg, #eefaff 0%, #e8f7ff 45%, #f2fcff 100%);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+
+    header{
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height: 1.08;
+      font-size: clamp(22px, 2.7vw, 34px);
+    }
+
+    .subtitle{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 92ch;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(11,16,32,.12);
+      background: var(--btn);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: var(--btnh); border-color: rgba(11,16,32,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(120, 210, 255, .28);
+      border-color: rgba(35, 140, 210, .22);
+    }
+
+    main.stack{ display:flex; flex-direction:column; gap: 14px; margin-top: 14px; }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .card h2{
+      margin:0;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+
+    .hint{
+      font-size: 12.8px;
+      color: rgba(11,16,32,.72);
+      line-height: 1.5;
+      margin: 8px 0 0;
+    }
+
+    .twoCols{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 980px){ .twoCols{ grid-template-columns: 1fr; } }
+
+    .box{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .box p{ margin: 0 0 10px; color: rgba(11,16,32,.80); line-height: 1.6; font-size: 13.6px; }
+    .box ul{ margin: 8px 0 0 18px; color: rgba(11,16,32,.82); font-size: 13.4px; line-height: 1.55; }
+    .box li{ margin: 6px 0; }
+
+    .grid3{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .pill{
+      border: 1px solid rgba(11,16,32,.10);
+      background: linear-gradient(135deg, rgba(180,235,255,.55), rgba(255,255,255,.58));
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .pill .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .pill .s{ margin: 6px 0 0; color: rgba(11,16,32,.74); font-size: 13px; line-height: 1.45; }
+
+    .result{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.55);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(11,16,32,.82);
+    }
+    .ok{ background: var(--good); border-color: rgba(34,197,94,.28); }
+    .no{ background: var(--bad); border-color: rgba(225,29,72,.22); }
+    .info{ background: var(--info); border-color: rgba(56,189,248,.22); }
+    .warn{ background: var(--warn); border-color: rgba(245,158,11,.22); }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+    }
+
+    /* Tabla simple */
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.56);
+      box-shadow: var(--shadow-soft);
+      margin-top: 10px;
+    }
+    th, td{ padding: 10px 10px; text-align:left; font-size: 13px; vertical-align: top; }
+    th{
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      letter-spacing:.2px;
+      background: rgba(180,235,255,.45);
+      border-bottom: 1px solid rgba(11,16,32,.10);
+    }
+    tr + tr td{ border-top: 1px solid rgba(11,16,32,.08); }
+    .small{ font-size: 12.5px; color: rgba(11,16,32,.72); }
+
+    /* Mapa mental */
+    .mapTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mapBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    .mapWrap{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      position:relative;
+      padding: 10px;
+    }
+    svg#mindmap{
+      width:100%;
+      height: 520px;
+      display:block;
+      border-radius: 14px;
+      background:
+        radial-gradient(760px 420px at 12% 6%, rgba(56,189,248,.12), transparent 58%),
+        radial-gradient(760px 420px at 86% 14%, rgba(34,197,94,.10), transparent 58%);
+    }
+    .fallback{
+      display:none;
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(11,16,32,.18);
+      background: rgba(255,255,255,.55);
+      padding: 10px 12px;
+      color: rgba(11,16,32,.74);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .fallback.show{ display:block; }
+
+    /* Juego 1: Operación Monitoreo */
+    .gameGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .gameGrid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .panel h3{
+      margin: 0 0 6px;
+      font-family: Outfit, Inter, system-ui;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .panel p{
+      margin: 0 0 10px;
+      color: rgba(11,16,32,.72);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    select{
+      border-radius: 14px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      padding: 10px 12px;
+      font-weight: 800;
+      color: rgba(11,16,32,.86);
+      box-shadow: var(--shadow-soft);
+      outline:none;
+      font-family: Inter, system-ui;
+      font-size: 13px;
+    }
+
+    .cards{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 520px){ .cards{ grid-template-columns: 1fr; } }
+
+    .testCard{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      padding: 12px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .testCard:hover{ background: rgba(255,255,255,.84); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .testCard.selected{ outline: 3px solid rgba(120,210,255,.35); }
+    .testCard.disabled{ opacity:.62; cursor:default; transform:none; }
+    .testCard .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .testCard .s{ margin-top: 6px; color: rgba(11,16,32,.72); font-size: 12.7px; line-height: 1.45; }
+
+    .hud{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){ .kpiGrid{ grid-template-columns: 1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+    }
+    .kpi .k{ font-size: 12px; color: rgba(11,16,32,.70); font-weight: 800; }
+    .kpi .v{ margin-top: 6px; font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 18px; letter-spacing:.2px; }
+    .kpi .u{ font-size: 12px; color: rgba(11,16,32,.62); margin-top: 2px; }
+
+    /* Secchi mini */
+    .secchiWrap{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.60);
+      box-shadow: var(--shadow-soft);
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .secchiTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      flex-wrap:wrap;
+    }
+    .rangeRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 10px; }
+    .rangeRow label{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.82); }
+    input[type="range"]{ width: 56%; }
+    .val{ font-weight: 900; font-size: 13px; color: rgba(11,16,32,.78); min-width: 92px; text-align:right; }
+
+    /* Juego 2: Plan de acción */
+    .planGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .planGrid{ grid-template-columns: 1fr; } }
+
+    .actionItem{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(255,255,255,.70);
+      padding: 12px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow: 0 10px 22px rgba(11,16,32,.06);
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .actionItem:hover{ background: rgba(255,255,255,.84); border-color: rgba(11,16,32,.18); transform: translateY(-1px); }
+    .actionItem.on{ outline: 3px solid rgba(120,210,255,.35); }
+    .actionItem .top{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .cost{
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,16,32,.12);
+      background: rgba(120,210,255,.20);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(11,16,32,.78);
+      flex: 0 0 auto;
+    }
+    .actionItem .t{ font-weight: 900; font-family: Outfit, Inter, system-ui; letter-spacing:.2px; }
+    .actionItem .s{ margin-top: 6px; color: rgba(11,16,32,.72); font-size: 12.7px; line-height: 1.45; }
+
+    .meter{
+      border-radius: 18px;
+      border: 1px solid rgba(11,16,32,.10);
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+      margin-top: 10px;
+    }
+    .big{ font-family: Outfit, Inter, system-ui; font-weight: 900; font-size: 26px; letter-spacing:.2px; }
+    .bar{ height: 12px; border-radius: 999px; background: rgba(11,16,32,.10); overflow:hidden; margin-top: 8px; }
+    .bar > div{ height:100%; width: 55%; background: rgba(35,140,210,.45); transition: width .2s ease; }
+
+    footer{ text-align:center; padding:18px 0 4px; color: rgba(11,16,32,.58); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="kicker">Módulo 3 · El agua y las cuencas hidrográficas</div>
+        <h1>3.7 Calidad del agua del Lago de Atitlán</h1>
+        <p class="subtitle">
+          La cuenca del Lago de Atitlán es fuente de vida. La <strong>calidad del agua</strong> depende de actividades humanas alrededor:
+          aguas residuales, arrastre de materia orgánica, patógenos, nutrientes, metales y plaguicidas.
+          Por eso se hacen <strong>monitoreos</strong> (muestras + análisis) para saber qué hay en el agua y en qué cantidad.
+        </p>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Inicio</a>
+        <a class="btn" href="3-6.html">Anterior (3.6)</a>
+        <a class="btn primary" href="3-8.html">Siguiente (3.8)</a>
+      </nav>
+    </header>
+
+    <main class="stack">
+
+      <!-- TEORÍA AMPLIADA -->
+      <section class="card">
+        <h2>Contexto teórico (ampliado)</h2>
+        <div class="hint">
+          Basado en el contenido del Módulo 3 (3.7). En el Lago se monitorean condiciones <strong>físicas</strong>, <strong>químicas</strong> y <strong>biológicas</strong>
+          para orientar la gestión en la cuenca.
+        </div>
+
+        <div class="twoCols">
+          <div class="box">
+            <p><strong>¿Por qué monitorear?</strong></p>
+            <ul>
+              <li>Muchos contaminantes <strong>no se ven</strong> a simple vista: pueden estar disueltos.</li>
+              <li>El monitoreo toma <strong>muestras</strong> y luego identifica sustancias y <strong>cantidades</strong>.</li>
+              <li>Desde <strong>2013</strong> hay monitoreo constante del Lago: se observó deterioro por <strong>aguas residuales</strong> que ingresan continuamente.</li>
+              <li>Se ha reportado: <strong>menos oxígeno</strong> en el fondo, <strong>florecimientos de algas</strong> más frecuentes, <strong>menor transparencia</strong> y presencia de <strong>coliformes</strong> y <strong>E. coli</strong> (sobre todo cerca de centros urbanos).</li>
+            </ul>
+
+            <div class="result info">
+              <strong>Institución clave:</strong> AMSCLAE realiza monitoreos en la cuenca para generar información técnica y científica que apoye la gestión del Lago.
+            </div>
+          </div>
+
+          <div class="box">
+            <p><strong>¿Qué se mide?</strong></p>
+            <ul>
+              <li><strong>Transparencia</strong> (Disco Secchi): cuánta luz entra al agua (importante para fotosíntesis de fitoplancton y vegetación acuática).</li>
+              <li><strong>Temperatura</strong>: afecta el metabolismo de peces y plantas; en el estrato superficial se reportan aprox. <strong>20–24°C</strong>.</li>
+              <li><strong>Oxígeno disuelto (O₂)</strong>: vital para vida acuática; valores <strong>5–8 mg/L</strong> son aptos; en profundidad puede bajar por falta de contacto con el aire.</li>
+              <li><strong>DBO</strong> (Demanda Bioquímica de Oxígeno): indica materia orgánica; suele subir en época lluviosa por arrastre.</li>
+              <li><strong>Coliformes y E. coli</strong>: indicadores de contaminación fecal; suelen aumentar con lluvias y descargas de aguas residuales.</li>
+              <li><strong>Nutrientes</strong> (N y P): aumentos aceleran eutrofización y favorecen floraciones.</li>
+              <li><strong>Otros</strong>: metales pesados (plomo, cadmio, arsénico, mercurio), plaguicidas y patógenos.</li>
+            </ul>
+          </div>
+        </div>
+
+        <table aria-label="Resumen de parámetros de calidad de agua">
+          <thead>
+            <tr>
+              <th>Parámetro</th>
+              <th>¿Qué indica?</th>
+              <th>Señal de alerta (idea)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Transparencia</strong> (Secchi)</td>
+              <td>Luz disponible; se relaciona con floraciones de algas y sedimentos.</td>
+              <td>Menor visibilidad (especialmente en época lluviosa por escorrentía).</td>
+            </tr>
+            <tr>
+              <td><strong>Temperatura</strong></td>
+              <td>Controla metabolismo y mezcla de capas del lago.</td>
+              <td>Cambios fuertes pueden estresar fauna o favorecer procesos no deseados.</td>
+            </tr>
+            <tr>
+              <td><strong>Oxígeno disuelto</strong></td>
+              <td>Respiración de peces y organismos; condiciones aeróbicas.</td>
+              <td>Hipoxia/anoxia en el fondo (asociado a eutrofización).</td>
+            </tr>
+            <tr>
+              <td><strong>DBO</strong></td>
+              <td>Materia orgánica que consume oxígeno al degradarse.</td>
+              <td>DBO alta → más consumo de O₂ disponible.</td>
+            </tr>
+            <tr>
+              <td><strong>Coliformes / E. coli</strong></td>
+              <td>Contaminación fecal (humana o animal) y riesgo sanitario.</td>
+              <td>Valores altos cerca de descargas o en lluvia por arrastre.</td>
+            </tr>
+            <tr>
+              <td><strong>Nitrógeno / Fósforo</strong></td>
+              <td>Productividad de algas/plantas; base de la red trófica.</td>
+              <td>Exceso → floraciones + eutrofización.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="small" style="margin-top:10px;">
+          Nota: En 2024 se reportó transparencia mínima ~<strong>4.16 m</strong> y máxima ~<strong>7.84 m</strong>, promedio ~<strong>6.17 m</strong> (referencia en el texto del módulo).
+        </div>
+
+        <div class="grid3">
+          <div class="pill">
+            <div class="t">Transparencia</div>
+            <p class="s">Más profundidad de luz = más fotosíntesis; baja con sedimentos o floraciones.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Oxígeno</div>
+            <p class="s">En lagos profundos puede bajar en capas profundas; hipoxia/anoxia es señal de eutrofización.</p>
+          </div>
+          <div class="pill">
+            <div class="t">Patógenos</div>
+            <p class="s">Coliformes y E. coli indican contaminación fecal, asociada a descargas y arrastre por lluvias.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA MENTAL -->
+      <section class="card">
+        <div class="mapTop">
+          <div>
+            <h2>Mapa mental</h2>
+            <div class="hint">Interactivo: ajustar, plegar/desplegar y re-centrar.</div>
+          </div>
+          <div class="mapBtns">
+            <button class="btn" id="btnFit" type="button">Ajustar</button>
+            <button class="btn" id="btnToggle" type="button">Expandir/Contraer</button>
+            <button class="btn" id="btnResetMap" type="button">Reiniciar mapa</button>
+          </div>
+        </div>
+
+        <div class="mapWrap">
+          <svg id="mindmap" class="markmap" role="img" aria-label="Mapa mental de calidad del agua"></svg>
+          <div class="fallback" id="mapFallback">
+            No se pudo cargar el mapa mental. Verifica conexión a internet (CDN) o recarga la página.
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 1 -->
+      <section class="card">
+        <h2>Juego 1 · Operación Monitoreo (elige pruebas + interpreta)</h2>
+        <div class="hint">
+          Objetivo: según el <strong>sitio</strong> y la <strong>temporada</strong>, selecciona <strong>3 pruebas</strong> de laboratorio/campo.
+          Ganas puntos si eliges lo más relevante, y verás resultados simulados coherentes con el contenido del módulo.
+        </div>
+
+        <div class="gameGrid">
+          <div class="panel">
+            <h3>1) Configura tu muestreo</h3>
+            <p>Elige un sitio y una temporada. Luego selecciona 3 pruebas (máximo).</p>
+
+            <div class="row">
+              <span class="mini">Sitio</span>
+              <select id="site">
+                <option value="centro">Centro del lago (zona abierta)</option>
+                <option value="bahia">Bahía cercana a centro urbano</option>
+                <option value="delta">Delta / desembocadura de río tributario</option>
+                <option value="profundo">Perfil profundo (medición por profundidad)</option>
+              </select>
+              <span class="mini">Temporada</span>
+              <select id="season">
+                <option value="seca">Seca</option>
+                <option value="lluviosa">Lluviosa</option>
+                <option value="primeras">Primeras lluvias</option>
+              </select>
+            </div>
+
+            <div class="cards" id="tests"></div>
+
+            <div class="hud">
+              <button class="btn primary" id="btnRun" type="button">Analizar</button>
+              <button class="btn" id="btnReset" type="button">Reiniciar</button>
+              <span class="mini">Puntaje: <span id="mScore">0</span></span>
+              <span class="mini">Selección: <span id="mPick">0</span>/3</span>
+            </div>
+
+            <div class="result info" id="mMsg" style="display:none;"></div>
+
+            <div class="secchiWrap" id="secchiBox" style="display:none;">
+              <div class="secchiTop">
+                <div>
+                  <div class="mini">Extra: Disco Secchi</div>
+                  <div class="hint" style="margin:6px 0 0;">Ajusta la profundidad estimada hasta que “casi desaparece”. Luego compara.</div>
+                </div>
+                <span class="mini">Visibilidad simulada: <span id="secchiTrue">—</span></span>
+              </div>
+
+              <div class="rangeRow">
+                <label for="secchi">Tu estimación</label>
+                <input id="secchi" type="range" min="1" max="10" step="0.1" value="6.0">
+                <div class="val" id="secchiVal">6.0 m</div>
+              </div>
+
+              <svg viewBox="0 0 860 170" width="100%" height="auto" role="img" aria-label="Simulación de disco Secchi">
+                <defs>
+                  <linearGradient id="wcol" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="rgba(120,210,255,.55)"/>
+                    <stop offset="1" stop-color="rgba(60,170,235,.28)"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="860" height="170" rx="16" fill="url(#wcol)" opacity=".95"/>
+                <rect x="42" y="16" width="40" height="138" rx="10" fill="rgba(255,255,255,.26)"/>
+                <g id="disk">
+                  <circle cx="62" cy="56" r="16" fill="rgba(255,255,255,.92)" stroke="rgba(11,16,32,.18)" stroke-width="2"/>
+                  <path d="M62 40 A16 16 0 0 1 78 56 L62 56 Z" fill="rgba(11,16,32,.18)"/>
+                  <path d="M62 56 A16 16 0 0 1 46 72 L62 72 Z" fill="rgba(11,16,32,.18)"/>
+                </g>
+                <text x="110" y="42" font-family="Outfit, Inter, system-ui" font-size="14" font-weight="900" fill="rgba(11,16,32,.82)">Columna de agua</text>
+                <text x="110" y="66" font-family="Inter, system-ui" font-size="12.5" font-weight="700" fill="rgba(11,16,32,.74)">Mientras más profundo llegue la luz, mayor visibilidad.</text>
+              </svg>
+
+              <button class="btn" id="btnCheckSecchi" type="button" style="margin-top:10px;">Comparar estimación</button>
+              <div class="result" id="secchiMsg" style="display:none;"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>2) Resultados simulados</h3>
+            <p>Verás indicadores típicos para el sitio/temporada. Úsalo para “leer” la calidad del agua.</p>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Transparencia (Secchi)</div>
+                <div class="v" id="kSec">—</div>
+                <div class="u">m</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Coliformes / E. coli</div>
+                <div class="v" id="kCol">—</div>
+                <div class="u">nivel</div>
+              </div>
+              <div class="kpi">
+                <div class="k">DBO</div>
+                <div class="v" id="kBOD">—</div>
+                <div class="u">tendencia</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Oxígeno (fondo)</div>
+                <div class="v" id="kO2">—</div>
+                <div class="u">condición</div>
+              </div>
+            </div>
+
+            <div class="result info" id="interpret" style="margin-top:10px; display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUEGO 2 -->
+      <section class="card">
+        <h2>Juego 2 · Plan de Acción con Presupuesto (mejora la cuenca)</h2>
+        <div class="hint">
+          Tienes <strong>10 puntos</strong> de presupuesto. Activa acciones para reducir <strong>patógenos</strong>, <strong>materia orgánica</strong> y <strong>nutrientes</strong>.
+          Al final obtendrás un <strong>Índice de Calidad</strong> (0–100) con retroalimentación.
+        </div>
+
+        <div class="planGrid">
+          <div class="panel">
+            <h3>Acciones disponibles</h3>
+            <p>Haz clic para activar/desactivar (según presupuesto). Puedes probar muchas combinaciones.</p>
+            <div id="actions"></div>
+
+            <div class="hud">
+              <button class="btn primary" id="btnScorePlan" type="button">Calcular índice</button>
+              <button class="btn" id="btnResetPlan" type="button">Reiniciar</button>
+              <span class="mini">Presupuesto: <span id="budget">10</span>/10</span>
+            </div>
+
+            <div class="result info" id="planMsg" style="display:none;"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Índice de calidad (simulado)</h3>
+            <p>Una lectura didáctica: combina salud ecológica + riesgo sanitario.</p>
+
+            <div class="meter">
+              <div class="big"><span id="qIndex">—</span>/100</div>
+              <div class="bar"><div id="qFill" style="width:0%"></div></div>
+              <div class="hint" id="qLabel" style="margin-top:8px;">Activa acciones y presiona “Calcular índice”.</div>
+            </div>
+
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="k">Riesgo bacteriano</div>
+                <div class="v" id="qBac">—</div>
+                <div class="u">↓ mejor</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Carga orgánica (DBO)</div>
+                <div class="v" id="qOrg">—</div>
+                <div class="u">↓ mejor</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Nutrientes (N/P)</div>
+                <div class="v" id="qNut">—</div>
+                <div class="u">↓ mejor</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Transparencia esperada</div>
+                <div class="v" id="qVis">—</div>
+                <div class="u">↑ mejor</div>
+              </div>
+            </div>
+
+            <div class="result" id="qFinal" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>EPC AALA</footer>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // MAPA MENTAL (Markmap)
+    // =========================
+    const md = `
+# 3.7 Calidad del agua del Lago de Atitlán
+## Por qué importa
+- La cuenca es fuente de vida
+- La calidad depende de actividades alrededor
+- Muchos contaminantes no se ven (disueltos)
+## Monitoreo
+- Se toman muestras y se analizan sustancias y cantidades
+- Monitoreo constante desde 2013
+- AMSCLAE genera info técnica y científica
+## Qué se mide
+- Transparencia (Disco Secchi)
+- Temperatura (estrato superficial ~20–24°C)
+- Oxígeno disuelto (O₂)
+  - 5–8 mg/L apto para vida
+  - Baja en profundidad por falta de contacto con el aire
+  - Hipoxia / anoxia (eutrofización)
+- DBO (materia orgánica)
+- Coliformes y E. coli (origen fecal)
+- Nutrientes N/P/C
+- Metales pesados y plaguicidas
+## Señales observadas
+- Menor O₂ en el fondo
+- Floraciones de algas más frecuentes
+- Menor transparencia
+- Bacterias más altas cerca de centros urbanos
+## Acciones para mejorar
+- Tratar aguas residuales
+- Reducir escorrentía y sedimentos
+- Manejo de fertilizantes y plaguicidas
+- Proteger riberas, nacimientos y ríos tributarios
+`.trim();
+
+    let mm = null;
+    let expanded = true;
+
+    function renderMap(){
+      const fb = document.getElementById('mapFallback');
+      try{
+        if(!window.markmap?.Transformer || !window.markmap?.Markmap) return false;
+        const { Transformer, Markmap } = window.markmap;
+        const transformer = new Transformer();
+        const { root } = transformer.transform(md);
+
+        const svg = document.getElementById('mindmap');
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        mm = Markmap.create(svg, { autoFit:true, duration:240 }, root);
+        expanded = true;
+        fb.classList.remove('show');
+        return true;
+      }catch(e){
+        fb.classList.add('show');
+        return true;
+      }
+    }
+
+    let tries = 0;
+    const it = setInterval(() => {
+      tries++;
+      const ok = renderMap();
+      if (ok || tries >= 12) clearInterval(it);
+      if (!mm && tries >= 12) document.getElementById('mapFallback').classList.add('show');
+    }, 300);
+
+    document.getElementById('btnFit').addEventListener('click', () => mm && mm.fit());
+    document.getElementById('btnToggle').addEventListener('click', () => {
+      if (!mm) return;
+      expanded ? mm.foldAll() : mm.unfoldAll();
+      expanded = !expanded;
+    });
+    document.getElementById('btnResetMap').addEventListener('click', () => { mm = null; expanded = true; renderMap(); });
+
+    // =========================
+    // JUEGO 1: Operación Monitoreo
+    // =========================
+    const TESTS = [
+      { id:"secchi", t:"Transparencia (Secchi)", s:"Mide cuánta luz entra. Se relaciona con floraciones y sedimentos." },
+      { id:"temp",   t:"Temperatura", s:"Afecta metabolismo y mezcla. Útil para entender capas del lago." },
+      { id:"o2",     t:"Oxígeno disuelto", s:"Vital para vida acuática. En profundidad puede bajar." },
+      { id:"bod",    t:"DBO", s:"Indica materia orgánica que consume oxígeno al degradarse." },
+      { id:"coli",   t:"Coliformes / E. coli", s:"Indicadores de contaminación fecal y riesgo sanitario." },
+      { id:"nut",    t:"Nutrientes (N/P)", s:"Exceso favorece algas y eutrofización." },
+      { id:"met",    t:"Metales pesados", s:"Plomo, cadmio, arsénico, mercurio; potencialmente tóxicos." },
+      { id:"pest",   t:"Plaguicidas", s:"Pueden ser perjudiciales para vida acuática y salud." },
+    ];
+
+    const testsEl = document.getElementById('tests');
+    const siteEl = document.getElementById('site');
+    const seasonEl = document.getElementById('season');
+    const msgEl = document.getElementById('mMsg');
+    const scoreEl = document.getElementById('mScore');
+    const pickEl = document.getElementById('mPick');
+
+    const kSec = document.getElementById('kSec');
+    const kCol = document.getElementById('kCol');
+    const kBOD = document.getElementById('kBOD');
+    const kO2  = document.getElementById('kO2');
+    const interpret = document.getElementById('interpret');
+
+    const secchiBox = document.getElementById('secchiBox');
+    const secchiTrue = document.getElementById('secchiTrue');
+    const secchi = document.getElementById('secchi');
+    const secchiVal = document.getElementById('secchiVal');
+    const disk = document.getElementById('disk');
+    const secchiMsg = document.getElementById('secchiMsg');
+
+    let picked = new Set();
+    let totalScore = 0;
+    let trueSecchi = 6.0;
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+    function renderTests(){
+      testsEl.innerHTML = "";
+      TESTS.forEach(x => {
+        const d = document.createElement('div');
+        d.className = "testCard";
+        d.dataset.id = x.id;
+        d.innerHTML = `<div class="t">${x.t}</div><div class="s">${x.s}</div>`;
+        d.addEventListener('click', () => toggleTest(x.id, d));
+        testsEl.appendChild(d);
+      });
+      updatePick();
+    }
+
+    function toggleTest(id, el){
+      if (el.classList.contains('disabled')) return;
+
+      if (picked.has(id)){
+        picked.delete(id);
+        el.classList.remove('selected');
+      } else {
+        if (picked.size >= 3) return;
+        picked.add(id);
+        el.classList.add('selected');
+      }
+      updatePick();
+    }
+
+    function updatePick(){
+      pickEl.textContent = String(picked.size);
+    }
+
+    function siteProfile(site, season){
+      // Valores didácticos coherentes con el módulo:
+      // - Lluvias: menor transparencia, más bacterias; primeras lluvias: DBO alta por arrastre de orgánicos.
+      // - Bahías cercanas a centros urbanos y deltas: más coliformes/E. coli por descargas.
+      // - Profundo: foco en oxígeno (riesgo hipoxia en fondo).
+      const base = {
+        secchi: 6.2,
+        col: "Bajo",
+        bod: "Baja",
+        o2: "Adecuado",
+        notes: []
+      };
+
+      // Temporada
+      if (season === "lluviosa"){
+        base.secchi -= 1.2;
+        base.col = "Medio";
+        base.bod = "Media";
+        base.notes.push("En lluvia suele bajar la transparencia por escorrentía y aumentar bacterias por arrastre.");
+      } else if (season === "primeras"){
+        base.secchi -= 0.8;
+        base.col = "Medio";
+        base.bod = "Alta";
+        base.notes.push("Después de primeras lluvias aumenta la DBO por arrastre fuerte de materia orgánica.");
+      } else {
+        base.notes.push("En época seca suele haber menos arrastre; algunos indicadores se estabilizan.");
+      }
+
+      // Sitio
+      if (site === "centro"){
+        base.col = (season === "seca") ? "Bajo" : "Medio";
+        base.notes.push("En zonas abiertas suele haber menor influencia directa de descargas puntuales.");
+      }
+      if (site === "bahia"){
+        base.col = "Alto";
+        base.bod = (season === "seca") ? "Media" : (season === "primeras" ? "Alta" : "Alta");
+        base.secchi -= 0.8;
+        base.notes.push("Zonas cercanas a centros urbanos pueden presentar más coliformes/E. coli por aguas residuales.");
+      }
+      if (site === "delta"){
+        base.col = "Alto";
+        base.bod = (season === "seca") ? "Media" : "Alta";
+        base.secchi -= 1.0;
+        base.notes.push("Deltas de ríos pueden traer sedimentos y material orgánico hacia el lago.");
+      }
+      if (site === "profundo"){
+        base.o2 = (season === "seca") ? "Variable" : "Riesgo bajo O₂";
+        base.secchi -= 0.4;
+        base.notes.push("En profundidad el oxígeno puede disminuir por falta de contacto con el aire (hipoxia/anoxia).");
+      }
+
+      base.secchi = clamp(base.secchi, 3.6, 8.5);
+      return base;
+    }
+
+    function relevantTests(site, season){
+      // Relevancia didáctica:
+      const core = new Set(["secchi", "o2", "coli", "bod", "nut"]);
+      const rel = new Set();
+
+      // Siempre útil: transparencia
+      rel.add("secchi");
+
+      // Por sitio/temporada
+      if (site === "profundo") rel.add("o2");
+      if (site === "bahia" || site === "delta") rel.add("coli"), rel.add("bod");
+      if (season === "primeras") rel.add("bod");
+      if (season !== "seca") rel.add("coli");
+      rel.add("nut"); // nutrientes siempre relevantes para floraciones
+
+      // Complementarios
+      if (site === "centro") rel.add("temp"), rel.add("o2");
+      if (site !== "centro") rel.add("pest");
+
+      // Mantener dentro de catálogo
+      return rel;
+    }
+
+    function scoreSelection(pickedSet, relSet){
+      // Puntaje: +2 por prueba relevante, +1 por complementaria, -1 por poco útil aquí.
+      let s = 0;
+      pickedSet.forEach(id => {
+        if (relSet.has(id)) s += 2;
+        else if (id === "temp" || id === "met" || id === "pest") s += 1;
+        else s -= 1;
+      });
+      return s;
+    }
+
+    function runMonitoring(){
+      const site = siteEl.value;
+      const season = seasonEl.value;
+
+      const rel = relevantTests(site, season);
+      const s = scoreSelection(picked, rel);
+      totalScore += Math.max(0, s);
+
+      scoreEl.textContent = String(totalScore);
+      msgEl.style.display = "block";
+
+      if (picked.size < 3){
+        msgEl.className = "result warn";
+        msgEl.innerHTML = `<strong>Te faltan pruebas.</strong> Seleccionaste ${picked.size}/3. Elige 3 para un monitoreo más completo.`;
+        interpret.style.display = "none";
+        secchiBox.style.display = "none";
+        return;
+      }
+
+      const prof = siteProfile(site, season);
+
+      // Mostrar KPIs
+      kSec.textContent = prof.secchi.toFixed(2);
+      kCol.textContent = prof.col;
+      kBOD.textContent = prof.bod;
+      kO2.textContent  = prof.o2;
+
+      // Interpretación
+      interpret.style.display = "block";
+      interpret.className = "result info";
+      interpret.innerHTML =
+        `<strong>Lectura rápida:</strong><br>` +
+        `• Transparencia: <strong>${prof.secchi.toFixed(2)} m</strong> (más baja cuando hay más escorrentía o floraciones).<br>` +
+        `• Bacterias: <strong>${prof.col}</strong> (suben con descargas/arrastre).<br>` +
+        `• DBO: <strong>${prof.bod}</strong> (más materia orgánica → más consumo de oxígeno).<br>` +
+        `• Oxígeno: <strong>${prof.o2}</strong> (en profundidad puede bajar).<br>` +
+        `<div style="margin-top:8px;"><strong>Notas del escenario:</strong><ul style="margin:6px 0 0 18px;">${
+          prof.notes.map(x => `<li>${x}</li>`).join("")
+        }</ul></div>`;
+
+      // Mensaje de puntaje
+      const rating = (s >= 5) ? "ok" : (s >= 3) ? "info" : "warn";
+      msgEl.className = "result " + rating;
+
+      const relNames = [...rel].map(id => TESTS.find(t => t.id === id)?.t).filter(Boolean);
+      msgEl.innerHTML =
+        `<strong>Resultado del monitoreo:</strong> ${s >= 5 ? "¡Excelente selección!" : s >= 3 ? "Buena selección." : "Selección mejorable."}<br>` +
+        `Puntos ganados: <strong>${Math.max(0,s)}</strong> (total: ${totalScore}).<br>` +
+        `<span class="small">Sugerencia: para este escenario, suelen ser clave: <em>${relNames.slice(0,5).join(", ")}</em>.</span>`;
+
+      // Secchi mini solo si se eligió transparencia
+      if (picked.has("secchi")){
+        trueSecchi = prof.secchi;
+        secchiTrue.textContent = `${trueSecchi.toFixed(2)} m`;
+        secchiBox.style.display = "block";
+        secchiMsg.style.display = "none";
+        moveDisk();
+      } else {
+        secchiBox.style.display = "none";
+      }
+    }
+
+    function moveDisk(){
+      const m = Number(secchi.value);
+      secchiVal.textContent = `${m.toFixed(1)} m`;
+      // Mapear 1–10 m a y=40..140
+      const y = 40 + (clamp(m,1,10) - 1) * (100/9);
+      disk.setAttribute("transform", `translate(0 ${y-56})`);
+      // Opacidad del disco: cuando pasa de la visibilidad real, "desaparece"
+      const delta = m - trueSecchi;
+      const op = clamp(1 - (delta > 0 ? delta/2.2 : 0), 0.10, 1);
+      disk.style.opacity = String(op);
+    }
+
+    secchi.addEventListener('input', moveDisk);
+
+    document.getElementById('btnCheckSecchi').addEventListener('click', () => {
+      const guess = Number(secchi.value);
+      const err = Math.abs(guess - trueSecchi);
+      secchiMsg.style.display = "block";
+      if (err <= 0.4){
+        secchiMsg.className = "result ok";
+        secchiMsg.innerHTML = `<strong>¡Muy bien!</strong> Tu estimación está muy cerca (error: ${err.toFixed(2)} m).`;
+      } else if (err <= 1.0){
+        secchiMsg.className = "result info";
+        secchiMsg.innerHTML = `<strong>Bien.</strong> Estuviste cerca (error: ${err.toFixed(2)} m). Intenta ajustar un poco.`;
+      } else {
+        secchiMsg.className = "result warn";
+        secchiMsg.innerHTML = `<strong>Se puede mejorar.</strong> Error: ${err.toFixed(2)} m. Pista: en lluvia suele bajar la visibilidad.`;
+      }
+    });
+
+    function resetMonitoring(){
+      picked.clear();
+      totalScore = 0;
+      scoreEl.textContent = "0";
+      pickEl.textContent = "0";
+      msgEl.style.display = "none";
+      interpret.style.display = "none";
+      secchiBox.style.display = "none";
+      kSec.textContent = "—";
+      kCol.textContent = "—";
+      kBOD.textContent = "—";
+      kO2.textContent = "—";
+      renderTests();
+    }
+
+    document.getElementById('btnRun').addEventListener('click', runMonitoring);
+    document.getElementById('btnReset').addEventListener('click', resetMonitoring);
+    renderTests();
+
+    // =========================
+    // JUEGO 2: Plan de acción con presupuesto
+    // =========================
+    const ACTIONS = [
+      { id:"ptar", t:"Mejorar tratamiento de aguas residuales", cost:4,
+        s:"Reduce patógenos, DBO y nutrientes que entran al lago.",
+        eff:{ bac:-22, org:-20, nut:-14, vis:+10 } },
+      { id:"ribera", t:"Reforestar y proteger riberas/ríos tributarios", cost:3,
+        s:"Disminuye escorrentía y sedimentos; mejora infiltración y claridad.",
+        eff:{ bac:-4, org:-6, nut:-6, vis:+12 } },
+      { id:"fert", t:"Buenas prácticas de fertilización (menos N/P)", cost:2,
+        s:"Reduce exceso de nutrientes y riesgo de floraciones.",
+        eff:{ bac:0, org:-2, nut:-16, vis:+6 } },
+      { id:"plag", t:"Manejo responsable de plaguicidas", cost:2,
+        s:"Reduce sustancias perjudiciales y protege organismos acuáticos.",
+        eff:{ bac:0, org:0, nut:-2, vis:+2 } },
+      { id:"cam", t:"Manejo de caminos y drenajes (cunetas/barreras)", cost:2,
+        s:"Reduce arrastre de material orgánico y sedimentos en lluvia.",
+        eff:{ bac:-2, org:-8, nut:-4, vis:+8 } },
+      { id:"edu", t:"Educación y acuerdos comunitarios", cost:1,
+        s:"Mejora prácticas y reduce contaminación a mediano plazo.",
+        eff:{ bac:-6, org:-4, nut:-4, vis:+4 } },
+      { id:"gan", t:"Control de ganado cerca de ríos/nacimientos", cost:2,
+        s:"Reduce contaminación fecal y compactación de suelos.",
+        eff:{ bac:-14, org:-6, nut:-2, vis:+4 } },
+    ];
+
+    const actionsEl = document.getElementById('actions');
+    const budgetEl = document.getElementById('budget');
+    const planMsg = document.getElementById('planMsg');
+
+    const qIndex = document.getElementById('qIndex');
+    const qFill  = document.getElementById('qFill');
+    const qLabel = document.getElementById('qLabel');
+    const qFinal = document.getElementById('qFinal');
+
+    const qBac = document.getElementById('qBac');
+    const qOrg = document.getElementById('qOrg');
+    const qNut = document.getElementById('qNut');
+    const qVis = document.getElementById('qVis');
+
+    let budget = 10;
+    let chosen = new Set();
+
+    function renderActions(){
+      actionsEl.innerHTML = "";
+      ACTIONS.forEach(a => {
+        const d = document.createElement('div');
+        d.className = "actionItem";
+        d.dataset.id = a.id;
+        d.innerHTML = `
+          <div class="top">
+            <div class="t">${a.t}</div>
+            <div class="cost">💧 ${a.cost}</div>
+          </div>
+          <div class="s">${a.s}</div>
+        `;
+        d.addEventListener('click', () => toggleAction(a, d));
+        actionsEl.appendChild(d);
+      });
+      updateBudget();
+    }
+
+    function updateBudget(){
+      budgetEl.textContent = String(budget);
+      // Deshabilitar si no alcanza
+      actionsEl.querySelectorAll('.actionItem').forEach(el => {
+        const id = el.dataset.id;
+        const a = ACTIONS.find(x => x.id === id);
+        const isOn = chosen.has(id);
+        const canBuy = isOn || (budget >= a.cost);
+        el.style.opacity = canBuy ? "1" : ".55";
+        el.style.pointerEvents = canBuy ? "auto" : "none";
+      });
+    }
+
+    function toggleAction(a, el){
+      if (chosen.has(a.id)){
+        chosen.delete(a.id);
+        budget += a.cost;
+        el.classList.remove('on');
+      } else {
+        if (budget < a.cost) return;
+        chosen.add(a.id);
+        budget -= a.cost;
+        el.classList.add('on');
+      }
+      planMsg.style.display = "none";
+      updateBudget();
+    }
+
+    function computePlan(){
+      // Base (riesgos sin acciones): valores 0–100 (más alto = peor, excepto visibilidad)
+      let bac = 70; // bacterias
+      let org = 60; // DBO / orgánicos
+      let nut = 65; // nutrientes
+      let vis = 45; // transparencia (más alto = mejor)
+
+      chosen.forEach(id => {
+        const a = ACTIONS.find(x => x.id === id);
+        bac += a.eff.bac;
+        org += a.eff.org;
+        nut += a.eff.nut;
+        vis += a.eff.vis;
+      });
+
+      bac = clamp(bac, 5, 95);
+      org = clamp(org, 5, 95);
+      nut = clamp(nut, 5, 95);
+      vis = clamp(vis, 20, 85);
+
+      // Índice (más alto = mejor): combina vis con penalización por riesgos
+      const idx = Math.round(
+        clamp(
+          (vis * 1.05) + (100 - bac) * 0.35 + (100 - org) * 0.30 + (100 - nut) * 0.30,
+          0, 100
+        )
+      );
+
+      qIndex.textContent = String(idx);
+      qFill.style.width = idx + "%";
+
+      qBac.textContent = bac;
+      qOrg.textContent = org;
+      qNut.textContent = nut;
+      qVis.textContent = vis;
+
+      let label = "En camino 💧";
+      let cls = "warn";
+      if (idx >= 80){ label = "Excelente: cuenca y lago más sanos 💧✨"; cls = "ok"; }
+      else if (idx >= 65){ label = "Buen manejo: mejoras claras 💧"; cls = "ok"; }
+      else if (idx >= 45){ label = "En camino: aún hay riesgos ⚠️"; cls = "warn"; }
+      else { label = "Alerta: alto riesgo sanitario/ecológico ❗"; cls = "no"; }
+
+      qLabel.textContent = label;
+
+      qFinal.style.display = "block";
+      qFinal.className = "result " + (cls === "ok" ? "ok" : cls === "warn" ? "warn" : "no");
+
+      const chosenNames = chosen.size ? [...chosen].map(id => ACTIONS.find(x => x.id === id)?.t).filter(Boolean) : [];
+      qFinal.innerHTML =
+        `<strong>Resultado:</strong> Índice <strong>${idx}/100</strong>.<br>` +
+        (chosen.size
+          ? `Aplicaste: <em>${chosenNames.join(", ")}</em>.`
+          : `No aplicaste acciones. Prueba activar al menos 2–3 acciones dentro del presupuesto.`
+        ) +
+        `<div style="margin-top:8px;" class="small">Pista: tratar aguas residuales reduce coliformes/E. coli y DBO; controlar nutrientes ayuda a reducir floraciones.</div>`;
+
+      planMsg.style.display = "block";
+      planMsg.className = "result info";
+      planMsg.innerHTML = `<strong>Tip:</strong> Si te sobra presupuesto, agrega una acción “barata” (educación / buenas prácticas) para mejorar el índice.`;
+    }
+
+    function resetPlan(){
+      chosen.clear();
+      budget = 10;
+      qIndex.textContent = "—";
+      qFill.style.width = "0%";
+      qLabel.textContent = "Activa acciones y presiona “Calcular índice”.";
+      qFinal.style.display = "none";
+      planMsg.style.display = "none";
+
+      qBac.textContent = "—";
+      qOrg.textContent = "—";
+      qNut.textContent = "—";
+      qVis.textContent = "—";
+
+      // reset UI
+      actionsEl.querySelectorAll('.actionItem').forEach(el => el.classList.remove('on'));
+      updateBudget();
+    }
+
+    document.getElementById('btnScorePlan').addEventListener('click', computePlan);
+    document.getElementById('btnResetPlan').addEventListener('click', resetPlan);
+
+    renderActions();
+  </script>
+</body>
+</html>
