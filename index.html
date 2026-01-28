@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Taller de Módulos · EPC AALA</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,338 +11,136 @@
 
   <style>
     :root{
-      /* Paleta pastel azul/celeste */
       --ink: rgba(10, 18, 35, .92);
-      --muted: rgba(10, 18, 35, .68);
+      --muted: rgba(10, 18, 35, .66);
 
       --glass: rgba(255,255,255,.70);
-      --glass2: rgba(255,255,255,.58);
+      --glass2: rgba(255,255,255,.55);
       --stroke: rgba(10, 18, 35, .10);
 
       --shadow: 0 18px 45px rgba(10,18,35,.14);
       --shadow-soft: 0 10px 22px rgba(10,18,35,.10);
+
       --radius: 24px;
 
       --skyA: rgba(160, 220, 255, .85);
       --skyB: rgba(185, 235, 255, .78);
       --skyC: rgba(210, 245, 255, .70);
       --lavA: rgba(210, 220, 255, .55);
+      --lavB: rgba(180, 190, 255, .45);
 
-      --accent: rgba(60, 170, 255, .20);
-      --accent-strong: rgba(60, 170, 255, .32);
+      --okBg: rgba(32, 185, 129, .14);
+      --okBd: rgba(32, 185, 129, .30);
 
-      --okBg: rgba(34,197,94,.14);
-      --okBd: rgba(34,197,94,.22);
-      --todoBg: rgba(245,158,11,.16);
-      --todoBd: rgba(245,158,11,.22);
+      --todoBg: rgba(250, 200, 80, .18);
+      --todoBd: rgba(250, 200, 80, .34);
+
+      --focus: rgba(79,156,255,.35);
+
+      --font-title: 'Outfit', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     }
 
-    *{ box-sizing:border-box; }
-    html, body{ height:100%; }
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
     body{
-      margin:0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      margin: 0;
+      font-family: var(--font-body);
       color: var(--ink);
       background:
-        radial-gradient(1100px 760px at 12% 12%, rgba(170,235,255,.92), transparent 58%),
-        radial-gradient(980px 760px at 82% 18%, rgba(185,245,255,.88), transparent 62%),
-        radial-gradient(1200px 920px at 48% 96%, rgba(210,220,255,.60), transparent 58%),
-        linear-gradient(135deg, #f2fbff 0%, #f5fbff 40%, #f7fbff 100%);
+        radial-gradient(1200px 900px at 20% 10%, var(--skyA), transparent 60%),
+        radial-gradient(900px 700px at 80% 20%, var(--lavA), transparent 55%),
+        radial-gradient(900px 700px at 60% 85%, var(--skyC), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.95), rgba(245,252,255,.92));
+      overflow: hidden; /* 1 pantalla */
     }
 
-    .wrap{ max-width: 1180px; margin: 0 auto; padding: 26px 16px 46px; }
+    .bgBlobs{
+      position: fixed;
+      inset: -40px;
+      pointer-events: none;
+      opacity: .55;
+      filter: blur(40px);
+      background:
+        radial-gradient(420px 380px at 15% 20%, rgba(120, 210, 255, .60), transparent 60%),
+        radial-gradient(520px 420px at 80% 25%, rgba(190, 180, 255, .55), transparent 60%),
+        radial-gradient(520px 420px at 55% 90%, rgba(190, 245, 255, .55), transparent 60%);
+    }
 
-    /* Header tipo “tarjeta” */
+    .app{
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 10px;
+      padding: max(14px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right))
+               max(14px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
     header{
-      border: 1px solid var(--stroke);
-      background: var(--glass);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(12px);
-      padding: 18px;
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap: 14px;
-      flex-wrap:wrap;
-    }
-
-    .kicker{
-      font-size: 12px;
-      color: rgba(10,18,35,.62);
-      font-weight: 800;
-      letter-spacing: .3px;
-      text-transform: uppercase;
-    }
-
-    .title{
-      margin: 6px 0 8px;
-      font-family: Outfit, Inter, system-ui;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      font-size: clamp(22px, 2.6vw, 30px);
-      line-height: 1.12;
-    }
-
-    .subtitle{
-      margin:0;
-      color: var(--muted);
-      line-height:1.55;
-      max-width: 78ch;
-      font-size: 13px;
-    }
-
-    .pillRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
-    .pill{
-      border: 1px solid rgba(10,18,35,.10);
-      background: rgba(255,255,255,.62);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-weight: 800;
-      font-size: 12px;
-      color: rgba(10,18,35,.72);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(10px);
-    }
-
-    main.stack{ display:grid; gap: 14px; padding: 14px 0 0; }
-
-    /* Cards principales */
-    .card{
-      border: 1px solid var(--stroke);
-      background: var(--glass);
+      gap: 10px;
+      padding: 14px 16px;
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-      padding: 16px;
-      overflow:hidden;
-      position: relative;
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
     }
 
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(600px 220px at 10% 0%, rgba(160,220,255,.18), transparent 55%),
-        radial-gradient(520px 240px at 90% 5%, rgba(210,245,255,.14), transparent 55%);
-      pointer-events:none;
-      opacity: .9;
-    }
-
-    .card > *{ position: relative; }
-
-    h2{
-      margin:0;
-      font-family: Outfit, Inter, system-ui;
+    .brand h1{
+      margin: 0;
+      font-family: var(--font-title);
       font-weight: 800;
+      letter-spacing: -.02em;
       font-size: 18px;
-      letter-spacing: -.01em;
+      line-height: 1.15;
+    }
+    .brand .hint{
+      margin-top: 6px;
+      font-size: 12.8px;
+      color: var(--muted);
     }
 
-    .muted{ color: var(--muted); }
-
-    /* Hero de cada módulo */
-    .moduleHero{
-      margin-top: 12px;
-      border-radius: 20px;
-      border: 1px solid rgba(10,18,35,.10);
-      background:
-        linear-gradient(135deg, rgba(255,255,255,.70), rgba(255,255,255,.42));
-      padding: 12px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .moduleHero.blue{
-      background:
-        linear-gradient(135deg, rgba(180,235,255,.58), rgba(255,255,255,.42));
-    }
-    .moduleHero.celeste{
-      background:
-        linear-gradient(135deg, rgba(160,220,255,.52), rgba(185,245,255,.34), rgba(255,255,255,.38));
-    }
-
-    .moduleTop{
+    .topRight{
       display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap:wrap;
-      margin-bottom: 10px;
-    }
-    .moduleName{
-      margin:0;
-      font-weight: 900;
-      font-size: 14px;
-      color: rgba(10,18,35,.86);
-      font-family: Outfit, Inter, system-ui;
-      letter-spacing: .2px;
-    }
-    .moduleMeta{
-      margin:6px 0 0;
-      color: rgba(10,18,35,.70);
-      font-size: 12.5px;
-      line-height: 1.45;
-      max-width: 80ch;
+      gap: 8px;
+      align-items:center;
     }
 
-    /* Botones */
-    .btn{
-      border: 1px solid rgba(10,18,35,.12);
-      background: rgba(255,255,255,.66);
-      color: rgba(10,18,35,.88);
-      padding: 10px 12px;
-      border-radius: 14px;
-      text-decoration:none;
-      font-weight: 900;
-      font-size: 13px;
+    .pill{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.55);
+      font-size: 12.5px;
+      color: rgba(10,18,35,.80);
       box-shadow: var(--shadow-soft);
       user-select:none;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
-      backdrop-filter: blur(10px);
       white-space: nowrap;
     }
-    .btn:hover{
-      background: rgba(255,255,255,.82);
-      border-color: rgba(10,18,35,.18);
-    }
-    .btn:active{ transform: translateY(1px); }
 
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(160,220,255,.55), rgba(185,245,255,.42));
-      border-color: rgba(60,170,255,.28);
-    }
-    .btn.primary:hover{
-      background: linear-gradient(135deg, rgba(160,220,255,.68), rgba(185,245,255,.52));
-    }
-
-    /* Grid subtemas */
-    .subGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-    @media (max-width: 920px){ .subGrid{ grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 560px){ .subGrid{ grid-template-columns: 1fr; } }
-
-    .subCard{
-      border-radius: 20px;
-      border: 1px solid rgba(10,18,35,.10);
-      background: rgba(255,255,255,.62);
-      padding: 12px;
-      box-shadow: var(--shadow-soft);
+    .bar{
       display:flex;
-      flex-direction:column;
+      flex-wrap: wrap;
       gap: 10px;
-      min-height: 140px;
-      position: relative;
-      overflow:hidden;
-    }
-
-    .subCard::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(520px 180px at 10% 0%, rgba(160,220,255,.18), transparent 55%),
-        radial-gradient(520px 200px at 90% 10%, rgba(210,245,255,.14), transparent 55%);
-      pointer-events:none;
-      opacity: .85;
-    }
-    .subCard > *{ position: relative; }
-
-    .subTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 10px;
-    }
-    .subTitle{
-      margin:0;
-      font-family: Outfit, Inter, system-ui;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing:.2px;
-      line-height: 1.2;
-      color: rgba(10,18,35,.90);
-    }
-
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(10,18,35,.10);
-      font-weight: 900;
-      font-size: 12px;
-      color: rgba(10,18,35,.76);
-      background: rgba(255,255,255,.64);
-      white-space: nowrap;
-      box-shadow: 0 8px 18px rgba(10,18,35,.08);
-    }
-    .tag.ok{
-      background: var(--okBg);
-      border-color: var(--okBd);
-    }
-    .tag.todo{
-      background: var(--todoBg);
-      border-color: var(--todoBd);
-    }
-
-    .subDesc{
-      margin:0;
-      color: rgba(10,18,35,.70);
-      font-size: 12.5px;
-      line-height: 1.45;
-    }
-    .subActions{
-      margin-top:auto;
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
       align-items:center;
     }
 
-    /* “Próximamente” con estilo bonito */
-    .ghost{
-      opacity: .68;
-      filter: grayscale(.08);
-    }
-    .ghost .btn{
-      pointer-events:none;
-      opacity:.62;
-    }
-
-    footer{
-      margin-top: 14px;
-      color: rgba(10,18,35,.60);
-      font-size: 12.5px;
-      line-height: 1.4;
-      text-align:center;
-      padding: 10px 0 2px;
-    }
-  
-
-    /* ===== Mejoras interactivas (búsqueda, filtros, carrusel tipo “PSP”, progreso) ===== */
-    .tools{
-      flex: 1 1 100%;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      margin-top: 6px;
-    }
     .searchWrap{
+      flex: 1 1 260px;
       display:flex;
       align-items:center;
       gap: 10px;
       padding: 10px 12px;
       border-radius: 16px;
-      border: 1px solid rgba(10,18,35,.10);
+      border: 1px solid var(--stroke);
       background: rgba(255,255,255,.55);
       box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
     }
     .searchWrap input{
       width:100%;
@@ -350,22 +148,20 @@
       outline: none;
       background: transparent;
       font-family: var(--font-body);
-      font-size: 14.5px;
+      font-size: 14px;
       color: var(--ink);
     }
     .iconBtn{
-      border: 0;
-      background: rgba(10,18,35,.06);
       border: 1px solid rgba(10,18,35,.10);
+      background: rgba(10,18,35,.06);
       border-radius: 12px;
       padding: 8px 10px;
       cursor:pointer;
       color: rgba(10,18,35,.80);
-      line-height: 1;
       user-select:none;
     }
     .iconBtn:hover{ background: rgba(10,18,35,.09); }
-    .iconBtn:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
+    .iconBtn:focus-visible{ outline: 3px solid var(--focus); outline-offset: 2px; }
 
     .chipRow{
       display:flex;
@@ -374,7 +170,7 @@
       align-items:center;
     }
     .chip{
-      border: 1px solid rgba(10,18,35,.10);
+      border: 1px solid var(--stroke);
       background: rgba(255,255,255,.55);
       color: rgba(10,18,35,.80);
       border-radius: 999px;
@@ -382,6 +178,7 @@
       font-size: 12.5px;
       cursor:pointer;
       box-shadow: var(--shadow-soft);
+      user-select:none;
     }
     .chip:hover{ background: rgba(255,255,255,.70); }
     .chip.active{
@@ -389,155 +186,227 @@
       border-color: rgba(79,156,255,.35);
       color: rgba(10,18,35,.92);
     }
-    .chip:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
+    .chip:focus-visible{ outline: 3px solid var(--focus); outline-offset: 2px; }
 
-    .continueBar{
+    .stage{
+      position: relative;
+      border-radius: var(--radius);
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.48));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .viewHeader{
       display:flex;
       align-items:center;
+      justify-content:space-between;
       gap: 10px;
-      flex-wrap:wrap;
+      padding: 14px 16px 10px;
+    }
+
+    .viewTitle{
+      font-family: var(--font-title);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      font-size: 16px;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .subTitleLine{
+      color: var(--muted);
+      font-size: 12.8px;
+      margin-top: 4px;
+    }
+
+    .btn{
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.60);
+      color: rgba(10,18,35,.85);
+      border-radius: 14px;
       padding: 10px 12px;
-      border-radius: 16px;
+      cursor:pointer;
+      font-weight: 700;
+      font-family: var(--font-title);
+      box-shadow: var(--shadow-soft);
+      user-select:none;
+    }
+    .btn:hover{ background: rgba(255,255,255,.75); }
+    .btn:focus-visible{ outline: 3px solid var(--focus); outline-offset: 2px; }
+    .btn.primary{
+      background: rgba(79,156,255,.18);
+      border-color: rgba(79,156,255,.32);
+    }
+    .btn.ghost{
+      background: rgba(10,18,35,.05);
+    }
+    .btn[disabled]{
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .trackWrap{
+      position: relative;
+      height: calc(100% - 64px);
+      padding: 0 10px 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .track{
+      flex: 1 1 auto;
+      display:flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 10px 6px;
+      align-items: stretch;
+    }
+    .track::-webkit-scrollbar{ height: 8px; }
+    .track::-webkit-scrollbar-thumb{ background: rgba(10,18,35,.16); border-radius: 999px; }
+
+    .cardBig{
+      flex: 0 0 min(92%, 520px);
+      scroll-snap-align: center;
+      border-radius: 22px;
+      border: 1px solid rgba(10,18,35,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.52));
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      padding: 14px 14px;
+      transform: scale(.92);
+      opacity: .78;
+      filter: saturate(.92);
+      transition: transform .22s ease, opacity .22s ease, filter .22s ease;
+      position: relative;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      min-width: 260px;
+    }
+    .cardBig.active{
+      transform: scale(1);
+      opacity: 1;
+      filter: none;
+      box-shadow: 0 18px 45px rgba(10,18,35,.16);
+    }
+
+    .cardBig h3{
+      margin: 0;
+      font-family: var(--font-title);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      font-size: 17px;
+      line-height: 1.15;
+    }
+    .cardBig p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .metaRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      align-items:center;
+    }
+
+    .tag{
+      display:inline-flex;
+      gap: 6px;
+      align-items:center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
       border: 1px solid rgba(10,18,35,.10);
       background: rgba(255,255,255,.55);
-      box-shadow: var(--shadow-soft);
+      color: rgba(10,18,35,.80);
+      user-select:none;
     }
-    .continueText{ color: rgba(10,18,35,.70); font-size: 13px; }
-    .linkBtn{
-      border: 0;
-      background: transparent;
-      color: rgba(10,18,35,.70);
-      text-decoration: underline;
-      cursor:pointer;
+    .tag.ok{ background: var(--okBg); border-color: var(--okBd); }
+    .tag.todo{ background: var(--todoBg); border-color: var(--todoBd); }
+
+    .previewList{
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      padding-top: 4px;
+    }
+    .previewItem{
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 10px 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(10,18,35,.08);
+      background: rgba(255,255,255,.55);
+    }
+    .previewItem .t{
+      font-weight: 700;
       font-size: 13px;
-      padding: 6px 8px;
-      border-radius: 10px;
+      line-height: 1.25;
+      color: rgba(10,18,35,.88);
     }
-    .linkBtn:hover{ background: rgba(10,18,35,.05); }
-    .linkBtn:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
+    .previewItem .d{
+      margin-top: 4px;
+      font-size: 12.6px;
+      color: rgba(10,18,35,.66);
+      line-height: 1.25;
+    }
 
-    .hidden{ display:none !important; }
-
-    /* Badge de “Leído” */
     .readBadge{
       position:absolute;
-      top: 10px;
-      right: 10px;
+      top: 12px;
+      right: 12px;
       font-size: 11px;
       padding: 6px 8px;
       border-radius: 999px;
       background: rgba(32, 185, 129, .14);
       border: 1px solid rgba(32, 185, 129, .30);
       color: rgba(10,18,35,.80);
-      display:flex;
-      align-items:center;
-      gap: 6px;
       box-shadow: var(--shadow-soft);
       backdrop-filter: blur(8px);
+      display:none;
+      user-select:none;
     }
-    .subCard.read{
-      border-color: rgba(32, 185, 129, .25);
-    }
+    .cardBig.read .readBadge{ display:block; }
 
-    /* Carrusel “tarjetas deslizables” tipo PSP en móvil */
-    .carousel{
-      position: relative;
-    }
-    .carousel .carouselBtn{
+    .navBtn{
       position:absolute;
       top: 50%;
       transform: translateY(-50%);
+      z-index: 4;
       border: 1px solid rgba(10,18,35,.10);
       background: rgba(255,255,255,.65);
       box-shadow: var(--shadow-soft);
       border-radius: 16px;
       padding: 10px 12px;
       cursor:pointer;
-      color: rgba(10,18,35,.80);
-      z-index: 3;
-      backdrop-filter: blur(10px);
-      display:none; /* se activa en móvil */
-    }
-    .carousel .carouselBtn:hover{ background: rgba(255,255,255,.78); }
-    .carousel .carouselBtn:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
-    .carousel .carouselBtn.prev{ left: 6px; }
-    .carousel .carouselBtn.next{ right: 6px; }
-
-    .dots{
-      display:none; /* se activa en móvil */
-      justify-content:center;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .dot{
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(10,18,35,.20);
-      background: rgba(10,18,35,.10);
-      cursor:pointer;
-    }
-    .dot.active{
-      background: rgba(79,156,255,.45);
-      border-color: rgba(79,156,255,.55);
-    }
-
-    @media (max-width: 680px){
-      .subGrid{
-        display: flex;
-        gap: 12px;
-        overflow-x: auto;
-        padding: 6px 2px 10px;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-      }
-      .subCard{
-        flex: 0 0 86%;
-        scroll-snap-align: center;
-        min-height: 160px;
-      }
-      .carousel .carouselBtn{ display:block; }
-      .dots{ display:flex; }
-
-      /* scrollbar discreta */
-      .subGrid::-webkit-scrollbar{ height: 8px; }
-      .subGrid::-webkit-scrollbar-thumb{
-        background: rgba(10,18,35,.18);
-        border-radius: 999px;
-      }
-    }
-
-  
-    /* ===== Navegación tipo PSP: carrusel principal de módulos ===== */
-    .moduleCarousel{ position: relative; }
-    .moduleNav{
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 5;
-      border: 1px solid rgba(10,18,35,.10);
-      background: rgba(255,255,255,.65);
-      box-shadow: var(--shadow-soft);
-      border-radius: 16px;
-      padding: 10px 12px;
-      cursor: pointer;
       color: rgba(10,18,35,.85);
       backdrop-filter: blur(10px);
-      display:none; /* se muestra en modo PSP */
       user-select:none;
     }
-    .moduleNav:hover{ background: rgba(255,255,255,.80); }
-    .moduleNav:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
-    .moduleNav.prev{ left: 6px; }
-    .moduleNav.next{ right: 6px; }
+    .navBtn:hover{ background: rgba(255,255,255,.80); }
+    .navBtn:focus-visible{ outline: 3px solid var(--focus); outline-offset: 2px; }
+    .navBtn.prev{ left: 8px; }
+    .navBtn.next{ right: 8px; }
 
-    .moduleDots{
-      display:none; /* se muestra en modo PSP */
+    .dots{
+      display:flex;
       justify-content:center;
       gap: 8px;
-      margin-top: 12px;
+      padding-bottom: 8px;
     }
-    .moduleDot{
+    .dot{
       width: 10px;
       height: 10px;
       border-radius: 999px;
@@ -545,728 +414,110 @@
       background: rgba(10,18,35,.10);
       cursor:pointer;
     }
-    .moduleDot.active{
+    .dot.active{
       background: rgba(79,156,255,.48);
       border-color: rgba(79,156,255,.60);
     }
 
-    /* Modo PSP (móvil / tablet): módulos en carrusel horizontal con “zoom” al activo */
-    @media (max-width: 980px){
-      .grid#moduleTrack{
-        display:flex;
-        gap: 16px;
-        overflow-x: auto;
-        padding: 4px 10px 10px;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-      }
-      .grid#moduleTrack > .card{
-        flex: 0 0 88%;
-        scroll-snap-align: center;
-        transform: scale(.92);
-        opacity: .78;
-        filter: saturate(.92);
-        transition: transform .22s ease, opacity .22s ease, filter .22s ease;
-      }
-      .grid#moduleTrack > .card.pspActive{
-        transform: scale(1);
-        opacity: 1;
-        filter: none;
-      }
-      .moduleNav{ display:block; }
-      .moduleDots{ display:flex; }
-
-      /* Evitar conflicto de scroll horizontal dentro del módulo */
-      .subGrid{
-        display:grid !important;
-        overflow: visible !important;
-        scroll-snap-type: none !important;
-      }
-      .subCard{ min-height: unset; }
+    footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.50);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      font-size: 12.5px;
+      color: rgba(10,18,35,.72);
+    }
+    .footerLeft{ display:flex; gap: 10px; align-items:center; flex-wrap:wrap; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      padding: 3px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.55);
+      color: rgba(10,18,35,.78);
     }
 
+    @media (max-width: 520px){
+      header{ padding: 12px 12px; }
+      .brand h1{ font-size: 17px; }
+      .pill{ display:none; }
+      .cardBig{ flex-basis: 92%; }
+      .navBtn{ display:none; } /* swipe primero, flechas opcional */
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .cardBig{ transition:none; }
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="bgBlobs"></div>
+
+  <div class="app">
     <header>
-      <div>
-        <div class="kicker">EPC AALA · Taller de módulos</div>
-        <h1 class="title">Plataforma interactiva de aprendizaje</h1>
-</div>
-
-      <!-- Herramientas (búsqueda, filtros y continuar) -->
-      <div class="tools">
-        <div class="searchWrap" role="search">
-          <input id="searchInput" type="search" placeholder="Buscar módulos o subtemas…" aria-label="Buscar" />
-          <button id="clearSearch" class="iconBtn" type="button" aria-label="Borrar búsqueda">✕</button>
-        </div>
-
-        <div class="chipRow" aria-label="Filtros">
-          <button class="chip active" type="button" data-filter="all">Todos</button>
-          <button class="chip" type="button" data-filter="available">Disponibles</button>
-          <button class="chip" type="button" data-filter="coming">Próximamente</button>
-          <button class="chip" type="button" data-filter="read">Leídos</button>
-        </div>
-
-        <div id="continueBar" class="continueBar hidden" aria-live="polite">
-          <span class="continueText">Continuar:</span>
-          <a id="continueLink" class="btn" href="#">—</a>
-          <button id="resetProgress" class="linkBtn" type="button">Reiniciar progreso</button>
-        </div>
+      <div class="brand">
+        <h1>Taller por módulos · EPC 5º Primaria</h1>
+        <div class="hint" id="modeHint">Desliza a izquierda/derecha para cambiar de módulo.</div>
       </div>
-
-
-      <div class="pillRow">
-        <span class="pill">EPC AALA</span>
-        <span class="pill">Sololá</span>
-        <span class="pill">Lago de Atitlán</span>
+      <div class="topRight">
+        <div class="pill" id="counterPill">—</div>
       </div>
     </header>
 
-    <main class="stack">
-      <!-- MÓDULO 1 -->
-      <section class="card">
-        <h2>Módulo 1 · Medio ambiente</h2>
-        <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
+    <div class="bar">
+      <div class="searchWrap" role="search">
+        <input id="searchInput" type="search" placeholder="Buscar módulos o subtemas…" aria-label="Buscar" />
+        <button id="clearSearch" class="iconBtn" type="button" aria-label="Borrar búsqueda">✕</button>
+      </div>
 
-        <div class="moduleHero blue">
-          <div class="moduleTop">
-            <div>
-              <h3 class="moduleName">Subtemas</h3>
-              <p class="moduleMeta">Acceso directo a cada tema.</p>
-            </div>
-            <a class="btn primary" href="#subtemas">Ver</a>
-          </div>
+      <div class="chipRow" aria-label="Filtros">
+        <button class="chip active" type="button" data-filter="all">Todos</button>
+        <button class="chip" type="button" data-filter="available">Disponibles</button>
+        <button class="chip" type="button" data-filter="coming">Próximamente</button>
+        <button class="chip" type="button" data-filter="read">Leídos</button>
+      </div>
+    </div>
 
-          <div class="subGrid" id="subtemas">
-            <div class="subCard">
-              <div class="subTop">
-                <h4 class="subTitle">1.1 Elementos que conforman el ambiente</h4>
-                <span class="tag ok" data-file="1-1.html">Disponible</span>
-              </div>
-              <p class="subDesc">Elementos bióticos y abióticos e interdependencia.</p>
-              <div class="subActions">
-                <a class="btn" href="1-1.html">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard">
-              <div class="subTop">
-                <h4 class="subTitle">1.2 Cadenas alimenticias o tróficas</h4>
-                <span class="tag ok" data-file="1-2.html">Disponible</span>
-              </div>
-              <p class="subDesc">Niveles tróficos y flujo de energía (terrestre y acuático).</p>
-              <div class="subActions">
-                <a class="btn" href="1-2.html">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">1.3 El ecosistema y su organización</h4>
-                <span class="tag todo" data-file="1-3.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Organización biológica y relaciones ecosistémicas.</p>
-              <div class="subActions">
-                <a class="btn" href="1-3.html" aria-disabled="true">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">1.4 Ecosistemas en Sololá y cuenca del Lago de Atitlán</h4>
-                <span class="tag todo" data-file="1-4.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Ecosistemas locales y su relevancia ambiental.</p>
-              <div class="subActions">
-                <a class="btn" href="1-4.html" aria-disabled="true">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">1.5 Recursos naturales</h4>
-                <span class="tag todo" data-file="1-5.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Clasificación y uso sostenible.</p>
-              <div class="subActions">
-                <a class="btn" href="1-5.html" aria-disabled="true">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">1.6 Biodiversidad</h4>
-                <span class="tag todo" data-file="1-6.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Variedad de vida y por qué importa.</p>
-              <div class="subActions">
-                <a class="btn" href="1-6.html" aria-disabled="true">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">1.7 Deterioro ambiental</h4>
-                <span class="tag todo" data-file="1-7.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Causas y consecuencias del deterioro.</p>
-              <div class="subActions">
-                <a class="btn" href="1-7.html" aria-disabled="true">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">1.8 Cambio climático</h4>
-                <span class="tag todo" data-file="1-8.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Conceptos básicos e impactos.</p>
-              <div class="subActions">
-                <a class="btn" href="1-8.html" aria-disabled="true">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">1.9 Huella ecológica</h4>
-                <span class="tag todo" data-file="1-9.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Consumo y presión sobre recursos.</p>
-              <div class="subActions">
-                <a class="btn" href="1-9.html" aria-disabled="true">Abrir</a>
-              </div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">1.10 Estrategias para contrarrestar problemas ambientales</h4>
-                <span class="tag todo" data-file="1-10.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Acciones y buenas prácticas.</p>
-              <div class="subActions">
-                <a class="btn" href="1-10.html" aria-disabled="true">Abrir</a>
-              </div>
-            </div>
-          </div>
+    <section class="stage" aria-live="polite">
+      <div class="viewHeader">
+        <div>
+          <div class="viewTitle" id="viewTitle">Módulos</div>
+          <div class="subTitleLine" id="subTitleLine">Selecciona un módulo para ver sus subtemas.</div>
         </div>
-      </section>
-
-      <!-- MÓDULO 2 -->
-      <section class="card">
-        <h2>Módulo 2 · El bosque</h2>
-        <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
-
-        <div class="moduleHero blue">
-          <div class="moduleTop">
-            <div>
-              <h3 class="moduleName">Subtemas</h3>
-              <p class="moduleMeta">Bosque, plantación, reforestación, bienes y servicios ambientales, funciones, estructura, tipos, manejo y amenazas.</p>
-            </div>
-            <a class="btn primary" href="#subtemas2">Ver</a>
-          </div>
-
-          <div class="subGrid" id="subtemas2">
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">2.1 Diferencia entre bosque, plantación forestal y reforestación</h4>
-                <span class="tag todo" data-file="2-1.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Conceptos y ejemplos para no confundirlos.</p>
-              <div class="subActions"><a class="btn" href="2-1.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">2.2 Bienes y servicios ambientales del bosque</h4>
-                <span class="tag todo" data-file="2-2.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Provisión, regulación, soporte y culturales.</p>
-              <div class="subActions"><a class="btn" href="2-2.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">2.3 Funciones del bosque</h4>
-                <span class="tag todo" data-file="2-3.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Protección, regulación y producción (entre otras).</p>
-              <div class="subActions"><a class="btn" href="2-3.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">2.4 Estructura de un bosque</h4>
-                <span class="tag todo" data-file="2-4.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Estratos, especies y dinámica del bosque.</p>
-              <div class="subActions"><a class="btn" href="2-4.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">2.5 Tipos de bosques en el departamento de Sololá</h4>
-                <span class="tag todo" data-file="2-5.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Latifoliado, coníferas, mixto y estacionalmente seco.</p>
-              <div class="subActions"><a class="btn" href="2-5.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">2.6 Manejo forestal</h4>
-                <span class="tag todo" data-file="2-6.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Uso sostenible, regeneración y silvicultura.</p>
-              <div class="subActions"><a class="btn" href="2-6.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">2.7 Amenazas a los bosques</h4>
-                <span class="tag todo" data-file="2-7.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Incendios, tala ilegal, plagas y cambio climático.</p>
-              <div class="subActions"><a class="btn" href="2-7.html" aria-disabled="true">Abrir</a></div>
-            </div>
-          </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button id="backBtn" class="btn ghost" type="button" style="display:none;">← Volver</button>
+          <button id="continueBtn" class="btn primary" type="button" style="display:none;">Continuar</button>
         </div>
-      </section>
+      </div>
 
-      <!-- MÓDULO 3 -->
-      <section class="card">
-        <h2>Módulo 3 · El agua y las cuencas hidrográficas</h2>
-        <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
+      <div class="trackWrap">
+        <button class="navBtn prev" id="prevBtn" type="button" aria-label="Anterior">◀</button>
+        <button class="navBtn next" id="nextBtn" type="button" aria-label="Siguiente">▶</button>
 
-        <div class="moduleHero celeste">
-          <div class="moduleTop">
-            <div>
-              <h3 class="moduleName">Subtemas</h3>
-              <p class="moduleMeta">Ciclo del agua, fuentes, cuencas hidrográficas, vida acuática, calidad del agua y salud.</p>
-            </div>
-            <a class="btn primary" href="#subtemas3">Ver</a>
-          </div>
+        <div class="track" id="track" tabindex="0" aria-label="Carrusel"></div>
+        <div class="dots" id="dots" aria-label="Indicador"></div>
+      </div>
+    </section>
 
-          <div class="subGrid" id="subtemas3">
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.1 El ciclo del agua</h4>
-                <span class="tag todo" data-file="3-1.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Cómo el agua cambia de estado y se mueve en la naturaleza (ciclo hidrológico).</p>
-              <div class="subActions"><a class="btn" href="3-1.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.2 Fuentes de agua</h4>
-                <span class="tag todo" data-file="3-2.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Ríos, lagos, aguas subterráneas y otras fuentes.</p>
-              <div class="subActions"><a class="btn" href="3-2.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.3 Cuencas hidrográficas y manejo integrado de cuencas</h4>
-                <span class="tag todo" data-file="3-3.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Qué es una cuenca y por qué todo está conectado.</p>
-              <div class="subActions"><a class="btn" href="3-3.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.4 Manejo integrado de cuencas</h4>
-                <span class="tag todo" data-file="3-4.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Acciones coordinadas para cuidar agua, suelo y bosque.</p>
-              <div class="subActions"><a class="btn" href="3-4.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.5 Cuencas hidrográficas en el departamento de Sololá</h4>
-                <span class="tag todo" data-file="3-5.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Principales cuencas que intervienen en Sololá y su importancia.</p>
-              <div class="subActions"><a class="btn" href="3-5.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.6 Vida acuática</h4>
-                <span class="tag todo" data-file="3-6.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Biodiversidad en ríos, lagos y humedales.</p>
-              <div class="subActions"><a class="btn" href="3-6.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.7 Calidad del agua del Lago de Atitlán</h4>
-                <span class="tag todo" data-file="3-7.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Indicadores básicos de calidad del agua y su interpretación.</p>
-              <div class="subActions"><a class="btn" href="3-7.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.8 Fuentes de contaminación del agua y sus efectos</h4>
-                <span class="tag todo" data-file="3-8.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Contaminación microbiológica, química y más.</p>
-              <div class="subActions"><a class="btn" href="3-8.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.9 Efectos de la contaminación en el agua</h4>
-                <span class="tag todo" data-file="3-9.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Impactos en ecosistemas, economía y bienestar.</p>
-              <div class="subActions"><a class="btn" href="3-9.html" aria-disabled="true">Abrir</a></div>
-            </div>
-
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">3.10 La calidad del agua y los efectos en la salud</h4>
-                <span class="tag todo" data-file="3-10.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Relación entre agua segura y enfermedades.</p>
-              <div class="subActions"><a class="btn" href="3-10.html" aria-disabled="true">Abrir</a></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- MÓDULO 4 -->
-      <section class="card">
-        <h2>Módulo 4 · El Suelo</h2>
-        <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
-
-        <div class="moduleHero blue">
-          <div class="moduleTop">
-            <div>
-              <h3 class="moduleName">Subtemas</h3>
-              <p class="moduleMeta">Qué es el suelo, composición y horizontes, erosión, conservación, fertilidad y agricultura sostenible.</p>
-            </div>
-            <a class="btn primary" href="#subtemas4">Ver</a>
-          </div>
-
-          <div class="subGrid" id="subtemas4">
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.1 ¿Qué es suelo? ¿Cómo se forma el suelo?</h4>
-                <span class="tag todo" data-file="4-1.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Módulo 4: qué es el suelo, cómo se forma y dos juegos interactivos.</p>
-              <a class="btn disabled" href="4-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.2 Capas de suelo</h4>
-                <span class="tag todo" data-file="4-2.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Horizontes del suelo y propiedades físicas: textura, porosidad y retención de agua, con juegos interactivos.</p>
-              <a class="btn disabled" href="4-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.3 Clasificación de los suelos del departamento de Sololá</h4>
-                <span class="tag todo" data-file="4-3.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Tipos de suelos en Sololá y biodiversidad del suelo, con ahorcado y detective de suelos.</p>
-              <a class="btn disabled" href="4-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.4 Empobrecimiento del suelo</h4>
-                <span class="tag todo" data-file="4-4.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Causas y efectos del empobrecimiento del suelo.</p>
-              <a class="btn disabled" href="4-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.5 Conservación del suelo</h4>
-                <span class="tag todo" data-file="4-5.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Prácticas de conservación del suelo: curvas a nivel, barreras y cobertura.</p>
-              <a class="btn disabled" href="4-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.6 Agroecosistemas</h4>
-                <span class="tag todo" data-file="4-6.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Agroecosistemas: componentes, tipos, servicios y manejo sostenible.</p>
-              <a class="btn disabled" href="4-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.7 Prácticas sostenibles para la conservación de suelos</h4>
-                <span class="tag todo" data-file="4-7.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Curvas a nivel, barreras vivas, terrazas, compost, lombricompost y abonos verdes.</p>
-              <a class="btn disabled" href="4-7.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.8 Actividad agrícola en el departamento de Sololá</h4>
-                <span class="tag todo" data-file="4-8.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Actividad agrícola en Sololá: calendario lunar, producción, café y organizaciones.</p>
-              <a class="btn disabled" href="4-8.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">4.9 Seguridad alimentaria</h4>
-                <span class="tag todo" data-file="4-9.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Seguridad alimentaria: 4 pilares, dieta balanceada, nutrientes y estrategias.</p>
-              <a class="btn disabled" href="4-9.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- MÓDULO 5 -->
-      <section class="card">
-        <h2>Módulo 5 · Saneamiento Ambiental</h2>
-        <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
-
-        <div class="moduleHero celeste">
-          <div class="moduleTop">
-            <div>
-              <h3 class="moduleName">Subtemas</h3>
-              <p class="moduleMeta">Agua segura, contaminación, higiene, excretas y residuos sólidos: saneamiento ambiental para la salud.</p>
-            </div>
-            <a class="btn primary" href="#subtemas5">Ver</a>
-          </div>
-
-          <div class="subGrid" id="subtemas5">
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.1 Residuos y desechos</h4>
-                <span class="tag todo" data-file="5-1.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Relación entre residuos y desechos con ejemplos de la vida diaria.</p>
-              <a class="btn disabled" href="5-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.2 Efectos del mal manejo de residuos y desechos sólidos</h4>
-                <span class="tag todo" data-file="5-2.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Efectos del mal manejo de residuos y desechos sólidos” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.3 Situación de los desechos sólidos en el departamento de Sololá</h4>
-                <span class="tag todo" data-file="5-3.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Situación de los desechos sólidos en el departamento de sololá” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.4 Buenas prácticas ambientales: “las 3 r’s”</h4>
-                <span class="tag todo" data-file="5-4.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Buenas prácticas ambientales: “las 3 r’s”” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.5 Aprovechamiento de residuos y desechos sólidos</h4>
-                <span class="tag todo" data-file="5-5.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Aprovechamiento de residuos y desechos sólidos” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.6 Manejo, tratamiento y disposición final de los residuos y desechos sólidos</h4>
-                <span class="tag todo" data-file="5-6.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Manejo, tratamiento y disposición final de los residuos y desechos sólidos” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.7 Situación del tratamiento de desechos sólidos en Sololá</h4>
-                <span class="tag todo" data-file="5-7.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Situación del tratamiento de desechos sólidos en sololá” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-7.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.8 Desechos líquidos</h4>
-                <span class="tag todo" data-file="5-8.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Desechos líquidos” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-8.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.9 Impacto de las aguas residuales en el ambiente y la salud</h4>
-                <span class="tag todo" data-file="5-9.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Impacto de las aguas residuales en el ambiente y la salud” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-9.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">5.10 Tratamiento de las aguas residuales</h4>
-                <span class="tag todo" data-file="5-10.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Tratamiento de las aguas residuales” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="5-10.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- MÓDULO 6 -->
-      <section class="card">
-        <h2>Módulo 6 · Conservación De Los Bienes Y Servicios Ambientales</h2>
-        <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
-
-        <div class="moduleHero blue">
-          <div class="moduleTop">
-            <div>
-              <h3 class="moduleName">Subtemas</h3>
-              <p class="moduleMeta">Bienes y servicios ambientales, biodiversidad, amenazas y conservación en la RUMCLA.</p>
-            </div>
-            <a class="btn primary" href="#subtemas6">Ver</a>
-          </div>
-
-          <div class="subGrid" id="subtemas6">
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">6.1 Bienes y servicios ambientales</h4>
-                <span class="tag todo" data-file="6-1.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Relación entre bienes y servicios ambientales con ejemplos de la vida diaria.</p>
-              <a class="btn disabled" href="6-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">6.2 Uso sostenible de los bienes y servicios ambientales</h4>
-                <span class="tag todo" data-file="6-2.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Uso sostenible de los bienes y servicios ambientales” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="6-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">6.3 Áreas protegidas</h4>
-                <span class="tag todo" data-file="6-3.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Áreas protegidas” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="6-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">6.4 Reserva de uso múltiple cuenca del Lago de Atitlán</h4>
-                <span class="tag todo" data-file="6-4.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Reserva de uso múltiple cuenca del lago de atitlán” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="6-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">6.5 Especies en peligro de extinción presentes en la RUMCLA</h4>
-                <span class="tag todo" data-file="6-5.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Especies en peligro de extinción presentes en la rumcla” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="6-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">6.6 Avifauna en la RUMCLA</h4>
-                <span class="tag todo" data-file="6-6.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Avifauna en la rumcla” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="6-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- MÓDULO 7 -->
-      <section class="card">
-        <h2>Módulo 7 · Valorando Nuestros Recursos Naturales Y Culturales</h2>
-        <p class="muted" style="margin:8px 0 0;">Subtemas del módulo.</p>
-
-        <div class="moduleHero celeste">
-          <div class="moduleTop">
-            <div>
-              <h3 class="moduleName">Subtemas</h3>
-              <p class="moduleMeta">Identidad cultural, organización comunitaria, turismo responsable y conservación del territorio.</p>
-            </div>
-            <a class="btn primary" href="#subtemas7">Ver</a>
-          </div>
-
-          <div class="subGrid" id="subtemas7">
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">7.1 Cosmovisión maya</h4>
-                <span class="tag todo" data-file="7-1.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Relación entre cosmovisión maya con ejemplos de la vida diaria.</p>
-              <a class="btn disabled" href="7-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">7.2 Cruz cosmogónica maya</h4>
-                <span class="tag todo" data-file="7-2.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Relación entre cruz cosmogónica maya con ejemplos de la vida diaria.</p>
-              <a class="btn disabled" href="7-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">7.3 Conocimientos y prácticas ancestrales tradicionales en Sololá</h4>
-                <span class="tag todo" data-file="7-3.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Conocimientos y prácticas ancestrales tradicionales en sololá” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="7-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">7.4 Historia del departamento de Sololá</h4>
-                <span class="tag todo" data-file="7-4.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Historia del departamento de sololá” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="7-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-            <div class="subCard ghost">
-              <div class="subTop">
-                <h4 class="subTitle">7.5 Turismo</h4>
-                <span class="tag todo" data-file="7-5.html">Próximamente</span>
-              </div>
-              <p class="subDesc">Aprende sobre “Turismo” con teoría, mapa mental y actividades.</p>
-              <a class="btn disabled" href="7-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-<footer>EPC AALA</footer>
-    </main>
+    <footer>
+      <div class="footerLeft">
+        <span><span class="kbd">←</span> <span class="kbd">→</span> o swipe</span>
+        <span><span class="kbd">Enter</span> para entrar</span>
+      </div>
+      <div id="statusLine">Listo.</div>
+    </footer>
   </div>
 
-  
-  
   <script>
+    const DATA = [{"title": "Módulo 1 · Medio ambiente", "subs": [{"title": "1.1 Elementos que conforman el ambiente", "desc": "Elementos bióticos y abióticos e interdependencia.", "href": "1-1.html", "data_file": "1-1.html", "status": "Disponible", "disabled": false}, {"title": "1.2 Cadenas alimenticias o tróficas", "desc": "Niveles tróficos y flujo de energía (terrestre y acuático).", "href": "1-2.html", "data_file": "1-2.html", "status": "Disponible", "disabled": false}, {"title": "1.3 El ecosistema y su organización", "desc": "Organización biológica y relaciones ecosistémicas.", "href": "1-3.html", "data_file": "1-3.html", "status": "Próximamente", "disabled": false}, {"title": "1.4 Ecosistemas en Sololá y cuenca del Lago de Atitlán", "desc": "Ecosistemas locales y su relevancia ambiental.", "href": "1-4.html", "data_file": "1-4.html", "status": "Próximamente", "disabled": false}, {"title": "1.5 Recursos naturales", "desc": "Clasificación y uso sostenible.", "href": "1-5.html", "data_file": "1-5.html", "status": "Próximamente", "disabled": false}, {"title": "1.6 Biodiversidad", "desc": "Variedad de vida y por qué importa.", "href": "1-6.html", "data_file": "1-6.html", "status": "Próximamente", "disabled": false}, {"title": "1.7 Deterioro ambiental", "desc": "Causas y consecuencias del deterioro.", "href": "1-7.html", "data_file": "1-7.html", "status": "Próximamente", "disabled": false}, {"title": "1.8 Cambio climático", "desc": "Conceptos básicos e impactos.", "href": "1-8.html", "data_file": "1-8.html", "status": "Próximamente", "disabled": false}, {"title": "1.9 Huella ecológica", "desc": "Consumo y presión sobre recursos.", "href": "1-9.html", "data_file": "1-9.html", "status": "Próximamente", "disabled": false}, {"title": "1.10 Estrategias para contrarrestar problemas ambientales", "desc": "Acciones y buenas prácticas.", "href": "1-10.html", "data_file": "1-10.html", "status": "Próximamente", "disabled": false}]}, {"title": "Módulo 2 · El bosque", "subs": [{"title": "2.1 Diferencia entre bosque, plantación forestal y reforestación", "desc": "Conceptos y ejemplos para no confundirlos.", "href": "2-1.html", "data_file": "2-1.html", "status": "Próximamente", "disabled": false}, {"title": "2.2 Bienes y servicios ambientales del bosque", "desc": "Provisión, regulación, soporte y culturales.", "href": "2-2.html", "data_file": "2-2.html", "status": "Próximamente", "disabled": false}, {"title": "2.3 Funciones del bosque", "desc": "Protección, regulación y producción (entre otras).", "href": "2-3.html", "data_file": "2-3.html", "status": "Próximamente", "disabled": false}, {"title": "2.4 Estructura de un bosque", "desc": "Estratos, especies y dinámica del bosque.", "href": "2-4.html", "data_file": "2-4.html", "status": "Próximamente", "disabled": false}, {"title": "2.5 Tipos de bosques en el departamento de Sololá", "desc": "Latifoliado, coníferas, mixto y estacionalmente seco.", "href": "2-5.html", "data_file": "2-5.html", "status": "Próximamente", "disabled": false}, {"title": "2.6 Manejo forestal", "desc": "Uso sostenible, regeneración y silvicultura.", "href": "2-6.html", "data_file": "2-6.html", "status": "Próximamente", "disabled": false}, {"title": "2.7 Amenazas a los bosques", "desc": "Incendios, tala ilegal, plagas y cambio climático.", "href": "2-7.html", "data_file": "2-7.html", "status": "Próximamente", "disabled": false}]}, {"title": "Módulo 3 · El agua y las cuencas hidrográficas", "subs": [{"title": "3.1 El ciclo del agua", "desc": "Cómo el agua cambia de estado y se mueve en la naturaleza (ciclo hidrológico).", "href": "3-1.html", "data_file": "3-1.html", "status": "Próximamente", "disabled": false}, {"title": "3.2 Fuentes de agua", "desc": "Ríos, lagos, aguas subterráneas y otras fuentes.", "href": "3-2.html", "data_file": "3-2.html", "status": "Próximamente", "disabled": false}, {"title": "3.3 Cuencas hidrográficas y manejo integrado de cuencas", "desc": "Qué es una cuenca y por qué todo está conectado.", "href": "3-3.html", "data_file": "3-3.html", "status": "Próximamente", "disabled": false}, {"title": "3.4 Manejo integrado de cuencas", "desc": "Acciones coordinadas para cuidar agua, suelo y bosque.", "href": "3-4.html", "data_file": "3-4.html", "status": "Próximamente", "disabled": false}, {"title": "3.5 Cuencas hidrográficas en el departamento de Sololá", "desc": "Principales cuencas que intervienen en Sololá y su importancia.", "href": "3-5.html", "data_file": "3-5.html", "status": "Próximamente", "disabled": false}, {"title": "3.6 Vida acuática", "desc": "Biodiversidad en ríos, lagos y humedales.", "href": "3-6.html", "data_file": "3-6.html", "status": "Próximamente", "disabled": false}, {"title": "3.7 Calidad del agua del Lago de Atitlán", "desc": "Indicadores básicos de calidad del agua y su interpretación.", "href": "3-7.html", "data_file": "3-7.html", "status": "Próximamente", "disabled": false}, {"title": "3.8 Fuentes de contaminación del agua y sus efectos", "desc": "Contaminación microbiológica, química y más.", "href": "3-8.html", "data_file": "3-8.html", "status": "Próximamente", "disabled": false}, {"title": "3.9 Efectos de la contaminación en el agua", "desc": "Impactos en ecosistemas, economía y bienestar.", "href": "3-9.html", "data_file": "3-9.html", "status": "Próximamente", "disabled": false}, {"title": "3.10 La calidad del agua y los efectos en la salud", "desc": "Relación entre agua segura y enfermedades.", "href": "3-10.html", "data_file": "3-10.html", "status": "Próximamente", "disabled": false}]}, {"title": "Módulo 4 · El Suelo", "subs": [{"title": "4.1 ¿Qué es suelo? ¿Cómo se forma el suelo?", "desc": "Módulo 4: qué es el suelo, cómo se forma y dos juegos interactivos.", "href": "4-1.html", "data_file": "4-1.html", "status": "Próximamente", "disabled": true}, {"title": "4.2 Capas de suelo", "desc": "Horizontes del suelo y propiedades físicas: textura, porosidad y retención de agua, con juegos interactivos.", "href": "4-2.html", "data_file": "4-2.html", "status": "Próximamente", "disabled": true}, {"title": "4.3 Clasificación de los suelos del departamento de Sololá", "desc": "Tipos de suelos en Sololá y biodiversidad del suelo, con ahorcado y detective de suelos.", "href": "4-3.html", "data_file": "4-3.html", "status": "Próximamente", "disabled": true}, {"title": "4.4 Empobrecimiento del suelo", "desc": "Causas y efectos del empobrecimiento del suelo.", "href": "4-4.html", "data_file": "4-4.html", "status": "Próximamente", "disabled": true}, {"title": "4.5 Conservación del suelo", "desc": "Prácticas de conservación del suelo: curvas a nivel, barreras y cobertura.", "href": "4-5.html", "data_file": "4-5.html", "status": "Próximamente", "disabled": true}, {"title": "4.6 Agroecosistemas", "desc": "Agroecosistemas: componentes, tipos, servicios y manejo sostenible.", "href": "4-6.html", "data_file": "4-6.html", "status": "Próximamente", "disabled": true}, {"title": "4.7 Prácticas sostenibles para la conservación de suelos", "desc": "Curvas a nivel, barreras vivas, terrazas, compost, lombricompost y abonos verdes.", "href": "4-7.html", "data_file": "4-7.html", "status": "Próximamente", "disabled": true}, {"title": "4.8 Actividad agrícola en el departamento de Sololá", "desc": "Actividad agrícola en Sololá: calendario lunar, producción, café y organizaciones.", "href": "4-8.html", "data_file": "4-8.html", "status": "Próximamente", "disabled": true}, {"title": "4.9 Seguridad alimentaria", "desc": "Seguridad alimentaria: 4 pilares, dieta balanceada, nutrientes y estrategias.", "href": "4-9.html", "data_file": "4-9.html", "status": "Próximamente", "disabled": true}]}, {"title": "Módulo 5 · Saneamiento Ambiental", "subs": [{"title": "5.1 Residuos y desechos", "desc": "Relación entre residuos y desechos con ejemplos de la vida diaria.", "href": "5-1.html", "data_file": "5-1.html", "status": "Próximamente", "disabled": true}, {"title": "5.2 Efectos del mal manejo de residuos y desechos sólidos", "desc": "Aprende sobre “Efectos del mal manejo de residuos y desechos sólidos” con teoría, mapa mental y actividades.", "href": "5-2.html", "data_file": "5-2.html", "status": "Próximamente", "disabled": true}, {"title": "5.3 Situación de los desechos sólidos en el departamento de Sololá", "desc": "Aprende sobre “Situación de los desechos sólidos en el departamento de sololá” con teoría, mapa mental y actividades.", "href": "5-3.html", "data_file": "5-3.html", "status": "Próximamente", "disabled": true}, {"title": "5.4 Buenas prácticas ambientales: “las 3 r’s”", "desc": "Aprende sobre “Buenas prácticas ambientales: “las 3 r’s”” con teoría, mapa mental y actividades.", "href": "5-4.html", "data_file": "5-4.html", "status": "Próximamente", "disabled": true}, {"title": "5.5 Aprovechamiento de residuos y desechos sólidos", "desc": "Aprende sobre “Aprovechamiento de residuos y desechos sólidos” con teoría, mapa mental y actividades.", "href": "5-5.html", "data_file": "5-5.html", "status": "Próximamente", "disabled": true}, {"title": "5.6 Manejo, tratamiento y disposición final de los residuos y desechos sólidos", "desc": "Aprende sobre “Manejo, tratamiento y disposición final de los residuos y desechos sólidos” con teoría, mapa mental y actividades.", "href": "5-6.html", "data_file": "5-6.html", "status": "Próximamente", "disabled": true}, {"title": "5.7 Situación del tratamiento de desechos sólidos en Sololá", "desc": "Aprende sobre “Situación del tratamiento de desechos sólidos en sololá” con teoría, mapa mental y actividades.", "href": "5-7.html", "data_file": "5-7.html", "status": "Próximamente", "disabled": true}, {"title": "5.8 Desechos líquidos", "desc": "Aprende sobre “Desechos líquidos” con teoría, mapa mental y actividades.", "href": "5-8.html", "data_file": "5-8.html", "status": "Próximamente", "disabled": true}, {"title": "5.9 Impacto de las aguas residuales en el ambiente y la salud", "desc": "Aprende sobre “Impacto de las aguas residuales en el ambiente y la salud” con teoría, mapa mental y actividades.", "href": "5-9.html", "data_file": "5-9.html", "status": "Próximamente", "disabled": true}, {"title": "5.10 Tratamiento de las aguas residuales", "desc": "Aprende sobre “Tratamiento de las aguas residuales” con teoría, mapa mental y actividades.", "href": "5-10.html", "data_file": "5-10.html", "status": "Próximamente", "disabled": true}]}, {"title": "Módulo 6 · Conservación De Los Bienes Y Servicios Ambientales", "subs": [{"title": "6.1 Bienes y servicios ambientales", "desc": "Relación entre bienes y servicios ambientales con ejemplos de la vida diaria.", "href": "6-1.html", "data_file": "6-1.html", "status": "Próximamente", "disabled": true}, {"title": "6.2 Uso sostenible de los bienes y servicios ambientales", "desc": "Aprende sobre “Uso sostenible de los bienes y servicios ambientales” con teoría, mapa mental y actividades.", "href": "6-2.html", "data_file": "6-2.html", "status": "Próximamente", "disabled": true}, {"title": "6.3 Áreas protegidas", "desc": "Aprende sobre “Áreas protegidas” con teoría, mapa mental y actividades.", "href": "6-3.html", "data_file": "6-3.html", "status": "Próximamente", "disabled": true}, {"title": "6.4 Reserva de uso múltiple cuenca del Lago de Atitlán", "desc": "Aprende sobre “Reserva de uso múltiple cuenca del lago de atitlán” con teoría, mapa mental y actividades.", "href": "6-4.html", "data_file": "6-4.html", "status": "Próximamente", "disabled": true}, {"title": "6.5 Especies en peligro de extinción presentes en la RUMCLA", "desc": "Aprende sobre “Especies en peligro de extinción presentes en la rumcla” con teoría, mapa mental y actividades.", "href": "6-5.html", "data_file": "6-5.html", "status": "Próximamente", "disabled": true}, {"title": "6.6 Avifauna en la RUMCLA", "desc": "Aprende sobre “Avifauna en la rumcla” con teoría, mapa mental y actividades.", "href": "6-6.html", "data_file": "6-6.html", "status": "Próximamente", "disabled": true}]}, {"title": "Módulo 7 · Valorando Nuestros Recursos Naturales Y Culturales", "subs": [{"title": "7.1 Cosmovisión maya", "desc": "Relación entre cosmovisión maya con ejemplos de la vida diaria.", "href": "7-1.html", "data_file": "7-1.html", "status": "Próximamente", "disabled": true}, {"title": "7.2 Cruz cosmogónica maya", "desc": "Relación entre cruz cosmogónica maya con ejemplos de la vida diaria.", "href": "7-2.html", "data_file": "7-2.html", "status": "Próximamente", "disabled": true}, {"title": "7.3 Conocimientos y prácticas ancestrales tradicionales en Sololá", "desc": "Aprende sobre “Conocimientos y prácticas ancestrales tradicionales en sololá” con teoría, mapa mental y actividades.", "href": "7-3.html", "data_file": "7-3.html", "status": "Próximamente", "disabled": true}, {"title": "7.4 Historia del departamento de Sololá", "desc": "Aprende sobre “Historia del departamento de sololá” con teoría, mapa mental y actividades.", "href": "7-4.html", "data_file": "7-4.html", "status": "Próximamente", "disabled": true}, {"title": "7.5 Turismo", "desc": "Aprende sobre “Turismo” con teoría, mapa mental y actividades.", "href": "7-5.html", "data_file": "7-5.html", "status": "Próximamente", "disabled": true}]}];
+
     (() => {
       const LS_LAST = 'epc_last';
       const LS_READ_PREFIX = 'epc_read:';
@@ -1274,349 +525,545 @@
       const $ = (sel, root=document) => root.querySelector(sel);
       const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 
+      const state = {
+        mode: 'modules', // 'modules' | 'subs'
+        filter: 'all',
+        query: '',
+        modules: JSON.parse(JSON.stringify(DATA)),
+        visibleModuleIdxs: [],
+        activeVisibleIndex: 0, // index within visible list
+        activeModuleIdx: 0, // index within modules
+        activeSubVisibleIndex: 0,
+        subVisibleIdxs: [],
+      };
+
       function norm(s){
-        return (s||'')
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g,'');
+        return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
       }
 
-      function getLink(subCard){
-        return subCard.querySelector('a.btn, a.subBtn');
-      }
-      function getTag(subCard){
-        return subCard.querySelector('[data-file]');
+      function setStatus(msg){ $('#statusLine').textContent = msg; }
+
+      function getBase() {
+        return location.href.replace(/\/index\.html.*$/,'/').replace(/\/index_.*\.html.*$/,'/').replace(/#.*$/,'');
       }
 
-      function setLastVisited(title, href){
-        try{ localStorage.setItem(LS_LAST, JSON.stringify({ title, href, ts: Date.now() })); }catch(_){}
+      async function checkFile(url) {
+        try {
+          let res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+          if (!res || (res.status === 405 || res.status === 403)) {
+            res = await fetch(url, { method: 'GET', cache: 'no-store' });
+          }
+          return !!res && res.ok;
+        } catch (_) {
+          return null; // desconocido
+        }
       }
-      function getLastVisited(){
-        try{
-          const raw = localStorage.getItem(LS_LAST);
-          return raw ? JSON.parse(raw) : null;
-        }catch(_){ return null; }
+
+      async function refreshAvailabilityForModule(moduleIdx) {
+        const base = getBase();
+        const mod = state.modules[moduleIdx];
+        if (!mod) return;
+
+        const tasks = mod.subs.map(async (s) => {
+          if (!s.data_file) return;
+          const url = new URL(s.data_file, base).toString();
+          const ok = await checkFile(url);
+          if (ok === null) return;
+
+          s._available = ok;
+          s.status = ok ? 'Disponible' : 'Próximamente';
+        });
+
+        await Promise.all(tasks);
       }
+
       function isRead(href){
-        try{ return localStorage.getItem(LS_READ_PREFIX + href) === '1'; }catch(_){ return false; }
+        try { return localStorage.getItem(LS_READ_PREFIX + href) === '1'; } catch(_) { return false; }
       }
       function markRead(href){
-        try{ localStorage.setItem(LS_READ_PREFIX + href, '1'); }catch(_){}
-      }
-      function clearProgress(){
-        try{
-          const keys = [];
-          for (let i=0;i<localStorage.length;i++){
-            const k = localStorage.key(i);
-            if (!k) continue;
-            if (k === LS_LAST || k.startsWith(LS_READ_PREFIX)) keys.push(k);
-          }
-          keys.forEach(k => localStorage.removeItem(k));
-        }catch(_){}
+        try { localStorage.setItem(LS_READ_PREFIX + href, '1'); } catch(_) {}
       }
 
-      function ensureReadBadges(){
-        $$('.subCard').forEach(card => {
-          const link = getLink(card);
-          if (!link || !link.href) return;
-
-          if (isRead(link.href)){
-            card.classList.add('read');
-            if (!card.querySelector('.readBadge')){
-              const b = document.createElement('div');
-              b.className = 'readBadge';
-              b.textContent = '✓ Leído';
-              card.appendChild(b);
-            }
-          } else {
-            card.classList.remove('read');
-            const b = card.querySelector('.readBadge');
-            if (b) b.remove();
-          }
-        });
+      function setLastVisited(payload) {
+        try { localStorage.setItem(LS_LAST, JSON.stringify(payload)); } catch(_) {}
+      }
+      function getLastVisited() {
+        try {
+          const raw = localStorage.getItem(LS_LAST);
+          return raw ? JSON.parse(raw) : null;
+        } catch(_) { return null; }
       }
 
-      function setupContinueBar(){
-        const bar = $('#continueBar');
-        const link = $('#continueLink');
-        const reset = $('#resetProgress');
-        if (!bar || !link || !reset) return;
-
+      function getContinueTarget() {
         const last = getLastVisited();
-        if (last && last.href){
-          bar.classList.remove('hidden');
-          link.href = last.href;
-          link.textContent = last.title || 'Continuar';
+        if (!last || !last.href) return null;
+        return last;
+      }
+
+      function showContinueIfAny() {
+        const btn = $('#continueBtn');
+        const t = getContinueTarget();
+        if (t) {
+          btn.style.display = '';
+          btn.textContent = `Continuar: ${t.title || 'Subtema'}`;
         } else {
-          bar.classList.add('hidden');
+          btn.style.display = 'none';
         }
-
-        reset.addEventListener('click', () => {
-          clearProgress();
-          bar.classList.add('hidden');
-          ensureReadBadges();
-          applyFilters();
-          rebuildModuleDots();
-        });
       }
 
-      function setupLinkTracking(){
-        $$('.subCard').forEach(card => {
-          const link = getLink(card);
-          if (!link || !link.href) return;
+      function applyFilters() {
+        const q = norm(state.query);
 
-          link.addEventListener('click', () => {
-            const title = card.querySelector('h3')?.textContent?.trim() || 'Subtema';
-            setLastVisited(title, link.href);
-            markRead(link.href);
-            ensureReadBadges();
-            setupContinueBar();
-          }, { passive: true });
-        });
+        if (state.mode === 'modules') {
+          const visible = [];
+          state.modules.forEach((m, mi) => {
+            const moduleHay = norm(m.title);
+            const anySub = m.subs.some(s => norm(`${s.title} ${s.desc}`).includes(q));
+            const matchesQ = !q || moduleHay.includes(q) || anySub;
+
+            let matchesF = true;
+            if (state.filter === 'available') {
+              matchesF = m.subs.some(s => (s._available === true) || (s.status || '').toLowerCase() === 'disponible');
+            }
+            if (state.filter === 'coming') {
+              matchesF = m.subs.some(s => (s._available === false) || (s.status || '').toLowerCase().includes('próxim'));
+            }
+            if (state.filter === 'read') {
+              matchesF = m.subs.some(s => s.href && isRead(s.href));
+            }
+
+            if (matchesQ && matchesF) visible.push(mi);
+          });
+          state.visibleModuleIdxs = visible;
+          state.activeVisibleIndex = Math.min(state.activeVisibleIndex, Math.max(0, visible.length-1));
+          state.activeModuleIdx = visible[state.activeVisibleIndex] ?? 0;
+        } else {
+          // subs view
+          const mi = state.activeModuleIdx;
+          const m = state.modules[mi];
+          const visible = [];
+          m.subs.forEach((s, si) => {
+            const hay = norm(`${s.title} ${s.desc}`);
+            const matchesQ = !q || hay.includes(q);
+
+            let matchesF = true;
+            const available = (s._available === true) || (s.status || '').toLowerCase() === 'disponible';
+            const coming = (s._available === false) || (s.status || '').toLowerCase().includes('próxim');
+            const read = s.href && isRead(s.href);
+
+            if (state.filter === 'available') matchesF = available;
+            if (state.filter === 'coming') matchesF = coming;
+            if (state.filter === 'read') matchesF = read;
+
+            if (matchesQ && matchesF) visible.push(si);
+          });
+          state.subVisibleIdxs = visible;
+          state.activeSubVisibleIndex = Math.min(state.activeSubVisibleIndex, Math.max(0, visible.length-1));
+        }
       }
 
-      // ===== Búsqueda + filtros =====
-      let currentFilter = 'all';
+      function updateHeaderText() {
+        const pill = $('#counterPill');
+        const modeHint = $('#modeHint');
 
-      function setupSearchAndFilters(){
+        if (state.mode === 'modules') {
+          const total = state.modules.length;
+          const shown = state.visibleModuleIdxs.length;
+          pill.textContent = `Módulos: ${shown}/${total}`;
+          modeHint.textContent = 'Desliza a izquierda/derecha para cambiar de módulo.';
+        } else {
+          const m = state.modules[state.activeModuleIdx];
+          const total = m?.subs?.length ?? 0;
+          const shown = state.subVisibleIdxs.length;
+          pill.textContent = `Subtemas: ${shown}/${total}`;
+          modeHint.textContent = 'Desliza a izquierda/derecha para cambiar de subtema.';
+        }
+      }
+
+      function buildDots(count, activeIndex) {
+        const dots = $('#dots');
+        dots.innerHTML = '';
+        for (let i=0;i<count;i++) {
+          const b = document.createElement('button');
+          b.className = 'dot' + (i===activeIndex ? ' active' : '');
+          b.type = 'button';
+          b.setAttribute('aria-label', `Ir a ${state.mode === 'modules' ? 'módulo' : 'subtema'} ${i+1}`);
+          b.addEventListener('click', () => {
+            if (state.mode === 'modules') scrollToVisible(i);
+            else scrollToVisible(i);
+          });
+          dots.appendChild(b);
+        }
+      }
+
+      function render() {
+        applyFilters();
+        updateHeaderText();
+        showContinueIfAny();
+
+        const track = $('#track');
+        track.innerHTML = '';
+
+        if (state.mode === 'modules') {
+          $('#viewTitle').textContent = 'Módulos';
+          $('#subTitleLine').textContent = 'Selecciona un módulo para ver sus subtemas.';
+          $('#backBtn').style.display = 'none';
+          $('#prevBtn').style.display = '';
+          $('#nextBtn').style.display = '';
+
+          const idxs = state.visibleModuleIdxs;
+          idxs.forEach((mi, vi) => {
+            const m = state.modules[mi];
+            const availableCount = m.subs.filter(s => (s._available === true) || (s.status || '').toLowerCase() === 'disponible').length;
+            const comingCount = m.subs.filter(s => (s._available === false) || (s.status || '').toLowerCase().includes('próxim')).length;
+
+            const card = document.createElement('article');
+            card.className = 'cardBig';
+            card.dataset.moduleIndex = String(mi);
+
+            // read badge si hay al menos 1 subtema leído
+            const anyRead = m.subs.some(s => s.href && isRead(s.href));
+            if (anyRead) card.classList.add('read');
+
+            const h3 = document.createElement('h3');
+            h3.textContent = m.title;
+
+            const meta = document.createElement('div');
+            meta.className = 'metaRow';
+
+            const t1 = document.createElement('span');
+            t1.className = 'tag ok';
+            t1.textContent = `${availableCount} disponibles`;
+
+            const t2 = document.createElement('span');
+            t2.className = 'tag todo';
+            t2.textContent = `${comingCount} próximamente`;
+
+            meta.appendChild(t1);
+            meta.appendChild(t2);
+
+            const prev = document.createElement('div');
+            prev.className = 'previewList';
+
+            m.subs.slice(0,3).forEach(s => {
+              const item = document.createElement('div');
+              item.className = 'previewItem';
+
+              const left = document.createElement('div');
+              const tt = document.createElement('div');
+              tt.className = 't';
+              tt.textContent = s.title || 'Subtema';
+
+              const dd = document.createElement('div');
+              dd.className = 'd';
+              dd.textContent = s.desc || '';
+
+              left.appendChild(tt);
+              if (s.desc) left.appendChild(dd);
+
+              const st = document.createElement('span');
+              const avail = (s._available === true) || (s.status || '').toLowerCase() === 'disponible';
+              st.className = 'tag ' + (avail ? 'ok' : 'todo');
+              st.textContent = avail ? 'Disponible' : 'Próximamente';
+
+              item.appendChild(left);
+              item.appendChild(st);
+              prev.appendChild(item);
+            });
+
+            const actions = document.createElement('div');
+            actions.style.display = 'flex';
+            actions.style.gap = '10px';
+            actions.style.marginTop = '6px';
+
+            const enter = document.createElement('button');
+            enter.className = 'btn primary';
+            enter.type = 'button';
+            enter.textContent = 'Entrar';
+            enter.addEventListener('click', () => enterModule(mi));
+
+            const openFirst = document.createElement('button');
+            openFirst.className = 'btn';
+            openFirst.type = 'button';
+            openFirst.textContent = 'Ver subtemas';
+            openFirst.addEventListener('click', () => enterModule(mi));
+
+            actions.appendChild(enter);
+            actions.appendChild(openFirst);
+
+            const rb = document.createElement('div');
+            rb.className = 'readBadge';
+            rb.textContent = '✓ Progreso';
+
+            card.appendChild(rb);
+            card.appendChild(h3);
+            card.appendChild(meta);
+            card.appendChild(prev);
+            card.appendChild(actions);
+
+            // Enter con teclado
+            card.tabIndex = 0;
+            card.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter') enterModule(mi);
+            });
+
+            track.appendChild(card);
+          });
+
+          buildDots(idxs.length, state.activeVisibleIndex);
+          requestAnimationFrame(() => {
+            scrollToVisible(state.activeVisibleIndex, true);
+            updateActiveByCenter();
+          });
+        } else {
+          const m = state.modules[state.activeModuleIdx];
+          $('#viewTitle').textContent = m?.title || 'Subtemas';
+          $('#subTitleLine').textContent = 'Selecciona un subtema para abrirlo.';
+          $('#backBtn').style.display = '';
+          $('#prevBtn').style.display = '';
+          $('#nextBtn').style.display = '';
+
+          const visible = state.subVisibleIdxs;
+          visible.forEach((si, vi) => {
+            const s = m.subs[si];
+            const card = document.createElement('article');
+            card.className = 'cardBig';
+            card.dataset.subIndex = String(si);
+
+            const href = s.href || '#';
+            const read = href && isRead(href);
+            if (read) card.classList.add('read');
+
+            const h3 = document.createElement('h3');
+            h3.textContent = s.title || 'Subtema';
+
+            const p = document.createElement('p');
+            p.textContent = s.desc || '';
+
+            const meta = document.createElement('div');
+            meta.className = 'metaRow';
+
+            const avail = (s._available === true) || (s.status || '').toLowerCase() === 'disponible';
+            const st = document.createElement('span');
+            st.className = 'tag ' + (avail ? 'ok' : 'todo');
+            st.textContent = avail ? 'Disponible' : 'Próximamente';
+            meta.appendChild(st);
+
+            const actions = document.createElement('div');
+            actions.style.display = 'flex';
+            actions.style.gap = '10px';
+            actions.style.marginTop = '6px';
+            actions.style.flexWrap = 'wrap';
+
+            const open = document.createElement('a');
+            open.className = 'btn primary';
+            open.textContent = 'Abrir';
+            open.href = href || '#';
+            if (!avail || !href || href === '#') {
+              open.setAttribute('aria-disabled', 'true');
+              open.href = '#';
+              open.style.pointerEvents = 'none';
+              open.style.opacity = '.62';
+            } else {
+              open.addEventListener('click', () => {
+                setLastVisited({ title: s.title, href });
+                markRead(href);
+              });
+            }
+
+            const mark = document.createElement('button');
+            mark.className = 'btn';
+            mark.type = 'button';
+            mark.textContent = read ? 'Leído ✓' : 'Marcar leído';
+            mark.addEventListener('click', () => {
+              if (href && href !== '#') {
+                markRead(href);
+                setLastVisited({ title: s.title, href });
+                setStatus('Marcado como leído.');
+                render();
+              }
+            });
+
+            actions.appendChild(open);
+            actions.appendChild(mark);
+
+            const rb = document.createElement('div');
+            rb.className = 'readBadge';
+            rb.textContent = '✓ Leído';
+
+            card.appendChild(rb);
+            card.appendChild(h3);
+            if (s.desc) card.appendChild(p);
+            card.appendChild(meta);
+            card.appendChild(actions);
+
+            card.tabIndex = 0;
+            card.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter') {
+                if (avail && href && href !== '#') window.location.href = href;
+              }
+            });
+
+            track.appendChild(card);
+          });
+
+          buildDots(visible.length, state.activeSubVisibleIndex);
+          requestAnimationFrame(() => {
+            scrollToVisible(state.activeSubVisibleIndex, true);
+            updateActiveByCenter();
+          });
+        }
+      }
+
+      function getVisibleCards() {
+        return $$('.cardBig', $('#track'));
+      }
+
+      function updateActiveByCenter() {
+        const track = $('#track');
+        const cards = getVisibleCards();
+        if (!cards.length) return;
+
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let bestIdx = 0;
+        let bestDist = Infinity;
+
+        cards.forEach((c, i) => {
+          const cCenter = c.offsetLeft + c.clientWidth / 2;
+          const d = Math.abs(cCenter - center);
+          if (d < bestDist) { bestDist = d; bestIdx = i; }
+        });
+
+        cards.forEach((c, i) => c.classList.toggle('active', i === bestIdx));
+
+        // actualizar dot
+        const dots = $$('.dot', $('#dots'));
+        dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
+
+        if (state.mode === 'modules') {
+          state.activeVisibleIndex = bestIdx;
+          state.activeModuleIdx = state.visibleModuleIdxs[bestIdx] ?? state.activeModuleIdx;
+        } else {
+          state.activeSubVisibleIndex = bestIdx;
+        }
+      }
+
+      function scrollToVisible(visibleIndex, instant=false) {
+        const track = $('#track');
+        const cards = getVisibleCards();
+        const el = cards[visibleIndex];
+        if (!el) return;
+        track.scrollTo({ left: el.offsetLeft - 6, behavior: instant ? 'instant' : 'smooth' });
+      }
+
+      function step(dir) {
+        const cards = getVisibleCards();
+        if (!cards.length) return;
+        updateActiveByCenter();
+        const current = cards.findIndex(c => c.classList.contains('active'));
+        const next = Math.max(0, Math.min(cards.length-1, (current === -1 ? 0 : current) + dir));
+        scrollToVisible(next);
+      }
+
+      async function enterModule(moduleIdx) {
+        state.mode = 'subs';
+        state.activeModuleIdx = moduleIdx;
+        state.activeSubVisibleIndex = 0;
+
+        $('#backBtn').style.display = '';
+        $('#modeHint').textContent = 'Cargando subtemas…';
+        setStatus('Cargando subtemas…');
+
+        await refreshAvailabilityForModule(moduleIdx);
+
+        // reset búsqueda pero mantiene filtro (opcional)
+        // state.query = '';
+        render();
+
+        $('#modeHint').textContent = 'Desliza a izquierda/derecha para cambiar de subtema.';
+        setStatus('Subtemas listos.');
+      }
+
+      function goBack() {
+        state.mode = 'modules';
+        state.activeSubVisibleIndex = 0;
+        render();
+        setStatus('De vuelta a módulos.');
+      }
+
+      function hookUI() {
+        const track = $('#track');
+        track.addEventListener('scroll', () => requestAnimationFrame(updateActiveByCenter), { passive: true });
+
+        $('#prevBtn').addEventListener('click', () => step(-1));
+        $('#nextBtn').addEventListener('click', () => step(1));
+
+        $('#backBtn').addEventListener('click', goBack);
+
+        $('#continueBtn').addEventListener('click', () => {
+          const t = getContinueTarget();
+          if (t && t.href) window.location.href = t.href;
+        });
+
         const input = $('#searchInput');
         const clear = $('#clearSearch');
-        const chips = $$('.chip[data-filter]');
-        if (!input || !clear || !chips.length) return;
 
-        const apply = () => {
-          applyFilters();
-          rebuildModuleDots();
-        };
-
-        input.addEventListener('input', apply);
+        input.addEventListener('input', () => {
+          state.query = input.value || '';
+          if (state.mode === 'modules') state.activeVisibleIndex = 0;
+          else state.activeSubVisibleIndex = 0;
+          render();
+        });
         clear.addEventListener('click', () => {
           input.value = '';
+          state.query = '';
+          render();
           input.focus();
-          apply();
         });
 
+        const chips = $$('.chip[data-filter]');
         chips.forEach(ch => {
           ch.addEventListener('click', () => {
             chips.forEach(c => c.classList.remove('active'));
             ch.classList.add('active');
-            currentFilter = ch.getAttribute('data-filter') || 'all';
-            apply();
+            state.filter = ch.getAttribute('data-filter') || 'all';
+            if (state.mode === 'modules') state.activeVisibleIndex = 0;
+            else state.activeSubVisibleIndex = 0;
+            render();
           });
         });
+
+        // teclado
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowLeft') step(-1);
+          if (e.key === 'ArrowRight') step(1);
+          if (e.key === 'Escape' && state.mode === 'subs') goBack();
+          if (e.key === 'Enter') {
+            if (state.mode === 'modules') {
+              const mi = state.activeModuleIdx;
+              enterModule(mi);
+            }
+          }
+        });
       }
 
-      function applyFilters(){
-        const q = norm($('#searchInput')?.value || '');
-
-        $$('.card').forEach(section => {
-          const moduleTitle = section.querySelector('h2')?.textContent?.trim() || '';
-          const subCards = $$('.subCard', section);
-          let visibleCount = 0;
-
-          subCards.forEach(sc => {
-            const h3 = sc.querySelector('h3')?.textContent?.trim() || '';
-            const desc = sc.querySelector('p')?.textContent?.trim() || '';
-            const link = getLink(sc);
-            const href = link?.href || '';
-
-            const tag = getTag(sc);
-            const isOk = tag?.classList?.contains('ok');
-            const isTodo = tag?.classList?.contains('todo');
-            const read = sc.classList.contains('read');
-
-            const hay = norm(`${moduleTitle} ${h3} ${desc}`);
-            const matchQ = !q || hay.includes(q);
-
-            let matchF = true;
-            if (currentFilter === 'available') matchF = !!isOk;
-            if (currentFilter === 'coming') matchF = !!isTodo;
-            if (currentFilter === 'read') matchF = !!read;
-
-            const show = matchQ && matchF;
-            sc.classList.toggle('hidden', !show);
-
-            if (currentFilter === 'read' && (!href || href === '#')){
-              sc.classList.add('hidden');
-            }
-
-            if (!sc.classList.contains('hidden')) visibleCount++;
+      function init() {
+        // Preseed availability flags from status text, then we'll refresh per module on demand
+        state.modules.forEach(m => {
+          m.subs.forEach(s => {
+            const st = (s.status || '').toLowerCase();
+            if (st === 'disponible') s._available = true;
+            else if (st.includes('próxim') || st.includes('proxim')) s._available = false;
           });
-
-          section.classList.toggle('hidden', visibleCount === 0);
         });
 
-        // Asegura que haya un “activo” visible en PSP
-        updateActiveModule();
-      }
-
-      // ===== Disponible / Próximamente =====
-      async function checkAvailability(){
-        const tags = $$('[data-file]');
-        const base = location.href.replace(/\/index\.html.*$/,'/').replace(/#.*$/,'');
-
-        await Promise.all(tags.map(async (tag) => {
-          const file = tag.getAttribute('data-file');
-          const url = new URL(file, base).toString();
-
-          try{
-            let res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-            if (!res || (res.status === 405 || res.status === 403)){
-              res = await fetch(url, { method: 'GET', cache: 'no-store' });
-            }
-            const ok = !!res && res.ok;
-
-            const card = tag.closest('.subCard');
-            const link = card ? getLink(card) : null;
-
-            if (ok){
-              tag.textContent = 'Disponible';
-              tag.classList.remove('todo');
-              tag.classList.add('ok');
-              card?.classList.remove('ghost');
-              if (link){
-                link.setAttribute('aria-disabled', 'false');
-                link.style.pointerEvents = 'auto';
-                link.style.opacity = '1';
-              }
-            } else {
-              tag.textContent = 'Próximamente';
-              tag.classList.remove('ok');
-              tag.classList.add('todo');
-              card?.classList.add('ghost');
-              if (link){
-                link.setAttribute('aria-disabled', 'true');
-                link.style.pointerEvents = 'none';
-                link.style.opacity = '.62';
-              }
-            }
-          }catch(_){
-            // si hay bloqueo/sin conexión, dejamos el estado actual
-          }
-        }));
-      }
-
-      // ===== PSP: carrusel principal de módulos =====
-      function trackEl(){ return $('#moduleTrack'); }
-      function visibleModules(){
-        return $$('.card', trackEl() || document).filter(c => !c.classList.contains('hidden'));
-      }
-
-      function updateActiveModule(){
-        const track = trackEl();
-        if (!track) return;
-
-        const modules = visibleModules();
-        if (!modules.length){
-          $$('.card.pspActive', track).forEach(m => m.classList.remove('pspActive'));
-          return;
-        }
-
-        const center = track.scrollLeft + track.clientWidth / 2;
-
-        let best = modules[0];
-        let bestDist = Infinity;
-        for (const m of modules){
-          const mCenter = m.offsetLeft + m.clientWidth / 2;
-          const dist = Math.abs(mCenter - center);
-          if (dist < bestDist){
-            bestDist = dist;
-            best = m;
-          }
-        }
-
-        // marca activo
-        $$('.card.pspActive', track).forEach(m => m.classList.remove('pspActive'));
-        best.classList.add('pspActive');
-
-        // actualiza dots
-        const dots = $$('#moduleDots .moduleDot');
-        const idx = modules.indexOf(best);
-        dots.forEach((d,i) => d.classList.toggle('active', i === idx));
-      }
-
-      function scrollToModule(idx){
-        const track = trackEl();
-        const modules = visibleModules();
-        const el = modules[idx];
-        if (!track || !el) return;
-        track.scrollTo({ left: el.offsetLeft - 10, behavior: 'smooth' });
-      }
-
-      function rebuildModuleDots(){
-        const dotsWrap = $('#moduleDots');
-        const track = trackEl();
-        if (!dotsWrap || !track) return;
-
-        dotsWrap.innerHTML = '';
-        const modules = visibleModules();
-
-        modules.forEach((m, i) => {
-          const b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'moduleDot';
-          b.setAttribute('aria-label', `Ir al módulo ${i+1}`);
-          b.addEventListener('click', () => scrollToModule(i));
-          dotsWrap.appendChild(b);
-        });
-
-        // Si el activo quedó oculto por filtros, centra el primero
-        const hasActiveVisible = modules.some(m => m.classList.contains('pspActive'));
-        if (!hasActiveVisible && modules[0]){
-          modules[0].classList.add('pspActive');
-          track.scrollTo({ left: modules[0].offsetLeft - 10, behavior: 'instant' });
-        }
-
-        updateActiveModule();
-      }
-
-      function setupModuleNav(){
-        const track = trackEl();
-        const prev = $('.moduleNav.prev');
-        const next = $('.moduleNav.next');
-        if (!track || !prev || !next) return;
-
-        function step(dir){
-          const modules = visibleModules();
-          if (!modules.length) return;
-
-          updateActiveModule();
-          const active = modules.findIndex(m => m.classList.contains('pspActive'));
-          const target = Math.max(0, Math.min(modules.length - 1, active + dir));
-          scrollToModule(target);
-        }
-
-        prev.addEventListener('click', () => step(-1));
-        next.addEventListener('click', () => step(1));
-
-        track.addEventListener('scroll', () => window.requestAnimationFrame(updateActiveModule), { passive: true });
-        window.addEventListener('resize', () => {
-          rebuildModuleDots();
-          window.requestAnimationFrame(updateActiveModule);
-        });
-      }
-
-      async function init(){
-        ensureReadBadges();
-        setupLinkTracking();
-        setupContinueBar();
-        setupSearchAndFilters();
-
-        applyFilters();
-        rebuildModuleDots();
-        setupModuleNav();
-        updateActiveModule();
-
-        await checkAvailability();
-        applyFilters();
-        rebuildModuleDots();
-        updateActiveModule();
+        hookUI();
+        render();
+        setStatus('Listo.');
       }
 
       document.addEventListener('DOMContentLoaded', init);
     })();
   </script>
-
-
 </body>
 </html>
