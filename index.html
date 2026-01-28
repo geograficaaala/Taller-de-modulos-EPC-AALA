@@ -324,6 +324,189 @@
       text-align:center;
       padding: 10px 0 2px;
     }
+  
+
+    /* ===== Mejoras interactivas (búsqueda, filtros, carrusel tipo “PSP”, progreso) ===== */
+    .tools{
+      flex: 1 1 100%;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .searchWrap{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.55);
+      box-shadow: var(--shadow-soft);
+    }
+    .searchWrap input{
+      width:100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      color: var(--ink);
+    }
+    .iconBtn{
+      border: 0;
+      background: rgba(10,18,35,.06);
+      border: 1px solid rgba(10,18,35,.10);
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor:pointer;
+      color: rgba(10,18,35,.80);
+      line-height: 1;
+      user-select:none;
+    }
+    .iconBtn:hover{ background: rgba(10,18,35,.09); }
+    .iconBtn:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
+
+    .chipRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      align-items:center;
+    }
+    .chip{
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.55);
+      color: rgba(10,18,35,.80);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12.5px;
+      cursor:pointer;
+      box-shadow: var(--shadow-soft);
+    }
+    .chip:hover{ background: rgba(255,255,255,.70); }
+    .chip.active{
+      background: rgba(79,156,255,.18);
+      border-color: rgba(79,156,255,.35);
+      color: rgba(10,18,35,.92);
+    }
+    .chip:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
+
+    .continueBar{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap:wrap;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.55);
+      box-shadow: var(--shadow-soft);
+    }
+    .continueText{ color: rgba(10,18,35,.70); font-size: 13px; }
+    .linkBtn{
+      border: 0;
+      background: transparent;
+      color: rgba(10,18,35,.70);
+      text-decoration: underline;
+      cursor:pointer;
+      font-size: 13px;
+      padding: 6px 8px;
+      border-radius: 10px;
+    }
+    .linkBtn:hover{ background: rgba(10,18,35,.05); }
+    .linkBtn:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
+
+    .hidden{ display:none !important; }
+
+    /* Badge de “Leído” */
+    .readBadge{
+      position:absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 11px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(32, 185, 129, .14);
+      border: 1px solid rgba(32, 185, 129, .30);
+      color: rgba(10,18,35,.80);
+      display:flex;
+      align-items:center;
+      gap: 6px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(8px);
+    }
+    .subCard.read{
+      border-color: rgba(32, 185, 129, .25);
+    }
+
+    /* Carrusel “tarjetas deslizables” tipo PSP en móvil */
+    .carousel{
+      position: relative;
+    }
+    .carousel .carouselBtn{
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.65);
+      box-shadow: var(--shadow-soft);
+      border-radius: 16px;
+      padding: 10px 12px;
+      cursor:pointer;
+      color: rgba(10,18,35,.80);
+      z-index: 3;
+      backdrop-filter: blur(10px);
+      display:none; /* se activa en móvil */
+    }
+    .carousel .carouselBtn:hover{ background: rgba(255,255,255,.78); }
+    .carousel .carouselBtn:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
+    .carousel .carouselBtn.prev{ left: 6px; }
+    .carousel .carouselBtn.next{ right: 6px; }
+
+    .dots{
+      display:none; /* se activa en móvil */
+      justify-content:center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .dot{
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(10,18,35,.20);
+      background: rgba(10,18,35,.10);
+      cursor:pointer;
+    }
+    .dot.active{
+      background: rgba(79,156,255,.45);
+      border-color: rgba(79,156,255,.55);
+    }
+
+    @media (max-width: 680px){
+      .subGrid{
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 6px 2px 10px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      .subCard{
+        flex: 0 0 86%;
+        scroll-snap-align: center;
+        min-height: 160px;
+      }
+      .carousel .carouselBtn{ display:block; }
+      .dots{ display:flex; }
+
+      /* scrollbar discreta */
+      .subGrid::-webkit-scrollbar{ height: 8px; }
+      .subGrid::-webkit-scrollbar-thumb{
+        background: rgba(10,18,35,.18);
+        border-radius: 999px;
+      }
+    }
+
   </style>
 </head>
 
@@ -337,6 +520,28 @@
           Teoría + mapas mentales + actividades lúdicas por subtema. Diseño homogéneo en tonos pastel azul/celeste.
         </p>
       </div>
+
+      <!-- Herramientas (búsqueda, filtros y continuar) -->
+      <div class="tools">
+        <div class="searchWrap" role="search">
+          <input id="searchInput" type="search" placeholder="Buscar módulos o subtemas…" aria-label="Buscar" />
+          <button id="clearSearch" class="iconBtn" type="button" aria-label="Borrar búsqueda">✕</button>
+        </div>
+
+        <div class="chipRow" aria-label="Filtros">
+          <button class="chip active" type="button" data-filter="all">Todos</button>
+          <button class="chip" type="button" data-filter="available">Disponibles</button>
+          <button class="chip" type="button" data-filter="coming">Próximamente</button>
+          <button class="chip" type="button" data-filter="read">Leídos</button>
+        </div>
+
+        <div id="continueBar" class="continueBar hidden" aria-live="polite">
+          <span class="continueText">Continuar:</span>
+          <a id="continueLink" class="btn" href="#">—</a>
+          <button id="resetProgress" class="linkBtn" type="button">Reiniciar progreso</button>
+        </div>
+      </div>
+
 
       <div class="pillRow">
         <span class="pill">EPC AALA</span>
@@ -685,7 +890,7 @@
                 <span class="tag todo" data-file="4-1.html">Próximamente</span>
               </div>
               <p class="subDesc">Módulo 4: qué es el suelo, cómo se forma y dos juegos interactivos.</p>
-              <a class="subBtn disabled" href="4-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -693,7 +898,7 @@
                 <span class="tag todo" data-file="4-2.html">Próximamente</span>
               </div>
               <p class="subDesc">Horizontes del suelo y propiedades físicas: textura, porosidad y retención de agua, con juegos interactivos.</p>
-              <a class="subBtn disabled" href="4-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -701,7 +906,7 @@
                 <span class="tag todo" data-file="4-3.html">Próximamente</span>
               </div>
               <p class="subDesc">Tipos de suelos en Sololá y biodiversidad del suelo, con ahorcado y detective de suelos.</p>
-              <a class="subBtn disabled" href="4-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -709,7 +914,7 @@
                 <span class="tag todo" data-file="4-4.html">Próximamente</span>
               </div>
               <p class="subDesc">Causas y efectos del empobrecimiento del suelo.</p>
-              <a class="subBtn disabled" href="4-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -717,7 +922,7 @@
                 <span class="tag todo" data-file="4-5.html">Próximamente</span>
               </div>
               <p class="subDesc">Prácticas de conservación del suelo: curvas a nivel, barreras y cobertura.</p>
-              <a class="subBtn disabled" href="4-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -725,7 +930,7 @@
                 <span class="tag todo" data-file="4-6.html">Próximamente</span>
               </div>
               <p class="subDesc">Agroecosistemas: componentes, tipos, servicios y manejo sostenible.</p>
-              <a class="subBtn disabled" href="4-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -733,7 +938,7 @@
                 <span class="tag todo" data-file="4-7.html">Próximamente</span>
               </div>
               <p class="subDesc">Curvas a nivel, barreras vivas, terrazas, compost, lombricompost y abonos verdes.</p>
-              <a class="subBtn disabled" href="4-7.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-7.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -741,7 +946,7 @@
                 <span class="tag todo" data-file="4-8.html">Próximamente</span>
               </div>
               <p class="subDesc">Actividad agrícola en Sololá: calendario lunar, producción, café y organizaciones.</p>
-              <a class="subBtn disabled" href="4-8.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-8.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -749,7 +954,7 @@
                 <span class="tag todo" data-file="4-9.html">Próximamente</span>
               </div>
               <p class="subDesc">Seguridad alimentaria: 4 pilares, dieta balanceada, nutrientes y estrategias.</p>
-              <a class="subBtn disabled" href="4-9.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="4-9.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
           </div>
         </div>
@@ -776,7 +981,7 @@
                 <span class="tag todo" data-file="5-1.html">Próximamente</span>
               </div>
               <p class="subDesc">Relación entre residuos y desechos con ejemplos de la vida diaria.</p>
-              <a class="subBtn disabled" href="5-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -784,7 +989,7 @@
                 <span class="tag todo" data-file="5-2.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Efectos del mal manejo de residuos y desechos sólidos” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -792,7 +997,7 @@
                 <span class="tag todo" data-file="5-3.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Situación de los desechos sólidos en el departamento de sololá” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -800,7 +1005,7 @@
                 <span class="tag todo" data-file="5-4.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Buenas prácticas ambientales: “las 3 r’s”” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -808,7 +1013,7 @@
                 <span class="tag todo" data-file="5-5.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Aprovechamiento de residuos y desechos sólidos” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -816,7 +1021,7 @@
                 <span class="tag todo" data-file="5-6.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Manejo, tratamiento y disposición final de los residuos y desechos sólidos” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -824,7 +1029,7 @@
                 <span class="tag todo" data-file="5-7.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Situación del tratamiento de desechos sólidos en sololá” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-7.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-7.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -832,7 +1037,7 @@
                 <span class="tag todo" data-file="5-8.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Desechos líquidos” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-8.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-8.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -840,7 +1045,7 @@
                 <span class="tag todo" data-file="5-9.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Impacto de las aguas residuales en el ambiente y la salud” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-9.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-9.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -848,7 +1053,7 @@
                 <span class="tag todo" data-file="5-10.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Tratamiento de las aguas residuales” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="5-10.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="5-10.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
           </div>
         </div>
@@ -875,7 +1080,7 @@
                 <span class="tag todo" data-file="6-1.html">Próximamente</span>
               </div>
               <p class="subDesc">Relación entre bienes y servicios ambientales con ejemplos de la vida diaria.</p>
-              <a class="subBtn disabled" href="6-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="6-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -883,7 +1088,7 @@
                 <span class="tag todo" data-file="6-2.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Uso sostenible de los bienes y servicios ambientales” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="6-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="6-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -891,7 +1096,7 @@
                 <span class="tag todo" data-file="6-3.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Áreas protegidas” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="6-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="6-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -899,7 +1104,7 @@
                 <span class="tag todo" data-file="6-4.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Reserva de uso múltiple cuenca del lago de atitlán” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="6-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="6-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -907,7 +1112,7 @@
                 <span class="tag todo" data-file="6-5.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Especies en peligro de extinción presentes en la rumcla” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="6-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="6-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -915,7 +1120,7 @@
                 <span class="tag todo" data-file="6-6.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Avifauna en la rumcla” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="6-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="6-6.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
           </div>
         </div>
@@ -942,7 +1147,7 @@
                 <span class="tag todo" data-file="7-1.html">Próximamente</span>
               </div>
               <p class="subDesc">Relación entre cosmovisión maya con ejemplos de la vida diaria.</p>
-              <a class="subBtn disabled" href="7-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="7-1.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -950,7 +1155,7 @@
                 <span class="tag todo" data-file="7-2.html">Próximamente</span>
               </div>
               <p class="subDesc">Relación entre cruz cosmogónica maya con ejemplos de la vida diaria.</p>
-              <a class="subBtn disabled" href="7-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="7-2.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -958,7 +1163,7 @@
                 <span class="tag todo" data-file="7-3.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Conocimientos y prácticas ancestrales tradicionales en sololá” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="7-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="7-3.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -966,7 +1171,7 @@
                 <span class="tag todo" data-file="7-4.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Historia del departamento de sololá” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="7-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="7-4.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
             <div class="subCard ghost">
               <div class="subTop">
@@ -974,7 +1179,7 @@
                 <span class="tag todo" data-file="7-5.html">Próximamente</span>
               </div>
               <p class="subDesc">Aprende sobre “Turismo” con teoría, mapa mental y actividades.</p>
-              <a class="subBtn disabled" href="7-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
+              <a class="btn disabled" href="7-5.html" aria-disabled="true" tabindex="-1">Abrir</a>
             </div>
           </div>
         </div>
@@ -984,44 +1189,349 @@
     </main>
   </div>
 
+  
   <script>
-    (async () => {
-      const tags = [...document.querySelectorAll('[data-file]')];
-      const base = location.href.replace(/\/index\.html.*$/,'/').replace(/#.*$/,'');
+    (() => {
+      const LS_LAST = 'epc_last';
+      const LS_READ_PREFIX = 'epc_read:';
 
-      await Promise.all(tags.map(async (tag) => {
-        const file = tag.getAttribute('data-file');
-        const url = new URL(file, base).toString();
+      const $ = (sel, root=document) => root.querySelector(sel);
+      const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 
+      function norm(s){
+        return (s||'')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g,'');
+      }
+
+      function getLink(subCard){
+        return subCard.querySelector('a.btn, a.subBtn');
+      }
+
+      function getTag(subCard){
+        return subCard.querySelector('[data-file]');
+      }
+
+      function setLastVisited(title, href){
         try{
-          const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-          const ok = res.ok;
+          localStorage.setItem(LS_LAST, JSON.stringify({ title, href, ts: Date.now() }));
+        }catch(_){}
+      }
 
-          const card = tag.closest('.subCard');
-          const link = card.querySelector('a.btn');
+      function getLastVisited(){
+        try{
+          const raw = localStorage.getItem(LS_LAST);
+          return raw ? JSON.parse(raw) : null;
+        }catch(_){ return null; }
+      }
 
-          if (ok){
-            tag.textContent = 'Disponible';
-            tag.classList.remove('todo');
-            tag.classList.add('ok');
-            card.classList.remove('ghost');
-            link.setAttribute('aria-disabled', 'false');
-            link.style.pointerEvents = 'auto';
-            link.style.opacity = '1';
-          } else {
-            tag.textContent = 'Próximamente';
-            tag.classList.remove('ok');
-            tag.classList.add('todo');
-            card.classList.add('ghost');
-            link.setAttribute('aria-disabled', 'true');
-            link.style.pointerEvents = 'none';
-            link.style.opacity = '.62';
+      function isRead(href){
+        try{ return localStorage.getItem(LS_READ_PREFIX + href) === '1'; }catch(_){ return false; }
+      }
+
+      function markRead(href){
+        try{ localStorage.setItem(LS_READ_PREFIX + href, '1'); }catch(_){}
+      }
+
+      function clearProgress(){
+        try{
+          const keys = [];
+          for (let i=0;i<localStorage.length;i++){
+            const k = localStorage.key(i);
+            if (!k) continue;
+            if (k === LS_LAST || k.startsWith(LS_READ_PREFIX)) keys.push(k);
           }
-        }catch(_){
-          // Si no hay conexión o GH bloquea el HEAD, no cambiamos nada.
+          keys.forEach(k => localStorage.removeItem(k));
+        }catch(_){}
+      }
+
+      function ensureReadBadges(){
+        $$('.subCard').forEach(card => {
+          const link = getLink(card);
+          if (!link || !link.href) return;
+
+          if (isRead(link.href)){
+            card.classList.add('read');
+            if (!card.querySelector('.readBadge')){
+              const b = document.createElement('div');
+              b.className = 'readBadge';
+              b.textContent = '✓ Leído';
+              card.appendChild(b);
+            }
+          } else {
+            card.classList.remove('read');
+            const b = card.querySelector('.readBadge');
+            if (b) b.remove();
+          }
+        });
+      }
+
+      function setupContinueBar(){
+        const bar = $('#continueBar');
+        const link = $('#continueLink');
+        const reset = $('#resetProgress');
+        if (!bar || !link || !reset) return;
+
+        const last = getLastVisited();
+        if (last && last.href){
+          bar.classList.remove('hidden');
+          link.href = last.href;
+          link.textContent = last.title || 'Continuar';
+        } else {
+          bar.classList.add('hidden');
         }
-      }));
+
+        reset.addEventListener('click', () => {
+          clearProgress();
+          bar.classList.add('hidden');
+          ensureReadBadges();
+          applyFilters();
+        });
+      }
+
+      function setupLinkTracking(){
+        $$('.subCard').forEach(card => {
+          const link = getLink(card);
+          if (!link || !link.href) return;
+
+          link.addEventListener('click', () => {
+            const title = card.querySelector('h3')?.textContent?.trim() || 'Subtema';
+            setLastVisited(title, link.href);
+            markRead(link.href);
+            ensureReadBadges();
+            setupContinueBar();
+          }, { passive: true });
+        });
+      }
+
+      // ===== Carrusel tipo PSP =====
+      function setupCarousels(){
+        $$('.card').forEach(section => {
+          const grid = section.querySelector('.subGrid');
+          if (!grid) return;
+          if (grid.closest('.carousel')) return;
+
+          const wrap = document.createElement('div');
+          wrap.className = 'carousel';
+
+          const prev = document.createElement('button');
+          prev.className = 'carouselBtn prev';
+          prev.type = 'button';
+          prev.setAttribute('aria-label', 'Anterior');
+          prev.textContent = '◀';
+
+          const next = document.createElement('button');
+          next.className = 'carouselBtn next';
+          next.type = 'button';
+          next.setAttribute('aria-label', 'Siguiente');
+          next.textContent = '▶';
+
+          const dots = document.createElement('div');
+          dots.className = 'dots';
+          dots.setAttribute('aria-label', 'Indicador de tarjetas');
+
+          grid.parentNode.insertBefore(wrap, grid);
+          wrap.appendChild(prev);
+          wrap.appendChild(next);
+          wrap.appendChild(grid);
+          wrap.appendChild(dots);
+
+          function visibleItems(){
+            return $$('.subCard', grid).filter(c => !c.classList.contains('hidden'));
+          }
+
+          function scrollToItem(idx){
+            const items = visibleItems();
+            const el = items[idx];
+            if (!el) return;
+            grid.scrollTo({ left: el.offsetLeft - 2, behavior: 'smooth' });
+          }
+
+          function rebuildDots(){
+            dots.innerHTML = '';
+            const items = visibleItems();
+            items.forEach((_, i) => {
+              const d = document.createElement('button');
+              d.className = 'dot';
+              d.type = 'button';
+              d.setAttribute('aria-label', `Ir a tarjeta ${i+1}`);
+              d.addEventListener('click', () => scrollToItem(i));
+              dots.appendChild(d);
+            });
+            updateActiveDot();
+          }
+
+          function updateActiveDot(){
+            const items = visibleItems();
+            const dotsArr = $$('.dot', dots);
+            if (!items.length || !dotsArr.length) return;
+
+            const viewportCenter = grid.scrollLeft + grid.clientWidth / 2;
+            let bestIdx = 0;
+            let bestDist = Infinity;
+            items.forEach((it, i) => {
+              const itCenter = it.offsetLeft + it.clientWidth / 2;
+              const dist = Math.abs(itCenter - viewportCenter);
+              if (dist < bestDist){
+                bestDist = dist;
+                bestIdx = i;
+              }
+            });
+
+            dotsArr.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
+          }
+
+          function nudge(dir){
+            const items = visibleItems();
+            const first = items[0];
+            if (!first) return;
+            const step = first.clientWidth + 12;
+            grid.scrollBy({ left: dir * step, behavior: 'smooth' });
+          }
+
+          prev.addEventListener('click', () => nudge(-1));
+          next.addEventListener('click', () => nudge(1));
+          grid.addEventListener('scroll', () => window.requestAnimationFrame(updateActiveDot), { passive: true });
+
+          wrap.__rebuildDots = rebuildDots;
+          rebuildDots();
+        });
+      }
+
+      // ===== Búsqueda + filtros =====
+      let currentFilter = 'all';
+
+      function setupSearchAndFilters(){
+        const input = $('#searchInput');
+        const clear = $('#clearSearch');
+        const chips = $$('.chip[data-filter]');
+        if (!input || !clear || !chips.length) return;
+
+        const apply = () => applyFilters();
+
+        input.addEventListener('input', apply);
+        clear.addEventListener('click', () => {
+          input.value = '';
+          input.focus();
+          apply();
+        });
+
+        chips.forEach(ch => {
+          ch.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('active'));
+            ch.classList.add('active');
+            currentFilter = ch.getAttribute('data-filter') || 'all';
+            apply();
+          });
+        });
+      }
+
+      function applyFilters(){
+        const q = norm($('#searchInput')?.value || '');
+
+        $$('.card').forEach(section => {
+          const moduleTitle = section.querySelector('h2')?.textContent?.trim() || '';
+          const subCards = $$('.subCard', section);
+          let visibleCount = 0;
+
+          subCards.forEach(sc => {
+            const h3 = sc.querySelector('h3')?.textContent?.trim() || '';
+            const desc = sc.querySelector('p')?.textContent?.trim() || '';
+            const link = getLink(sc);
+            const href = link?.href || '';
+
+            const tag = getTag(sc);
+            const isOk = tag?.classList?.contains('ok');
+            const isTodo = tag?.classList?.contains('todo');
+            const read = sc.classList.contains('read');
+
+            const hay = norm(`${moduleTitle} ${h3} ${desc}`);
+            const matchQ = !q || hay.includes(q);
+
+            let matchF = true;
+            if (currentFilter === 'available') matchF = !!isOk;
+            if (currentFilter === 'coming') matchF = !!isTodo;
+            if (currentFilter === 'read') matchF = !!read;
+
+            const show = matchQ && matchF;
+            sc.classList.toggle('hidden', !show);
+
+            if (currentFilter === 'read' && (!href || href === '#')){
+              sc.classList.add('hidden');
+            }
+
+            if (!sc.classList.contains('hidden')) visibleCount++;
+          });
+
+          section.classList.toggle('hidden', visibleCount === 0);
+
+          const carousel = section.querySelector('.carousel');
+          if (carousel && carousel.__rebuildDots) carousel.__rebuildDots();
+        });
+      }
+
+      // ===== Disponible / Próximamente =====
+      async function checkAvailability(){
+        const tags = $$('[data-file]');
+        const base = location.href.replace(/\/index\.html.*$/,'/').replace(/#.*$/,'');
+
+        await Promise.all(tags.map(async (tag) => {
+          const file = tag.getAttribute('data-file');
+          const url = new URL(file, base).toString();
+
+          try{
+            let res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+            if (!res || (res.status === 405 || res.status === 403)){
+              res = await fetch(url, { method: 'GET', cache: 'no-store' });
+            }
+            const ok = !!res && res.ok;
+
+            const card = tag.closest('.subCard');
+            const link = card ? getLink(card) : null;
+
+            if (ok){
+              tag.textContent = 'Disponible';
+              tag.classList.remove('todo');
+              tag.classList.add('ok');
+              card?.classList.remove('ghost');
+              if (link){
+                link.setAttribute('aria-disabled', 'false');
+                link.style.pointerEvents = 'auto';
+                link.style.opacity = '1';
+              }
+            } else {
+              tag.textContent = 'Próximamente';
+              tag.classList.remove('ok');
+              tag.classList.add('todo');
+              card?.classList.add('ghost');
+              if (link){
+                link.setAttribute('aria-disabled', 'true');
+                link.style.pointerEvents = 'none';
+                link.style.opacity = '.62';
+              }
+            }
+          }catch(_){
+            // no tocamos estado si hay bloqueo / sin conexión
+          }
+        }));
+      }
+
+      async function init(){
+        ensureReadBadges();
+        setupLinkTracking();
+        setupContinueBar();
+        setupCarousels();
+        setupSearchAndFilters();
+
+        applyFilters();
+        await checkAvailability();
+        applyFilters();
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
     })();
   </script>
+
 </body>
 </html>
