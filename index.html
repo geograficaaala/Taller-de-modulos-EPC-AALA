@@ -507,6 +507,84 @@
       }
     }
 
+  
+    /* ===== Navegación tipo PSP: carrusel principal de módulos ===== */
+    .moduleCarousel{ position: relative; }
+    .moduleNav{
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      border: 1px solid rgba(10,18,35,.10);
+      background: rgba(255,255,255,.65);
+      box-shadow: var(--shadow-soft);
+      border-radius: 16px;
+      padding: 10px 12px;
+      cursor: pointer;
+      color: rgba(10,18,35,.85);
+      backdrop-filter: blur(10px);
+      display:none; /* se muestra en modo PSP */
+      user-select:none;
+    }
+    .moduleNav:hover{ background: rgba(255,255,255,.80); }
+    .moduleNav:focus-visible{ outline: 3px solid rgba(79,156,255,.35); outline-offset: 2px; }
+    .moduleNav.prev{ left: 6px; }
+    .moduleNav.next{ right: 6px; }
+
+    .moduleDots{
+      display:none; /* se muestra en modo PSP */
+      justify-content:center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .moduleDot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(10,18,35,.22);
+      background: rgba(10,18,35,.10);
+      cursor:pointer;
+    }
+    .moduleDot.active{
+      background: rgba(79,156,255,.48);
+      border-color: rgba(79,156,255,.60);
+    }
+
+    /* Modo PSP (móvil / tablet): módulos en carrusel horizontal con “zoom” al activo */
+    @media (max-width: 980px){
+      .grid#moduleTrack{
+        display:flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding: 4px 10px 10px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      .grid#moduleTrack > .card{
+        flex: 0 0 88%;
+        scroll-snap-align: center;
+        transform: scale(.92);
+        opacity: .78;
+        filter: saturate(.92);
+        transition: transform .22s ease, opacity .22s ease, filter .22s ease;
+      }
+      .grid#moduleTrack > .card.pspActive{
+        transform: scale(1);
+        opacity: 1;
+        filter: none;
+      }
+      .moduleNav{ display:block; }
+      .moduleDots{ display:flex; }
+
+      /* Evitar conflicto de scroll horizontal dentro del módulo */
+      .subGrid{
+        display:grid !important;
+        overflow: visible !important;
+        scroll-snap-type: none !important;
+      }
+      .subCard{ min-height: unset; }
+    }
+
   </style>
 </head>
 
@@ -516,10 +594,7 @@
       <div>
         <div class="kicker">EPC AALA · Taller de módulos</div>
         <h1 class="title">Plataforma interactiva de aprendizaje</h1>
-        <p class="subtitle">
-          Teoría + mapas mentales + actividades lúdicas por subtema. Diseño homogéneo en tonos pastel azul/celeste.
-        </p>
-      </div>
+</div>
 
       <!-- Herramientas (búsqueda, filtros y continuar) -->
       <div class="tools">
@@ -1190,6 +1265,7 @@
   </div>
 
   
+  
   <script>
     (() => {
       const LS_LAST = 'epc_last';
@@ -1208,32 +1284,25 @@
       function getLink(subCard){
         return subCard.querySelector('a.btn, a.subBtn');
       }
-
       function getTag(subCard){
         return subCard.querySelector('[data-file]');
       }
 
       function setLastVisited(title, href){
-        try{
-          localStorage.setItem(LS_LAST, JSON.stringify({ title, href, ts: Date.now() }));
-        }catch(_){}
+        try{ localStorage.setItem(LS_LAST, JSON.stringify({ title, href, ts: Date.now() })); }catch(_){}
       }
-
       function getLastVisited(){
         try{
           const raw = localStorage.getItem(LS_LAST);
           return raw ? JSON.parse(raw) : null;
         }catch(_){ return null; }
       }
-
       function isRead(href){
         try{ return localStorage.getItem(LS_READ_PREFIX + href) === '1'; }catch(_){ return false; }
       }
-
       function markRead(href){
         try{ localStorage.setItem(LS_READ_PREFIX + href, '1'); }catch(_){}
       }
-
       function clearProgress(){
         try{
           const keys = [];
@@ -1287,6 +1356,7 @@
           bar.classList.add('hidden');
           ensureReadBadges();
           applyFilters();
+          rebuildModuleDots();
         });
       }
 
@@ -1305,100 +1375,6 @@
         });
       }
 
-      // ===== Carrusel tipo PSP =====
-      function setupCarousels(){
-        $$('.card').forEach(section => {
-          const grid = section.querySelector('.subGrid');
-          if (!grid) return;
-          if (grid.closest('.carousel')) return;
-
-          const wrap = document.createElement('div');
-          wrap.className = 'carousel';
-
-          const prev = document.createElement('button');
-          prev.className = 'carouselBtn prev';
-          prev.type = 'button';
-          prev.setAttribute('aria-label', 'Anterior');
-          prev.textContent = '◀';
-
-          const next = document.createElement('button');
-          next.className = 'carouselBtn next';
-          next.type = 'button';
-          next.setAttribute('aria-label', 'Siguiente');
-          next.textContent = '▶';
-
-          const dots = document.createElement('div');
-          dots.className = 'dots';
-          dots.setAttribute('aria-label', 'Indicador de tarjetas');
-
-          grid.parentNode.insertBefore(wrap, grid);
-          wrap.appendChild(prev);
-          wrap.appendChild(next);
-          wrap.appendChild(grid);
-          wrap.appendChild(dots);
-
-          function visibleItems(){
-            return $$('.subCard', grid).filter(c => !c.classList.contains('hidden'));
-          }
-
-          function scrollToItem(idx){
-            const items = visibleItems();
-            const el = items[idx];
-            if (!el) return;
-            grid.scrollTo({ left: el.offsetLeft - 2, behavior: 'smooth' });
-          }
-
-          function rebuildDots(){
-            dots.innerHTML = '';
-            const items = visibleItems();
-            items.forEach((_, i) => {
-              const d = document.createElement('button');
-              d.className = 'dot';
-              d.type = 'button';
-              d.setAttribute('aria-label', `Ir a tarjeta ${i+1}`);
-              d.addEventListener('click', () => scrollToItem(i));
-              dots.appendChild(d);
-            });
-            updateActiveDot();
-          }
-
-          function updateActiveDot(){
-            const items = visibleItems();
-            const dotsArr = $$('.dot', dots);
-            if (!items.length || !dotsArr.length) return;
-
-            const viewportCenter = grid.scrollLeft + grid.clientWidth / 2;
-            let bestIdx = 0;
-            let bestDist = Infinity;
-            items.forEach((it, i) => {
-              const itCenter = it.offsetLeft + it.clientWidth / 2;
-              const dist = Math.abs(itCenter - viewportCenter);
-              if (dist < bestDist){
-                bestDist = dist;
-                bestIdx = i;
-              }
-            });
-
-            dotsArr.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
-          }
-
-          function nudge(dir){
-            const items = visibleItems();
-            const first = items[0];
-            if (!first) return;
-            const step = first.clientWidth + 12;
-            grid.scrollBy({ left: dir * step, behavior: 'smooth' });
-          }
-
-          prev.addEventListener('click', () => nudge(-1));
-          next.addEventListener('click', () => nudge(1));
-          grid.addEventListener('scroll', () => window.requestAnimationFrame(updateActiveDot), { passive: true });
-
-          wrap.__rebuildDots = rebuildDots;
-          rebuildDots();
-        });
-      }
-
       // ===== Búsqueda + filtros =====
       let currentFilter = 'all';
 
@@ -1408,7 +1384,10 @@
         const chips = $$('.chip[data-filter]');
         if (!input || !clear || !chips.length) return;
 
-        const apply = () => applyFilters();
+        const apply = () => {
+          applyFilters();
+          rebuildModuleDots();
+        };
 
         input.addEventListener('input', apply);
         clear.addEventListener('click', () => {
@@ -1465,10 +1444,10 @@
           });
 
           section.classList.toggle('hidden', visibleCount === 0);
-
-          const carousel = section.querySelector('.carousel');
-          if (carousel && carousel.__rebuildDots) carousel.__rebuildDots();
         });
+
+        // Asegura que haya un “activo” visible en PSP
+        updateActiveModule();
       }
 
       // ===== Disponible / Próximamente =====
@@ -1512,26 +1491,132 @@
               }
             }
           }catch(_){
-            // no tocamos estado si hay bloqueo / sin conexión
+            // si hay bloqueo/sin conexión, dejamos el estado actual
           }
         }));
+      }
+
+      // ===== PSP: carrusel principal de módulos =====
+      function trackEl(){ return $('#moduleTrack'); }
+      function visibleModules(){
+        return $$('.card', trackEl() || document).filter(c => !c.classList.contains('hidden'));
+      }
+
+      function updateActiveModule(){
+        const track = trackEl();
+        if (!track) return;
+
+        const modules = visibleModules();
+        if (!modules.length){
+          $$('.card.pspActive', track).forEach(m => m.classList.remove('pspActive'));
+          return;
+        }
+
+        const center = track.scrollLeft + track.clientWidth / 2;
+
+        let best = modules[0];
+        let bestDist = Infinity;
+        for (const m of modules){
+          const mCenter = m.offsetLeft + m.clientWidth / 2;
+          const dist = Math.abs(mCenter - center);
+          if (dist < bestDist){
+            bestDist = dist;
+            best = m;
+          }
+        }
+
+        // marca activo
+        $$('.card.pspActive', track).forEach(m => m.classList.remove('pspActive'));
+        best.classList.add('pspActive');
+
+        // actualiza dots
+        const dots = $$('#moduleDots .moduleDot');
+        const idx = modules.indexOf(best);
+        dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+      }
+
+      function scrollToModule(idx){
+        const track = trackEl();
+        const modules = visibleModules();
+        const el = modules[idx];
+        if (!track || !el) return;
+        track.scrollTo({ left: el.offsetLeft - 10, behavior: 'smooth' });
+      }
+
+      function rebuildModuleDots(){
+        const dotsWrap = $('#moduleDots');
+        const track = trackEl();
+        if (!dotsWrap || !track) return;
+
+        dotsWrap.innerHTML = '';
+        const modules = visibleModules();
+
+        modules.forEach((m, i) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'moduleDot';
+          b.setAttribute('aria-label', `Ir al módulo ${i+1}`);
+          b.addEventListener('click', () => scrollToModule(i));
+          dotsWrap.appendChild(b);
+        });
+
+        // Si el activo quedó oculto por filtros, centra el primero
+        const hasActiveVisible = modules.some(m => m.classList.contains('pspActive'));
+        if (!hasActiveVisible && modules[0]){
+          modules[0].classList.add('pspActive');
+          track.scrollTo({ left: modules[0].offsetLeft - 10, behavior: 'instant' });
+        }
+
+        updateActiveModule();
+      }
+
+      function setupModuleNav(){
+        const track = trackEl();
+        const prev = $('.moduleNav.prev');
+        const next = $('.moduleNav.next');
+        if (!track || !prev || !next) return;
+
+        function step(dir){
+          const modules = visibleModules();
+          if (!modules.length) return;
+
+          updateActiveModule();
+          const active = modules.findIndex(m => m.classList.contains('pspActive'));
+          const target = Math.max(0, Math.min(modules.length - 1, active + dir));
+          scrollToModule(target);
+        }
+
+        prev.addEventListener('click', () => step(-1));
+        next.addEventListener('click', () => step(1));
+
+        track.addEventListener('scroll', () => window.requestAnimationFrame(updateActiveModule), { passive: true });
+        window.addEventListener('resize', () => {
+          rebuildModuleDots();
+          window.requestAnimationFrame(updateActiveModule);
+        });
       }
 
       async function init(){
         ensureReadBadges();
         setupLinkTracking();
         setupContinueBar();
-        setupCarousels();
         setupSearchAndFilters();
 
         applyFilters();
+        rebuildModuleDots();
+        setupModuleNav();
+        updateActiveModule();
+
         await checkAvailability();
         applyFilters();
+        rebuildModuleDots();
+        updateActiveModule();
       }
 
       document.addEventListener('DOMContentLoaded', init);
     })();
   </script>
+
 
 </body>
 </html>
