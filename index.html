@@ -568,7 +568,7 @@
           if (!s.data_file) return;
           const url = new URL(s.data_file, base).toString();
           const ok = await checkFile(url);
-          if (ok === null) return;
+          if (ok === null) { s._available = true; s.status = (s.status && s.status.trim()) ? s.status : 'Disponible'; return; }
 
           s._available = ok;
           s.status = ok ? 'Disponible' : 'Próximamente';
@@ -762,7 +762,7 @@
               if (s.desc) left.appendChild(dd);
 
               const st = document.createElement('span');
-              const avail = (s._available === true) || (s.status || '').toLowerCase() === 'disponible';
+              const avail = (s._available === true) || ((s.status || '').toLowerCase() === 'disponible') || (!!s.href && s.href !== '#');
               st.className = 'tag ' + (avail ? 'ok' : 'todo');
               st.textContent = avail ? 'Disponible' : 'Próximamente';
 
@@ -843,7 +843,7 @@
             const meta = document.createElement('div');
             meta.className = 'metaRow';
 
-            const avail = (s._available === true) || (s.status || '').toLowerCase() === 'disponible';
+            const avail = (s._available === true) || ((s.status || '').toLowerCase() === 'disponible') || (!!s.href && s.href !== '#');
             const st = document.createElement('span');
             st.className = 'tag ' + (avail ? 'ok' : 'todo');
             st.textContent = avail ? 'Disponible' : 'Próximamente';
@@ -859,7 +859,7 @@
             open.className = 'btn primary';
             open.textContent = 'Abrir';
             open.href = href || '#';
-            if (!avail || !href || href === '#') {
+            if (!href || href === '#') {
               open.setAttribute('aria-disabled', 'true');
               open.href = '#';
               open.style.pointerEvents = 'none';
@@ -953,7 +953,7 @@
         const cards = getVisibleCards();
         const el = cards[visibleIndex];
         if (!el) return;
-        track.scrollTo({ left: el.offsetLeft - 6, behavior: instant ? 'instant' : 'smooth' });
+        track.scrollTo({ left: el.offsetLeft - 6, behavior: instant ? 'auto' : 'smooth' });
       }
 
       function step(dir) {
