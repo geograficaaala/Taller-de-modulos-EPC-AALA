@@ -42,7 +42,7 @@
     }
 
     *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
+    html, body{ min-height: 100%; }
     body{
       margin: 0;
       font-family: var(--font-body);
@@ -52,7 +52,8 @@
         radial-gradient(900px 700px at 80% 20%, var(--lavA), transparent 55%),
         radial-gradient(900px 700px at 60% 85%, var(--skyC), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,.95), rgba(245,252,255,.92));
-      overflow: hidden; /* 1 pantalla */
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     .bgBlobs{
@@ -68,7 +69,7 @@
     }
 
     .app{
-      height: 100%;
+      min-height: 100dvh;
       display: grid;
       grid-template-rows: auto auto 1fr auto;
       gap: 10px;
@@ -265,6 +266,7 @@
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
+      touch-action: pan-x pinch-zoom;
       padding: 10px 6px;
       align-items: stretch;
     }
